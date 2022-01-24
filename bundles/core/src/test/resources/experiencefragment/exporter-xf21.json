@@ -1,0 +1,9 @@
+{
+    "id":"experiencefragment-0acfd1c553",
+    "localizedFragmentVariationPath": "/content/experience-fragments/mysite/us/es/footer/master/jcr:content",
+    "configured": false,
+    ":type": "core/wcm/components/experiencefragment/v1/experiencefragment",
+    "classNames": "aem-xf empty",
+    ":itemsOrder": [],
+    ":items": {}
+}

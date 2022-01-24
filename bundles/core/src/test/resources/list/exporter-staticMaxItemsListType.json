@@ -1,0 +1,22 @@
+{
+    "id": "list-b44597ab83",
+    "dateFormatString": "yyyy-MM-dd",
+    "items": [
+        {
+            "path": "/content/list/pages/page_1",
+            "pageTitle": null,
+            "name": "page_1",
+            "description": null,
+            "title": "Page 1"
+        }
+    ],
+    "dataLayer": {
+        "list-b44597ab83": {
+            "@type": "core/wcm/components/list"
+        }
+    },
+    "showDescription": true,
+    "showModificationDate": true,
+    "linkItems": true,
+    ":type": "core/wcm/components/list"
+}
