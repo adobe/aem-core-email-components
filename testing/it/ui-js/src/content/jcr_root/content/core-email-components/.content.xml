@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:allowedTemplates="[/conf/core-email-components/settings/wcm/templates/core-email-components,/conf/core-email-components/settings/wcm/templates/responsive-template,/conf/core-email-components/settings/wcm/templates/simple-template]"
+        cq:template="/conf/core-email-components/settings/wcm/templates/core-email-components"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Core Components"
+        sling:configRef="/conf/core-email-components"
+        sling:resourceType="core/email/tests/components/test-page"/>
+</jcr:root>

@@ -61,7 +61,7 @@
                 <configuration>
                     <filters>
                         <filter>
-                            <root>/apps/core/wcm/components</root>
+                            <root>/apps/core/email/components</root>
                         </filter>
                     </filters>
                     <packageType>application</packageType>
@@ -168,7 +168,7 @@
                         <exclude>**/node/**</exclude>
                         <exclude>**/node_modules/**</exclude>
                         <!-- Ignore generated datalayer clientlib -->
-                        <exclude>**/core.wcm.components.commons.datalayer.v1/**</exclude>
+                        <exclude>**/core.email.components.commons.datalayer.v1/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>

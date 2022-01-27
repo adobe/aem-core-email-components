@@ -238,7 +238,7 @@
                         <validatorsSettings>
                             <jackrabbit-filter>
                                 <options>
-                                    <validRoots>/,/libs,/libs/core/wcm,/apps,/apps/core/wcm,/etc,/var,/tmp,/content</validRoots>
+                                    <validRoots>/,/libs,/libs/core/wcm,/apps,/apps/core/email,/etc,/var,/tmp,/content</validRoots>
                                 </options>
                             </jackrabbit-filter>
                             <jackrabbit-nodetypes>

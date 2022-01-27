@@ -1,13 +1,13 @@
 {
-    "name": "com.adobe.cq.core.wcm.components.content",
+    "name": "com.adobe.cq.core.email.components.content",
     "version": "2.17.15-SNAPSHOT",
-    "description": "Adobe Experience Manager Core WCM Components Content Package",
+    "description": "Adobe Experience Manager Core Email Components Content Package",
     "license": "Apache-2.0",
     "private": false,
-    "homepage": "https://github.com/adobe/aem-core-wcm-components",
+    "homepage": "https://github.com/adobe/aem-core-email-components",
     "repository": {
         "type": "git",
-        "url": "https://github.com/adobe/aem-core-wcm-components"
+        "url": "https://github.com/adobe/aem-core-email-components"
     },
     "scripts": {
         "aemfed": "aemfed -e \"**/*___jb_+(old|tmp)___\" -w \"src/content/jcr_root/\"",

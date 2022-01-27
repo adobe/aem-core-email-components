@@ -433,7 +433,7 @@
         <!-- Testing dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core.wcm.components.junit.core</artifactId>
+            <artifactId>core.email.components.junit.core</artifactId>
             <scope>test</scope>
             <version>${project.version}</version>
         </dependency>

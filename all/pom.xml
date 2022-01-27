@@ -58,17 +58,17 @@
                             <goal>generate-metadata</goal>
                         </goals>
                         <configuration>
-                            <embeddedTarget>/apps/core/wcm/install</embeddedTarget>
+                            <embeddedTarget>/apps/core/email/install</embeddedTarget>
                             <embeddeds>
                                 <embedded>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>core.email.components.core</artifactId>
-                                    <target>/apps/core/wcm/install</target>
+                                    <target>/apps/core/email/install</target>
                                 </embedded>
                                 <embedded>
                                     <groupId>org.apache.sling</groupId>
                                     <artifactId>org.apache.sling.models.impl</artifactId>
-                                    <target>/apps/core/wcm/install</target>
+                                    <target>/apps/core/email/install</target>
                                 </embedded>
                             </embeddeds>
                             <subPackages>

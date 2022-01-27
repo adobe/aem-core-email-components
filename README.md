@@ -1,11 +1,11 @@
-# AEM WCM Core Components
+# AEM Email Core Components
 
-[![Test](https://github.com/adobe/aem-core-wcm-components/workflows/Test/badge.svg)](https://github.com/adobe/aem-core-wcm-components/actions?query=workflow%3ATest)
-[![Code Coverage](https://codecov.io/gh/adobe/aem-core-wcm-components/branch/master/graph/badge.svg)](https://codecov.io/gh/adobe/aem-core-wcm-components)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.wcm.components.all/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.wcm.components.all)
-[![javadoc](https://javadoc.io/badge2/com.adobe.cq/core.wcm.components.core/javadoc.svg)](https://javadoc.io/doc/com.adobe.cq/core.wcm.components.core)
+[![Test](https://github.com/adobe/aem-core-email-components/workflows/Test/badge.svg)](https://github.com/adobe/aem-core-email-components/actions?query=workflow%3ATest)
+[![Code Coverage](https://codecov.io/gh/adobe/aem-core-email-components/branch/master/graph/badge.svg)](https://codecov.io/gh/adobe/aem-core-email-components)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.all/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.all)
+[![javadoc](https://javadoc.io/badge2/com.adobe.cq/core.email.components.core/javadoc.svg)](https://javadoc.io/doc/com.adobe.cq/core.email.components.core)
 
-Set of standardized Web Content Management (WCM) components for [Adobe Experience Manager (AEM)](https://www.adobe.com/marketing/experience-manager.html) to speed up development time and reduce maintenance cost of your websites.
+Set of standardized Email components for [Adobe Experience Manager (AEM)](https://www.adobe.com/marketing/experience-manager.html) to speed up development time and reduce maintenance cost of your websites.
 
 ## Welcome
 
@@ -34,67 +34,44 @@ Set of standardized Web Content Management (WCM) components for [Adobe Experienc
 * **Design Kit:** A [UI kit for Adobe XD](https://experienceleague.adobe.com/docs/experience-manager-learn/assets/AEM-CoreComponents-UI-Kit.xd) allows designers to create wireframes that they can then [style as needed](https://github.com/adobe/aem-guides-wknd/releases/download/aem-guides-wknd-0.0.2/AEM_UI-kit-WKND.xd).
 * **Themeable:** The components implement the [Style System](https://docs.adobe.com/content/help/en/experience-manager-65/developing/components/style-system.html), and the markup follows [BEM CSS conventions](http://getbem.com/).
 * **Customizable:** Several patterns allow [easy customization](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/developing/customizing.html), from adjusting the HTML to advanced functionality reuse.
-* **Versioned:** The [versioning policy](https://github.com/adobe/aem-core-wcm-components/wiki/Versioning-policies) ensures we won't break your site when improving things that might impact you.
+* **Versioned:** The [versioning policy](https://github.com/adobe/aem-core-email-components/wiki/Versioning-policies) ensures we won't break your site when improving things that might impact you.
 * **Open Sourced:** If something is not as it should, [contribute](CONTRIBUTING.md) your improvements!
 
 ### Template Components
 
-1. [Page](content/src/content/jcr_root/apps/core/wcm/components/page/v2/page)
-2. [Navigation](content/src/content/jcr_root/apps/core/wcm/components/navigation/v1/navigation)
-3. [Language Navigation](content/src/content/jcr_root/apps/core/wcm/components/languagenavigation/v1/languagenavigation)
-4. [Breadcrumb](content/src/content/jcr_root/apps/core/wcm/components/breadcrumb/v2/breadcrumb)
-5. [Quick Search](content/src/content/jcr_root/apps/core/wcm/components/search/v1/search)
+1. [Page](content/src/content/jcr_root/apps/core/email/components/page/v2/page)
 
 ### Page Authoring Components
 
-6. [Title](content/src/content/jcr_root/apps/core/wcm/components/title/v2/title)
-7. [Text](content/src/content/jcr_root/apps/core/wcm/components/text/v2/text)
-8. [Image](content/src/content/jcr_root/apps/core/wcm/components/image/v2/image)
-9. [Button](content/src/content/jcr_root/apps/core/wcm/components/button/v1/button)
-10. [Teaser](content/src/content/jcr_root/apps/core/wcm/components/teaser/v1/teaser)
-11. [List](content/src/content/jcr_root/apps/core/wcm/components/list/v2/list)
-12. [Download](content/src/content/jcr_root/apps/core/wcm/components/download/v1/download)
-13. [PDF Viewer](content/src/content/jcr_root/apps/core/wcm/components/pdfviewer/v1/pdfviewer)
-14. [Embed](content/src/content/jcr_root/apps/core/wcm/components/embed/v1/embed)
-15. [Sharing](content/src/content/jcr_root/apps/core/wcm/components/sharing/v1/sharing)
-16. [Progress Bar](content/src/content/jcr_root/apps/core/wcm/components/progressbar/v1/progressbar)
-17. [Separator](content/src/content/jcr_root/apps/core/wcm/components/separator/v1/separator)
-18. [Experience Fragment](content/src/content/jcr_root/apps/core/wcm/components/experiencefragment/v1/experiencefragment)
-19. [Content Fragment](content/src/content/jcr_root/apps/core/wcm/components/contentfragment/v1/contentfragment)
-20. [Content Fragment List](content/src/content/jcr_root/apps/core/wcm/components/contentfragmentlist/v1/contentfragmentlist)
+2. [Title](content/src/content/jcr_root/apps/core/email/components/title/v2/title)
+3. [Text](content/src/content/jcr_root/apps/core/email/components/text/v2/text)
+4. [Image](content/src/content/jcr_root/apps/core/email/components/image/v2/image)
+5. [Button](content/src/content/jcr_root/apps/core/email/components/button/v1/button)
+6. [Teaser](content/src/content/jcr_root/apps/core/email/components/teaser/v1/teaser)
+7. [Experience Fragment](content/src/content/jcr_root/apps/core/email/components/experiencefragment/v1/experiencefragment)
+8. [Content Fragment](content/src/content/jcr_root/apps/core/email/components/contentfragment/v1/contentfragment)
+
 
 ### Container Components
 
-21. [Container](content/src/content/jcr_root/apps/core/wcm/components/container/v1/container)
-22. [Carousel](content/src/content/jcr_root/apps/core/wcm/components/carousel/v1/carousel)
-23. [Tabs](content/src/content/jcr_root/apps/core/wcm/components/tabs/v1/tabs)
-24. [Accordion](content/src/content/jcr_root/apps/core/wcm/components/accordion/v1/accordion)
+9. [Container](content/src/content/jcr_root/apps/core/email/components/container/v1/container)
 
-### Form Components
-
-25. [Core Form container](content/src/content/jcr_root/apps/core/wcm/components/form/container/v2/container)
-26. [Form text field](content/src/content/jcr_root/apps/core/wcm/components/form/text/v2/text)
-27. [Form options field](content/src/content/jcr_root/apps/core/wcm/components/form/options/v2/options)
-28. [Form hidden field](content/src/content/jcr_root/apps/core/wcm/components/form/hidden/v2/hidden)
-29. [Form button](content/src/content/jcr_root/apps/core/wcm/components/form/button/v2/button)
 
 ### Roadmap
 
-To learn about the main upcoming components and features, visit the [roadmap wiki page](https://github.com/adobe/aem-core-wcm-components/wiki).
+To learn about the main upcoming components and features, visit the [roadmap wiki page](https://github.com/adobe/aem-core-email-components/wiki).
 
 ## Usage
 
 To include the Core Components in a new project, we strongly advise to use the [AEM Project Archetype](https://github.com/adobe/aem-project-archetype); this guarantees a starting point that complies to all recommended practices from Adobe.
 
-For existing projects, take example from the [AEM Project Archetype](https://github.com/adobe/aem-project-archetype) by looking at the `core.wcm.components` references in the main [`pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/pom.xml), in [`all/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/all/pom.xml), and in [`ui.apps/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/ui.apps/pom.xml). For the rest, make sure to create Proxy Components, to load the client libraries and to allow the components on the template, as instructed in [Using Core Components](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/get-started/using.html).
+For existing projects, take example from the [AEM Project Archetype](https://github.com/adobe/aem-project-archetype) by looking at the `core.email.components` references in the main [`pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/pom.xml), in [`all/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/all/pom.xml), and in [`ui.apps/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/ui.apps/pom.xml). For the rest, make sure to create Proxy Components, to load the client libraries and to allow the components on the template, as instructed in [Using Core Components](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/get-started/using.html).
 
 ### System Requirements
 
 Core Components | AEM as a Cloud Service | AEM 6.5 | AEM 6.4 | Java SE | Maven
 ----------------|------------------------|---------|---------|---------|---------
-[2.17.14](https://github.com/adobe/aem-core-wcm-components/releases/tag/core.wcm.components.reactor-2.17.14) | Continual | 6.5.6.0+ (*) | 6.4.8.4+ (*) | 8, 11 | 3.3.9+
 
-(*) - Since version 2.11.0 `org.apache.sling.models.impl` version 1.4.12 or higher is required (due to [SLING-8781](https://issues.apache.org/jira/browse/SLING-8781)). This will be provided for AEM 6.4 and 6.5 in a future Service Pack. Until then, the Sling Models bundle is included in the `core.wcm.components.all` package.
 
 For the requirements from previous Core Component releases, see [Historical System Requirements](VERSIONS.md).
 
@@ -127,4 +104,4 @@ For detailed informations see [BUILDING.md](BUILDING.md).
 The Core Components leverage both OSGi configurations and Sling context-aware configurations. For a description of defined configurations see [CONFIGS.md](CONFIGS.md)
 
 ### Known Issues
-- The provided oEmbed URL Processor configuration for Facebook and Instagram is not working at the moment as a new version of the endpoint was released by Facebook and now an access token needs to be passed in the request. A possible workaround is described in https://github.com/adobe/aem-core-wcm-components/issues/1225
+

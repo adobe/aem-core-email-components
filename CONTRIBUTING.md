@@ -27,17 +27,17 @@ There are many forms of contributions. New components or features, changes to ex
 
 The Core Component Engineering Team reviews all issues and contributions submitted by the community. During the review we might require clarifications from the contributor. If there is no response from the contributor within two weeks time, the issue will be closed.
 
-Once a contribution is being reviewed, the Core Engineering Team will apply a relevant label to the associated issue. You can see our [label list on GitHub](https://github.com/adobe/aem-core-wcm-components/labels) to better understand what each label means.
+Once a contribution is being reviewed, the Core Engineering Team will apply a relevant label to the associated issue. You can see our [label list on GitHub](https://github.com/adobe/aem-core-email-components/labels) to better understand what each label means.
 
 ### Reporting and Fixing Bugs 🐛
 
 #### Before Reporting a Bug 
-* Have a quick search through the currently open [bug reports](https://github.com/adobe/aem-core-wcm-components/labels/bug) to see if the issue has already been reported.
+* Have a quick search through the currently open [bug reports](https://github.com/adobe/aem-core-email-components/labels/bug) to see if the issue has already been reported.
 * Ensure that the issue is repeatable and that the actual behavior versus the expected results can be easily described.
 * Check that the issue you are experiencing is related to the Core Components project. It may be that the problem derives from AEM itself, typically editor code, rather than the Core Components. If you're not sure, then feel free to report the issue anyway and the committers will clarify for you. Issues in the product can be reported via [Adobe Enterprise Support](https://helpx.adobe.com/contact/enterprise-support.ec.html).
 
 #### Filing a Bug
-1. Visit our [issue tracker on GitHub](https://github.com/adobe/aem-core-wcm-components/issues).
+1. Visit our [issue tracker on GitHub](https://github.com/adobe/aem-core-email-components/issues).
 1. File a `New Issue` as a `Bug Report`.
 1. Ensure your issue follows the [issue report guidelines](#issue-report-guidelines).
 1. Thanks for the report! The committers will get back to you in a timely manner, typically within one week.
@@ -48,23 +48,23 @@ If you have a fix ready for a bug, submit a [pull request](#contributing-code-) 
 ### Submitting Features 🚀
 **Please Note**: New experimental components and features should always go to [aem-contrib-wcm-components](https://github.com/adobe/aem-contrib-wcm-components) repository by default. All feature submissions should be accompanied by a [pull request]("#contributing-code-")
 
-* Have a quick search through the currently open [enhancement](https://github.com/adobe/aem-core-wcm-components/labels/enhancement) and [request to comment](https://github.com/adobe/aem-core-wcm-components/labels/rtc) issues to see if the idea has already been suggested. If it has, you may still have a slightly different requirement that isn't covered, in which case, feel free to comment on the open issue. 
-* Take a look at the [Core Components Roadmap](https://github.com/adobe/aem-core-wcm-components/wiki#roadmap) to see if your feature is already on the radar. If it is and doesn't have a public issue yet, feel free to create one, listing your own requirements.
+* Have a quick search through the currently open [enhancement](https://github.com/adobe/aem-core-email-components/labels/enhancement) and [request to comment](https://github.com/adobe/aem-core-email-components/labels/rtc) issues to see if the idea has already been suggested. If it has, you may still have a slightly different requirement that isn't covered, in which case, feel free to comment on the open issue. 
+* Take a look at the [Core Components Roadmap](https://github.com/adobe/aem-core-email-components/wiki#roadmap) to see if your feature is already on the radar. If it is and doesn't have a public issue yet, feel free to create one, listing your own requirements.
 * Consider whether your requirement is generically useful rather than project-specific and would therefore benefit all users of the Core Components.
 
 ### Reviewing Code 👀
 
-Reviewing others' code contributions is another great way to contribute - more eyes on the code help to improve its overall quality. To review a pull request, check the [open pull requests](https://github.com/adobe/aem-core-wcm-components/pulls) for anything you can comment on. 
+Reviewing others' code contributions is another great way to contribute - more eyes on the code help to improve its overall quality. To review a pull request, check the [open pull requests](https://github.com/adobe/aem-core-email-components/pulls) for anything you can comment on. 
 
 ### Documenting 📜
 
-We very much welcome issue reports or pull requests that improve our documentation pages. While the best effort is made to keep them error free, useful and up-to-date there are always things that could be improved. The component documentation pages (for example the [Image Component Documentation](https://github.com/adobe/aem-core-wcm-components/blob/master/content/src/content/jcr_root/apps/core/wcm/components/image/v2/image/README.md)), this contributing guide or our [GitHub Wiki](https://github.com/adobe/aem-core-wcm-components/wiki) pages are good places to start.
+We very much welcome issue reports or pull requests that improve our documentation pages. While the best effort is made to keep them error free, useful and up-to-date there are always things that could be improved. The component documentation pages (for example the [Image Component Documentation](https://github.com/adobe/aem-core-wcm-components/blob/master/content/src/content/jcr_root/apps/core/wcm/components/image/v2/image/README.md)), this contributing guide or our [GitHub Wiki](https://github.com/adobe/aem-core-email-components/wiki) pages are good places to start.
 
 ### Questions and Enhancement Requests
 
 If you have questions about Core Components functionality or would like to submit a feature request or enhancement suggestions, we recommend posting them to the [Core Components Developer Mailing List](https://groups.google.com/forum/#!forum/aem-core-components-dev).
 
-You can also add your voice to discussions around new and existing component features by commenting on an RTC. New components and features that openly invite public comment are marked by an [RTC](https://github.com/adobe/aem-core-wcm-components/labels/rtc) (Request to Comment) label.
+You can also add your voice to discussions around new and existing component features by commenting on an RTC. New components and features that openly invite public comment are marked by an [RTC](https://github.com/adobe/aem-core-email-components/labels/rtc) (Request to Comment) label.
 
 ## Contributing Code 👾 
 High quality code is important to the project, and to keep it that way, all code submissions are reviewed by committers before being accepted. Close adherence to the guidelines below can help speed up the review process and increase the likelihood of the submission being accepted.

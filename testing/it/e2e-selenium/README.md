@@ -1,6 +1,6 @@
 # Purpose
 
-This is the E2E for WCM Core Components UI testing, it is mainly based on Selenide, Selenium Jupiter, and Sling Testing Client.
+This is the E2E for Email Core Components UI testing, it is mainly based on Selenide, Selenium Jupiter, and Sling Testing Client.
 
 PageObjects (Page, Component etc..) are defined in the common library [selenium-it-base](https://github.com/adobe/aem-selenium-it-base)
 
@@ -67,5 +67,5 @@ Simply use the usual Sling Test Client parameters
 # Running released test using generated jar with dependencies
 Make sure to download latest junit-platform-console-standalone-<version>.jar
 ```
-java -jar junit-platform-console-standalone-<version>.jar -cp 'target/core.wcm.components.it.e2e-selenium-<version>-it-jar-with-dependencies.jar' --select-package "com.adobe.cq.wcm.core.components.it.seljup" --include-classname "^.*IT?$"
+java -jar junit-platform-console-standalone-<version>.jar -cp 'target/core.email.components.it.e2e-selenium-<version>-it-jar-with-dependencies.jar' --select-package "com.adobe.cq.wcm.core.components.it.seljup" --include-classname "^.*IT?$"
 ```

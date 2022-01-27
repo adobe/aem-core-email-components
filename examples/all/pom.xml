@@ -56,7 +56,7 @@
                         <cloudManagerTarget>none</cloudManagerTarget>
                     </properties>
                     <packageType>container</packageType>
-                    <embeddedTarget>/apps/core-components-examples/install</embeddedTarget>
+                    <embeddedTarget>/apps/core-email-components-examples/install</embeddedTarget>
                     <subPackages>
                         <subPackage>
                             <groupId>com.adobe.cq</groupId>

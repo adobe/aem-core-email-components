@@ -1,7 +1,7 @@
-# AEM WCM Core Components Plugin for AEM Mocks
+# AEM Email Core Components Plugin for AEM Mocks
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.wcm.components.testing.aem-mock-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.wcm.components.testing.aem-mock-plugin)
-[![javadoc](https://javadoc.io/badge2/com.adobe.cq/core.wcm.components.testing.aem-mock-plugin/javadoc.svg)](https://javadoc.io/doc/com.adobe.cq/core.wcm.components.testing.aem-mock-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.testing.aem-mock-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.testing.aem-mock-plugin)
+[![javadoc](https://javadoc.io/badge2/com.adobe.cq/core.email.components.testing.aem-mock-plugin/javadoc.svg)](https://javadoc.io/doc/com.adobe.cq/core.email.components.testing.aem-mock-plugin)
 
 Context Plugin for [AEM Mocks][aem-mock].
 

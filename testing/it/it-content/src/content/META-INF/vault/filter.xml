@@ -16,11 +16,10 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <workspaceFilter version="1.0">
     <!-- Sample content -->
-    <filter root="/conf/core-components"/>
-    <filter root="/content/core-components"/>
-    <filter root="/content/campaigns/core_component_brand"/>
-    <filter root="/content/dam/core-components"/>
-    <filter root="/content/cq:tags/core-components"/>
-    <filter root="/content/experience-fragments/core-components-test"/>
-    <filter root="/home/users/core-component"/>
+    <filter root="/conf/core-email-components"/>
+    <filter root="/content/core-email-components"/>
+    <filter root="/content/campaigns/core_email_component_brand"/>
+    <filter root="/content/dam/core-email-components"/>
+    <filter root="/content/experience-fragments/core-email-components-test"/>
+    <filter root="/home/users/core-email-component"/>
 </workspaceFilter>

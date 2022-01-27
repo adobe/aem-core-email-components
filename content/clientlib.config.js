@@ -18,21 +18,6 @@
  */
 module.exports = {
     context: __dirname,
-    clientLibRoot: "src/content/jcr_root/apps/core/wcm/components/commons/datalayer/v1/clientlibs",
-    libs: [
-        {
-            name: "core.wcm.components.commons.datalayer.v1",
-            serializationFormat: "xml",
-            allowProxy: true,
-            jsProcessor: ["default:none", "min:gcc;compilationLevel=whitespace"],
-            assets: {
-                js: [
-                    "src/scripts/datalayer/v1/polyfill.js",
-                    "node_modules/@adobe/adobe-client-data-layer/dist/adobe-client-data-layer.min.js",
-                    "src/scripts/datalayer/v1/datalayer.js"
-                ]
-            }
-        }
-    ]
+    clientLibRoot: "src/content/jcr_root/apps/core/email/components/commons/datalayer/v1/clientlibs"
 };
 

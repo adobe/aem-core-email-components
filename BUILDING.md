@@ -1,4 +1,4 @@
-# Building AEM WCM Core Components
+# Building AEM Email Core Components
 
 ## Compiling the Core Components
 
