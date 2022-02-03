@@ -58,6 +58,7 @@
                         <exclude>**/*.editorconfig</exclude>
                         <exclude>**/*.stylelintrc.yaml</exclude>
                         <exclude>**/*.eslintignore</exclude>
+                        <exclude>.java-version</exclude>
                     </excludes>
                 </configuration>
             </plugin>

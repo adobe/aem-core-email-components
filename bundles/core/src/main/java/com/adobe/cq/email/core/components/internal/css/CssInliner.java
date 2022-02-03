@@ -1,3 +1,18 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ Copyright 2022 Adobe
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.css;
 
 import java.util.HashMap;
@@ -42,14 +57,15 @@ public class CssInliner {
     }
 
     private String getOutputHtml(Document document, Map<String, String> selectorMap) {
-        for (String selector : selectorMap.keySet()) {
+        for (Map.Entry<String, String> entry : selectorMap.entrySet()) {
+            String selector = entry.getKey();
             Elements selectedElements = document.select(selector);
             for (Element selectedElement : selectedElements) {
                 String styleAttribute = selectedElement.attr(STYLE_ATTR);
                 if (StringUtils.isNotEmpty(styleAttribute)) {
                     selectedElement.attr(STYLE_ATTR, concatenateProperties(styleAttribute, selectorMap.get(selector)));
                 } else {
-                    selectedElement.attr(STYLE_ATTR, selectorMap.get(selector));
+                    selectedElement.attr(STYLE_ATTR, entry.getValue());
                 }
             }
         }
