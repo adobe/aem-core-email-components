@@ -42,7 +42,7 @@ class CssInlinerTest {
         CssInliner sut = new CssInliner();
         String expectedOutput =
                 new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("css/inputStyle.txt").toURI())));
-        assertEquals(expectedOutput, sut.process(getInputHtml()).getInlineStyle());
+        assertEquals(expectedOutput.replaceAll("\\s+", " "), sut.process(getInputHtml()).getInlineStyle().replaceAll("\\s+", " "));
     }
 
     @Test
@@ -66,7 +66,7 @@ class CssInlinerTest {
         CssInliner sut = new CssInliner();
         String expectedOutput =
                 new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("css/output.html").toURI())));
-        assertEquals(expectedOutput.replaceAll("\\s+", ""), sut.process(getInputHtml()).getOutputHtml().replaceAll("\\s+", ""));
+        assertEquals(expectedOutput.replaceAll("\\s+", " "), sut.process(getInputHtml()).getOutputHtml().replaceAll("\\s+", " "));
     }
 
     @Test
@@ -75,7 +75,7 @@ class CssInlinerTest {
         String initialStyleWithCommentedBlock =
                 new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("css/initialStyleWithCommentedBlock.txt").toURI())));
         String outputHtml = sut.process(getInputHtml()).getOutputHtml();
-        assertTrue(outputHtml.replaceAll("\n", " ").replaceAll(" +", " ").contains(initialStyleWithCommentedBlock));
+        assertTrue(outputHtml.replaceAll("\\s+", " ").contains(initialStyleWithCommentedBlock));
     }
 
     private String getInputHtml() throws URISyntaxException, IOException {
