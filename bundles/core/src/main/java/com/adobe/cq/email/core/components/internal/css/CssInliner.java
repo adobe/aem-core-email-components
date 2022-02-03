@@ -50,8 +50,7 @@ public class CssInliner {
         Elements elements = document.select(STYLE_ELM);
         StringBuilder stringBuilder = new StringBuilder();
         for (Element element : elements) {
-            stringBuilder.append(element.getAllElements().get(0).data().replaceAll(
-                    "\n", "").replaceAll(" +", " ").trim());
+            stringBuilder.append(element.getAllElements().get(0).data().replaceAll("\\s+", " ").trim());
         }
         return stringBuilder.toString();
     }
