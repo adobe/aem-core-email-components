@@ -150,7 +150,7 @@
                                                 <limit>
                                                     <counter>INSTRUCTION</counter>
                                                     <value>COVEREDRATIO</value>
-                                                    <minimum>0.00</minimum><!-- TODO: re-set it to 0.80 before merging-->
+                                                    <minimum>0.80</minimum>
                                                 </limit>
                                             </limits>
                                         </rule>
@@ -160,7 +160,7 @@
                                                 <limit>
                                                     <counter>INSTRUCTION</counter>
                                                     <value>COVEREDRATIO</value>
-                                                    <minimum>0.00</minimum><!-- TODO: re-set it to 0.80 before merging-->
+                                                    <minimum>0.80</minimum>
                                                 </limit>
                                             </limits>
                                         </rule>
@@ -172,6 +172,12 @@
                                         </exclude>
                                         <exclude>
                                             com/adobe/cq/wcm/core/components/internal/servlets/AdaptiveImageServlet$Source.class
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/config/InlineStylesConfig.class
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
                                         </exclude>
                                     </excludes>
                                 </configuration>

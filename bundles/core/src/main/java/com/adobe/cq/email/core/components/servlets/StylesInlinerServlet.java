@@ -33,12 +33,11 @@ import org.apache.sling.engine.SlingRequestProcessor;
 import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.config.InlineStylesConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
+import com.adobe.cq.email.core.components.util.StyleMergerMode;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
@@ -66,8 +65,6 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     @Reference
     private transient InlineStylesConfig inlineStylesConfig;
 
-    private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerServlet.class.getName());
-
     /**
      * This method gets the AEM page, uses the Styles Inliner Service to convert the AEM page html with css classes
      * into html with inline styles.
@@ -78,7 +75,6 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     @Override
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
-        boolean hasExternalStyleSheet = true;
         Map<String, Object> params = new HashMap<>();
         String pagePath = request.getResource().getPath();
         HttpServletRequest req = requestResponseFactory.createRequest("GET", pagePath + ".html",
@@ -88,16 +84,28 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         HttpServletResponse response = requestResponseFactory.createResponse(out);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         requestProcessor.processRequest(req, response, request.getResourceResolver());
-        if (inlineStylesConfig.getStylesInclusion().equals(InlineStylesConfig.EMBEDDED_STYLES)) {
-            hasExternalStyleSheet = false;
-        }
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        hasExternalStyleSheet);
+                        StyleMergerMode.PROCESS_SPECIFICITY);
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter pw = resp.getWriter();
         pw.write(htmlWithInlineStyles);
     }
 
+    void setRequestResponseFactory(RequestResponseFactory requestResponseFactory) {
+        this.requestResponseFactory = requestResponseFactory;
+    }
+
+    void setRequestProcessor(SlingRequestProcessor requestProcessor) {
+        this.requestProcessor = requestProcessor;
+    }
+
+    void setStylesInlinerService(StylesInlinerService stylesInlinerService) {
+        this.stylesInlinerService = stylesInlinerService;
+    }
+
+    void setInlineStylesConfig(InlineStylesConfig inlineStylesConfig) {
+        this.inlineStylesConfig = inlineStylesConfig;
+    }
 }

@@ -15,17 +15,14 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.engine.SlingRequestProcessor;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,19 +34,22 @@ import org.osgi.service.component.propertytypes.ServiceDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
-import com.adobe.cq.email.core.components.pojo.StyleWithSpecificity;
+import com.adobe.cq.email.core.components.pojo.StyleToken;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.adobe.cq.email.core.components.util.StyleUtils;
+import com.adobe.cq.email.core.components.util.StyleExtractor;
+import com.adobe.cq.email.core.components.util.StyleMerger;
+import com.adobe.cq.email.core.components.util.StyleMergerMode;
+import com.adobe.cq.email.core.components.util.StyleSpecificityFactory;
+import com.adobe.cq.email.core.components.util.StyleTokenFactory;
+import com.adobe.cq.email.core.components.util.StyleTokenizer;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.COMMENTS_REGEX;
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.HEAD_TAG;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.IMPORTANT_RULE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.MEDIA_QUERY_REGEX;
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.NEW_LINE;
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLE_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLE_DELIMS;
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLE_TAG;
 
 /**
@@ -69,218 +69,118 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
 
     private static final StyleSpecificity STYLE_SPECIFICITY = new StyleSpecificity(1, 0, 0, 0);
 
-    /**
-     * This method accepts the html string as the input, parses the same using Jsoup, reads the style rules
-     * and adds it to the respective elements in the html. The media query styles will be retained, as these
-     * cannot be inlined. The pseudo classes are ignored, as these cannot be inlined.
-     *
-     * @param resourceResolver      the resource resolver object
-     * @param html                  the html string
-     * @param hasExternalStyleSheet specifies whether styles are defined in external style sheet.
-     * @return html with inline styles
-     */
-    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, boolean hasExternalStyleSheet) {
-
+    @Override
+    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode) {
         Document doc = Jsoup.parse(html);
         doc.outputSettings().prettyPrint(false);
-
-        List<String> styles = StyleUtils.getStyles(doc, hasExternalStyleSheet, requestResponseFactory, requestProcessor, resourceResolver);
-
-        LinkedHashMap<String, LinkedHashMap<String, StyleWithSpecificity>> stylesToBeApplied = new LinkedHashMap<>();
-
+        List<String> styles = StyleExtractor.extract(doc, requestResponseFactory, requestProcessor, resourceResolver);
+        List<StyleToken> styleTokens = new ArrayList<>();
+        List<StyleToken> unInlinableStyleTokens = new ArrayList<>();
+        StringBuilder styleSb = new StringBuilder();
         for (String allRules : styles) {
             String rules = allRules
                     .replaceAll(NEW_LINE, "") // remove newlines
                     .replaceAll(COMMENTS_REGEX, "") // remove comments
-                    .replaceAll(MEDIA_QUERY_REGEX, "") // remove media queries
                     .trim();
-            StringTokenizer styleTokens = new StringTokenizer(rules, STYLE_DELIMS);
-            while (styleTokens.countTokens() > 1) {
-                String cssSelector = styleTokens.nextToken().trim();
-                String properties = styleTokens.nextToken().trim();
-                String[] cssSelectors = cssSelector.split(",");
-                populateStylesToBeApplied(cssSelectors, properties, doc, stylesToBeApplied);
+            for (StyleToken styleToken : StyleTokenizer.tokenize(rules)) {
+                populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
             }
-            // retain media query style rules in style tag
-            Element style = new Element(STYLE_TAG);
-            doc.select(HEAD_TAG).get(0).appendChild(style);
-            Matcher m = Pattern.compile(MEDIA_QUERY_REGEX)
-                    .matcher(allRules);
-            StringBuilder sb = new StringBuilder();
-            while (m.find()) {
-                String matchedValue = m.group();
-                sb.append(matchedValue);
-                sb.append("\n\t\t");
-            }
-            style.html("\n\t\t" + sb);
-
         }
-
-        applyStyles(doc, stylesToBeApplied);
-
+        applyStyles(doc, styleTokens, styleMergerMode);
+        createStyleTag(doc, styleSb, unInlinableStyleTokens);
         return doc.outerHtml();
     }
 
     /**
-     * This method populates the styles to be applied for each element based on the style rules and css specificity
+     * This method populates the styles to be applied for each element based on the style rules
      *
-     * @param cssSelectors      the css selector
-     * @param properties        the style properties
-     * @param doc               the jsoup document which holds the html
-     * @param stylesToBeApplied the styles to be applied
+     * @param styleToken             the style token
+     * @param doc                    the jsoup document which holds the html
+     * @param styleTokens            the style tokens to be applied
+     * @param unInlinableStyleTokens the un-inlinable style tokens
      */
-    private void populateStylesToBeApplied(String[] cssSelectors, String properties, Document doc,
-                                           LinkedHashMap<String, LinkedHashMap<String, StyleWithSpecificity>> stylesToBeApplied) {
+    private void populateStylesToBeApplied(StyleToken styleToken, Document doc,
+                                           List<StyleToken> styleTokens,
+                                           List<StyleToken> unInlinableStyleTokens) {
+        if (styleToken.isMediaQuery() || styleToken.isPseudoSelector()) {
+            unInlinableStyleTokens.add(styleToken);
+            return;
+        }
+        List<String> cssSelectors = styleToken.getSplittedSelectors();
         for (String cssSelector : cssSelectors) {
-            String trimmedSel = cssSelector.trim();
-            //Pseudo Selectors and Key frames not supported
-            if (trimmedSel.contains(":") || trimmedSel.startsWith("@keyframes")) {
-                continue;
-            }
             try {
-                Elements selectedElements = doc.select(trimmedSel);
-                for (Element selectedElement : selectedElements) {
-                    if (selectedElement.tagName().equals(STYLE_TAG)) {
-                        LOG.error("Style tag selected by {}", trimmedSel);
-                        continue;
+                Elements selectedElements = doc.select(cssSelector);
+                if (selectedElements.isEmpty()) {
+                    unInlinableStyleTokens.add(create(cssSelector, styleToken));
+                    continue;
+                }
+                boolean updated = false;
+                for (StyleToken alreadyAdded : styleTokens) {
+                    if (alreadyAdded.getSelector().equals(cssSelector)) {
+                        StyleTokenFactory.addProperties(alreadyAdded, StyleTokenFactory.getAllProperties(styleToken));
+                        updated = true;
                     }
-                    LinkedHashMap<String, StyleWithSpecificity> existingStyles;
-                    String uniqueElementSelector = selectedElement.cssSelector();
-                    if (!stylesToBeApplied.containsKey(uniqueElementSelector)) {
-                        existingStyles = getStyleAttributes(STYLE_SPECIFICITY, selectedElement.attr(STYLE_ATTRIBUTE));
-                    } else {
-                        existingStyles = stylesToBeApplied.get(uniqueElementSelector);
-                    }
-
-                    stylesToBeApplied.put(uniqueElementSelector,
-                            mergeStyle(
-                                    existingStyles,
-                                    getStyleAttributes(StyleUtils.getSpecificity(trimmedSel), properties)
-                            )
-                    );
+                }
+                if (!updated) {
+                    styleTokens.add(create(cssSelector, styleToken));
                 }
             } catch (IllegalArgumentException | Selector.SelectorParseException e) {
-                LOG.error("An error while selecting", e);
+                LOG.error(String.format("An error occurred while processing style tokens: %s", e.getMessage()), e);
             }
+        }
 
+    }
+
+    @NotNull
+    private StyleToken create(String cssSelector, StyleToken parent) {
+        StyleToken styleToken = StyleTokenFactory.create(cssSelector);
+        StyleTokenFactory.addProperties(styleToken, StyleTokenFactory.getAllProperties(parent));
+        styleToken.setSpecificity(StyleSpecificityFactory.getSpecificity(cssSelector));
+        styleToken.setMediaQuery(parent.isMediaQuery());
+        styleToken.setPseudoSelector(parent.isPseudoSelector());
+        styleToken.setNested(parent.isNested());
+        return styleToken;
+    }
+
+    private void applyStyles(Document document, List<StyleToken> styleTokens, StyleMergerMode styleMergerMode) {
+        for (StyleToken styleToken : styleTokens) {
+            String elementSelector = styleToken.getSelector();
+            for (Element elementToApply : document.select(elementSelector)) {
+                if (null == elementToApply) {
+                    LOG.error("Failed to find {}", elementSelector);
+                    continue;
+                }
+                String currentElementStyle = elementToApply.attr(STYLE_ATTRIBUTE);
+                StyleToken currentElement = StyleTokenFactory.create(elementSelector);
+                currentElement.setSpecificity(STYLE_SPECIFICITY);
+                StyleTokenFactory.addProperties(currentElement, currentElementStyle);
+                String style = StyleMerger.merge(currentElement, styleToken, styleMergerMode);
+                if (StringUtils.isNotEmpty(style)) {
+                    elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
+                }
+            }
         }
     }
 
-    /**
-     * This method gets the map of element selector : style attributes and applies the style attributes
-     * to the element
-     *
-     * @param document          the jsoup document which holds the html
-     * @param stylesToBeApplied the styles to be applied for all the elements
-     */
-    private void applyStyles(Document document, LinkedHashMap<String, LinkedHashMap<String, StyleWithSpecificity>> stylesToBeApplied) {
-        for (Map.Entry<String, LinkedHashMap<String, StyleWithSpecificity>> entry : stylesToBeApplied.entrySet()) {
-            String elementSelector = entry.getKey();
-            Element elementToApply = document.select(elementSelector).first();
-            if (null == elementToApply) {
-                LOG.error("Failed to find {}", elementSelector);
-                continue;
-            }
-            LinkedHashMap<String, StyleWithSpecificity> styles = entry.getValue();
-            StringBuilder sb = new StringBuilder();
-            for (Map.Entry<String, StyleWithSpecificity> propertyWithStyle : styles.entrySet()) {
-                sb.append(propertyWithStyle.getKey()).append(":").append(styles.get(propertyWithStyle.getKey()).getValue()).append(";");
-            }
-            elementToApply.attr(STYLE_ATTRIBUTE, sb.toString());
+    private void createStyleTag(Document doc, StringBuilder styleSb,
+                                List<StyleToken> unusedStyleTokens) {
+        if (Objects.isNull(unusedStyleTokens) || unusedStyleTokens.isEmpty()) {
+            return;
         }
+        Element style = new Element(STYLE_TAG);
+        style.attr("type", "text/css");
+        doc.select(HEAD_TAG).get(0).appendChild(style);
+        for (StyleToken styleToken : unusedStyleTokens) {
+            styleSb.append(StyleTokenFactory.toCss(styleToken)).append("\n\t\t");
+        }
+        style.html("\n\t\t" + styleSb);
     }
 
-    /**
-     * This method gets the style attributes, calculates the css specificity based on the css selector
-     * and creates a map of style attribute name : specificity for that attribute
-     *
-     * @param priority   the current style specificity
-     * @param properties the style rules
-     * @return the map of style attribute name : specificity for that attribute
-     */
-    private LinkedHashMap<String, StyleWithSpecificity> getStyleAttributes(StyleSpecificity priority, String properties) {
-        LinkedHashMap<String, StyleWithSpecificity> styleAttributesMap = new LinkedHashMap<>();
-        if (null == properties || properties.trim().length() == 0) {
-            return styleAttributesMap;
-        }
-        String[] styleProperties = properties.split(";");
-        for (String styleProperty : styleProperties) {
-            String[] stylePropertyTokens = styleProperty.split(":");
-            if (stylePropertyTokens.length != 2) {
-                continue;
-            }
-            String propertyName = stylePropertyTokens[0].trim();
-            String propertyValue = stylePropertyTokens[1].trim();
-            StyleWithSpecificity styleWithSpecificity = new StyleWithSpecificity();
-            styleWithSpecificity.setPriority(priority);
-            styleWithSpecificity.setValue(propertyValue);
-            styleAttributesMap.put(propertyName, styleWithSpecificity);
-        }
-        return styleAttributesMap;
+    void setRequestResponseFactory(RequestResponseFactory requestResponseFactory) {
+        this.requestResponseFactory = requestResponseFactory;
     }
 
-    /**
-     * This method merges the existing styles with the styles from the current css selector.
-     *
-     * @param oldProps the existing style properties
-     * @param newProps the style properties from the current css selector
-     * @return merged style properties based on css specificity
-     */
-    private LinkedHashMap<String, StyleWithSpecificity> mergeStyle(LinkedHashMap<String, StyleWithSpecificity> oldProps,
-                                                                   LinkedHashMap<String, StyleWithSpecificity> newProps) {
-        Set<String> allProps = new LinkedHashSet<>();
-        for (Map.Entry<String, StyleWithSpecificity> prop : oldProps.entrySet()) {
-            if (!newProps.containsKey(prop.getKey())) {
-                allProps.add(prop.getKey());
-            }
-        }
-        allProps.addAll(newProps.keySet());
-
-        return getFinalProps(oldProps, newProps, allProps);
-    }
-
-    /**
-     * This method takes the existing style properties, and style properties from current css selector,
-     * calculates the css specificity and provides the final set of properties to be applied
-     *
-     * @param oldProps the existing style properties for the element
-     * @param newProps the style properties of current selector
-     * @param allProps all the properties
-     * @return the final set of properties
-     */
-    private LinkedHashMap<String, StyleWithSpecificity> getFinalProps(LinkedHashMap<String, StyleWithSpecificity> oldProps,
-                                                                      LinkedHashMap<String, StyleWithSpecificity> newProps,
-                                                                      Set<String> allProps) {
-        LinkedHashMap<String, StyleWithSpecificity> finalProps = new LinkedHashMap<>();
-        for (String property : allProps) {
-            StyleWithSpecificity oldValue = oldProps.get(property);
-            StyleWithSpecificity newValue = newProps.get(property);
-            if (null == oldValue && null == newValue) {
-                continue;
-            }
-            if (null == oldValue) {
-                finalProps.put(property, newValue);
-                continue;
-            }
-            if (null == newValue) {
-                finalProps.put(property, oldValue);
-                continue;
-            }
-            if (oldValue.getValue().contains(IMPORTANT_RULE)) {
-                finalProps.put(property, oldValue);
-                continue;
-            }
-            if (newValue.getValue().contains(IMPORTANT_RULE)) {
-                finalProps.put(property, newValue);
-                continue;
-            }
-            int compare = oldValue.getSpecificity().compareTo(newValue.getSpecificity());
-            if (compare > 0) {
-                finalProps.put(property, oldValue);
-            } else {
-                finalProps.put(property, newValue);
-            }
-        }
-        return finalProps;
+    void setRequestProcessor(SlingRequestProcessor requestProcessor) {
+        this.requestProcessor = requestProcessor;
     }
 }

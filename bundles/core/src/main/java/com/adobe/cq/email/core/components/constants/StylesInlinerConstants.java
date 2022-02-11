@@ -16,7 +16,6 @@
 package com.adobe.cq.email.core.components.constants;
 
 public class StylesInlinerConstants {
-
     public static final String INLINE_STYLES_SELECTOR = "inline-styles";
     public static final String LINK_TAG = "link";
     public static final String STYLE_TAG = "style";
@@ -26,7 +25,6 @@ public class StylesInlinerConstants {
     public static final String STYLE_DELIMS = "{}";
     public static final String NEW_LINE = "\n";
     public static final String COMMENTS_REGEX = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
-    public static final String MEDIA_QUERY_REGEX = "@media[^{]+\\{([\\s\\S]+?})\\s*}";
     public static final String HEAD_TAG = "head";
     public static final String IMPORTANT_RULE = "!important";
     public static final String HREF_ATTRIBUTE = "href";

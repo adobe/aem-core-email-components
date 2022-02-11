@@ -15,43 +15,15 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.engine.SlingRequestProcessor;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
-import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.HREF_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.LINK_TAG;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.REL_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLESHEET_ATTRIBUTE;
+public class StyleSpecificityFactory {
 
-/**
- * This is a utility for the styles inliner service.
- */
-public class StyleUtils {
-
-    private StyleUtils() {
+    private StyleSpecificityFactory() {
+        // to avoid instantiation
     }
-
-    private static final Logger LOG = LoggerFactory.getLogger(StyleUtils.class.getName());
 
     /**
      * This method calculates the css specificity of the given css selector
@@ -134,53 +106,5 @@ public class StyleUtils {
      */
     private static boolean isIdPresentInSelector(String selectorToken) {
         return selectorToken.startsWith("#") || selectorToken.contains("#");
-    }
-
-    /**
-     * This method gets all the style rules from either the embedded styles or external style sheet based on the
-     * hasExternalStyleSheet flag.
-     *
-     * @param doc                    the jsoup document which holds the html
-     * @param hasExternalStyleSheet  true if the styles are defined in external style sheet.
-     * @param requestResponseFactory the request response factory
-     * @param requestProcessor       the sling request processor
-     * @param resourceResolver       the resource resolver object
-     * @return all style rules
-     */
-    public static List<String> getStyles(Document doc, boolean hasExternalStyleSheet, RequestResponseFactory requestResponseFactory,
-                                         SlingRequestProcessor requestProcessor, ResourceResolver resourceResolver) {
-        List<String> stylesList = new ArrayList<>();
-        if (hasExternalStyleSheet) {
-            Elements linkTags = doc.select(LINK_TAG);
-            for (Element linkTag : linkTags) {
-                String relAttribute = linkTag.attr(REL_ATTRIBUTE);
-                if (StringUtils.isNotBlank(relAttribute) && relAttribute.equals(STYLESHEET_ATTRIBUTE) &&
-                        StringUtils.isNotEmpty(linkTag.attr(HREF_ATTRIBUTE))) {
-                    Map<String, Object> params = new HashMap<>();
-                    HttpServletRequest req = requestResponseFactory.createRequest("GET", linkTag.attr(HREF_ATTRIBUTE),
-                            params);
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    HttpServletResponse response = requestResponseFactory.createResponse(out);
-                    response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-                    try {
-                        requestProcessor.processRequest(req, response, resourceResolver);
-                        String styles = out.toString(StandardCharsets.UTF_8.name());
-                        stylesList.add(styles);
-                    } catch (ServletException | IOException e) {
-                        LOG.error("An error occurred while getting stylesheet", e);
-                    }
-                    linkTag.remove();
-                }
-
-            }
-        } else {
-            Elements styleTags = doc.select("style");
-            for (Element styleTag : styleTags) {
-                String styles = styleTag.getAllElements().get(0).data();
-                stylesList.add(styles);
-                styleTag.remove();
-            }
-        }
-        return stylesList;
     }
 }
