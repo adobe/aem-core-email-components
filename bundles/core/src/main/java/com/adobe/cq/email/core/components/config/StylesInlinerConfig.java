@@ -27,6 +27,10 @@ import org.osgi.service.metatype.annotations.Option;
 
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 
+/**
+ * To be removed: actual context-aware configuration is {@link StylesInlinerContextAwareConfiguration}
+ */
+@Deprecated
 @Component(service = StylesInlinerConfig.class,
            immediate = true)
 @Designate(ocd = StylesInlinerConfig.Cfg.class)

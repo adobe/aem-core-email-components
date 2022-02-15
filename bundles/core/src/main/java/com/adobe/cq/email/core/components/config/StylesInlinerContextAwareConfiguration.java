@@ -13,11 +13,18 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.enumerations;
+package com.adobe.cq.email.core.components.config;
 
-public enum StyleMergerMode {
-    PROCESS_SPECIFICITY,
-    IGNORE_SPECIFICITY,
-    ALWAYS_APPEND
+import org.apache.sling.caconfig.annotation.Configuration;
+import org.apache.sling.caconfig.annotation.Property;
+
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
+
+@Configuration(label = "Styles inliner configuration",
+               description = "Context-aware configuration for style inliner service")
+public @interface StylesInlinerContextAwareConfiguration {
+
+    @Property(label = "Style merger mode")
+    StyleMergerMode stylesMergingMode() default StyleMergerMode.PROCESS_SPECIFICITY;
 
 }

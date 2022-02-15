@@ -29,13 +29,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
+import org.apache.sling.caconfig.ConfigurationBuilder;
 import org.apache.sling.engine.SlingRequestProcessor;
 import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import com.adobe.cq.email.core.components.config.StylesInlinerConfig;
+import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
@@ -63,9 +65,6 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     @Reference
     private transient StylesInlinerService stylesInlinerService;
 
-    @Reference
-    private transient StylesInlinerConfig stylesInlinerConfig;
-
     /**
      * This method gets the AEM page, uses the Styles Inliner Service to convert the AEM page html with css classes
      * into html with inline styles.
@@ -77,7 +76,8 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> params = new HashMap<>();
-        String pagePath = request.getResource().getPath();
+        Resource resource = request.getResource();
+        String pagePath = resource.getPath();
         HttpServletRequest req = requestResponseFactory.createRequest("GET", pagePath + ".html",
                 params);
         WCMMode.DISABLED.toRequest(req);
@@ -85,10 +85,7 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         HttpServletResponse response = requestResponseFactory.createResponse(out);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         requestProcessor.processRequest(req, response, request.getResourceResolver());
-        StyleMergerMode styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
-        if (Objects.nonNull(stylesInlinerConfig)) {
-            styleMergerMode = StyleMergerMode.getByName(stylesInlinerConfig.getStylesMergingMode());
-        }
+        StyleMergerMode styleMergerMode = getFromContextConfiguration(resource);
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
                         styleMergerMode);
@@ -110,7 +107,24 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         this.stylesInlinerService = stylesInlinerService;
     }
 
-    void setStylesInlinerConfig(StylesInlinerConfig stylesInlinerConfig) {
-        this.stylesInlinerConfig = stylesInlinerConfig;
+
+    private StyleMergerMode getFromContextConfiguration(Resource resource) {
+        StyleMergerMode styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
+        try {
+            ConfigurationBuilder configurationBuilder = resource.adaptTo(ConfigurationBuilder.class);
+            if (Objects.isNull(configurationBuilder)) {
+                return styleMergerMode;
+            }
+            StylesInlinerContextAwareConfiguration configuration =
+                    configurationBuilder.as(StylesInlinerContextAwareConfiguration.class);
+            StyleMergerMode stylesMergingMode = configuration.stylesMergingMode();
+            if (Objects.isNull(stylesMergingMode)) {
+                return styleMergerMode;
+            }
+            styleMergerMode = stylesMergingMode;
+        } catch (Throwable e) {
+            log("Error retrieving configuration: " + e.getMessage(), e);
+        }
+        return styleMergerMode;
     }
 }

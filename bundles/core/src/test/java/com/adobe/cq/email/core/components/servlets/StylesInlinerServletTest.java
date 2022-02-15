@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.servlets;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.caconfig.ConfigurationBuilder;
 import org.apache.sling.engine.SlingRequestProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.config.StylesInlinerConfig;
+import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
@@ -55,16 +57,16 @@ class StylesInlinerServletTest {
     private static final String OUTPUT_IGNORING_CSS_SPECIFICITY = "TEST_PAGE_WITH_INLINED_CSS_WITHOUT_USING_SPECIFICITY";
     private static final String OUTPUT_ALWAYS_APPENDING_CSS_PROPERTIES = "TEST_PAGE_WITH_INLINED_CSS_ALWAYS_APPENDING_CSS_PROPERTIES";
 
-
     @Mock
     RequestResponseFactory requestResponseFactory;
-
     @Mock
     SlingRequestProcessor requestProcessor;
-
     @Mock
     StylesInlinerService stylesInlinerService;
-
+    @Mock
+    Resource resource;
+    @Mock
+    ConfigurationBuilder configurationBuilder;
     @Mock
     SlingHttpServletRequest request;
     @Mock
@@ -84,7 +86,6 @@ class StylesInlinerServletTest {
         this.sut.setStylesInlinerService(
                 stylesInlinerService
         );
-        Resource resource = mock(Resource.class);
         when(request.getResource()).thenReturn(resource);
         when(resource.getPath()).thenReturn("TEST_PATH");
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
@@ -111,43 +112,54 @@ class StylesInlinerServletTest {
 
     @Test
     void noConfig() throws ServletException, IOException {
+        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(null);
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
     }
 
     @Test
-    void notExistingStyleMergerMode() throws Exception {
-        StylesInlinerConfig stylesInlinerConfig = new StylesInlinerConfig();
-        stylesInlinerConfig.setStylesMergingMode("UNKNOWN_MODE");
-        this.sut.setStylesInlinerConfig(stylesInlinerConfig);
+    void noStyleMergerMode() throws ServletException, IOException {
+        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(null));
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
     }
 
     @Test
     void processingCssSpecificity() throws Exception {
-        StylesInlinerConfig stylesInlinerConfig = new StylesInlinerConfig();
-        stylesInlinerConfig.setStylesMergingMode(StyleMergerMode.PROCESS_SPECIFICITY.name());
-        this.sut.setStylesInlinerConfig(stylesInlinerConfig);
+        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.PROCESS_SPECIFICITY));
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
     }
 
     @Test
     void ignoringCssSpecificity() throws Exception {
-        StylesInlinerConfig stylesInlinerConfig = new StylesInlinerConfig();
-        stylesInlinerConfig.setStylesMergingMode(StyleMergerMode.IGNORE_SPECIFICITY.name());
-        this.sut.setStylesInlinerConfig(stylesInlinerConfig);
+        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.IGNORE_SPECIFICITY));
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT_IGNORING_CSS_SPECIFICITY));
     }
 
     @Test
     void alwaysAppendingCssProperties() throws Exception {
-        StylesInlinerConfig stylesInlinerConfig = new StylesInlinerConfig();
-        stylesInlinerConfig.setStylesMergingMode(StyleMergerMode.ALWAYS_APPEND.name());
-        this.sut.setStylesInlinerConfig(stylesInlinerConfig);
+        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.ALWAYS_APPEND));
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT_ALWAYS_APPENDING_CSS_PROPERTIES));
+    }
+
+    private StylesInlinerContextAwareConfiguration create(StyleMergerMode mode) {
+        return new StylesInlinerContextAwareConfiguration() {
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return StylesInlinerContextAwareConfiguration.class;
+            }
+
+            @Override
+            public StyleMergerMode stylesMergingMode() {
+                return mode;
+            }
+        };
     }
 }
