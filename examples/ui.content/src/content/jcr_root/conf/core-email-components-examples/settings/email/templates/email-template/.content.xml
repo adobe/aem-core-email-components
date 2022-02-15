@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          jcr:primaryType="cq:Template">
+    <jcr:content
+        cq:template="/conf/core-email-components-examples/settings/email/templates/email-template"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Email Component"
+        cq:templateType="/conf/core-email-components-examples/settings/email/template-types/email-template"
+        acMapping="mapRecipient"
+        status="enabled"/>
+</jcr:root>
