@@ -179,6 +179,9 @@
                                         <exclude>
                                             com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
                                         </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/pojo/**
+                                        </exclude>
                                     </excludes>
                                 </configuration>
                             </execution>

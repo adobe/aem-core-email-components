@@ -32,10 +32,13 @@ public class StyleTokenFactory {
         styleToken.setSelector(selector);
         if (StringUtils.isNotEmpty(selector) && selector.contains(",")) {
             for (String splitted : selector.split(",")) {
-                styleToken.getSplittedSelectors().add(splitted.trim());
+                if (StringUtils.isEmpty(splitted)) {
+                    continue;
+                }
+                addSplittedSelector(styleToken, splitted);
             }
         } else {
-            styleToken.getSplittedSelectors().add(selector.trim());
+            addSplittedSelector(styleToken, selector);
         }
         return styleToken;
     }
@@ -85,5 +88,15 @@ public class StyleTokenFactory {
             return null;
         }
         return styleToken.getSelector() + " {\n" + getAllProperties(styleToken) + "\n}\n";
+    }
+
+    private static void addSplittedSelector(StyleToken styleToken, String splittedSelector) {
+        if (Objects.isNull(styleToken)) {
+            return;
+        }
+        if (StringUtils.isEmpty(splittedSelector)) {
+            return;
+        }
+        styleToken.getSplittedSelectors().add(splittedSelector.trim());
     }
 }

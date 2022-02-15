@@ -15,6 +15,8 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.pojo;
 
+import java.util.Objects;
+
 public class StyleSpecificity implements Comparable<StyleSpecificity> {
     private int styleAttribute;
     private int id;
@@ -61,24 +63,27 @@ public class StyleSpecificity implements Comparable<StyleSpecificity> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (null == obj || !(obj instanceof StyleSpecificity)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        StyleSpecificity other = (StyleSpecificity) obj;
-        return other.getStyleAttribute() == getStyleAttribute() && other.getId() == getId() &&
-                other.getClassAttribute() == getClassAttribute() && other.getElements() == getElements();
+        StyleSpecificity that = (StyleSpecificity) o;
+        return styleAttribute == that.styleAttribute && id == that.id && classAttribute == that.classAttribute && elements == that.elements;
     }
 
     @Override
     public int hashCode() {
-        String specificity =
-                String.valueOf(styleAttribute) + String.valueOf(id) + String.valueOf(classAttribute) + String.valueOf(elements);
-        return Integer.parseInt(specificity);
+        return Objects.hash(styleAttribute, id, classAttribute, elements);
     }
 
     @Override
     public int compareTo(StyleSpecificity o) {
+        if (Objects.isNull(o)) {
+            return 1;
+        }
         if (o.equals(this)) {
             return 0;
         }

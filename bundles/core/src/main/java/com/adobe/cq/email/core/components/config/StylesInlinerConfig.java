@@ -15,6 +15,9 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.config;
 
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
@@ -22,13 +25,15 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.osgi.service.metatype.annotations.Option;
 
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
+
 @Component(service = StylesInlinerConfig.class,
            immediate = true)
 @Designate(ocd = StylesInlinerConfig.Cfg.class)
 public class StylesInlinerConfig {
-    public static final String PROCESS_SPECIFICITY = "PROCESS_SPECIFICITY";
-    public static final String IGNORE_SPECIFICITY = "IGNORE_SPECIFICITY";
-    public static final String ALWAYS_APPEND = "ALWAYS_APPEND";
+    private static final String PROCESS_SPECIFICITY = "PROCESS_SPECIFICITY";
+    private static final String IGNORE_SPECIFICITY = "IGNORE_SPECIFICITY";
+    private static final String ALWAYS_APPEND = "ALWAYS_APPEND";
 
     @ObjectClassDefinition(name = "Styles Inliner Config")
     public @interface Cfg {
@@ -50,7 +55,11 @@ public class StylesInlinerConfig {
 
     @Activate
     protected void activate(final Cfg cfg) {
-        this.stylesMergingMode = cfg.stylesMergingMode();
+        if (Objects.isNull(cfg) || StringUtils.isEmpty(cfg.stylesMergingMode())) {
+            this.stylesMergingMode = StyleMergerMode.PROCESS_SPECIFICITY.name();
+        } else {
+            this.stylesMergingMode = cfg.stylesMergingMode();
+        }
     }
 
     public String getStylesMergingMode() {

@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
+import com.adobe.cq.email.core.components.pojo.StyleProperty;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
@@ -36,7 +37,7 @@ public class StyleMerger {
     public static String merge(StyleToken elementStyleToken, StyleToken styleToken,
                                StyleMergerMode styleMergerMode) {
         if (Objects.isNull(styleMergerMode)) {
-            styleMergerMode = StyleMergerMode.ALWAYS_APPEND;
+            styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
         }
         if (Objects.isNull(styleToken)) {
             styleToken = StyleTokenFactory.create(EMPTY_TOKEN_SELECTOR);
@@ -125,69 +126,4 @@ public class StyleMerger {
         return style;
     }
 
-    private static class StyleProperty {
-        private String name;
-        private String value;
-        private boolean important;
-        private String fullProperty;
-        private StyleSpecificity specificity;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public boolean isImportant() {
-            return important;
-        }
-
-        public void setImportant(boolean important) {
-            this.important = important;
-        }
-
-        public String getFullProperty() {
-            return fullProperty;
-        }
-
-        public void setFullProperty(String fullProperty) {
-            this.fullProperty = fullProperty;
-        }
-
-        public StyleSpecificity getSpecificity() {
-            return specificity;
-        }
-
-        public void setSpecificity(StyleSpecificity specificity) {
-            this.specificity = specificity;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            StyleProperty that = (StyleProperty) o;
-            return important == that.important && Objects.equals(name, that.name) && Objects.equals(value, that.value) &&
-                    Objects.equals(fullProperty, that.fullProperty) && Objects.equals(specificity, that.specificity);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(name, value, important, fullProperty, specificity);
-        }
-    }
 }
