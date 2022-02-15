@@ -134,10 +134,10 @@ class StyleMergerTest {
     }
 
     private void testAllModes(StyleToken elementStyle, StyleToken styleToken, String processSpecificityExpectedResult,
-                              String ignoreSpecificityExpectedResult, String appendOnlyExpectedResult) {
+                              String ignoreSpecificityExpectedResult, String alwaysAppend) {
         assertEquals(processSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.PROCESS_SPECIFICITY));
         assertEquals(ignoreSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.IGNORE_SPECIFICITY));
-        assertEquals(appendOnlyExpectedResult, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.ALWAYS_APPEND));
+        assertEquals(alwaysAppend, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.ALWAYS_APPEND));
     }
 
     private StyleToken create(String properties, boolean styleAttribute) {

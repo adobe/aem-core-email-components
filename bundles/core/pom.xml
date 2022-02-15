@@ -174,13 +174,13 @@
                                             com/adobe/cq/wcm/core/components/internal/servlets/AdaptiveImageServlet$Source.class
                                         </exclude>
                                         <exclude>
-                                            com/adobe/cq/email/core/components/config/InlineStylesConfig.class
-                                        </exclude>
-                                        <exclude>
                                             com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
                                         </exclude>
                                         <exclude>
                                             com/adobe/cq/email/core/components/pojo/**
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/exceptions/**
                                         </exclude>
                                     </excludes>
                                 </configuration>

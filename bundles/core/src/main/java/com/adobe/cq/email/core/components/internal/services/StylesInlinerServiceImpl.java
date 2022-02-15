@@ -35,12 +35,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
+import com.adobe.cq.email.core.components.exceptions.StylesInlinerException;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.adobe.cq.email.core.components.util.StyleExtractor;
 import com.adobe.cq.email.core.components.util.StyleMerger;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.util.StyleSpecificityFactory;
 import com.adobe.cq.email.core.components.util.StyleTokenFactory;
 import com.adobe.cq.email.core.components.util.StyleTokenizer;
@@ -71,24 +72,28 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
 
     @Override
     public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode) {
-        Document doc = Jsoup.parse(html);
-        doc.outputSettings().prettyPrint(false);
-        List<String> styles = StyleExtractor.extract(doc, requestResponseFactory, requestProcessor, resourceResolver);
-        List<StyleToken> styleTokens = new ArrayList<>();
-        List<StyleToken> unInlinableStyleTokens = new ArrayList<>();
-        StringBuilder styleSb = new StringBuilder();
-        for (String allRules : styles) {
-            String rules = allRules
-                    .replaceAll(NEW_LINE, "") // remove newlines
-                    .replaceAll(COMMENTS_REGEX, "") // remove comments
-                    .trim();
-            for (StyleToken styleToken : StyleTokenizer.tokenize(rules)) {
-                populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
+        try {
+            Document doc = Jsoup.parse(html);
+            doc.outputSettings().prettyPrint(false);
+            List<String> styles = StyleExtractor.extract(doc, requestResponseFactory, requestProcessor, resourceResolver);
+            List<StyleToken> styleTokens = new ArrayList<>();
+            List<StyleToken> unInlinableStyleTokens = new ArrayList<>();
+            StringBuilder styleSb = new StringBuilder();
+            for (String allRules : styles) {
+                String rules = allRules
+                        .replaceAll(NEW_LINE, "") // remove newlines
+                        .replaceAll(COMMENTS_REGEX, "") // remove comments
+                        .trim();
+                for (StyleToken styleToken : StyleTokenizer.tokenize(rules)) {
+                    populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
+                }
             }
+            applyStyles(doc, styleTokens, styleMergerMode);
+            writeStyleTag(doc, styleSb, unInlinableStyleTokens);
+            return doc.outerHtml();
+        } catch (Throwable e) {
+            throw new StylesInlinerException("An error occured during execution: " + e.getMessage(), e);
         }
-        applyStyles(doc, styleTokens, styleMergerMode);
-        createStyleTag(doc, styleSb, unInlinableStyleTokens);
-        return doc.outerHtml();
     }
 
     /**
@@ -162,8 +167,8 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         }
     }
 
-    private void createStyleTag(Document doc, StringBuilder styleSb,
-                                List<StyleToken> unusedStyleTokens) {
+    private void writeStyleTag(Document doc, StringBuilder styleSb,
+                               List<StyleToken> unusedStyleTokens) {
         if (Objects.isNull(unusedStyleTokens) || unusedStyleTokens.isEmpty()) {
             return;
         }
