@@ -2,6 +2,7 @@ package com.adobe.cq.email.core.components.util;
 
 import org.junit.jupiter.api.Test;
 
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 

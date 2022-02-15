@@ -40,7 +40,7 @@ import com.adobe.cq.email.core.components.pojo.StyleToken;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.adobe.cq.email.core.components.util.StyleExtractor;
 import com.adobe.cq.email.core.components.util.StyleMerger;
-import com.adobe.cq.email.core.components.util.StyleMergerMode;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.util.StyleSpecificityFactory;
 import com.adobe.cq.email.core.components.util.StyleTokenFactory;
 import com.adobe.cq.email.core.components.util.StyleTokenizer;

@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.util.StyleMergerMode;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_FILE_PATH;

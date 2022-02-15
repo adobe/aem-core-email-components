@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +35,10 @@ import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import com.adobe.cq.email.core.components.config.InlineStylesConfig;
+import com.adobe.cq.email.core.components.config.StylesInlinerConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.adobe.cq.email.core.components.util.StyleMergerMode;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
@@ -63,7 +64,7 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     private transient StylesInlinerService stylesInlinerService;
 
     @Reference
-    private transient InlineStylesConfig inlineStylesConfig;
+    private transient StylesInlinerConfig stylesInlinerConfig;
 
     /**
      * This method gets the AEM page, uses the Styles Inliner Service to convert the AEM page html with css classes
@@ -84,9 +85,13 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         HttpServletResponse response = requestResponseFactory.createResponse(out);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         requestProcessor.processRequest(req, response, request.getResourceResolver());
+        StyleMergerMode styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
+        if (Objects.nonNull(stylesInlinerConfig)) {
+            styleMergerMode = StyleMergerMode.getByName(stylesInlinerConfig.getStylesMergingMode());
+        }
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        StyleMergerMode.PROCESS_SPECIFICITY);
+                        styleMergerMode);
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter pw = resp.getWriter();
@@ -105,7 +110,7 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         this.stylesInlinerService = stylesInlinerService;
     }
 
-    void setInlineStylesConfig(InlineStylesConfig inlineStylesConfig) {
-        this.inlineStylesConfig = inlineStylesConfig;
+    void setStylesInlinerConfig(StylesInlinerConfig stylesInlinerConfig) {
+        this.stylesInlinerConfig = stylesInlinerConfig;
     }
 }

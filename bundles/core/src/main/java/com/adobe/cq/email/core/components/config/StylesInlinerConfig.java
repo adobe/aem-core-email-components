@@ -22,41 +22,42 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.osgi.service.metatype.annotations.Option;
 
-/**
- * Kept from POC: Actually used configuration is {@link StylesInlinerConfig}
- */
-@Deprecated
-@Component(service = InlineStylesConfig.class,
+@Component(service = StylesInlinerConfig.class,
            immediate = true)
-@Designate(ocd = InlineStylesConfig.Cfg.class)
-public class InlineStylesConfig {
+@Designate(ocd = StylesInlinerConfig.Cfg.class)
+public class StylesInlinerConfig {
+    public static final String PROCESS_SPECIFICITY = "PROCESS_SPECIFICITY";
+    public static final String IGNORE_SPECIFICITY = "IGNORE_SPECIFICITY";
+    public static final String ALWAYS_APPEND = "ALWAYS_APPEND";
 
-    public static final String EMBEDDED_STYLES = "embeddedStyles";
-    public static final String CLIENT_LIBRARIES = "clientLibraries";
-
-    @ObjectClassDefinition(name = "Inline Styles Config")
+    @ObjectClassDefinition(name = "Styles Inliner Config")
     public @interface Cfg {
         @AttributeDefinition(
-                name = "Styles Inclusion",
-                description = "How will the styles be included in the page? (default = Client Libraries)",
+                name = "Styles merging mode",
+                description = "How will the CSS will be merged with HTML elements? (default = Process CSS specificity)",
                 options = {
-                        @Option(label = "Client Libraries",
-                                value = CLIENT_LIBRARIES),
-                        @Option(label = "Embedded Styles",
-                                value = EMBEDDED_STYLES)
+                        @Option(label = "Process CSS specificity",
+                                value = PROCESS_SPECIFICITY),
+                        @Option(label = "Ignore CSS specificity",
+                                value = IGNORE_SPECIFICITY),
+                        @Option(label = "Always append CSS properties",
+                                value = ALWAYS_APPEND)
                 })
-        String stylesInclusion() default CLIENT_LIBRARIES;
+        String stylesMergingMode() default PROCESS_SPECIFICITY;
     }
 
-    private String stylesInclusion;
+    private String stylesMergingMode;
 
     @Activate
     protected void activate(final Cfg cfg) {
-        this.stylesInclusion = cfg.stylesInclusion();
+        this.stylesMergingMode = cfg.stylesMergingMode();
     }
 
-    public String getStylesInclusion() {
-        return stylesInclusion;
+    public String getStylesMergingMode() {
+        return stylesMergingMode;
     }
 
+    public void setStylesMergingMode(String stylesMergingMode) {
+        this.stylesMergingMode = stylesMergingMode;
+    }
 }

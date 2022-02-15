@@ -17,7 +17,7 @@ package com.adobe.cq.email.core.components.services;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
-import com.adobe.cq.email.core.components.util.StyleMergerMode;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 
 public interface StylesInlinerService {
 

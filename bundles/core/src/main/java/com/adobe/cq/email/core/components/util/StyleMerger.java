@@ -22,6 +22,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
