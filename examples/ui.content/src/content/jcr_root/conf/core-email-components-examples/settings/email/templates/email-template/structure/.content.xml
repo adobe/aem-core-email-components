@@ -8,11 +8,16 @@
         sling:resourceType="core/email/components/page">
         <root
             jcr:primaryType="nt:unstructured"
-            sling:resourceType="wcm/foundation/components/responsivegrid"/>
+            sling:resourceType="wcm/foundation/components/responsivegrid">
         <responsivegrid
+            cq:styleIds="[1545309110033]"
             jcr:primaryType="nt:unstructured"
             sling:resourceType="wcm/foundation/components/responsivegrid"
-            editable="{Boolean}true"/>
+            editable="{Boolean}true">
+            <cq:responsive jcr:primaryType="nt:unstructured"/>
+        </responsivegrid>
+        </root>
+        <cq:responsive jcr:primaryType="nt:unstructured">
         <breakpoints jcr:primaryType="nt:unstructured">
             <phone
                 jcr:primaryType="nt:unstructured"
@@ -27,5 +32,6 @@
                 title="Desktop"
                 width="{Long}1280"/>
         </breakpoints>
+        </cq:responsive>
     </jcr:content>
 </jcr:root>

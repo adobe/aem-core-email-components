@@ -4,5 +4,5 @@
           cq:icon="page"
           jcr:title="Email Page"
           sling:resourceSuperType="core/wcm/components/page/v3/page"
-          componentGroup=".core-email"
+          componentGroup="core-email"
           designDialogPath="core/email/components/page/cq:design_dialog"/>

@@ -14,6 +14,12 @@
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="wcm/core/components/policies/mapping">
                 <core-email-components-examples jcr:primaryType="nt:unstructured"/>
+                    <components jcr:primaryType="nt:unstructured">
+                            <emailheader
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="wcm/core/components/policies/mapping"
+                                cq:policy="core/email/components/emailheader/policy_emailheader"/>
+                    </components>
             </responsivegrid>
         </root>
     </jcr:content>

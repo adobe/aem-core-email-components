@@ -11,9 +11,19 @@
                          jcr:primaryType="nt:unstructured"
                          jcr:title="Email Components Examples - Root"
                          sling:resourceType="wcm/core/components/policy/policy"
-                         components="[/libs/wcm/foundation/components/responsivegrid]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                         components="[/libs/wcm/foundation/components/responsivegrid,group:core-email]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"
+                            mergeList="{Boolean}true"/>
                     </policy_page_container>
+                    <policy_1545309074617
+                        cq:styleDefaultClasses="cmp-examples-structure__main"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Core Email Components Examples - Structure"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:core-email]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1545309074617>
                 </responsivegrid>
             </components>
         </foundation>
@@ -25,7 +35,6 @@
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Email Components Examples - Page"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    ampMode="pairedAmp"
                     appResourcesClientlib="cmp-examples.site"
                     clientlibs="cmp-examples.base">
                     <jcr:content jcr:primaryType="nt:unstructured"/>

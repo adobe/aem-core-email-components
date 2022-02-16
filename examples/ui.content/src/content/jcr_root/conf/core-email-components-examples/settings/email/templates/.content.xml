@@ -3,4 +3,5 @@
           jcr:mixinTypes="[rep:AccessControllable]"
           jcr:primaryType="cq:Page">
     <email-template/>
+    <rep:policy/>
 </jcr:root>
