@@ -18,7 +18,8 @@
     <filter root="/conf/core-email-components-examples">
         <exclude pattern="/conf/core-email-components-examples/settings/cloudconfigs(/.*)?"/>
     </filter>
-    <filter root="/content/core-email-components-examples"/>
+    <filter root="/content/core-email-components-examples"
+        mode="merge"/>
     <filter root="/content/dam/core-email-components-examples"/>
     <filter root="/content/experience-fragments/core-email-components-examples"/>
 </workspaceFilter>
