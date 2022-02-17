@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Hello</title>
+    <link rel="stylesheet" href="example_style.css"/>
+    <!--[if mso]>
+    <style>.hide-mso {
+        display: none;
+    }</style><![endif]-->
+</head>
+<body>
+<h1>Hello</h1>
+<p>World</p>
+<img src="aempic.png" height="128" width="128" class="border"/>
+<table class="layout">
+    <tr>
+        <td class="layout-column">one</td>
+        <td class="layout-column">two</td>
+    </tr>
+    <tr>
+        <td class="layout-column">1</td>
+        <td class="layout-column">2</td>
+    </tr>
+</table>
+<center>
+    <table class="layout" width="640" border="0" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td width="33.33%" class="layout-column"> One Third</td>
+            <td width="66.67%" class="layout-column"> Two Third</td>
+        </tr>
+    </table>
+</center>
+<div class="blocked">
+    <h3>Blocked subtitle</h3>
+</div>
+<div>
+    <h2>Examples</h2>
+    <h3 class="example" style="border:3px solid green;">Headline with border</h3>
+    <div>
+        This headline has the following CSS properties set in the style attribute: border:3px solid green;<br/>
+        In addition, the style element has those definitions: h3.example {border-bottom-width: 12px}.<br/>
+        In this case the border should have 3px because the element style attribute has a higher priority.
+    </div>
+    <h3 class="example2" style="border-bottom-width:12px;">Headline with wider bottom-border</h3>
+    <div>
+        This headline has the following CSS properties set in the style attribute: border-bottom-width: 12px<br/>
+        In addition, the style element has those definitions: h3.example2 {border:3px solid green;}.<br/>
+        In this case the bottom-border should have 12px because the element style attribute has a higher priority.
+    </div>
+</div>
+</body>
+</html>

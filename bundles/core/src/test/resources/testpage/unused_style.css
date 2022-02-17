@@ -1,0 +1,25 @@
+		p::before,
+		p::after {
+            content: '"';
+        }
+
+        @media screen and (max-width: 640px) {
+            table.layout {
+                width: 100% !important;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            td.layout-column {
+                display: block !important;
+                width: 100% !important;
+            }
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+        h4 {
+            font-weight: bold;
+        }
