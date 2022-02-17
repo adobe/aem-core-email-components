@@ -34,27 +34,53 @@
                         granite:class="cq-RichText-FixedColumn-column"
                         sling:resourceType="granite/ui/components/coral/foundation/container">
                         <items jcr:primaryType="nt:unstructured">
-                            <headline
+                            <preheader
                                 jcr:primaryType="nt:unstructured"
-                                fieldLabel="Pre-Header"
                                 sling:resourceType="cq/gui/components/authoring/dialog/richtext"
+                                name="./preHeader"
+                                fieldLabel="Pre-header"
                                 useFixedInlineToolbar="{Boolean}true">
                                 <rtePlugins jcr:primaryType="nt:unstructured">
                                     <personalizationplugin
                                         jcr:primaryType="nt:unstructured"
                                         features="*"/>
                                 </rtePlugins>
-                            </headline>
+                                <uiSettings jcr:primaryType="nt:unstructured">
+                                    <cui jcr:primaryType="nt:unstructured">
+                                        <inline
+                                            jcr:primaryType="nt:unstructured"
+                                            toolbar="[personalizationplugin#insertvariable]">
+                                        </inline>
+                                        <dialogFullScreen
+                                            jcr:primaryType="nt:unstructured"
+                                            toolbar="[personalizationplugin#insertvariable]">
+                                        </dialogFullScreen>
+                                    </cui>
+                                </uiSettings>
+                            </preheader>
                             <subject
                                 jcr:primaryType="nt:unstructured"
-                                fieldLabel="Email Subject"
                                 sling:resourceType="cq/gui/components/authoring/dialog/richtext"
+                                name="./subject"
+                                fieldLabel="Subject"
                                 useFixedInlineToolbar="{Boolean}true">
                                 <rtePlugins jcr:primaryType="nt:unstructured">
                                     <personalizationplugin
                                         jcr:primaryType="nt:unstructured"
                                         features="*"/>
                                 </rtePlugins>
+                                <uiSettings jcr:primaryType="nt:unstructured">
+                                    <cui jcr:primaryType="nt:unstructured">
+                                        <inline
+                                            jcr:primaryType="nt:unstructured"
+                                            toolbar="[personalizationplugin#insertvariable]">
+                                        </inline>
+                                        <dialogFullScreen
+                                            jcr:primaryType="nt:unstructured"
+                                            toolbar="[personalizationplugin#insertvariable]">
+                                        </dialogFullScreen>
+                                    </cui>
+                                </uiSettings>
                             </subject>
                         </items>
                     </column>
