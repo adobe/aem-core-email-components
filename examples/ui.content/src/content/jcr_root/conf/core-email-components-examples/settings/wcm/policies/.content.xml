@@ -30,8 +30,8 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email Components Examples - Page"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        appResourcesClientlib="cmp-examples.site"
-                        clientlibs="cmp-examples.base">
+                        appResourcesClientlib="cmp-email-examples.site"
+                        clientlibs="cmp-email-examples.base">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_212634895490169>
                 </page>
