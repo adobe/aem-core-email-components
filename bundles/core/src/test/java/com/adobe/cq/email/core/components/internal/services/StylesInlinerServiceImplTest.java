@@ -30,6 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
@@ -59,9 +60,10 @@ class StylesInlinerServiceImplTest {
     }
 
     @Test
-    void usingStyleSpecificity() throws URISyntaxException, IOException {
+    void success() throws URISyntaxException, IOException {
         String result =
-                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_FILE_PATH), StyleMergerMode.PROCESS_SPECIFICITY);
+                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_FILE_PATH), StyleMergerMode.PROCESS_SPECIFICITY
+                        , HtmlSanitizingMode.FULL);
         Document document = Jsoup.parse(result);
         compare(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
                 document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());

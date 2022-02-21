@@ -20,6 +20,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileUtils {
@@ -29,13 +31,20 @@ public class TestFileUtils {
     public final static String OUTPUT_FILE_PATH = "testpage/output_without_style.html";
     public final static String STYLE_FILE_PATH = "testpage/style.css";
     public final static String STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/unused_style.css";
+    public final static String TO_BE_SANITIZED_FILE_PATH = "testpage/to_be_sanitized.html";
+    public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
+    public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";
 
     public static String getFileContent(String path) throws URISyntaxException, IOException {
         return new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(path).toURI())));
     }
 
     public static void compare(String expected, String actual) {
-        assertEquals(expected.replaceAll("\\s+", " ").trim(), actual.replaceAll("\\s+",
-                " ").trim());
+        if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
+            assertEquals(expected, actual);
+        } else {
+            assertEquals(expected.replaceAll("\\s+", " ").trim(), actual.replaceAll("\\s+",
+                    " ").trim());
+        }
     }
 }

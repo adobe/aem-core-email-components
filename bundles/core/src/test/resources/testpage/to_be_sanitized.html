@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Hello</title>
+</head>
+<body>
+<script type="text/javascript">
+    alert("Something unwanted to be sanitized");
+</script>
+<h1>Hello</h1>
+<p><a href="http://example.com/" onclick="callJsFunction()">World</a></p>
+<script type="text/javascript">
+    alert("Another unwanted JS to be sanitized");
+</script>
+<script type="text/javascript">
+    alert("Yet another unwanted JS to be sanitized");
+</script>
+</body>
+</html>

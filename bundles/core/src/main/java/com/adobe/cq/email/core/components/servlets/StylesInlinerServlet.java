@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.servlets;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 
 import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
@@ -85,10 +87,10 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         HttpServletResponse response = requestResponseFactory.createResponse(out);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         requestProcessor.processRequest(req, response, request.getResourceResolver());
-        StyleMergerMode styleMergerMode = getFromContextConfiguration(resource);
+        StylesInlinerContextAwareConfiguration configuration = getConfiguration(resource);
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        styleMergerMode);
+                        configuration.stylesMergingMode(), configuration.htmlSanitizingMode());
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter pw = resp.getWriter();
@@ -107,24 +109,33 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         this.stylesInlinerService = stylesInlinerService;
     }
 
+    private StylesInlinerContextAwareConfiguration getConfiguration(Resource resource) {
+        StylesInlinerContextAwareConfiguration fallback = new StylesInlinerContextAwareConfiguration() {
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return StylesInlinerContextAwareConfiguration.class;
+            }
 
-    private StyleMergerMode getFromContextConfiguration(Resource resource) {
-        StyleMergerMode styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
+            @Override
+            public StyleMergerMode stylesMergingMode() {
+                return StyleMergerMode.PROCESS_SPECIFICITY;
+            }
+
+            @Override
+            public HtmlSanitizingMode htmlSanitizingMode() {
+                return HtmlSanitizingMode.FULL;
+            }
+        };
         try {
             ConfigurationBuilder configurationBuilder = resource.adaptTo(ConfigurationBuilder.class);
             if (Objects.isNull(configurationBuilder)) {
-                return styleMergerMode;
+                return fallback;
             }
-            StylesInlinerContextAwareConfiguration configuration =
-                    configurationBuilder.as(StylesInlinerContextAwareConfiguration.class);
-            StyleMergerMode stylesMergingMode = configuration.stylesMergingMode();
-            if (Objects.isNull(stylesMergingMode)) {
-                return styleMergerMode;
-            }
-            styleMergerMode = stylesMergingMode;
+            return configurationBuilder.as(StylesInlinerContextAwareConfiguration.class);
         } catch (Throwable e) {
             log("Error retrieving configuration: " + e.getMessage(), e);
         }
-        return styleMergerMode;
+        return fallback;
     }
+
 }

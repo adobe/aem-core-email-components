@@ -48,6 +48,7 @@
                     <excludes combine.children="append">
                         <exclude>**/resources/css/*</exclude>
                         <exclude>**/resources/testpage/*</exclude>
+                        <exclude>**/resources/sanitizer/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
