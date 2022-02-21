@@ -73,6 +73,7 @@
                                         <items jcr:primaryType="nt:unstructured">
                                             <id
                                                 jcr:primaryType="nt:unstructured"
+                                                cq:showOnCreate="{Boolean}true"
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                 fieldDescription="HTML ID attribute to apply to the component."
                                                 fieldLabel="ID"
