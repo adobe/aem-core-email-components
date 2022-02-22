@@ -7,5 +7,7 @@
         jcr:title="Email Component"
         cq:templateType="/conf/core-email-components-examples/settings/wcm/template-types/email-template-types"
         acMapping="mapRecipient"
+        acTemplateLabel="Email delivery with AEM content"
+        acTemplateId="mailAEMContent"
         status="enabled"/>
 </jcr:root>
