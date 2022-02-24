@@ -1,6 +1,6 @@
 {
     "name": "com.adobe.cq.core.email.components.it.content",
-    "version": "2.17.15-SNAPSHOT",
+    "version": "0.2.0",
     "description": "Adobe Experience Manager Core Email Components IT Content",
     "license": "Apache-2.0",
     "private": false,

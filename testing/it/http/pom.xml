@@ -23,7 +23,7 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>2.17.15-SNAPSHOT</version>
+        <version>0.2.0</version>
         <relativePath>../../../parent/pom.xml</relativePath>
     </parent>
 
@@ -33,7 +33,7 @@
     <!-- ====================================================================== -->
     <groupId>com.adobe.cq</groupId>
     <artifactId>core.email.components.it.http</artifactId>
-    <version>2.17.15-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>Adobe Experience Manager Core Email Components HTTP Integration Tests</name>
 
     <build>
