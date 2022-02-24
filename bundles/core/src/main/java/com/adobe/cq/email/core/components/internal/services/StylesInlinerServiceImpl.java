@@ -152,7 +152,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             String elementSelector = styleToken.getSelector();
             for (Element elementToApply : document.select(elementSelector)) {
                 if (null == elementToApply) {
-                    LOG.error("Failed to find {}", elementSelector);
+                    LOG.warn("Failed to find {}", elementSelector);
                     continue;
                 }
                 String currentElementStyle = elementToApply.attr(STYLE_ATTRIBUTE);
