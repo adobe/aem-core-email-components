@@ -25,7 +25,7 @@
     <core jcr:primaryType="nt:unstructured">
         <email jcr:primaryType="nt:unstructured">
             <components jcr:primaryType="nt:unstructured">
-                <page jcr:primaryType="nt:unstructured">
+                <email-page jcr:primaryType="nt:unstructured">
                     <policy_212634895490169
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email Components Examples - Page"
@@ -34,7 +34,7 @@
                         clientlibs="cmp-email-examples.base">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_212634895490169>
-                </page>
+                </email-page>
             </components>
         </email>
     </core>
