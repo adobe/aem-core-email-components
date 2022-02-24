@@ -37,6 +37,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
+import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
@@ -107,7 +108,7 @@ class StylesInlinerServletTest {
             }
             return OUTPUT_PROCESSING_CSS_SPECIFICITY;
         }).when(stylesInlinerService).getHtmlWithInlineStyles(eq(resourceResolver), eq(INPUT),
-                any(StyleMergerMode.class));
+                any(), any());
     }
 
     @Test
@@ -159,6 +160,11 @@ class StylesInlinerServletTest {
             @Override
             public StyleMergerMode stylesMergingMode() {
                 return mode;
+            }
+
+            @Override
+            public HtmlSanitizingMode htmlSanitizingMode() {
+                return HtmlSanitizingMode.FULL;
             }
         };
     }

@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.config;
 import org.apache.sling.caconfig.annotation.Configuration;
 import org.apache.sling.caconfig.annotation.Property;
 
+import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 
 @Configuration(label = "Styles inliner configuration",
@@ -26,5 +27,8 @@ public @interface StylesInlinerContextAwareConfiguration {
 
     @Property(label = "Style merger mode")
     StyleMergerMode stylesMergingMode() default StyleMergerMode.PROCESS_SPECIFICITY;
+
+    @Property(label = "HTML sanitizing mode")
+    HtmlSanitizingMode htmlSanitizingMode() default HtmlSanitizingMode.FULL;
 
 }

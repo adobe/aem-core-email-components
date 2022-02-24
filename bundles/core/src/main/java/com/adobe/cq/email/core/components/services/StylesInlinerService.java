@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.services;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
+import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 
 public interface StylesInlinerService {
@@ -25,11 +26,13 @@ public interface StylesInlinerService {
      * This method accepts the html string as the input, parses it, reads the style rules and adds it to the respective elements in the
      * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the <style> tag.
      *
-     * @param resourceResolver the resource resolver object
-     * @param html             the html string
-     * @param styleMergerMode  specifies the style merger mode
+     * @param resourceResolver   the resource resolver object
+     * @param html               the html string
+     * @param styleMergerMode    specifies the style merger mode
+     * @param htmlSanitizingMode specifies the HTML sanitizing mode
      * @return html with inline styles
      */
-    String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode);
+    String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode,
+                                   HtmlSanitizingMode htmlSanitizingMode);
 
 }
