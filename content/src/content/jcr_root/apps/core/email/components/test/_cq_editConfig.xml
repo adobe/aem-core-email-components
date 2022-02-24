@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:EditConfig">
+    <cq:listeners
+        jcr:primaryType="cq:EditListenersConfig"
+        aftercopy="REFRESH_SELF"
+        afterdelete="REFRESH_SELF"
+        afteredit="REFRESH_SELF"
+        aftermove="REFRESH_SELF"
+        afterinsert="REFRESH_SELF"/>
+</jcr:root>

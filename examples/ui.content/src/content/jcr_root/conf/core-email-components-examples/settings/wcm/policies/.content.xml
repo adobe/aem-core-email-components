@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:rep="internal"
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    xmlns:rep="internal"
     jcr:mixinTypes="[rep:AccessControllable]"
     jcr:primaryType="cq:Page">
     <rep:policy/>
+    <wcm jcr:primaryType="nt:unstructured">
+        <foundation jcr:primaryType="nt:unstructured">
+            <components jcr:primaryType="nt:unstructured">
+                <responsivegrid jcr:primaryType="nt:unstructured">
+                    <policy_email_structure
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Core Email Components Examples - Structure"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:core-email,core/email/components/experiencefragment]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_email_structure>
+                </responsivegrid>
+            </components>
+        </foundation>
+    </wcm>
+    <core jcr:primaryType="nt:unstructured">
+        <email jcr:primaryType="nt:unstructured">
+            <components jcr:primaryType="nt:unstructured">
+                <email-page jcr:primaryType="nt:unstructured">
+                    <policy_212634895490169
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Email Components Examples - Page"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        appResourcesClientlib="cmp-email-examples.site"
+                        clientlibs="cmp-email-examples.base">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_212634895490169>
+                </email-page>
+            </components>
+        </email>
+    </core>
 </jcr:root>

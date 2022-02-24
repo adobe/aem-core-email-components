@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
+        jcr:primaryType="cq:PageContent"
+        sling:resourceType="core/email/components/email-page"
+        acMapping="mapRecipient"
+        acTemplateLabel="Email delivery with AEM content"
+        acTemplateId="mailAEMContent">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wcm/foundation/components/responsivegrid">
+            <email-header
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="core/email/components/email-header"
+                editable="{Boolean}true"/>
+            <experiencefragment_header
+                jcr:primaryType="nt:unstructured"
+                position="header"
+                sling:resourceType="core/email/components/experiencefragment"
+                editable="{Boolean}true"/>
+            <responsivegrid
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid"/>
+            <experiencefragment_footer
+                jcr:primaryType="nt:unstructured"
+                position="footer"
+                sling:resourceType="core/email/components/experiencefragment"
+                editable="{Boolean}true"/>
+        </root>
+    </jcr:content>
+</jcr:root>

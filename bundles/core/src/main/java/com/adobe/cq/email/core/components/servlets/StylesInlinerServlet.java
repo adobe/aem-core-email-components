@@ -49,9 +49,9 @@ import com.day.cq.wcm.api.WCMMode;
  * This servlet will take the AEM page as input, makes the styles inline
  * and returns the html with inline styles in response.
  */
-@Component(service = {Servlet.class})
+@Component(service = {Servlet.class}, immediate = true)
 @SlingServletResourceTypes(
-        resourceTypes = NameConstants.NT_PAGE,
+        resourceTypes = "core/email/components/email-page",
         selectors = StylesInlinerConstants.INLINE_STYLES_SELECTOR,
         extensions = "html")
 public class StylesInlinerServlet extends SlingSafeMethodsServlet {
