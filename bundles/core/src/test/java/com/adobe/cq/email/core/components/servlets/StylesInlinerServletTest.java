@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -158,13 +159,13 @@ class StylesInlinerServletTest {
             }
 
             @Override
-            public StyleMergerMode stylesMergingMode() {
-                return mode;
+            public String stylesMergingMode() {
+                return Objects.isNull(mode) ? null : mode.name();
             }
 
             @Override
-            public HtmlSanitizingMode htmlSanitizingMode() {
-                return HtmlSanitizingMode.FULL;
+            public String htmlSanitizingMode() {
+                return HtmlSanitizingMode.FULL.name();
             }
         };
     }

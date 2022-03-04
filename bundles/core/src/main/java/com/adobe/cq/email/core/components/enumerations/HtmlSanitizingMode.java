@@ -15,8 +15,14 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.enumerations;
 
+import java.util.Arrays;
+
 public enum HtmlSanitizingMode {
     FULL,
     REMOVE_SCRIPT_TAGS_ONLY,
-    NONE
+    NONE;
+
+    public static HtmlSanitizingMode getByValue(String value) {
+        return Arrays.stream(HtmlSanitizingMode.values()).filter(v -> v.name().equals(value)).findFirst().orElse(FULL);
+    }
 }

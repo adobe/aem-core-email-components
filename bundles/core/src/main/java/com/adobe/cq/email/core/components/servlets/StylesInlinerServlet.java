@@ -44,14 +44,14 @@ import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
-import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
 
 /**
  * This servlet will take the AEM page as input, makes the styles inline
  * and returns the html with inline styles in response.
  */
-@Component(service = {Servlet.class}, immediate = true)
+@Component(service = {Servlet.class},
+           immediate = true)
 @SlingServletResourceTypes(
         resourceTypes = "core/email/components/email-page",
         selectors = StylesInlinerConstants.INLINE_STYLES_SELECTOR,
@@ -90,7 +90,8 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
         StylesInlinerContextAwareConfiguration configuration = getConfiguration(resource);
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        configuration.stylesMergingMode(), configuration.htmlSanitizingMode());
+                        StyleMergerMode.getByValue(configuration.stylesMergingMode()),
+                        HtmlSanitizingMode.getByValue(configuration.htmlSanitizingMode()));
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter pw = resp.getWriter();
@@ -117,13 +118,13 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
             }
 
             @Override
-            public StyleMergerMode stylesMergingMode() {
-                return StyleMergerMode.PROCESS_SPECIFICITY;
+            public String stylesMergingMode() {
+                return null;
             }
 
             @Override
-            public HtmlSanitizingMode htmlSanitizingMode() {
-                return HtmlSanitizingMode.FULL;
+            public String htmlSanitizingMode() {
+                return null;
             }
         };
         try {
