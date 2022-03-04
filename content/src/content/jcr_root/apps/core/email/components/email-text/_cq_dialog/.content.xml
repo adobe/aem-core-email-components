@@ -53,6 +53,9 @@
                                                 name="./text"
                                                 useFixedInlineToolbar="{Boolean}true">
                                                 <rtePlugins jcr:primaryType="nt:unstructured">
+                                                    <personalizationplugin
+                                                        jcr:primaryType="nt:unstructured"
+                                                        features="*"/>
                                                     <format
                                                         jcr:primaryType="nt:unstructured"
                                                         features="bold,italic"/>
@@ -145,7 +148,7 @@
                                                     <cui jcr:primaryType="nt:unstructured">
                                                         <inline
                                                             jcr:primaryType="nt:unstructured"
-                                                            toolbar="[format#bold,format#italic,format#underline,#justify,#lists,links#modifylink,links#unlink,#paraformat]">
+                                                            toolbar="[format#bold,format#italic,format#underline,#justify,#lists,links#modifylink,links#unlink,#paraformat,personalizationplugin#insertvariable]">
                                                             <popovers jcr:primaryType="nt:unstructured">
                                                                 <justify
                                                                     jcr:primaryType="nt:unstructured"
@@ -161,6 +164,16 @@
                                                                     ref="paraformat"/>
                                                             </popovers>
                                                         </inline>
+                                                        <dialogFullScreen
+                                                            jcr:primaryType="nt:unstructured"
+                                                            toolbar="[format#bold,format#italic,format#underline,subsuperscript#subscript,subsuperscript#superscript,edit#paste-plaintext,edit#paste-wordhtml,links#modifylink,links#unlink,links#anchor,findreplace#find,findreplace#replace,undo#undo,undo#redo,justify#justifyleft,justify#justifycenter,justify#justifyright,justify#justifyjustify,lists#unordered,lists#ordered,lists#outdent,lists#indent,table#createoredit,image#imageProps,spellcheck#checktext,misctools#specialchars,misctools#sourceedit,#paraformat,personalizationplugin#insertvariable]">
+                                                            <popovers jcr:primaryType="nt:unstructured">
+                                                                <paraformat
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    items="paraformat:getFormats:paraformat-pulldown"
+                                                                    ref="paraformat"/>
+                                                            </popovers>
+                                                        </dialogFullScreen>
                                                         <tableEditOptions
                                                             jcr:primaryType="nt:unstructured"
                                                             toolbar="[table#insertcolumn-before,table#insertcolumn-after,table#removecolumn,-,table#insertrow-before,table#insertrow-after,table#removerow,-,table#mergecells-right,table#mergecells-down,table#mergecells,table#splitcell-horizontal,table#splitcell-vertical,-,table#selectrow,table#selectcolumn,-,table#ensureparagraph,-,table#modifytableandcell,table#removetable,-,undo#undo,undo#redo,-,table#exitTableEditing,-]">
