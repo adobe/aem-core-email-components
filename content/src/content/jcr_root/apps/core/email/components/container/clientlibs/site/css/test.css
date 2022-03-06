@@ -15,34 +15,37 @@
  */
 
 /* stylelint-disable */
-.container {
-          display: flex;
-          flex-wrap: wrap;
+table.layout {
+          width: 100%;
+          border: 0px;
         }
+
+td.layout-column {
+   border: 0px;
+   border-spacing: 0px;
+   }
+
 .grid-2 {
           width: 33.33%;
-          flex-basis: 33.33%%;
         }
 .grid-3 {
           width: 50%;
-          flex-basis: 50%;
         }
 .grid-4 {
           width: 66.67%;
-          flex-basis: 66.67%;
         }
 .grid-6 {
           width: 100%;
         }
 
 @media screen and (max-width: 640px) {
-   .container {
+  .layout {
 	   width: 100% !important;
    }
 }
 
 @media screen and (max-width: 480px) {
-  .container {
+  .layout-column {
 	   display: block !important;
 	   width: 100% !important;
    }
