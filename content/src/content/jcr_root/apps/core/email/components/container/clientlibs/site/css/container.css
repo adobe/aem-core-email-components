@@ -21,7 +21,7 @@ table.layout {
         }
 
 td.layout-column {
-   border: 0px;
+   padding: 0px;
    border-spacing: 0px;
    }
 
