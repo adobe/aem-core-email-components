@@ -126,16 +126,6 @@ public class EmailTextIT extends AuthorBaseUITest {
         assertFalse(personalizationPluginBtn.isDisplayed());
     }
 
-    private void takeScreenshot() {
-        try {
-            File scrFile = ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File("/Users/edoardo/IdeaProjects/aem-core-email-components/testing/it/e2e-selenium/build" +
-                    "/reports/tests/screen" + RandomStringUtils.randomAlphanumeric(5) + ".png"));
-        } catch (Throwable e) {
-            // do nothing
-        }
-    }
-
     private SelenideElement get(SelenideElement element, String dataAction) {
         return element.find("[data-action='" + dataAction + "']");
     }
