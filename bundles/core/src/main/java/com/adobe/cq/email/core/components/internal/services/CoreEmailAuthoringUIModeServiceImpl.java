@@ -55,7 +55,7 @@ package com.adobe.cq.email.core.components.internal.services;
     service = { AuthoringUIModeService.class, Filter.class },
     property = {
         "sling.filter.scope=request",
-        "service.ranking:Integer=-2499",
+        "service.ranking:Integer=-2501",
     }
 )
 @ServiceDescription("Authoring UI Mode Email Service")
