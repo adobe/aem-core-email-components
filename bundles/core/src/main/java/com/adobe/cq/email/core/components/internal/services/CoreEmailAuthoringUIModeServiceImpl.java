@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+    import com.adobe.cq.email.core.components.internal.configuration.AuthorModeUIConfig;
     import com.day.cq.wcm.api.AuthoringUIMode;
     import com.day.cq.wcm.api.AuthoringUIModeService;
     import com.day.cq.wcm.api.Page;
@@ -23,7 +24,6 @@ package com.adobe.cq.email.core.components.internal.services;
     import java.io.IOException;
     import java.security.Principal;
     import java.util.Arrays;
-    import java.util.Dictionary;
     import java.util.List;
     import javax.jcr.Node;
     import javax.jcr.RepositoryException;
@@ -36,11 +36,6 @@ package com.adobe.cq.email.core.components.internal.services;
     import javax.servlet.ServletResponse;
     import javax.servlet.http.Cookie;
     import org.apache.commons.lang3.StringUtils;
-    import org.apache.felix.scr.annotations.Activate;
-    import org.apache.felix.scr.annotations.Component;
-    import org.apache.felix.scr.annotations.Properties;
-    import org.apache.felix.scr.annotations.Property;
-    import org.apache.felix.scr.annotations.Service;
     import org.apache.jackrabbit.api.JackrabbitSession;
     import org.apache.jackrabbit.api.security.principal.ItemBasedPrincipal;
     import org.apache.jackrabbit.api.security.user.Authorizable;
@@ -49,17 +44,28 @@ package com.adobe.cq.email.core.components.internal.services;
     import org.apache.sling.api.resource.Resource;
     import org.apache.sling.api.resource.ResourceResolver;
     import org.apache.sling.api.resource.ResourceUtil;
-    import org.apache.sling.commons.osgi.PropertiesUtil;
-    import org.osgi.service.component.ComponentContext;
+    import org.osgi.service.component.annotations.Activate;
+    import org.osgi.service.component.annotations.Component;
+    import org.osgi.service.component.propertytypes.ServiceDescription;
+    import org.osgi.service.metatype.annotations.Designate;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
 
-@Component(metatype=true, label="%authoringUIModeService.name", description="%authoringUIModeService.description")
-@Service({AuthoringUIModeService.class, Filter.class})
-@Properties({@Property(name="sling.filter.scope", value={"request"}, propertyPrivate=true), @Property(name="service.ranking", intValue={-2499}, propertyPrivate=true)})
+@Component(
+    service = { AuthoringUIModeService.class, Filter.class },
+    property = {
+        "sling.filter.scope=request",
+        "service.ranking:Integer=-2499",
+    }
+)
+@ServiceDescription("Authoring UI Mode Email Service")
+@Designate(ocd = AuthorModeUIConfig.class)
 public class CoreEmailAuthoringUIModeServiceImpl
     implements AuthoringUIModeService, Filter
 {
+
+    private AuthorModeUIConfig config;
+
     private static final Logger log = LoggerFactory.getLogger(CoreEmailAuthoringUIModeServiceImpl.class);
     private static final String WCM_AUTHORING_MODE_COOKIE = "cq-authoring-mode";
     private static final String WCM_AUTHORING_MODE_USER_PREFERENCE = "authoringMode";
@@ -67,15 +73,10 @@ public class CoreEmailAuthoringUIModeServiceImpl
     private AuthoringUIMode defaultAuthoringUIMode;
     private String editorUrlClassic;
     private String editorUrlTouch;
-    @Property({"TOUCH"})
-    public static final String WCM_DEFAULT_AUTHORING_MODE_PROP = "authoringUIModeService.default";
     private static final String WCM_EDITOR_URL_CLASSIC_DEFAULT = "/cf#";
-    @Property(value={"/cf#"}, propertyPrivate=true)
-    public static final String WCM_EDITOR_URL_CLASSIC_PROP = "authoringUIModeService.editorUrl.classic";
     private static final String WCM_EDITOR_URL_TOUCH_DEFAULT = "/editor.html";
-    @Property(value={"/editor.html"}, propertyPrivate=true)
-    public static final String WCM_EDITOR_URL_TOUCH_PROP = "authoringUIModeService.editorUrl.touch";
 
+    @Override
     public AuthoringUIMode getAuthoringUIMode(SlingHttpServletRequest slingRequest)
     {
         AuthoringUIMode authoringUIMode = null;
@@ -95,6 +96,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
         return authoringUIMode;
     }
 
+    @Override
     public AuthoringUIMode getAuthoringUIModeFromCookie(SlingHttpServletRequest slingRequest)
     {
         Cookie authoringModeCookie = slingRequest.getCookie("cq-authoring-mode");
@@ -111,6 +113,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
         return null;
     }
 
+    @Override
     public AuthoringUIMode getAuthoringUIModeFromUserPreferences(SlingHttpServletRequest slingRequest)
     {
         Resource userPreferences = getUserPreferences(slingRequest.getResourceResolver(), null);
@@ -121,11 +124,13 @@ public class CoreEmailAuthoringUIModeServiceImpl
         return null;
     }
 
+    @Override
     public AuthoringUIMode getAuthoringUIModeFromOSGIConfig(SlingHttpServletRequest slingRequest)
     {
         return this.defaultAuthoringUIMode;
     }
 
+    @Override
     public String getEditorURL(AuthoringUIMode authoringUIMode)
     {
         if (AuthoringUIMode.CLASSIC.equals(authoringUIMode)) {
@@ -137,6 +142,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
         return null;
     }
 
+    @Override
     public void setUserAuthoringUIMode(ResourceResolver resolver, String userId, AuthoringUIMode authoringUIMode, boolean save)
         throws RepositoryException
     {
@@ -190,6 +196,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
         throws ServletException
     {}
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
         throws IOException, ServletException
     {
@@ -259,12 +266,11 @@ public class CoreEmailAuthoringUIModeServiceImpl
     public void destroy() {}
 
     @Activate
-    protected void activate(ComponentContext context)
+    protected void activate(AuthorModeUIConfig config)
     {
-        Dictionary<?, ?> configuration = context.getProperties();
-        this.defaultAuthoringUIMode = AuthoringUIMode.valueOf(PropertiesUtil.toString(configuration.get("authoringUIModeService.default"), "authoringUIModeService.default"));
-        this.editorUrlClassic = PropertiesUtil.toString(configuration.get("authoringUIModeService.editorUrl.classic"), "/cf#");
-        this.editorUrlTouch = PropertiesUtil.toString(configuration.get("authoringUIModeService.editorUrl.touch"), "/editor.html");
+        this.defaultAuthoringUIMode = AuthoringUIMode.valueOf(StringUtils.isEmpty(config.getDefaultAuthoringUIMode()) ? "TOUCH" : config.getDefaultAuthoringUIMode());
+        this.editorUrlClassic = config.getClassicEditorUrl();
+        this.editorUrlTouch = config.getTouchEditorUrl();
     }
 
     private boolean isEditor(Resource resource, String editor)
