@@ -87,6 +87,76 @@
                             </column>
                         </items>
                     </main>
+                    <email
+                        cq:showOnCreate="{Boolean}false"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Email"
+                        sling:resourceType="granite/ui/components/foundation/container">
+                        <layout
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/foundation/layouts/fixedcolumns"/>
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <contexthub
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="mcm/campaign/components/contexthub"/>
+                                    <subject
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/foundation/form/inputgroup"
+                                        fieldLabel="Subject"
+                                        renderReadOnly="{Boolean}true">
+                                        <field
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/foundation/form/textfield"
+                                            name="./subject"/>
+                                        <rightButton
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/foundation/button"
+                                            class="coral-Button--square"
+                                            icon="coral-Icon--adobeCampaign"
+                                            init="acmetadatapicker"
+                                            targetinput="input[name='./subject']"/>
+                                    </subject>
+                                    <plaintext
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/foundation/form/textarea"
+                                        fieldLabel="Plain text"
+                                        name="./plaintext"
+                                        renderReadOnly="{Boolean}true"
+                                        resize="both"/>
+                                    <plaintextButtons
+                                        cq:showOnCreate="{Boolean}false"
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/foundation/container"
+                                        class="ac-pageproperties-plaintext-buttons foundation-field-hide-in-default">
+                                        <layout
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/foundation/layouts/container"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <plaintextMetadataPicker
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/foundation/button"
+                                                class="coral-Button--square"
+                                                icon="coral-Icon--adobeCampaign"
+                                                init="acmetadatapicker"
+                                                targetinput="textarea[name='./plaintext']"/>
+                                            <plaintextGenerator
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/foundation/button"
+                                                class="coral-Button--square"
+                                                href="${empty param.item ? requestPathInfo.suffix : param.item}${&quot;.html?wcmmode=disabled&quot;}"
+                                                icon="coral-Icon--fileCode"
+                                                init="acplaintextgenerator"
+                                                targetinput="textarea[name='./plaintext']"/>
+                                        </items>
+                                    </plaintextButtons>
+                                </items>
+                            </columns>
+                        </items>
+                    </email>
                 </items>
             </tabs>
         </items>
