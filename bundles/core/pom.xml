@@ -183,6 +183,9 @@
                                         <exclude>
                                             com/adobe/cq/email/core/components/exceptions/**
                                         </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
+                                        </exclude>
                                     </excludes>
                                 </configuration>
                             </execution>
@@ -453,6 +456,11 @@
             <groupId>com.adobe.cq.wcm</groupId>
             <artifactId>com.adobe.aem.wcm.seo</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
 
         <!-- Testing dependencies -->
