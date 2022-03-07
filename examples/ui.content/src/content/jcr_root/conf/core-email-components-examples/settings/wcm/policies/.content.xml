@@ -25,6 +25,15 @@
     <core jcr:primaryType="nt:unstructured">
         <email jcr:primaryType="nt:unstructured">
             <components jcr:primaryType="nt:unstructured">
+                <container jcr:primaryType="nt:unstructured">
+                    <policy_container
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Container policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:core-email,core/email/components/experiencefragment]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_container>
+                </container>
                 <email-page jcr:primaryType="nt:unstructured">
                     <policy_212634895490169
                         jcr:primaryType="nt:unstructured"
