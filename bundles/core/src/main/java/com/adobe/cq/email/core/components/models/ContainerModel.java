@@ -66,36 +66,32 @@ public class ContainerModel {
 
     private void initializeGrid() {
         switch (layout) {
-            case "6":
-                columns = 1;
-                break;
             case "3-3":
-                columns = 2;
-                break;
             case "2-4":
-                columns = 2;
-                break;
             case "4-2":
                 columns = 2;
                 break;
             case "2-2-2":
                 columns = 3;
                 break;
+            case "6":
             default:
+                columns = 1;
         }
     }
-     private void buildClass(){
-            String[] splitString = layout.split("-");
-            if(splitString.length > 0){
-                colClass1 = "grid-" + splitString[0];
-            }
-            if(splitString.length > 1) {
-                colClass2 = "grid-" + splitString[1];
-            }
-            if(splitString.length > 2){
-             colClass3 = "grid-" + splitString[2];
-            }
 
+    private void buildClass() {
+        String[] splitString = layout.split("-");
+        if (splitString.length > 0) {
+            colClass1 = "grid-" + splitString[0];
         }
+        if (splitString.length > 1) {
+            colClass2 = "grid-" + splitString[1];
+        }
+        if (splitString.length > 2) {
+            colClass3 = "grid-" + splitString[2];
+        }
+
+    }
 
 }
