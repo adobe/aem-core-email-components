@@ -14,10 +14,6 @@
         <root
             jcr:primaryType="nt:unstructured"
             sling:resourceType="wcm/foundation/components/responsivegrid">
-            <email-header
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="core/email/components/email-header"
-                editable="{Boolean}true"/>
             <experiencefragment_header
                 jcr:primaryType="nt:unstructured"
                 position="header"

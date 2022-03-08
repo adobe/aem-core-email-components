@@ -15,9 +15,14 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.enumerations;
 
+import java.util.Arrays;
+
 public enum StyleMergerMode {
     PROCESS_SPECIFICITY,
     IGNORE_SPECIFICITY,
-    ALWAYS_APPEND
+    ALWAYS_APPEND;
 
+    public static StyleMergerMode getByValue(String value) {
+        return Arrays.stream(StyleMergerMode.values()).filter(v -> v.name().equals(value)).findFirst().orElse(PROCESS_SPECIFICITY);
+    }
 }
