@@ -16,6 +16,7 @@
 package com.adobe.cq.email.core.components.internal.services;
 
     import com.adobe.cq.email.core.components.internal.configuration.AuthorModeUIConfig;
+    import com.adobe.cq.email.core.components.util.HtmlSanitizer;
     import com.day.cq.wcm.api.AuthoringUIMode;
     import com.day.cq.wcm.api.AuthoringUIModeService;
     import com.day.cq.wcm.api.Page;
@@ -64,6 +65,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
     implements AuthoringUIModeService, Filter
 {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CoreEmailAuthoringUIModeServiceImpl.class.getName());
     private AuthorModeUIConfig config;
 
     private static final Logger log = LoggerFactory.getLogger(CoreEmailAuthoringUIModeServiceImpl.class);
@@ -200,6 +202,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
         throws IOException, ServletException
     {
+        LOG.debug("UI Mode Filter start filtering the request.");
         if ((request instanceof SlingHttpServletRequest))
         {
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest)request;
@@ -217,10 +220,12 @@ public class CoreEmailAuthoringUIModeServiceImpl
                 if ((isEditor(resource, this.editorUrlClassic)) && (!authoringUIMode.equals(AuthoringUIMode.CLASSIC)))
                 {
                     authoringUIMode = AuthoringUIMode.CLASSIC;
+                    LOG.trace("UI mode set to classic based on editor settings.");
                 }
                 else if ((isEditor(resource, this.editorUrlTouch)) && (!authoringUIMode.equals(AuthoringUIMode.TOUCH)))
                 {
                     authoringUIMode = AuthoringUIMode.TOUCH;
+                    LOG.trace("UI mode set to touch based on editor settings.");
                 }
                 else if (authoringUIMode.equals(AuthoringUIMode.TOUCH))
                 {
@@ -228,10 +233,13 @@ public class CoreEmailAuthoringUIModeServiceImpl
                     if (("html".equals(slingRequest.getRequestPathInfo().getExtension())) && (resource.adaptTo(Page.class) != null) &&
                         (path.startsWith("/etc/")) && (!StringUtils.startsWithAny(path, EXCLUDED_PATHS)) && (!isPageOfAuthoredTemplate(resource))) {
                         authoringUIMode = AuthoringUIMode.CLASSIC;
+                        LOG.trace("UI mode set to classic based path or resource - path: {}.", path);
                     }
                     if (("html".equals(slingRequest.getRequestPathInfo().getExtension())) && (resource.adaptTo(Page.class) != null) &&
                         (path.startsWith("/content/campaigns")))
                     {
+                        LOG.trace("Calculating UI mode for campaign pages: {}.", path);
+
                         Resource content = resource.getChild("jcr:content");
 
                         List<String> excludeClassicUITypes = Arrays.asList(new String[] { "wcm/designimporter/components/importerpage", "cq/personalization/components/teaserpage", "cq/personalization/components/offerproxy", "mcm/campaign/components/newsletter", "mcm/campaign/components/campaign_newsletterpage", "mcm/campaign/components/profile", "core/email/components/email-page" });
@@ -241,8 +249,11 @@ public class CoreEmailAuthoringUIModeServiceImpl
                             if ((content != null) &&
                                 (content.isResourceType(excludedType)))
                             {
+                                LOG.debug("force classic set to false for type {}.", excludedType);
                                 forceClassic = false;
                                 break;
+                            } else {
+                                LOG.trace("Ignore type {}.", excludedType);
                             }
                         }
                         if ((content == null) || (forceClassic)) {
@@ -259,6 +270,8 @@ public class CoreEmailAuthoringUIModeServiceImpl
                 }
                 slingRequest.setAttribute(AuthoringUIMode.REQUEST_ATTRIBUTE_NAME, authoringUIMode);
             }
+        } else {
+            LOG.debug("Wrong request type. Do not touch request data.");
         }
         filterChain.doFilter(request, response);
     }
@@ -268,9 +281,11 @@ public class CoreEmailAuthoringUIModeServiceImpl
     @Activate
     protected void activate(AuthorModeUIConfig config)
     {
+        LOG.debug("Starting service.");
         this.defaultAuthoringUIMode = AuthoringUIMode.valueOf(StringUtils.isEmpty(config.getDefaultAuthoringUIMode()) ? "TOUCH" : config.getDefaultAuthoringUIMode());
         this.editorUrlClassic = config.getClassicEditorUrl();
         this.editorUrlTouch = config.getTouchEditorUrl();
+        LOG.trace("Config values set to {}, {} , {}.", defaultAuthoringUIMode, editorUrlClassic, editorUrlTouch);
     }
 
     private boolean isEditor(Resource resource, String editor)
