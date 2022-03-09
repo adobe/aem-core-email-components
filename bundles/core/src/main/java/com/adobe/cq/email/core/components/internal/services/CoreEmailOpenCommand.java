@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import com.adobe.cq.email.core.components.internal.configuration.OpenCommandConfig;
 import com.day.cq.commons.TidyJSONWriter;
 import com.day.cq.commons.servlets.HtmlStatusResponseHelper;
 import com.day.cq.i18n.I18n;
@@ -25,16 +26,17 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.commands.WCMCommand;
 import com.day.cq.wcm.api.commands.WCMCommandContext;
 import com.day.cq.wcm.commons.WCMUtils;
-import org.apache.felix.scr.annotations.Property;
 import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.HtmlResponse;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.propertytypes.ServiceDescription;
+import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,15 +50,18 @@ import org.slf4j.LoggerFactory;
     }
 )
 @ServiceDescription("Core Email Open Command")
+@Designate(ocd = OpenCommandConfig.class)
 public class CoreEmailOpenCommand
     implements WCMCommand
 {
+    private OpenCommandConfig config;
+
     @Reference
     private AuthoringUIModeService authoringUIModeService;
-    @Property({"GET"})
-    private static final String CQ_WCMCOMMAND_METHODS = "cq.wcmcommand.methods";
     public static final String JSON_MODE = "jsonMode";
     private static final Logger log = LoggerFactory.getLogger(CoreEmailOpenCommand.class);
+
+    private String cqWcmcommandMethods;
 
     @Override
     public String getCommandName()
@@ -242,6 +247,12 @@ public class CoreEmailOpenCommand
         if (this.authoringUIModeService == paramAuthoringUIModeService) {
             this.authoringUIModeService = null;
         }
+    }
+
+    @Activate
+    protected void activate(OpenCommandConfig config)
+    {
+        this.cqWcmcommandMethods = config.getCqWcmcommandMethods();
     }
 
     private boolean isAuthoredTemplate(Resource resource)

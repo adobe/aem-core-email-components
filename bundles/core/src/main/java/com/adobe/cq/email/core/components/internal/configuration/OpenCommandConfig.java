@@ -18,15 +18,9 @@ package com.adobe.cq.email.core.components.internal.configuration;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@ObjectClassDefinition(name = "Core Email AuthorUI Service Configuration", description = "")
-public @interface AuthorModeUIConfig {
-    @AttributeDefinition(name = "Default Authoring Mode", description = "")
-    String getDefaultAuthoringUIMode() default "TOUCH";
-
-    @AttributeDefinition(name = "Classic Editor URL", description = "")
-    String getClassicEditorUrl() default "/cf#";
-
-    @AttributeDefinition(name = "Touch Editor URL", description = "")
-    String getTouchEditorUrl() default "/editor.html";
+@ObjectClassDefinition(name = "Core Email Open Command Service Configuration", description = "")
+public @interface OpenCommandConfig {
+    @AttributeDefinition(name = "CQ WCM COMMAND METHODS", description = "")
+    String getCqWcmcommandMethods() default "GET";
 
 }
