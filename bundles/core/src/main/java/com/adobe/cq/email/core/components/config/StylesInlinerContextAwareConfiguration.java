@@ -22,10 +22,24 @@ import org.apache.sling.caconfig.annotation.Property;
                description = "Context-aware configuration for style inliner service")
 public @interface StylesInlinerContextAwareConfiguration {
 
-    @Property(label = "Style merger mode")
+    @Property(label = "Style merger mode", description = "HTML sanitizing mode.", property = {
+        "widgetType=dropdown",
+        "dropdownOptions=["
+            + "{'value':'PROCESS_SPECIFICITY','description':'Evaluate specificity'},"
+            + "{'value':'IGNORE_SPECIFICITY','description':'Ignore specificity'},"
+            + "{'value':'ALWAYS_APPEND','description':'Always append'}"
+            + "]"
+    })
     String stylesMergingMode() default "PROCESS_SPECIFICITY";
 
-    @Property(label = "HTML sanitizing mode")
+    @Property(label = "Sanitizing", description = "HTML sanitizing mode.", property = {
+        "widgetType=dropdown",
+        "dropdownOptions=["
+            + "{'value':'FULL','description':'Full sanitizing'},"
+            + "{'value':'REMOVE_SCRIPT_TAGS_ONLY','description':'Remove script tags only'},"
+            + "{'value':'NONE','description':'Do not remove anything.'}"
+            + "]"
+    })
     String htmlSanitizingMode() default "FULL";
 
 }
