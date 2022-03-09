@@ -187,6 +187,9 @@
                                         <exclude>
                                             com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
                                         </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
+                                        </exclude>
                                     </excludes>
                                 </configuration>
                             </execution>
