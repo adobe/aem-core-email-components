@@ -18,7 +18,7 @@ package com.adobe.cq.email.core.components.internal.configuration;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@ObjectClassDefinition(name = "AuthorUI Service Configuration", description = "")
+@ObjectClassDefinition(name = "Core Email AuthorUI Service Configuration", description = "")
 public @interface AuthorModeUIConfig {
     @AttributeDefinition(name = "Default Authoring Mode", description = "")
     String getDefaultAuthoringUIMode() default "TOUCH";
