@@ -15,7 +15,6 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
-import com.adobe.cq.email.core.components.internal.configuration.OpenCommandConfig;
 import com.day.cq.commons.TidyJSONWriter;
 import com.day.cq.commons.servlets.HtmlStatusResponseHelper;
 import com.day.cq.i18n.I18n;
@@ -36,7 +35,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.propertytypes.ServiceDescription;
-import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,40 +44,30 @@ import org.slf4j.LoggerFactory;
 @Component(
     service = { WCMCommand.class },
     property = {
-        "service.ranking:Integer=1"
+        "service.ranking:Integer=1",
+        "cq.wcmcommand.methods=GET"
     }
 )
 @ServiceDescription("Core Email Open Command")
-@Designate(ocd = OpenCommandConfig.class)
 public class CoreEmailOpenCommand
     implements WCMCommand
 {
-    private OpenCommandConfig config;
-
     @Reference
     private AuthoringUIModeService authoringUIModeService;
     public static final String JSON_MODE = "jsonMode";
     private static final Logger log = LoggerFactory.getLogger(CoreEmailOpenCommand.class);
 
-    private String cqWcmcommandMethods;
+    private String[] cqWcmcommandMethods;
 
     @Override
     public String getCommandName()
     {
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("**************** Entering getCommandName.....");
         return "open";
     }
 
     @Override
     public HtmlResponse performCommand(WCMCommandContext ctx, SlingHttpServletRequest request, SlingHttpServletResponse response, PageManager pageManager)
     {
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("**************** Entering performCommand.....");
         I18n i18n = new I18n(request);
         try
         {
@@ -135,10 +123,6 @@ public class CoreEmailOpenCommand
 
     public String getView(Resource res)
     {
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("**************** Entering getView.....");
         Resource content = res.getResourceResolver().getResource(res, "jcr:content");
         if (content != null)
         {
@@ -231,28 +215,14 @@ public class CoreEmailOpenCommand
 
     protected void bindAuthoringUIModeService(AuthoringUIModeService paramAuthoringUIModeService)
     {
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("**************** Entering bindAuthoringUIModeService.....");
         this.authoringUIModeService = paramAuthoringUIModeService;
     }
 
     protected void unbindAuthoringUIModeService(AuthoringUIModeService paramAuthoringUIModeService)
     {
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("********************************************************");
-        log.error("**************** Entering unbindAuthoringUIModeService.....");
         if (this.authoringUIModeService == paramAuthoringUIModeService) {
             this.authoringUIModeService = null;
         }
-    }
-
-    @Activate
-    protected void activate(OpenCommandConfig config)
-    {
-        this.cqWcmcommandMethods = config.getCqWcmcommandMethods();
     }
 
     private boolean isAuthoredTemplate(Resource resource)
