@@ -43,7 +43,7 @@ public class URIException extends SlingException {
 	 * @param reasonCode
 	 *            the reason code
 	 */
-	public URIException(int reasonCode) { // NOPMD
+	public URIException(int reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 

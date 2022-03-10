@@ -74,7 +74,7 @@ public class EmptyHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public String[] getParameterValues(String name) { // NOPMD
+    public String[] getParameterValues(String name) {
         return null;
     }
 
@@ -179,7 +179,7 @@ public class EmptyHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public Cookie[] getCookies() { // NOPMD
+    public Cookie[] getCookies() {
         return null;
     }
 

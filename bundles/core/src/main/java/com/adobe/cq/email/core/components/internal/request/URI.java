@@ -94,7 +94,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	// --------------------------------------------------- Instance Variables
 
 	/** Version ID for serialization */
-	static final long serialVersionUID = 604752400577948726L; // NOPMD
+	static final long serialVersionUID = 604752400577948726L;
 
 	private int hash = 0;
 	private char[] aUri = null;
@@ -115,7 +115,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		// in order to support platform encoding
 		try {
 			defaultDocumentCharsetByPlatform = System.getProperty("file.encoding");
-		} catch (SecurityException ignore) { // NOPMD
+		} catch (SecurityException ignore) {
 			logger.warn("Caught an error.");
 		}
 		if (defaultDocumentCharset == null) {
@@ -816,7 +816,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		if (length > 0) {
 			char[] firstDelimiter = { tmp.charAt(0) };
 			if (validate(firstDelimiter, DELIMS)) {
-				if (length >= 2) { // NOPMD
+				if (length >= 2) {
 					char[] lastDelimiter = { tmp.charAt(length - 1) };
 					if (validate(lastDelimiter, DELIMS)) {
 						tmp = tmp.substring(1, length - 1);
@@ -876,7 +876,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 				} else if (!escaped && prevalidate(tmp.substring(from, next), DISALLOWED_OPAQUE_PART) || escaped && validate(tmp.substring(from, next).toCharArray(), OPAQUE_PART)) {
 					isopaquepart = true;
 				} else {
-					aPath = null; // NOPMD
+					aPath = null;
 				}
 			}
 			String sss = tmp.substring(from, next);
@@ -924,7 +924,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 *            bla
 	 * @return bla
 	 */
-	protected int indexFirstOf(String sss, String delims, int offset) { // NOPMD
+	protected int indexFirstOf(String sss, String delims, int offset) {
 		if (sss == null || sss.length() == 0) {
 			return -1;
 		}
@@ -939,7 +939,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		int min = sss.length();
 		char[] delim = delims.toCharArray();
 		for (char element : delim) {
-			int at = sss.indexOf(element, offset); // NOPMD
+			int at = sss.indexOf(element, offset);
 			if (at >= 0 && at < min) {
 				min = at;
 			}
@@ -971,7 +971,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 *            bla
 	 * @return bla
 	 */
-	private int indexFirstOf(char[] sss, char delim, int offset) { // NOPMD
+	private int indexFirstOf(char[] sss, char delim, int offset) {
 		if (sss == null || sss.length == 0) {
 			return -1;
 		}
@@ -1058,7 +1058,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 				try {
 					aPort = Integer.parseInt(original.substring(from));
 				} catch (NumberFormatException error) {
-					throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "invalid port number"); // NOPMD
+					throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "invalid port number");
 				}
 			}
 			StringBuilder buf = new StringBuilder();
@@ -1099,7 +1099,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			buf.append(aOpaque);
 		} else if (aPath != null) {
 			// _is_hier_part or _is_relativeURI
-			if (aPath.length != 0) { // NOPMD
+			if (aPath.length != 0) {
 				buf.append(aPath);
 			}
 		}
@@ -1118,7 +1118,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @return the scheme null if undefined scheme
 	 */
 	public String getScheme() {
-		return (aScheme == null) ? null : new String(aScheme); // NOPMD
+		return (aScheme == null) ? null : new String(aScheme);
 	}
 
 	/**
@@ -1178,15 +1178,15 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 */
 	public String getPath() throws com.adobe.cq.email.core.components.internal.request.URIException {
 		char[] path = getRawPath();
-		return (path == null) ? null : decode(path, getProtocolCharset()); // NOPMD
+		return (path == null) ? null : decode(path, getProtocolCharset());
 	}
 
 	private String getProtocolCharset() {
-		return (protocolCharset != null) ? protocolCharset : defaultProtocolCharset; // NOPMD
+		return (protocolCharset != null) ? protocolCharset : defaultProtocolCharset;
 	}
 
 	private char[] getRawAuthority() {
-		return aAuthority; // NOPMD
+		return aAuthority;
 	}
 
 	/**
@@ -1197,7 +1197,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @throws com.adobe.cq.email.core.components.internal.request.URIException
 	 *             bla
 	 */
-	private void setRawPath(char[] escapedPath) throws com.adobe.cq.email.core.components.internal.request.URIException { // NOPMD
+	private void setRawPath(char[] escapedPath) throws com.adobe.cq.email.core.components.internal.request.URIException {
 		if (escapedPath == null || escapedPath.length == 0) {
 			aPath = escapedPath;
 			aOpaque = escapedPath;
@@ -1214,7 +1214,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			}
 			aPath = escapedPath;
 		} else if (isrelpath) {
-			int at = indexFirstOf(escapedPath, '/'); // NOPMD
+			int at = indexFirstOf(escapedPath, '/');
 			if (at == 0) {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "incorrect path");
 			}
@@ -1244,7 +1244,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 */
 	private void setPath(String path) throws com.adobe.cq.email.core.components.internal.request.URIException {
 		if (path == null || path.length() == 0) {
-			aOpaque = (path == null) ? null : path.toCharArray(); // NOPMD
+			aOpaque = (path == null) ? null : path.toCharArray();
 			aPath = aOpaque;
 			setURI();
 			return;
@@ -1254,7 +1254,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			aPath = encode(path, ALLOWED_ABS_PATH, charset);
 		} else if (isrelpath) {
 			StringBuilder buff = new StringBuilder(path.length());
-			int at = path.indexOf('/'); // NOPMD
+			int at = path.indexOf('/');
 			if (at == 0) { // never 0
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "incorrect relative path");
 			}
@@ -1277,7 +1277,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	}
 
 	private char[] getRawPath() {
-		return isopaquepart ? aOpaque : aPath; // NOPMD
+		return isopaquepart ? aOpaque : aPath;
 	}
 
 	/**
@@ -1287,7 +1287,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 *            bla
 	 * @return bla
 	 */
-	private char[] removeFragmentIdentifier(char[] component) { // NOPMD
+	private char[] removeFragmentIdentifier(char[] component) {
 		if (component == null) {
 			return null;
 		}
@@ -1380,7 +1380,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @throws IOException
 	 *             bla
 	 */
-	public void writeObject(ObjectOutputStream oos) throws IOException {
+	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 	}
 
@@ -1394,7 +1394,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @throws IOException
 	 *             bla
 	 */
-	public void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
 		ois.defaultReadObject();
 	}
 
@@ -1443,7 +1443,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized Object clone() throws CloneNotSupportedException { // NOPMD
+	public synchronized Object clone() throws CloneNotSupportedException {
 
 		URI instance = (URI) super.clone();
 
@@ -1482,7 +1482,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @return the URI character sequence
 	 */
 	public char[] getRawURI() {
-		return aUri.clone(); // NOPMD
+		return aUri.clone();
 	}
 
 	/**
@@ -1491,7 +1491,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @return the escaped URI string
 	 */
 	public String getEscapedURI() {
-		return (aUri == null) ? null : new String(aUri); // NOPMD
+		return (aUri == null) ? null : new String(aUri);
 	}
 
 	/**
@@ -1504,7 +1504,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @see #decode
 	 */
 	public String getURI() throws com.adobe.cq.email.core.components.internal.request.URIException {
-		return (aUri == null) ? null : decode(aUri, getProtocolCharset()); // NOPMD
+		return (aUri == null) ? null : decode(aUri, getProtocolCharset());
 	}
 
 	/**
@@ -1517,7 +1517,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			return aUri.clone();
 		}
 		if (aUri == null) {
-			return aFragment.clone(); // NOPMD
+			return aFragment.clone();
 		}
 		// if _uri != null && _fragment != null
 		String uriReference = new String(aUri) + "#" + new String(aFragment);
@@ -1531,7 +1531,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 */
 	public String getEscapedURIReference() {
 		char[] uriReference = getRawURIReference();
-		return (uriReference == null) ? null : new String(uriReference); // NOPMD
+		return new String(uriReference);
 	}
 
 	/**
@@ -1543,7 +1543,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 */
 	public String getURIReference() throws com.adobe.cq.email.core.components.internal.request.URIException {
 		char[] uriReference = getRawURIReference();
-		return (uriReference == null) ? null : decode(uriReference, getProtocolCharset()); // NOPMD
+		return decode(uriReference, getProtocolCharset());
 	}
 
 	/**
@@ -1620,7 +1620,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		private static final String ISO_8859_2 = "ISO-8859-2";
 		private static final String ISO_8859_1 = "ISO-8859-1";
 		private static final String ISO_8859_5 = "ISO-8859-5";
-		private static final HashMap<String, String> LOCALE_TO_CHARSET_MAP; // NOPMD
+		private static final HashMap<String, String> LOCALE_TO_CHARSET_MAP;
 		static {
 			LOCALE_TO_CHARSET_MAP = new HashMap<>();
 			LOCALE_TO_CHARSET_MAP.put("ar", "ISO-8859-6");
@@ -1691,6 +1691,9 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 *            bla
 	 * @return bla
 	 */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
+        value="DM_DEFAULT_ENCODING",
+        justification="Fallback handling.")
 	private static byte[] getBytes(final String data, String charset) {
 
 		if (data == null) {
@@ -1722,9 +1725,9 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		}
 
 		try {
-			return new String(data, "US-ASCII");
+			return new String(data, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new com.adobe.cq.email.core.components.internal.request.URIException("HttpClient requires ASCII support"); // NOPMD
+			throw new com.adobe.cq.email.core.components.internal.request.URIException("HttpClient requires ASCII support");
 		}
 	}
 
@@ -1739,6 +1742,9 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @return The result of the conversion.
 	 * @since 3.0
 	 */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
+        value="DM_DEFAULT_ENCODING",
+        justification="Fallback handling.")
 	public static String getString(final byte[] data, String charset) {
 
 		if (data == null) {
@@ -1774,7 +1780,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		try {
 			return data.getBytes("US-ASCII");
 		} catch (UnsupportedEncodingException e) {
-			throw new com.adobe.cq.email.core.components.internal.request.URIException("HttpClient requires ASCII support"); // NOPMD
+			throw new com.adobe.cq.email.core.components.internal.request.URIException("HttpClient requires ASCII support");
 		}
 	}
 
@@ -1839,7 +1845,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 					}
 					buffer.write((char) ((uuu << 4) + lll));
 				} catch (ArrayIndexOutOfBoundsException e) {
-					throw new com.adobe.cq.email.core.components.internal.request.URIException("Invalid URL encoding"); // NOPMD
+					throw new com.adobe.cq.email.core.components.internal.request.URIException("Invalid URL encoding");
 				}
 			} else {
 				buffer.write(bbb);
