@@ -25,12 +25,12 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.4.0-SNAPSHOT</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.core</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Adobe Experience Manager Core Email Components Core Bundle</name>
@@ -186,6 +186,9 @@
                                         </exclude>
                                         <exclude>
                                             com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
                                         </exclude>
                                     </excludes>
                                 </configuration>
@@ -457,11 +460,6 @@
             <groupId>com.adobe.cq.wcm</groupId>
             <artifactId>com.adobe.aem.wcm.seo</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
 
         <!-- Testing dependencies -->

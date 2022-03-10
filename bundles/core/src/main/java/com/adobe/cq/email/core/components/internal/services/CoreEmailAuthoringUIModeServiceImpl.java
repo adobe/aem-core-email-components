@@ -52,14 +52,17 @@ package com.adobe.cq.email.core.components.internal.services;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
 
+/**
+ * Based on com.day.cq.wcm.core.impl.AuthoringUIModeServiceImpl
+ */
 @Component(
     service = { AuthoringUIModeService.class, Filter.class },
     property = {
         "sling.filter.scope=request",
-        "service.ranking:Integer=-2501",
+        "service.ranking:Integer=-2499"
     }
 )
-@ServiceDescription("Authoring UI Mode Email Service")
+@ServiceDescription("Core Email Authoring UI Mode Service")
 @Designate(ocd = AuthorModeUIConfig.class)
 public class CoreEmailAuthoringUIModeServiceImpl
     implements AuthoringUIModeService, Filter

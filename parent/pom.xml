@@ -19,7 +19,7 @@
     <groupId>com.adobe.cq</groupId>
     <artifactId>core.email.components.parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <name>Adobe Experience Manager Core Email Components Parent</name>
     <description>A set of standardized Email components for AEM 6.3+ that can be used to speed up development of websites.</description>
@@ -814,13 +814,6 @@
                 <groupId>com.adobe.aem</groupId>
                 <artifactId>uber-jar</artifactId>
                 <version>6.4.8.4-1.0</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.scr.annotations</artifactId>
-                <version>1.12.0</version>
                 <scope>provided</scope>
             </dependency>
 
