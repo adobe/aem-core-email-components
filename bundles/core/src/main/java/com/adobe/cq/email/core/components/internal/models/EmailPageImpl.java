@@ -13,13 +13,17 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 
+import com.adobe.cq.email.core.components.models.EmailPage;
+import com.adobe.cq.export.json.ContainerExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.Page;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -31,8 +35,9 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-@Model(adaptables = SlingHttpServletRequest.class)
-public class EmailPageModel {
+@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class, ContainerExporter.class})
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+public class EmailPageImpl implements EmailPage {
     @ValueMapValue
     @Optional
     @Default(values = "")
@@ -47,7 +52,7 @@ public class EmailPageModel {
     @Inject
     private ModelFactory modelFactory;
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailPageModel.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmailPageImpl.class);
 
     private Page page;
 

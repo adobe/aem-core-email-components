@@ -73,8 +73,6 @@ public class URIException extends SlingException {
 		this.reasonCode = UNKNOWN;
 	}
 
-	// -------------------------------------------------------------- constants
-
 	/**
 	 * No specified reason code.
 	 */
