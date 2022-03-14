@@ -16,31 +16,50 @@
 package com.adobe.cq.email.core.components.internal.models;
 
 import com.adobe.cq.email.core.components.models.EmailPage;
+import com.adobe.cq.wcm.core.components.models.Page;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.factory.ModelFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 
-@ExtendWith(AemContextExtension.class)
+@ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class EmailPageImplTest {
     private final AemContext ctx = new AemContext();
 
+    @Mock
+    Page page;
+
+    @Mock
+    private ModelFactory modelFactory;
+
     @BeforeEach
     void setUp() {
-        ctx.addModelsForClasses(EmailPageImpl.class);
+        ctx.addModelsForClasses(EmailPageImpl.class, EmailPage.class);
         ctx.load().json("/content/TestPage.json", "/content");
+        ctx.currentResource("/content/experiencepage/jcr:content");
+        lenient().when(modelFactory.getModelFromWrappedRequest(eq(ctx.request()), any(Resource.class), eq(Page.class))).thenReturn(page);
+
+        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING, Integer.MAX_VALUE);
     }
 
     @Test
     void initModel() {
         ctx.currentResource("/content/experiencepage/jcr:content");
-        EmailPage emailPage = ctx.request().adaptTo(EmailPage.class);
-        // why is this null?
-        assertNull(emailPage);
+        EmailPage emailPage = ctx.request().adaptTo(EmailPageImpl.class);
+        assertNotNull(emailPage);
+        assertNotNull(emailPage.getPage());
+        assertEquals(emailPage.getReferenceUrl(), "https://www.test.dev");
     }
 }

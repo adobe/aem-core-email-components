@@ -17,13 +17,11 @@ package com.adobe.cq.email.core.components.internal.models;
 
 
 import com.adobe.cq.email.core.components.models.EmailPage;
-import com.adobe.cq.export.json.ContainerExporter;
-import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.Page;
+
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -35,8 +33,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class, ContainerExporter.class})
-@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/email-page")
 public class EmailPageImpl implements EmailPage {
     @ValueMapValue
     @Optional
@@ -57,7 +54,7 @@ public class EmailPageImpl implements EmailPage {
     private Page page;
 
     @PostConstruct
-    private void initModel() {
+    protected void initModel() {
         LOG.debug("Init model.");
         request.setAttribute("referenceUrl", referenceUrl);
         page = modelFactory.getModelFromWrappedRequest(request, resource, Page.class);
