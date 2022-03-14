@@ -43,4 +43,34 @@ public interface EmailPage {
     default String getReferenceUrl() {
         return "";
     }
+
+    /**
+     * Retrieves the Campaign status header.
+     *
+     * @return the status header as {@link String}.
+     * @since com.adobe.cq.email.core.components.models 0.4.0; marked <code>default</code> in 0.4.0
+     */
+    default String getStatusHeader() {
+        return "";
+    }
+
+    /**
+     * Retrieves the campaign status message.
+     *
+     * @return the status message as a {@link String}.
+     * @since com.adobe.cq.email.core.components.models 0.4.0; marked <code>default</code> in 0.4.0
+     */
+    default String getStatusMessage() {
+        return "";
+    }
+
+    /**
+     * Retrieves the campaign alert type.
+     *
+     * @return the alert type as a {@link String}.
+     * @since com.adobe.cq.email.core.components.models 0.4.0; marked <code>default</code> in 0.4.0
+     */
+    default String getAlertType() {
+        return "";
+    }
 }

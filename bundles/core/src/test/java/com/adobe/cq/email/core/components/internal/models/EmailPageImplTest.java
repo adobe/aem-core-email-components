@@ -58,6 +58,7 @@ class EmailPageImplTest {
     void initModel() {
         ctx.currentResource("/content/experiencepage/jcr:content");
         EmailPage emailPage = ctx.request().adaptTo(EmailPageImpl.class);
+        // TODO: fix tests (add services, test new methods)
         assertNotNull(emailPage);
         assertNotNull(emailPage.getPage());
         assertEquals(emailPage.getReferenceUrl(), "https://www.test.dev");
