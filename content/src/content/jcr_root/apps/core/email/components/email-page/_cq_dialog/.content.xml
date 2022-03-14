@@ -170,6 +170,12 @@
                                                 targetinput="textarea[name='./plaintext']"/>
                                         </items>
                                     </plaintextButtons>
+                                    <referenceUrl
+                                        jcr:primaryType="nt:unstructured"
+                                        fieldLabel="Reference Url"
+                                        sling:resourceType="granite/ui/components/foundation/form/textfield"
+                                        name="./referenceUrl"/>
+
                                 </items>
                             </columns>
                         </items>
