@@ -5,7 +5,6 @@
     xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:deviceGroups="[etc/mobile/groups/responsive]"
         jcr:primaryType="cq:PageContent"
         cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
         sling:resourceType="core/email/components/email-page">
@@ -21,7 +20,6 @@
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="wcm/foundation/components/responsivegrid"
                 editable="{Boolean}true">
-                <cq:responsive jcr:primaryType="nt:unstructured"/>
             </responsivegrid>
             <experiencefragment_footer
                 jcr:primaryType="nt:unstructured"
@@ -29,21 +27,5 @@
                 sling:resourceType="core/email/components/experiencefragment"
                 editable="{Boolean}true"/>
         </root>
-        <cq:responsive jcr:primaryType="nt:unstructured">
-            <breakpoints jcr:primaryType="nt:unstructured">
-                <phone
-                    jcr:primaryType="nt:unstructured"
-                    title="Phone"
-                    width="{Long}768"/>
-                <tablet
-                    jcr:primaryType="nt:unstructured"
-                    title="Tablet"
-                    width="{Long}1024"/>
-                <desktop
-                    jcr:primaryType="nt:unstructured"
-                    title="Desktop"
-                    width="{Long}1280"/>
-            </breakpoints>
-        </cq:responsive>
     </jcr:content>
 </jcr:root>
