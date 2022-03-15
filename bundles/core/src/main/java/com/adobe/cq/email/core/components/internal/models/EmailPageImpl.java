@@ -59,16 +59,16 @@ public class EmailPageImpl implements EmailPage {
     protected Resource resource;
 
     @Inject
-    CampaignConnector connector;
+    private CampaignConnector connector;
 
     @Inject
     private ModelFactory modelFactory;
 
     @Inject
-    StatusService statusService;
+    private StatusService statusService;
 
     @Inject
-    LinkingStatusService linkingStatusService;
+    private LinkingStatusService linkingStatusService;
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailPageImpl.class);
 
