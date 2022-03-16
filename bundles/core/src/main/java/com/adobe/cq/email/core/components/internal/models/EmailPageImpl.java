@@ -137,15 +137,19 @@ public class EmailPageImpl implements EmailPage {
     private void initConnector() {
         try {
             Configuration wsConfig = connector.getWebserviceConfig(request.getResource());
+            LOG.debug("Webservice config is in place for resource {}.", request.getResource());
             try {
                 connector.retrieveCredentials(wsConfig);
+                LOG.debug("Credentials are set.");
             } catch (ACConnectorException ace) {
                 errorMessage = i18n.get("Could not determine webservice credentials.");
                 errorMessageTech = "Could not determine webservice credentials: " + ace.getMessage();
+                LOG.warn("Error with credentials: {}", ace.getMessage());
             }
         } catch (ACConnectorException ex) {
             errorMessage = i18n.get("Missing or invalid Adobe Campaign webservice config.");
             errorMessageTech = "Missing or invalid Adobe Campaign webservice config: " + ex.getMessage();
+            LOG.warn("Error webservice config: {}", ex.getMessage());
         }
     }
 
@@ -157,6 +161,7 @@ public class EmailPageImpl implements EmailPage {
         statusMessage = errorMessage;
         // status
         if (StringUtils.isEmpty(statusMessage)) {
+            LOG.debug("Webservice working, checking document status now.");
             try {
                 NewsletterStatus status = statusService.retrieveStatus(resource, i18n);
                 int statusCode = status.getStatusCode();
@@ -173,11 +178,13 @@ public class EmailPageImpl implements EmailPage {
                 } else {
                     alertType = "info";
                 }
+                LOG.debug("NL status: {}, alertType: {}", status.getStatusCode(), alertType);
             } catch (CampaignException ex) {
-                // ignore here - just don't generate any output
+                LOG.info("Campaign Exception: {}", ex.getMessage());
             }
         }
         if (StringUtils.isEmpty(statusMessage)) {
+            LOG.debug("Status message is empty - analyzing further.");
             try {
                 LinkingStatus status = linkingStatusService.retrieveStatus(resource, i18n);
                 String[] linked = status.getLinkedDeliveries();
@@ -188,6 +195,8 @@ public class EmailPageImpl implements EmailPage {
                         statusMessage = i18n.getVar("Linked with {0} deliveries", null, Integer.toString(linked.length));
                     }
                     alertType = "info";
+                } else {
+                    LOG.debug("No linked deliveries.");
                 }
                 if (status.isApproved()) {
                     if (statusMessage == null) {
@@ -196,13 +205,16 @@ public class EmailPageImpl implements EmailPage {
                         statusMessage += i18n.get(" and approved");
                     }
                     alertType = "info";
+                } else {
+                    LOG.debug("No approval.");
                 }
                 if (statusMessage != null) {
                     statusMessage += ".";
                 }
             } catch (NewsletterException ne) {
-                // ignoring here - do not output anything
+                LOG.info("Newsletter Exception {}", ne.getMessage());
             }
+            LOG.debug("AlertType {}, Status Message {}, status header {}.", alertType, statusMessage, statusHeader);
         }
 
     }
