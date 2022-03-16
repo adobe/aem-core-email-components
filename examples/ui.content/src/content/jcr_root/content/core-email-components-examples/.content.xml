@@ -5,7 +5,7 @@
         cq:allowedTemplates="[/conf/core-email-components-examples/settings/wcm/templates/.*,/apps/core-email-components-examples/templates/config-page]"
         cq:deviceGroups="[/etc/mobile/groups/responsive]"
         jcr:primaryType="nt:unstructured"
-        jcr:title="Core Components"
+        jcr:title="Core Email Components"
         sling:resourceType="core/email/components/email-page"
         sling:configRef="/conf/core-email-components-examples"
         cq:redirectTarget="/content/core-email-components-examples/library">

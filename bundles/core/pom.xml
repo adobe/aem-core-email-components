@@ -81,8 +81,6 @@
                         <!-- Enable processing of OSGI metatype annotations -->
                         <_metatypeannotations>*</_metatypeannotations>
                         <Import-Package>
-                            com.adobe.cq.commerce.*;resolution:=optional,
-                            com.adobe.aem.wcm.seo.*;resolution:=optional,
                             javax.annotation;version=0.0.0,
                             com.day.cq.dam.api;version="[1.24,2.0)",
                             *
@@ -189,6 +187,14 @@
                                         </exclude>
                                         <exclude>
                                             com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
+                                        </exclude>
+                                        <!-- package has 90% empty methods and string parsing -->
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/request/**
+                                        </exclude>
+                                        <!-- do not test default values for interfaces -->
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/models/**
                                         </exclude>
                                     </excludes>
                                 </configuration>
@@ -593,6 +599,12 @@
             <artifactId>org.apache.sling.testing.hamcrest</artifactId>
             <version>1.0.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.cq</groupId>
+            <artifactId>core.wcm.components.core</artifactId>
+            <version>2.18.0</version>
         </dependency>
 
         <dependency>
