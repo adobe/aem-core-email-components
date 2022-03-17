@@ -41,7 +41,7 @@
          role="tabpanel"
          aria-labelledby="${item.id}-tab"
          tabindex="0"
-         class="cmp-tabs__tabpanel${item.name == tabs.activeItem ? ' cmp-tabs__tabpanel--active' : ''}"
+         class="${wcmmode.edit ? 'cmp-tabs__tabpanel cmp-tabs__tabpanel--active' : ''}"
          data-cmp-hook-tabs="tabpanel"
          data-cmp-data-layer="${item.data.json}"></div>
     <sly data-sly-resource="${resource.path @ resourceType='wcm/foundation/components/parsys/newpar', appendPath='/*', decorationTagName='div', cssClassName='new section aem-Grid-newComponent'}"
