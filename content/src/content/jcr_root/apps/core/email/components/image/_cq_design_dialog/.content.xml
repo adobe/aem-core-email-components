@@ -38,7 +38,7 @@
                                         typeHint="Long"
                                         required="{Boolean}false"
                                         defaultValue="{Long}1280"
-                                        min="{Long}1"
+                                        min="{Long}0"
                                         max="{Long}3840"
                                         name="./defaultWidth"/>
                                     <resizeWidth

@@ -27,13 +27,13 @@
        data-sly-attribute="${image.imageLink.htmlAttributes}"
        data-cmp-clickable="${image.data ? true : false}">
         <img srcset="${image.srcset}" src="${image.src}"
-             loading="${image.lazyEnabled ? 'lazy' : ''}"
+             loading="${image.lazyEnabled ? 'lazy' : 'eager'}"
              class="cmp-image__image"
              itemprop="contentUrl"
              width="${image.width}" height="${image.height}"
              alt="${image.alt || true}" title="${image.displayPopupTitle && image.title}"
              role="${image.role}"
-             style="width: ${image.fullWidthStyle @ context='styleToken'}"/>
+             style="width: ${image.fullWidthStyle @ context='styleToken'};"/>
     </a>
     <span class="cmp-image__title" itemprop="caption" data-sly-test="${!image.displayPopupTitle && image.title}">${image.title}</span>
     <meta itemprop="caption" content="${image.title}" data-sly-test="${image.displayPopupTitle && image.title}">

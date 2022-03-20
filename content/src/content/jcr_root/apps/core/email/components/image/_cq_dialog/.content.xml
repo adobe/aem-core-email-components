@@ -40,7 +40,7 @@
                                                 fieldLabel="Fixed width (px)"
                                                 typeHint="Long"
                                                 required="{Boolean}false"
-                                                min="{Long}1"
+                                                min="{Long}0"
                                                 max="{Long}3840"
                                                 value="${cqDesign.defaultWidth}"
                                                 name="./fixedWidth"/>
@@ -53,12 +53,6 @@
                                                 text="Scale image to available width"
                                                 uncheckedValue="false"
                                                 value="{Boolean}true"/>
-                                            <id
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                fieldDescription="HTML ID attribute to apply to the component."
-                                                fieldLabel="ID"
-                                                name="./id"/>
                                         </items>
                                     </column>
                                 </items>
