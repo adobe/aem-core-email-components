@@ -42,7 +42,7 @@
                                                 required="{Boolean}false"
                                                 min="{Long}0"
                                                 max="{Long}3840"
-                                                value="${cqDesign.defaultWidth}"
+                                                value="${not empty cqDesign.defaultWidth ? cqDesign.defaultWidth : 1280}"
                                                 name="./fixedWidth"/>
                                             <scaleToFullWidth
                                                 jcr:primaryType="nt:unstructured"

@@ -80,7 +80,7 @@ public class ImageModel implements Image {
 
     @PostConstruct
     protected void initModel() {
-        if (Objects.isNull(fixedWidth) && Objects.nonNull(currentStyle)) {
+        if ((Objects.isNull(fixedWidth) || fixedWidth == 0L) && Objects.nonNull(currentStyle)) {
             this.fixedWidth = currentStyle.get(DEFAULT_WIDTH_PROPERTY, DEFAULT_WIDTH);
         }
     }

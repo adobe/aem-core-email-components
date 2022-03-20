@@ -39,11 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImageIT extends AuthorBaseUITest {
-    private final String imageRT = "core/email/components/image";
     private String proxyPath;
     private String testPage;
-    private String compPath;
-    private EditorPage editorPage;
 
     @BeforeEach
     public void setupBeforeEach() throws ClientException {
@@ -51,11 +48,12 @@ public class ImageIT extends AuthorBaseUITest {
         testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
                 "/templates/email-template").getSlingPath();
         // create a proxy component
+        String imageRT = "core/email/components/image";
         proxyPath = Commons.createProxyComponent(adminClient, imageRT, Commons.proxyPath, null, null);
         // add the core form container component
-        compPath = Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "image", null);
+        Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "image", null);
         // open the page in the editor
-        editorPage = new PageEditorPage(testPage);
+        EditorPage editorPage = new PageEditorPage(testPage);
         editorPage.open();
     }
 
@@ -78,7 +76,7 @@ public class ImageIT extends AuthorBaseUITest {
         assertTrue(element.isDisplayed());
         assertTrue(element.isEnabled());
         click(act, element);
-        element.sendKeys(Keys.DELETE);
+        element.sendKeys(Keys.DELETE, Keys.DELETE, Keys.DELETE, Keys.DELETE);
         element.sendKeys("2500");
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         confirmEditDialog(webDriver, act);
