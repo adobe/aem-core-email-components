@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/email-page")
+@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page")
 public class EmailPageImpl implements EmailPage {
     @ValueMapValue
     @Optional
