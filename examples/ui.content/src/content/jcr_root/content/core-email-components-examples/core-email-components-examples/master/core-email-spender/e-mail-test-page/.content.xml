@@ -7,7 +7,7 @@
         cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
         jcr:primaryType="cq:PageContent"
         jcr:title="E-Mail Test Page"
-        sling:resourceType="core/email/components/email-page"
+        sling:resourceType="core/email/components/page"
         acMapping="mapRecipient"
         acTemplateId="mailAEMContent"
         acTemplateLabel="Email delivery with AEM content"
