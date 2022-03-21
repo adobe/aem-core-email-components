@@ -14,21 +14,21 @@
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-(function() {
+(function(ns) {
     "use strict";
 
-    var PERSONALIZATION_PLUGIN_ID = "personalizationplugin",
-        CMD_INSERT_VARIABLE = "insertvariable";
+    var PERSONALIZATION_PLUGIN_ID = "personalizationplugin";
+    var CMD_INSERT_VARIABLE = "insertvariable";
 
     extendStyledTextEditor();
 
     function extendStyledTextEditor() {
-        var origFn = Dam.CFM.StyledTextEditor.prototype._start;
+        var origFn = ns.StyledTextEditor.prototype._start;
 
-        Dam.CFM.StyledTextEditor.prototype._start = function() {
+        ns.StyledTextEditor.prototype._start = function() {
             addPlugin(this);
             origFn.call(this);
-        }
+        };
     }
 
     function addPlugin(editor) {
@@ -41,4 +41,4 @@
         config.uiSettings.cui.multieditorFullscreen.toolbar.push(PERSONALIZATION_PLUGIN_ID + "#" + CMD_INSERT_VARIABLE);
     }
 
-}());
+}(window.Dam.CFM));
