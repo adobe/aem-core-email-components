@@ -43,7 +43,7 @@
                         clientlibs="cmp-email-examples.base">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_212634895490169>
-                </email-page>
+                </page>
                 <segmentation jcr:primaryType="nt:unstructured">
                     <policy_1647261804902
                         jcr:primaryType="nt:unstructured"
@@ -62,7 +62,6 @@
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1647261804900>
                 </segmentation-item>
-                </page>
             </components>
         </email>
     </core>
