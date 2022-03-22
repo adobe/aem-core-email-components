@@ -53,7 +53,7 @@ import com.day.cq.wcm.api.WCMMode;
 @Component(service = {Servlet.class},
            immediate = true)
 @SlingServletResourceTypes(
-        resourceTypes = "core/email/components/email-page",
+        resourceTypes = "core/email/components/page",
         selectors = StylesInlinerConstants.INLINE_STYLES_SELECTOR,
         extensions = "html")
 public class StylesInlinerServlet extends SlingSafeMethodsServlet {

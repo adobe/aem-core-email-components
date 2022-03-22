@@ -34,7 +34,7 @@
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_container>
                 </container>
-                <email-page jcr:primaryType="nt:unstructured">
+                <page jcr:primaryType="nt:unstructured">
                     <policy_212634895490169
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email Components Examples - Page"
@@ -62,6 +62,7 @@
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1647261804900>
                 </segmentation-item>
+                </page>
             </components>
         </email>
     </core>

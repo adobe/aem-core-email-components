@@ -52,14 +52,17 @@ package com.adobe.cq.email.core.components.internal.services;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
 
+/**
+ * Based on com.day.cq.wcm.core.impl.AuthoringUIModeServiceImpl
+ */
 @Component(
     service = { AuthoringUIModeService.class, Filter.class },
     property = {
         "sling.filter.scope=request",
-        "service.ranking:Integer=-2501",
+        "service.ranking:Integer=-2501"
     }
 )
-@ServiceDescription("Authoring UI Mode Email Service")
+@ServiceDescription("Core Email Authoring UI Mode Service")
 @Designate(ocd = AuthorModeUIConfig.class)
 public class CoreEmailAuthoringUIModeServiceImpl
     implements AuthoringUIModeService, Filter
@@ -85,6 +88,16 @@ public class CoreEmailAuthoringUIModeServiceImpl
         if (slingRequest.getAuthType() != null)
         {
             authoringUIMode = AuthoringUIMode.fromRequest(slingRequest);
+
+            //The following check if only required as a workaround, until this class is updated in AEM SP13
+            if(AuthoringUIMode.CLASSIC.equals(authoringUIMode)) {
+                Resource resource = slingRequest.getResource();
+                Resource content = resource.getChild("jcr:content");
+                if(content != null && content.isResourceType("core/email/components/page")) {
+                    return AuthoringUIMode.TOUCH;
+                }
+            }
+
             if (authoringUIMode == null) {
                 authoringUIMode = getAuthoringUIModeFromCookie(slingRequest);
             }
@@ -242,7 +255,7 @@ public class CoreEmailAuthoringUIModeServiceImpl
 
                         Resource content = resource.getChild("jcr:content");
 
-                        List<String> excludeClassicUITypes = Arrays.asList(new String[] { "wcm/designimporter/components/importerpage", "cq/personalization/components/teaserpage", "cq/personalization/components/offerproxy", "mcm/campaign/components/newsletter", "mcm/campaign/components/campaign_newsletterpage", "mcm/campaign/components/profile", "core/email/components/email-page" });
+                        List<String> excludeClassicUITypes = Arrays.asList(new String[] { "wcm/designimporter/components/importerpage", "cq/personalization/components/teaserpage", "cq/personalization/components/offerproxy", "mcm/campaign/components/newsletter", "mcm/campaign/components/campaign_newsletterpage", "mcm/campaign/components/profile", "core/email/components/page" });
 
                         boolean forceClassic = true;
                         for (String excludedType : excludeClassicUITypes) {

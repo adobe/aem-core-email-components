@@ -25,12 +25,12 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.4.0-SNAPSHOT</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.core</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Adobe Experience Manager Core Email Components Core Bundle</name>
@@ -81,8 +81,6 @@
                         <!-- Enable processing of OSGI metatype annotations -->
                         <_metatypeannotations>*</_metatypeannotations>
                         <Import-Package>
-                            com.adobe.cq.commerce.*;resolution:=optional,
-                            com.adobe.aem.wcm.seo.*;resolution:=optional,
                             javax.annotation;version=0.0.0,
                             com.day.cq.dam.api;version="[1.24,2.0)",
                             *
@@ -186,6 +184,17 @@
                                         </exclude>
                                         <exclude>
                                             com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
+                                        </exclude>
+                                        <!-- package has 90% empty methods and string parsing -->
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/request/**
+                                        </exclude>
+                                        <!-- do not test default values for interfaces -->
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/models/**
                                         </exclude>
                                     </excludes>
                                 </configuration>
@@ -437,31 +446,22 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.adobe.cq.dam</groupId>
             <artifactId>cq-dam-cfm-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient-osgi</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.adobe.cq.wcm</groupId>
             <artifactId>com.adobe.aem.wcm.seo</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
 
         <!-- Testing dependencies -->
@@ -556,27 +556,28 @@
             <version>1.5.2</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-standalone</artifactId>
             <version>2.27.2</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
             <version>2.2.11</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.13.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.adobe.cq</groupId>
+            <artifactId>core.wcm.components.core</artifactId>
+            <version>2.18.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -598,6 +599,12 @@
             <artifactId>org.apache.sling.testing.hamcrest</artifactId>
             <version>1.0.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.cq</groupId>
+            <artifactId>core.wcm.components.core</artifactId>
+            <version>2.18.0</version>
         </dependency>
 
         <dependency>
