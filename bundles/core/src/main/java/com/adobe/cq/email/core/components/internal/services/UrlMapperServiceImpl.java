@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.internal.services;
 
 import java.util.Objects;
 
+import com.day.cq.wcm.api.WCMMode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -46,19 +47,18 @@ public class UrlMapperServiceImpl implements UrlMapperService {
     @Override
     public String getMappedUrl(ResourceResolver resourceResolver, SlingHttpServletRequest request, String contentPath) {
         if (Objects.isNull(resourceResolver) || Objects.isNull(request) || StringUtils.isEmpty(contentPath)) {
-            LOG.warn("Invalid parameters: resourceResolver=" + resourceResolver + ", request=" + request + ", contentPath=" + contentPath +
-                    "; returning contentPath");
+            LOG.warn("Invalid parameters: resourceResolver={}, request={}, contentPath={}; returning contentPath", resourceResolver, request, contentPath);
             return contentPath;
         }
         String fromResourceResolver = getFromResourceResolver(resourceResolver, request, contentPath);
         if (fromResourceResolver != null) {
             return fromResourceResolver;
         }
-        String fromExternalizer = getFromExternalizer(resourceResolver, contentPath);
+        String fromExternalizer = getFromExternalizer(resourceResolver, contentPath, request);
         if (fromExternalizer != null) {
             return fromExternalizer;
         }
-        LOG.warn("Absolute URL not retrieved successfully: returning contentPath");
+        LOG.warn("Absolute URL not retrieved successfully: returning contentPath {}", contentPath);
         return contentPath;
     }
 
@@ -72,24 +72,23 @@ public class UrlMapperServiceImpl implements UrlMapperService {
             if (StringUtils.isNotEmpty(mappedUrl) && !mappedUrl.equals(contentPath)) {
                 return mappedUrl;
             }
-            return null;
         } catch (Throwable e) {
-            LOG.warn("Error retrieving absolute URL from resource resolver: " + e.getMessage(), e);
-            return null;
+            LOG.warn("Error retrieving absolute URL from resource resolver: {} ", e.getMessage(), e);
         }
+        return null;
     }
 
     @Nullable
-    private String getFromExternalizer(ResourceResolver resourceResolver, String contentPath) {
+    private String getFromExternalizer(ResourceResolver resourceResolver, String contentPath, SlingHttpServletRequest request) {
         try {
-            String externalLink = externalizer.externalLink(resourceResolver, Externalizer.LOCAL, contentPath);
+            String externalizerMode = WCMMode.DISABLED.equals(WCMMode.fromRequest(request)) ? Externalizer.PUBLISH : Externalizer.LOCAL;
+            String externalLink = externalizer.externalLink(resourceResolver, externalizerMode, contentPath);
             if (StringUtils.isNotEmpty(externalLink)) {
                 return externalLink;
             }
-            return null;
         } catch (Throwable e) {
-            LOG.warn("Error retrieving absolute URL from externalizer: " + e.getMessage(), e);
-            return null;
+            LOG.warn("Error retrieving absolute URL from externalizer: {}", e.getMessage(), e);
         }
+        return null;
     }
 }
