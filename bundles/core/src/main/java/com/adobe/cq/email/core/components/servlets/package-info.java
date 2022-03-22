@@ -18,7 +18,7 @@
  * This package defines utility classes exposed by the Adobe Experience Manager Core Email Components Bundle.
  * </p>
  */
-@Version("1.4.0")
+@Version("1.4.1")
 package com.adobe.cq.email.core.components.servlets;
 
 import org.osgi.annotation.versioning.Version;
