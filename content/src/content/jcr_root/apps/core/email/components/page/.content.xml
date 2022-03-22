@@ -7,4 +7,4 @@
     jcr:title="Email Page"
     sling:resourceSuperType="core/wcm/components/page/v3/page"
     componentGroup=".hidden"
-    designDialogPath="core/email/components/email-page/cq:design_dialog"/>
+    designDialogPath="core/email/components/page/cq:design_dialog"/>

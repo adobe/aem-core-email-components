@@ -180,7 +180,7 @@ public class CoreEmailOpenCommand
                         (!resource.isResourceType("mcm/campaign/components/newsletter")) &&
                         (!resource.isResourceType("mcm/campaign/components/campaign_newsletterpage")) &&
                         (!resource.isResourceType("mcm/campaign/components/profile")) &&
-                        (!resource.isResourceType("core/email/components/email-page")))) {
+                        (!resource.isResourceType("core/email/components/page")))) {
                     return this.authoringUIModeService.getEditorURL(AuthoringUIMode.CLASSIC) + "${path}.html";
                 }
             }
