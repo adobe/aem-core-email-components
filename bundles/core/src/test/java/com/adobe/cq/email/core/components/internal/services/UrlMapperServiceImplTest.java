@@ -84,15 +84,15 @@ class UrlMapperServiceImplTest {
         StringBuffer requestUrl = new StringBuffer(DOMAIN).append(requestUri);
         when(request.getRequestURL()).thenReturn(requestUrl);
         when(request.getRequestURI()).thenReturn(requestUri);
-        when(resourceResolver.map(any(), eq(CONTENT_PATH))).thenReturn(CONTENT_PATH);
-        when(externalizer.externalLink(eq(resourceResolver), eq(Externalizer.LOCAL), eq(CONTENT_PATH))).thenReturn(resourceUrl);
+        when(resourceResolver.map(any(), eq(CONTENT_PATH))).thenReturn(null);
+        when(externalizer.externalLink(eq(resourceResolver), eq(Externalizer.PUBLISH), eq(CONTENT_PATH))).thenReturn(resourceUrl);
         assertEquals(resourceUrl, sut.getMappedUrl(resourceResolver, request, CONTENT_PATH));
     }
 
     @Test
     void exceptionThrownByBothMethods() {
         when(request.getRequestURL()).thenThrow(new RuntimeException("Error!"));
-        when(externalizer.externalLink(eq(resourceResolver), eq(Externalizer.LOCAL), eq(CONTENT_PATH))).thenThrow(new RuntimeException(
+        when(externalizer.externalLink(eq(resourceResolver), eq(Externalizer.PUBLISH), eq(CONTENT_PATH))).thenThrow(new RuntimeException(
                 "Error!"));
         assertEquals(CONTENT_PATH, sut.getMappedUrl(resourceResolver, request, CONTENT_PATH));
     }
