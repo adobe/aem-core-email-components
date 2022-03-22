@@ -41,7 +41,7 @@
         <sly data-sly-resource="${'par0' @ resourceType=fragment.gridResourceType}"></sly>
         <sly data-sly-list="${fragment.paragraphs}">
             ${item @ context="html"}
-            <div data-sly-resource="${'par{0}' @ format=itemList.count, resourceType=fragment.gridResourceType}"></div>
+            <sly data-sly-resource="${'par{0}' @ format=itemList.count, resourceType=fragment.gridResourceType}"></sly>
         </sly>
     </div>
 </template>
