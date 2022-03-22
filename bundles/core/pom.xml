@@ -611,6 +611,11 @@
             <groupId>com.adobe.aem</groupId>
             <artifactId>uber-jar</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.adobe.cq</groupId>
+            <artifactId>core.wcm.components.core</artifactId>
+            <version>2.18.0</version>
+        </dependency>
     </dependencies>
 
 </project>

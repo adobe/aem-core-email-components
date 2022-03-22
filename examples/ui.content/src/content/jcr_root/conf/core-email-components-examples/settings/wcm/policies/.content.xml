@@ -15,7 +15,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Components Examples - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[/libs/wcm/foundation/components/responsivegrid,group:core-email,core/email/components/experiencefragment,core/email/components/container]">
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:core-email,core/email/components/experiencefragment,core/email/components/container,core/email/components/segmenation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
                 </responsivegrid>
@@ -43,6 +43,25 @@
                         clientlibs="cmp-email-examples.base">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_212634895490169>
+                </email-page>
+                <segmentation jcr:primaryType="nt:unstructured">
+                    <policy_1647261804902
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Segmentation Policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="/apps/core/email/components/segmentation-item">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1647261804902>
+                </segmentation>
+                <segmentation-item jcr:primaryType="nt:unstructured">
+                    <policy_1647261804900
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Segmentation Item Policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,core/email/components/experiencefragment,core/email/components/container,core/email/components/text]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1647261804900>
+                </segmentation-item>
                 </page>
             </components>
         </email>
