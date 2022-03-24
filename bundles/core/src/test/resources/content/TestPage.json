@@ -15,7 +15,7 @@
         "",
         ""
       ],
-      "sling:resourceType":"core/email/components/email-page",
+      "sling:resourceType":"core/email/components/page",
       "cq:lastModifiedBy":"admin",
       "hideSubItemsInNav":true,
       "referenceUrl": "https://www.test.dev",
