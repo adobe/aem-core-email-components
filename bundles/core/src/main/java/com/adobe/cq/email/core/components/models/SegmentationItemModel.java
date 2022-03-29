@@ -43,9 +43,6 @@ public class SegmentationItemModel {
         return closingACCMarkup;
     }
     public String getElseACCMarkup() {
-        if(condition == null){
-            return null;
-        }
         return elseACCMarkup;
     }
     private String openingACCMarkup;
