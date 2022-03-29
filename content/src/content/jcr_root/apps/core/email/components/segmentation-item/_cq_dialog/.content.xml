@@ -39,6 +39,12 @@
                                 fieldDescription="Add conditional statement"
                                 fieldLabel="Condition"
                                 name="./condition"/>
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                text="Default"
+                                name="./default"
+                                value="true"/>
                         </items>
                     </column>
                 </items>
