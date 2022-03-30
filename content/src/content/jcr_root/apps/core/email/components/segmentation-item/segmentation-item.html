@@ -20,4 +20,7 @@
     <sly data-sly-test="${wcmmode.edit}">${properties.condition}</sly>
     <div data-sly-resource="${@path='par', resourceType='foundation/components/parsys'}"></div>
     <sly data-sly-test="${!wcmmode.edit}">${model.closingACCMarkup}</sly>
+    <sly data-sly-test="${!wcmmode.edit && properties.default}">${model.elseACCMarkup}</sly>
+    <div data-sly-test="${properties.default}" data-sly-resource="${@path='par1', resourceType='foundation/components/parsys'}"></div>
+    <sly data-sly-test="${!wcmmode.edit && properties.default}">${model.closingACCMarkup}</sly>
 </sly>
