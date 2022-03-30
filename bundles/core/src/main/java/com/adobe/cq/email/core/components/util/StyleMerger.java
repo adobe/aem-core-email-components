@@ -96,7 +96,7 @@ public class StyleMerger {
                 styleProperties.put(propertyName, styleProperty);
                 continue;
             }
-            if (specificityComparison <= 0) {
+            if (specificityComparison > 0) {
                 styleProperties.put(propertyName, styleProperty);
             }
         }

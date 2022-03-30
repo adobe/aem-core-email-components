@@ -70,7 +70,7 @@ class StyleMergerTest {
         StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
         StyleToken styleToken = create("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;", false);
         testAllModes(elementStyle, styleToken,
-                "background-color: #ccc; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans', " +
+                "background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans', " +
                         "sans-serif;",
                 "background-color: #aaa; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; Margin: " +
                         "0px;",
@@ -129,7 +129,7 @@ class StyleMergerTest {
     void samePropertyMultipleTimes() {
         StyleToken elementStyle = create("", true);
         StyleToken styleToken = create("display: block; display: inline-block", false);
-        testAllModes(elementStyle, styleToken, "display: inline-block;", "display: inline-block;", "display: block; display: " +
+        testAllModes(elementStyle, styleToken, "display: block;", "display: inline-block;", "display: block; display: " +
                 "inline-block;");
     }
 
