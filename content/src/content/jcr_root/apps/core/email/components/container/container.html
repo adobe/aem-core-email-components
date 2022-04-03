@@ -16,20 +16,22 @@
 <sly data-sly-use.model="com.adobe.cq.email.core.components.models.ContainerModel">
     <center>
         <table class="layout" role="presentation">
+            <tbody>
             <tr>
-                <td class="layout-column ${model.colClass1}">
-                    <sly data-sly-resource="${'grid-6-6-0' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></sly>
-                </td>
-                <td class="layout-column ${model.colClass2}" data-sly-test="${model.columns > 1}">
-                    <sly data-sly-resource="${'grid-6-6-1' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></sly>
-                </td>
-                <td class="layout-column ${model.colClass3}" data-sly-test="${model.columns > 2}">
-                    <sly data-sly-resource="${'grid-6-6-2' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></sly>
-                </td>
+                <th class="layout-column ${model.colClass1}">
+                    <td data-sly-resource="${'grid-6-6-0' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
+                         data-sly-unwrap></td>
+                </th>
+                <th class="layout-column ${model.colClass2}" data-sly-test="${model.columns > 1}">
+                    <td data-sly-resource="${'grid-6-6-1' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
+                         data-sly-unwrap></td>
+                </th>
+                <th class="layout-column ${model.colClass3}" data-sly-test="${model.columns > 2}">
+                    <td data-sly-resource="${'grid-6-6-2' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
+                         data-sly-unwrap></td>
+                </th>
             </tr>
+            </tbody>
         </table>
     </center>
 </sly>
