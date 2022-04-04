@@ -54,50 +54,6 @@
     <!--/* initialize ContextHub registration */-->
     <meta id="campaignContextHub" data-register="true" data-metadata-method="POST" data-sly-test="${!head.wcmmode.disabled && wcmInit.isTouchAuthoring}" />
 
-    <!--/* initialize client context and load segments */-->
-    <script data-sly-test="${!head.wcmmode.disabled && !wcmInit.isTouchAuthoring}" type="text/javascript">
-        $(function() {
-            var ccPath = "${head.clientcontextPath @ context='scriptString'}";
-            var segmentsPath = "${head.segmentsPath @ context='scriptString'}";
-            var currentPath = "${currentPage.path @ context='scriptString'}";
-
-            CQ_Analytics.ClientContextUtils.init(ccPath, currentPath, {});
-            CQ_Analytics.SegmentMgr.loadSegments(segmentsPath);
-        });
-    </script>
-
-    <!--/* initialize client context UI and Sidekick (Classic UI only) */-->
-    <script data-sly-test="${!head.wcmmode.disabled && !wcmInit.isTouchAuthoring}" type="text/javascript">
-        (function() {
-            var cfg = ${wcmInit.undoConfig @ context='unsafe'};
-            cfg.pagePath = "${currentPage.path @ context='uri'}";
-
-            if (CQClientLibraryManager.channelCB() != "touch") {
-                cfg.enabled = ${head.wcmmode.edit @ context="scriptString"};
-                CQ.undo.UndoManager.initialize(cfg);
-                CQ.Ext.onReady(function() {
-                    CQ.undo.UndoManager.detectCachedPage((new Date()).getTime());
-                });
-            }
-        })();
-
-        $(function() {
-            var ccPath = "${head.clientcontextPath @ context='scriptString'}";
-            var segmentsPath = "${head.segmentsPath @ context='scriptString'}";
-            var currentPath = "${currentPage.path @ context='scriptString'}";
-
-            CQ_Analytics.ClientContextUtils.initUI(ccPath, currentPath, false);
-            CQ_Analytics.CampaignMgr.autoSelectCampaign("${properties.acOffer @ context='scriptString'}");
-        });
-
-        CQ.WCM.launchSidekick("${currentPage.path @ context='uri'}", {
-            propsDialog: "${wcmInit.dialogPath @ context='uri'}",
-            locked: ${currentPage.locked @ context="scriptString"}
-        });
-    </script>
-
-    <!--/* WCM initialization code end */-->
-
     <style type="text/css">
 
         /* styles to account for Outlook/Hotmail peculiarities */
