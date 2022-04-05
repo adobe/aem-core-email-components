@@ -4,4 +4,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Container Component"
     sling:resourceSuperType="core/wcm/components/container/v1/container"
-    componentGroup=".hidden"/>
+    componentGroup="core-email"/>
