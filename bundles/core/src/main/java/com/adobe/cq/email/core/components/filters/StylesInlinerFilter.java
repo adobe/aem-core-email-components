@@ -32,6 +32,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.caconfig.ConfigurationBuilder;
@@ -59,9 +60,8 @@ import com.day.cq.wcm.api.WCMMode;
 )
 public class StylesInlinerFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(CssInliner.class);
-    static final String JCR_CONTENT = "jcr:content";
-    static final String JCR_NODE_EXPECTED_RESOURCE_TYPE = "core/email/components/page";
-    static final String GET_RENDERED_HTML_PARAMETER = "get_rendered_html";
+    static final String RESOURCE_TYPE = "core/email/components/page";
+    static final String PROCESSED_ATTRIBUTE = "styles_filter_processed";
 
     @Reference
     private transient RequestResponseFactory requestResponseFactory;
@@ -82,12 +82,12 @@ public class StylesInlinerFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         SlingHttpServletRequest request = (SlingHttpServletRequest) servletRequest;
-        boolean getRenderedHtml = retrieveGetRenderedHtmlAttribute(request);
+        boolean alreadyProcessed = hasBeenProcessed(request);
         Resource resource = request.getResource();
-        Resource jcrContentNode = resource.getChild(JCR_CONTENT);
-        if (Objects.isNull(jcrContentNode) || !jcrContentNode.getResourceType().equals(JCR_NODE_EXPECTED_RESOURCE_TYPE) ||
+        Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
+        if (Objects.isNull(contentResource) || !contentResource.getResourceType().equals(RESOURCE_TYPE) ||
                 !WCMMode.DISABLED.equals(WCMMode.fromRequest(request)) ||
-                getRenderedHtml) {
+                alreadyProcessed) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -95,7 +95,7 @@ public class StylesInlinerFilter implements Filter {
         String pagePath = resource.getPath();
         HttpServletRequest req = requestResponseFactory.createRequest("GET", pagePath + ".html",
                 params);
-        req.setAttribute(GET_RENDERED_HTML_PARAMETER, true);
+        req.setAttribute(PROCESSED_ATTRIBUTE, true);
         WCMMode.DISABLED.toRequest(req);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         HttpServletResponse response = requestResponseFactory.createResponse(out);
@@ -129,9 +129,9 @@ public class StylesInlinerFilter implements Filter {
         this.stylesInlinerService = stylesInlinerService;
     }
 
-    private boolean retrieveGetRenderedHtmlAttribute(SlingHttpServletRequest request) {
+    private boolean hasBeenProcessed(SlingHttpServletRequest request) {
         try {
-            Object parameter = request.getAttribute(GET_RENDERED_HTML_PARAMETER);
+            Object parameter = request.getAttribute(PROCESSED_ATTRIBUTE);
             if (Objects.isNull(parameter)) {
                 return false;
             }

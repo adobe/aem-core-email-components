@@ -99,7 +99,7 @@ class StylesInlinerFilterTest {
         when(request.getResource()).thenReturn(resource);
         when(resource.getPath()).thenReturn("TEST_PATH");
         when(resource.getChild(eq(StylesInlinerFilter.JCR_CONTENT))).thenReturn(jcrContentNode);
-        when(jcrContentNode.getResourceType()).thenReturn(StylesInlinerFilter.JCR_NODE_EXPECTED_RESOURCE_TYPE);
+        when(jcrContentNode.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);
         doAnswer(i -> {
@@ -142,7 +142,7 @@ class StylesInlinerFilterTest {
     @MockitoSettings(strictness = Strictness.LENIENT)
     void noConfig_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
         when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(null);
-        when(request.getAttribute(StylesInlinerFilter.GET_RENDERED_HTML_PARAMETER)).thenReturn(true);
+        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
         verifyZeroInteractions(printWriter);
@@ -161,7 +161,7 @@ class StylesInlinerFilterTest {
     @MockitoSettings(strictness = Strictness.LENIENT)
     void noStyleMergerMode_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
         when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(request.getAttribute(StylesInlinerFilter.GET_RENDERED_HTML_PARAMETER)).thenReturn(true);
+        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(null));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
@@ -181,7 +181,7 @@ class StylesInlinerFilterTest {
     @MockitoSettings(strictness = Strictness.LENIENT)
     void processingCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
         when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(request.getAttribute(StylesInlinerFilter.GET_RENDERED_HTML_PARAMETER)).thenReturn(true);
+        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.PROCESS_SPECIFICITY));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
@@ -201,7 +201,7 @@ class StylesInlinerFilterTest {
     @MockitoSettings(strictness = Strictness.LENIENT)
     void ignoringCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
         when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(request.getAttribute(StylesInlinerFilter.GET_RENDERED_HTML_PARAMETER)).thenReturn(true);
+        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.IGNORE_SPECIFICITY));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
@@ -221,7 +221,7 @@ class StylesInlinerFilterTest {
     @MockitoSettings(strictness = Strictness.LENIENT)
     void alwaysAppendingCssProperties_GetRenderedHtmlAttributeInRequest() throws Exception {
         when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(request.getAttribute(StylesInlinerFilter.GET_RENDERED_HTML_PARAMETER)).thenReturn(true);
+        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.ALWAYS_APPEND));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
