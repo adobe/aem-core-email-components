@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
@@ -98,7 +99,7 @@ class StylesInlinerFilterTest {
         );
         when(request.getResource()).thenReturn(resource);
         when(resource.getPath()).thenReturn("TEST_PATH");
-        when(resource.getChild(eq(StylesInlinerFilter.JCR_CONTENT))).thenReturn(jcrContentNode);
+        when(resource.getChild(eq(JcrConstants.JCR_CONTENT))).thenReturn(jcrContentNode);
         when(jcrContentNode.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);
