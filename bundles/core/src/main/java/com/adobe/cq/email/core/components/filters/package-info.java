@@ -13,12 +13,4 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-/**
- * <p>
- * This package defines utility classes exposed by the Adobe Experience Manager Core Email Components Bundle.
- * </p>
- */
-@Version("1.4.1")
-package com.adobe.cq.email.core.components.servlets;
-
-import org.osgi.annotation.versioning.Version;
+package com.adobe.cq.email.core.components.filters;
