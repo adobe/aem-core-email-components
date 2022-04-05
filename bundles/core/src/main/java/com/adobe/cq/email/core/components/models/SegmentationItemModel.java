@@ -42,9 +42,12 @@ public class SegmentationItemModel {
         }
         return closingACCMarkup;
     }
-
+    public String getElseACCMarkup() {
+        return elseACCMarkup;
+    }
     private String openingACCMarkup;
     private String closingACCMarkup = "<% } %>";
+    private String elseACCMarkup = "<% else { %>";
 
     @PostConstruct
     private void initModel() {
