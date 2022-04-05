@@ -19,7 +19,6 @@
       data-sly-use.emailPage="com.adobe.cq.email.core.components.models.EmailPage"
       data-sly-use.head="head.html"
       data-sly-use.footer="footer.html"
-      data-sly-use.redirect="redirect.html"
       data-sly-use.clientlib="core/wcm/components/commons/v1/templates/clientlib.html"
       data-sly-use.clientLibs="/libs/granite/sightly/templates/clientlib.html">
 <sly data-sly-call="${clientlibs.css @ categories='cmp-email-examples.base'}"></sly>
@@ -27,20 +26,6 @@
 <body class="${page.cssClassNames}"
       id="${page.id}"
       data-cmp-data-layer-enabled="${page.data ? true : false}">
-<script data-sly-test.dataLayerEnabled="${page.data}">
-    window.adobeDataLayer = window.adobeDataLayer || [];
-    adobeDataLayer.push({
-        page: JSON.parse("${page.data.json @ context='scriptString'}"),
-        event:'cmp:show',
-        eventInfo: {
-            path: 'page.${page.id @ context="scriptString"}'
-        }
-    });
-</script>
-<sly data-sly-test.isRedirectPage="${page.redirectTarget && (wcmmode.edit || wcmmode.preview)}"
-     data-sly-call="${redirect.redirect @ redirectTarget = page.redirectTarget}"></sly>
-<sly data-sly-test="${!isRedirectPage}">
-    <sly data-sly-include="body.skiptomaincontent.html"></sly>
     <sly data-sly-test="${emailPage.statusMessage}">
         <div class="coral-Alert coral-Alert--${emailPage.alertType} coral--light" style="margin:0; border-radius:0; -moz-border-radius:0; -webkit-border-radius:0;">
             <i class="coral-Alert-typeIcon coral-Icon coral-Icon--sizeS coral-Icon--adobeCampaign"></i>
@@ -50,7 +35,6 @@
     </sly>
     <sly data-sly-include="body.html"></sly>
     <sly data-sly-call="${footer.footer @ page = page, pwa = pwa}"></sly>
-</sly>
 <sly data-sly-test="${wcmmode.edit}" data-sly-call="${clientlib.all @ categories='cq.authoring.editor.plugin.campaign'}"></sly>
 <sly data-sly-call="${clientlibs.js @ categories='cmp-email-examples.base'}"/>
 </body>
