@@ -15,12 +15,10 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import org.osgi.annotation.versioning.ConsumerType;
-
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.wcm.core.components.models.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.osgi.annotation.versioning.ConsumerType;
 
 @ConsumerType
 public interface EmailPage {
@@ -74,25 +72,5 @@ public interface EmailPage {
      */
     default String getAlertType() {
         return "";
-    }
-
-    /**
-     * Retrieves the style merger mode.
-     *
-     * @return the style merger mode type as a {@link String}.
-     * @since com.adobe.cq.email.core.components.models 0.4.0; marked <code>default</code> in 0.4.0
-     */
-    default String getStyleMergerMode() {
-        return StyleMergerMode.PROCESS_SPECIFICITY.name();
-    }
-
-    /**
-     * Retrieves the HTML sanitizing mode.
-     *
-     * @return the HTML sanitizing mode type as a {@link String}.
-     * @since com.adobe.cq.email.core.components.models 0.4.0; marked <code>default</code> in 0.4.0
-     */
-    default String getHtmlSanitizingMode() {
-        return HtmlSanitizingMode.FULL.name();
     }
 }
