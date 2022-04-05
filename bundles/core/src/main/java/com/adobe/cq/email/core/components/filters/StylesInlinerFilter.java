@@ -18,7 +18,6 @@ package com.adobe.cq.email.core.components.filters;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +34,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.caconfig.ConfigurationBuilder;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.engine.SlingRequestProcessor;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
 import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.internal.css.CssInliner;
@@ -62,6 +60,8 @@ public class StylesInlinerFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(CssInliner.class);
     static final String RESOURCE_TYPE = "core/email/components/page";
     static final String PROCESSED_ATTRIBUTE = "styles_filter_processed";
+    static final String STYLE_MERGER_MODE_PROPERTY = "styleMergerMode";
+    static final String HTML_SANITIZING_MODE_PROPERTY = "htmlSanitizingMode";
 
     @Reference
     private transient RequestResponseFactory requestResponseFactory;
@@ -101,11 +101,10 @@ public class StylesInlinerFilter implements Filter {
         HttpServletResponse response = requestResponseFactory.createResponse(out);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         requestProcessor.processRequest(req, response, request.getResourceResolver());
-        StylesInlinerContextAwareConfiguration configuration = getConfiguration(resource);
+        StyleInlinerConfig config = getConfig(contentResource);
         String htmlWithInlineStyles =
                 stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        StyleMergerMode.getByValue(configuration.stylesMergingMode()),
-                        HtmlSanitizingMode.getByValue(configuration.htmlSanitizingMode()));
+                        config.getStyleMergerMode(), config.getHtmlSanitizingMode());
         servletResponse.setContentType("text/html");
         servletResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter pw = servletResponse.getWriter();
@@ -144,33 +143,36 @@ public class StylesInlinerFilter implements Filter {
         }
     }
 
-    private StylesInlinerContextAwareConfiguration getConfiguration(Resource resource) {
-        StylesInlinerContextAwareConfiguration fallback = new StylesInlinerContextAwareConfiguration() {
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return StylesInlinerContextAwareConfiguration.class;
-            }
-
-            @Override
-            public String stylesMergingMode() {
-                return null;
-            }
-
-            @Override
-            public String htmlSanitizingMode() {
-                return null;
-            }
-        };
+    private StyleInlinerConfig getConfig(Resource contentResource) {
+        StyleInlinerConfig fallback = new StyleInlinerConfig(StyleMergerMode.PROCESS_SPECIFICITY, HtmlSanitizingMode.FULL);
         try {
-            ConfigurationBuilder configurationBuilder = resource.adaptTo(ConfigurationBuilder.class);
-            if (Objects.isNull(configurationBuilder)) {
-                return fallback;
-            }
-            return configurationBuilder.as(StylesInlinerContextAwareConfiguration.class);
+            ValueMap valueMap = contentResource.getValueMap();
+            String styleMergerMode = valueMap.get(STYLE_MERGER_MODE_PROPERTY, String.class);
+            String htmlSanitizingMode = valueMap.get(HTML_SANITIZING_MODE_PROPERTY, String.class);
+            return new StyleInlinerConfig(StyleMergerMode.getByValue(styleMergerMode), HtmlSanitizingMode.getByValue(htmlSanitizingMode));
         } catch (Throwable e) {
-            LOG.warn("Error retrieving configuration: " + e.getMessage(), e);
+            LOG.warn("Error retrieving Style Inliner config: " + e.getMessage(), e);
         }
         return fallback;
+    }
+
+    private static class StyleInlinerConfig {
+        private final StyleMergerMode styleMergerMode;
+        private final HtmlSanitizingMode htmlSanitizingMode;
+
+        public StyleInlinerConfig(StyleMergerMode styleMergerMode,
+                                  HtmlSanitizingMode htmlSanitizingMode) {
+            this.styleMergerMode = styleMergerMode;
+            this.htmlSanitizingMode = htmlSanitizingMode;
+        }
+
+        public StyleMergerMode getStyleMergerMode() {
+            return styleMergerMode;
+        }
+
+        public HtmlSanitizingMode getHtmlSanitizingMode() {
+            return htmlSanitizingMode;
+        }
     }
 
 }

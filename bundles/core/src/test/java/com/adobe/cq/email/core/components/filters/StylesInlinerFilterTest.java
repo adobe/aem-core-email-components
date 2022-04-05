@@ -18,8 +18,6 @@ package com.adobe.cq.email.core.components.filters;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +29,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.caconfig.ConfigurationBuilder;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.engine.SlingRequestProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +39,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import com.adobe.cq.email.core.components.config.StylesInlinerContextAwareConfiguration;
 import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
@@ -75,9 +72,9 @@ class StylesInlinerFilterTest {
     @Mock
     Resource resource;
     @Mock
-    Resource jcrContentNode;
+    Resource contentResource;
     @Mock
-    ConfigurationBuilder configurationBuilder;
+    ValueMap valueMap;
     @Mock
     SlingHttpServletRequest request;
     @Mock
@@ -99,8 +96,9 @@ class StylesInlinerFilterTest {
         );
         when(request.getResource()).thenReturn(resource);
         when(resource.getPath()).thenReturn("TEST_PATH");
-        when(resource.getChild(eq(JcrConstants.JCR_CONTENT))).thenReturn(jcrContentNode);
-        when(jcrContentNode.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
+        when(resource.getChild(eq(JcrConstants.JCR_CONTENT))).thenReturn(contentResource);
+        when(contentResource.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
+        when(contentResource.getValueMap()).thenReturn(valueMap);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);
         doAnswer(i -> {
@@ -133,7 +131,8 @@ class StylesInlinerFilterTest {
 
     @Test
     void noConfig() throws ServletException, IOException {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(null);
         sut.doFilter(request, resp, filterChain);
         verifyZeroInteractions(filterChain);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
@@ -142,7 +141,8 @@ class StylesInlinerFilterTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void noConfig_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(null);
         when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
@@ -151,8 +151,9 @@ class StylesInlinerFilterTest {
 
     @Test
     void noStyleMergerMode() throws ServletException, IOException {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(null));
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         sut.doFilter(request, resp, filterChain);
         verifyZeroInteractions(filterChain);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
@@ -161,9 +162,10 @@ class StylesInlinerFilterTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void noStyleMergerMode_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(null));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
         verifyZeroInteractions(printWriter);
@@ -171,8 +173,10 @@ class StylesInlinerFilterTest {
 
     @Test
     void processingCssSpecificity() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.PROCESS_SPECIFICITY));
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.PROCESS_SPECIFICITY.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         sut.doFilter(request, resp, filterChain);
         verifyZeroInteractions(filterChain);
         verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
@@ -181,9 +185,11 @@ class StylesInlinerFilterTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void processingCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.PROCESS_SPECIFICITY.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.PROCESS_SPECIFICITY));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
         verifyZeroInteractions(printWriter);
@@ -191,8 +197,10 @@ class StylesInlinerFilterTest {
 
     @Test
     void ignoringCssSpecificity() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.IGNORE_SPECIFICITY));
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.IGNORE_SPECIFICITY.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         sut.doFilter(request, resp, filterChain);
         verifyZeroInteractions(filterChain);
         verify(printWriter).write(eq(OUTPUT_IGNORING_CSS_SPECIFICITY));
@@ -201,9 +209,11 @@ class StylesInlinerFilterTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void ignoringCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.IGNORE_SPECIFICITY.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.IGNORE_SPECIFICITY));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
         verifyZeroInteractions(printWriter);
@@ -211,8 +221,10 @@ class StylesInlinerFilterTest {
 
     @Test
     void alwaysAppendingCssProperties() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.ALWAYS_APPEND));
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.ALWAYS_APPEND.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         sut.doFilter(request, resp, filterChain);
         verifyZeroInteractions(filterChain);
         verify(printWriter).write(eq(OUTPUT_ALWAYS_APPENDING_CSS_PROPERTIES));
@@ -221,30 +233,14 @@ class StylesInlinerFilterTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void alwaysAppendingCssProperties_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(resource.adaptTo(eq(ConfigurationBuilder.class))).thenReturn(configurationBuilder);
+        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
+                StyleMergerMode.ALWAYS_APPEND.name());
+        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
+                HtmlSanitizingMode.FULL.name());
         when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        when(configurationBuilder.as(StylesInlinerContextAwareConfiguration.class)).thenReturn(create(StyleMergerMode.ALWAYS_APPEND));
         sut.doFilter(request, resp, filterChain);
         verify(filterChain).doFilter(eq(request), eq(resp));
         verifyZeroInteractions(printWriter);
     }
 
-    private StylesInlinerContextAwareConfiguration create(StyleMergerMode mode) {
-        return new StylesInlinerContextAwareConfiguration() {
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return StylesInlinerContextAwareConfiguration.class;
-            }
-
-            @Override
-            public String stylesMergingMode() {
-                return Objects.isNull(mode) ? null : mode.name();
-            }
-
-            @Override
-            public String htmlSanitizingMode() {
-                return HtmlSanitizingMode.FULL.name();
-            }
-        };
-    }
 }
