@@ -11,9 +11,9 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<div data-sly-use.tabs="com.adobe.cq.wcm.core.components.models.Tabs"
+~ limitations under the License.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
+<div data-sly-unwrap="${wcmmode.disabled}" data-sly-use.tabs="com.adobe.cq.wcm.core.components.models.Tabs"
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
      data-panelcontainer="${wcmmode.edit && 'tabs'}"
      id="${tabs.id}"
@@ -35,7 +35,7 @@
             tabindex="${isActive ? '0' : '-1'}"
             data-cmp-hook-tabs="tab">${tab.title}</li>
     </ol>
-    <div data-sly-repeat.item="${tabs.items}"
+    <div data-sly-unwrap="${wcmmode.disabled}" data-sly-repeat.item="${tabs.items}"
          data-sly-resource="${item.name @ decorationTagName='div'}"
          id="${item.id}-tabpanel"
          role="tabpanel"
