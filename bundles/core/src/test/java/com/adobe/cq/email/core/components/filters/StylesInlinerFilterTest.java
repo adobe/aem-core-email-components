@@ -45,6 +45,7 @@ import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
 import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
+import com.day.crx.JcrConstants;
 import com.drew.lang.Charsets;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -98,7 +99,7 @@ class StylesInlinerFilterTest {
         );
         when(request.getResource()).thenReturn(resource);
         when(resource.getPath()).thenReturn("TEST_PATH");
-        when(resource.getChild(eq(StylesInlinerFilter.JCR_CONTENT))).thenReturn(jcrContentNode);
+        when(resource.getChild(eq(JcrConstants.JCR_CONTENT))).thenReturn(jcrContentNode);
         when(jcrContentNode.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);

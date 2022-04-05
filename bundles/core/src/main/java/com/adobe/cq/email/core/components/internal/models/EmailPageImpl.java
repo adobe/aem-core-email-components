@@ -16,6 +16,20 @@
 package com.adobe.cq.email.core.components.internal.models;
 
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
+import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.apache.sling.models.factory.ModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.adobe.cq.email.core.components.models.EmailPage;
 import com.adobe.cq.mcm.campaign.LinkingStatus;
 import com.adobe.cq.mcm.campaign.LinkingStatusService;
@@ -31,26 +45,24 @@ import com.day.cq.mcm.campaign.StatusService;
 import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.webservicesupport.Configuration;
 
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
-import org.apache.sling.models.annotations.injectorspecific.Self;
-import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.apache.sling.models.factory.ModelFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page")
+@Model(adaptables = {SlingHttpServletRequest.class, Resource.class},
+       adapters = {EmailPage.class},
+       resourceType = "core/email/components/page")
 public class EmailPageImpl implements EmailPage {
     @ValueMapValue
     @Optional
     @Default(values = "")
     private String referenceUrl;
+
+    @ValueMapValue
+    @Optional
+    @Default(values = "PROCESS_SPECIFICITY")
+    private String styleMergerMode;
+
+    @ValueMapValue
+    @Optional
+    @Default(values = "FULL")
+    private String htmlSanitizingMode;
 
     @Self
     protected SlingHttpServletRequest request;
@@ -103,6 +115,7 @@ public class EmailPageImpl implements EmailPage {
 
     /**
      * Get the wcm core page.
+     *
      * @return current wcm core page
      */
     @Override
@@ -112,7 +125,8 @@ public class EmailPageImpl implements EmailPage {
 
     /**
      * Get the reference url for links.
-     * @return  reference url
+     *
+     * @return reference url
      */
     @Override
     public String getReferenceUrl() {
@@ -132,6 +146,16 @@ public class EmailPageImpl implements EmailPage {
     @Override
     public String getAlertType() {
         return alertType;
+    }
+
+    @Override
+    public String getStyleMergerMode() {
+        return styleMergerMode;
+    }
+
+    @Override
+    public String getHtmlSanitizingMode() {
+        return htmlSanitizingMode;
     }
 
     private void initConnector() {
