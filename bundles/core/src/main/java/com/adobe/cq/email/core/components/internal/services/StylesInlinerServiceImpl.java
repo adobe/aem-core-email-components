@@ -35,8 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.exceptions.StylesInlinerException;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
@@ -73,8 +71,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
     private static final StyleSpecificity STYLE_SPECIFICITY = new StyleSpecificity(1, 0, 0, 0);
 
     @Override
-    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode,
-                                          HtmlSanitizingMode htmlSanitizingMode) {
+    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html) {
         try {
             Document doc = Jsoup.parse(html);
             doc.outputSettings().prettyPrint(false);
@@ -91,8 +88,8 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                     populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
                 }
             }
-            HtmlSanitizer.sanitizeDocument(htmlSanitizingMode, doc);
-            applyStyles(doc, styleTokens, styleMergerMode);
+            HtmlSanitizer.sanitizeDocument(doc);
+            applyStyles(doc, styleTokens);
             writeStyleTag(doc, styleSb, unInlinableStyleTokens);
             return doc.outerHtml();
         } catch (Throwable e) {
@@ -151,7 +148,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         return styleToken;
     }
 
-    private void applyStyles(Document document, List<StyleToken> styleTokens, StyleMergerMode styleMergerMode) {
+    private void applyStyles(Document document, List<StyleToken> styleTokens) {
         for (StyleToken styleToken : styleTokens) {
             String elementSelector = styleToken.getSelector();
             for (Element elementToApply : document.select(elementSelector)) {
@@ -163,7 +160,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 StyleToken currentElement = StyleTokenFactory.create(elementSelector);
                 currentElement.setSpecificity(STYLE_SPECIFICITY);
                 StyleTokenFactory.addProperties(currentElement, currentElementStyle);
-                String style = StyleMerger.merge(currentElement, styleToken, styleMergerMode);
+                String style = StyleMerger.merge(currentElement, styleToken);
                 if (StringUtils.isNotEmpty(style)) {
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
                 }

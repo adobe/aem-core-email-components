@@ -30,8 +30,6 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-
 public class HtmlSanitizer {
     private static final String XSS_TAGS_RESOURCE = "sanitizer/xss_tags.txt";
     private static final String XSS_EVENTS_RESOURCE = "sanitizer/xss_events.txt";
@@ -39,33 +37,23 @@ public class HtmlSanitizer {
     private static final Logger LOG = LoggerFactory.getLogger(HtmlSanitizer.class.getName());
 
 
-    public static String sanitizeHtml(HtmlSanitizingMode mode, String html) {
+    public static String sanitizeHtml(String html) {
         if (StringUtils.isEmpty(html)) {
             return html;
         }
-        if (Objects.isNull(mode)) {
-            mode = HtmlSanitizingMode.FULL;
-        }
-        Document document = sanitizeDocument(mode, Jsoup.parse(html));
+        Document document = sanitizeDocument(Jsoup.parse(html));
         if (Objects.isNull(document)) {
             return null;
         }
         return document.outerHtml();
     }
 
-    public static Document sanitizeDocument(HtmlSanitizingMode mode, Document parsed) {
+    public static Document sanitizeDocument(Document parsed) {
         if (Objects.isNull(parsed)) {
             return null;
         }
-        if (HtmlSanitizingMode.NONE.equals(mode)) {
-            return parsed;
-        }
-        if (HtmlSanitizingMode.FULL.equals(mode) || HtmlSanitizingMode.REMOVE_SCRIPT_TAGS_ONLY.equals(mode)) {
-            parsed.select("script").remove();
-        }
-        if (HtmlSanitizingMode.FULL.equals(mode)) {
-            removeXssEvents(parsed);
-        }
+        parsed.select("script").remove();
+        removeXssEvents(parsed);
         return parsed;
     }
 
