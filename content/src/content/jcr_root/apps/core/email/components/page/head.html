@@ -15,7 +15,6 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <template data-sly-template.head="${ @ page, pwa }"
           data-sly-use.headlibRenderer="headlibs.html"
-          data-sly-use.clientLibs="/libs/granite/sightly/templates/clientlib.html"
           data-sly-use.headResources="head.resources.html">
     <meta charset="UTF-8">
     <title>${page.title}${page.brandSlug ? ' | ' : ''}${page.brandSlug}</title>
@@ -25,15 +24,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta data-sly-test="${page.robotsTags}" name="robots" content="${page.robotsTags @ join=', '}">
 
-    <sly data-sly-call="${clientLibs.css @ categories='cmp-email-examples.base'}"></sly>
-    <sly data-sly-call="${clientLibs.all @ categories='jquery,cq.authoring.page,cq.shared'}"></sly>
-
     <sly data-sly-test="${pwa.enabled}">
         <link rel="manifest" href="${pwa.manifestPath}" crossorigin="use-credentials"/>
         <meta name="theme-color" content="${pwa.themeColor}"/>
         <link rel="apple-touch-icon" href="${pwa.iconPath}"/>
         <sly data-sly-use.clientlib="core/wcm/components/commons/v1/templates/clientlib.html"
-             data-sly-call="${clientlib.css @ categories='core.wcm.components.page.v2.pwa'}"></sly>
+             data-sly-call="${clientlib.css @ categories=['core.wcm.components.page.v2.pwa', 'cmp-email-examples.base']}"></sly>
         <meta name="cq:sw_path" content="${pwa.serviceWorkerPath @ context ='text'}"/>
     </sly>
     <sly data-sly-include="head.links.html"></sly>
@@ -46,97 +42,15 @@
                                 clientLibCategoriesJsHead = page.clientLibCategoriesJsHead,
                                 hasCloudconfigSupport     = page.hasCloudconfigSupport}"></sly>
     <sly data-sly-test.appResourcesPath=${page.appResourcesPath} data-sly-call="${headResources.favicons @ path = appResourcesPath}"></sly>
-    <sly data-sly-list="${page.htmlPageItems}"><script data-sly-test="${item.location.name == 'header'}"
-                                                       data-sly-element="${item.element.name @ context='unsafe'}" data-sly-attribute="${item.attributes}"></script>
+    <sly data-sly-list="${page.htmlPageItems}">
+        <script data-sly-test="${item.location.name == 'header'}"
+                data-sly-element="${item.element.name @ context='unsafe'}" data-sly-attribute="${item.attributes}"></script>
     </sly>
 
-    <meta name="startContextHub" content="here"/>
     <!--/* initialize ContextHub registration */-->
-    <meta id="campaignContextHub" data-register="true" data-metadata-method="POST" data-sly-test="${!head.wcmmode.disabled && wcmInit.isTouchAuthoring}" />
+    <meta id="campaignContextHub" data-register="true" data-metadata-method="POST"
+          data-sly-test="${!wcmmode.disabled}"/>
 
-    <style type="text/css">
-
-        /* styles to account for Outlook/Hotmail peculiarities */
-
-        .ExternalClass {
-            width:100%;
-        }
-
-        .ExternalClass,
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td,
-        .ExternalClass div {
-            line-height: 100%;
-        }
-
-        table {
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
-
-        img {
-            -ms-interpolation-mode: bicubic;
-        }
-
-        /* triggers "view in browser" link in Outlook */
-
-        #outlook a {
-            padding: 0;
-        }
-
-        /* template styles */
-
-        .ac-content-cell img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        p {
-            margin: 0;
-        }
-
-        .ac-content-cell p {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* styles for responsive layout */
-
-        @media only screen and (max-width: 480px) {
-
-            #ac-body-cell {
-                padding: 10px !important;
-            }
-
-            #ac-content-table {
-                max-width: 600px !important;
-                width: 100% !important;
-            }
-
-            .ac-content-cell img {
-                width: 100% !important;
-            }
-
-            .ac-column-cell {
-                display: block !important;
-                width: auto !important;
-            }
-
-        }
-
-    </style>
-
-    <style type="text/css" data-sly-test="${!head.wcmmode.disabled}">
-
-        .ac-content-cell img.cq-placeholder {
-            height: 2.875rem;
-        }
-
-    </style>
-
-    <meta data-sly-test="${!head.wcmmode.disabled && wcmInit.isTouchAuthoring}" data-sly-resource="${'contexthub' @ resourceType='granite/contexthub/components/contexthub'}" data-sly-unwrap></meta>
-
-    <meta name="endContextHub" content="here"/>
+    <meta data-sly-test="${!wcmmode.disabled}"
+          data-sly-resource="${'contexthub' @ resourceType='granite/contexthub/components/contexthub'}" data-sly-unwrap/>
 </template>
