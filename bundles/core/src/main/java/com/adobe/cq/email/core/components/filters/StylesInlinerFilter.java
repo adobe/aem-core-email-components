@@ -42,6 +42,7 @@ import com.day.cq.wcm.api.WCMMode;
         service = Filter.class,
         property = {
                 "sling.filter.scope=request",
+                "sling.filter.scope=include",
                 "service.ranking:Integer=-2502",
                 "sling.filter.extensions=json",
                 "sling.filter.extensions=html"
@@ -105,10 +106,12 @@ public class StylesInlinerFilter implements Filter {
      */
     protected boolean process(ServletRequest request, ServletResponse response, InlinerResponseWrapper wrapper) throws IOException {
         boolean touched = false;
+        LOG.trace("wcmmode: {}", WCMMode.fromRequest(request));
         if (WCMMode.EDIT != WCMMode.fromRequest(request) && request instanceof SlingHttpServletRequest && isValidContentType(response)) {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
-            Resource resource = slingRequest.getResource();
+            LOG.trace("Resource: {}", slingRequest.getResource().getPath());
+            LOG.trace("ResourceType: {}", slingRequest.getResource().getResourceType());
             String content = null;
             if (wrapper.getResponseAsString() != null) {
                 content = wrapper.getResponseAsString();
