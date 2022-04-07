@@ -34,26 +34,23 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.internal.css.CssInliner;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.day.cq.wcm.api.WCMMode;
 
 @Component(
         service = Filter.class,
         property = {
-                "sling.filter.scope=request",
-                "sling.filter.scope=include",
-                "service.ranking:Integer=-2502",
-                "sling.filter.extensions=json",
-                "sling.filter.extensions=html"
+            "service.ranking:Integer=-2502",
+            "sling.filter.extensions=json",
+            "sling.filter.extensions=html",
+            "sling.filter.pattern=/content/campaigns/.*",
+            "sling.filter.scope=include",
+            "sling.filter.selectors=campaign",
+            "sling.filter.selectors=content"
         }
 )
 public class StylesInlinerFilter implements Filter {
-    private static final Logger LOG = LoggerFactory.getLogger(CssInliner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerFilter.class);
     static final String RESOURCE_TYPE = "core/email/components/page";
-    static final String PROCESSED_ATTRIBUTE = "styles_filter_processed";
-    static final String STYLE_MERGER_MODE_PROPERTY = "styleMergerMode";
-    static final String HTML_SANITIZING_MODE_PROPERTY = "htmlSanitizingMode";
 
     private static final List<String> CONTENT_TYPES = new ArrayList<>();
     static {
@@ -87,7 +84,7 @@ public class StylesInlinerFilter implements Filter {
             touched = process(request, response, wrapper);
         }
         if (!touched) {
-            response.getOutputStream().write(wrapper.getResponseAsBytes());
+            response.getWriter().write(wrapper.getResponseAsString());
         }
     }
 
@@ -106,22 +103,26 @@ public class StylesInlinerFilter implements Filter {
      */
     protected boolean process(ServletRequest request, ServletResponse response, InlinerResponseWrapper wrapper) throws IOException {
         boolean touched = false;
-        LOG.trace("wcmmode: {}", WCMMode.fromRequest(request));
-        if (WCMMode.EDIT != WCMMode.fromRequest(request) && request instanceof SlingHttpServletRequest && isValidContentType(response)) {
+        if (request instanceof SlingHttpServletRequest && isValidContent(response)) {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
-            LOG.trace("Resource: {}", slingRequest.getResource().getPath());
-            LOG.trace("ResourceType: {}", slingRequest.getResource().getResourceType());
-            String content = null;
-            if (wrapper.getResponseAsString() != null) {
-                content = wrapper.getResponseAsString();
+            Resource resource = slingRequest.getResource();
+            if (StringUtils.startsWith(resource.getPath(), "/content/campaigns/") && resource.isResourceType("core/email/components/page")) {
+                LOG.trace("Resource: {}", slingRequest.getResource().getPath());
+                LOG.trace("ResourceType: {}", slingRequest.getResource().getResourceType());
+                String content = null;
+                if (wrapper.getResponseAsString() != null) {
+                    content = wrapper.getResponseAsString();
+                }
+                String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content);
+                LOG.trace("Replaced content. New response: {}.", replacedContent);
+                response.getWriter().write(replacedContent);
+                response.getWriter().close();
+                touched = true;
+                LOG.debug("Processing time: {} ms.", System.currentTimeMillis() - startTime);
+            } else {
+                LOG.trace("Path {} is not processed since it is not a campaign path.", resource.getPath());
             }
-            String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content);
-            LOG.trace("Replaced content. New response: {}.", replacedContent);
-            response.getWriter().write(replacedContent);
-            response.getWriter().close();
-            touched = true;
-            LOG.debug("Processing time: {} ms.", System.currentTimeMillis() - startTime);
         } else {
             LOG.debug("Request is not a SlingHttpServletRequest or content type {} is not valid.", response.getContentType());
         }
@@ -133,7 +134,7 @@ public class StylesInlinerFilter implements Filter {
      * @param response  response object
      * @return          true if correct - we do not process digital files
      */
-    private boolean isValidContentType(ServletResponse response) {
+    private boolean isValidContent(ServletResponse response) {
         String contentType = response.getContentType();
         boolean returnValue = false;
         if (StringUtils.isNotEmpty(contentType)) {
