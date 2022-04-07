@@ -17,41 +17,84 @@ package com.adobe.cq.email.core.components.models;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.QNameDV;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
+import org.apache.sling.models.annotations.injectorspecific.Self;
 
 @Model(adaptables = Resource.class)
 public class SegmentationItemModel {
+
+    @Self
+    Resource resource;
+
+    private String openingACCMarkup;
+    private String closingACCMarkup;
 
     @Inject
     @Optional
     private String condition;
 
-    public String getOpeningACCMarkup() {
-        if(condition == null){
-            return null;
-        }
-        return openingACCMarkup;
-    }
-    public String getClosingACCMarkup() {
-        if(condition == null){
-            return null;
-        }
-        return closingACCMarkup;
-    }
-    public String getElseACCMarkup() {
-        return elseACCMarkup;
-    }
-    private String openingACCMarkup;
-    private String closingACCMarkup = "<% } %>";
-    private String elseACCMarkup = "<% else { %>";
+    @Inject @Named("default")
+    @Optional
+    private boolean defaultBranch = false;
+
 
     @PostConstruct
     private void initModel() {
-        openingACCMarkup = "<% if (" + condition + ") { %>";
+        Resource segmentationComponent = resource.getParent();
+        Resource nextResource = null;
+
+        int currentIndex = 0;
+        int total = 0;
+        for(Resource child : segmentationComponent.getChildren()) {
+            if(StringUtils.equals(child.getPath(), resource.getPath())) {
+                currentIndex = total;
+            }
+            if(currentIndex+1 == total) {
+                nextResource = child;
+            }
+            total++;
+        }
+
+        if(StringUtils.isNotBlank(condition) || defaultBranch) {
+            if (currentIndex == 0) {
+                openingACCMarkup = "<% if (" + condition + ") { %>";
+            } else {
+                openingACCMarkup = "";
+            }
+
+            if (currentIndex+1 == total) {
+                closingACCMarkup = "<% } %>";
+            } else if (nextResource != null) {
+                ValueMap nextVm = nextResource.getValueMap();
+                boolean nextDefault = nextVm.get("default", false);
+                String nextCondition = nextVm.get("condition", "");
+
+                if (nextDefault) {
+                    closingACCMarkup = "<% } else { %>";
+                } else if (StringUtils.isNotBlank(nextCondition)) {
+                    closingACCMarkup = "<% } else if (" + nextCondition + ") { %>";
+                } else {
+                    closingACCMarkup = "<% } %>";
+                }
+            } else {
+                closingACCMarkup = "<% } %>";
+            }
+        }
+    }
+
+    public String getOpeningACCMarkup() {
+        return openingACCMarkup;
+    }
+    public String getClosingACCMarkup() {
+        return closingACCMarkup;
     }
 }
 

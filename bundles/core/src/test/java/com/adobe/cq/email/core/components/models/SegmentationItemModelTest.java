@@ -17,12 +17,34 @@ package com.adobe.cq.email.core.components.models;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Assertions;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class SegmentationItemModelTest {
+
+    @Mock
+    Resource resource;
+    @Mock
+    Resource segmentationComponent;
 
     private SegmentationItemModel sut;
 
@@ -32,25 +54,36 @@ class SegmentationItemModelTest {
     }
 
     @Test
-    void getOpeningACCMarkup_NullCondition() {
-        Assertions.assertNull(sut.getOpeningACCMarkup());
+    void nullCondition() {
+        assertNull(sut.getOpeningACCMarkup());
+        assertNull(sut.getClosingACCMarkup());
     }
 
     @Test
-    void getOpeningACCMarkup_ExistingCondition() {
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    void existingCondition_RootLevel() {
+        mockResources(false, false, false);
         setValue();
-        Assertions.assertEquals("<% if (recipient.age >= 18) { %>", sut.getOpeningACCMarkup());
+        assertEquals("<% if (recipient.age >= 18) { %>", sut.getOpeningACCMarkup());
+        assertEquals("<% } %>", sut.getClosingACCMarkup());
     }
 
     @Test
-    void getClosingACCMarkup_NullCondition() {
-        Assertions.assertNull(sut.getClosingACCMarkup());
-    }
-
-    @Test
-    void getClosingACCMarkup_ExistingCondition() {
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    void existingCondition_Child_Default() {
+        mockResources(true, true, false);
         setValue();
-        Assertions.assertEquals("<% } %>", sut.getClosingACCMarkup());
+        assertEquals("<% if (recipient.age >= 18) { %>", sut.getOpeningACCMarkup());
+        assertEquals("<% } %>", sut.getClosingACCMarkup());
+    }
+
+    @Test
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    void existingCondition_Child_HasCondition() {
+        mockResources(true, false, true);
+        setValue();
+        assertEquals("<% if (recipient.age >= 18) { %>", sut.getOpeningACCMarkup());
+        assertEquals("<% } else if (recipient.age < 18) { %>", sut.getClosingACCMarkup());
     }
 
     private void setValue() {
@@ -65,5 +98,24 @@ class SegmentationItemModelTest {
             throw new RuntimeException(
                     "Error setting field " + "condition" + " with value " + "recipient.age >= 18" + ": " + e.getMessage(), e);
         }
+    }
+
+    private void mockResources(boolean hasChildren, boolean hasDefault, boolean hasCondition) {
+        when(resource.getPath()).thenReturn("/resource-path");
+        when(resource.getParent()).thenReturn(segmentationComponent);
+        if (hasChildren) {
+            List<Resource> children =
+                    IntStream.range(0, 5).mapToObj(i -> {
+                        Resource child = mock(Resource.class);
+                        when(child.getPath()).thenReturn("/resource-path/child/" + i);
+                        ValueMap valueMap = mock(ValueMap.class);
+                        when(valueMap.get(eq("default"), eq(false))).thenReturn(hasDefault && i == 4);
+                        when(valueMap.get(eq("condition"), anyString())).thenReturn(hasCondition ? "recipient.age < 18" : "");
+                        when(child.getValueMap()).thenReturn(valueMap);
+                        return child;
+                    }).collect(Collectors.toList());
+            when(segmentationComponent.getChildren()).thenReturn(children);
+        }
+        this.sut.resource = resource;
     }
 }
