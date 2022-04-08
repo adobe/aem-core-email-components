@@ -107,13 +107,9 @@ public class StylesInlinerFilter implements Filter {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
             Resource resource = slingRequest.getResource();
-            if (StringUtils.startsWith(resource.getPath(), "/content/campaigns/") && resource.isResourceType("core/email/components/page")) {
-                LOG.trace("Resource: {}", slingRequest.getResource().getPath());
-                LOG.trace("ResourceType: {}", slingRequest.getResource().getResourceType());
-                String content = null;
-                if (wrapper.getResponseAsString() != null) {
-                    content = wrapper.getResponseAsString();
-                }
+            if (resource.isResourceType("core/email/components/page")) {
+                String content = wrapper.getResponseAsString();
+                LOG.trace("Original content: {}.", content);
                 String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content);
                 LOG.trace("Replaced content. New response: {}.", replacedContent);
                 response.getWriter().write(replacedContent);
@@ -121,7 +117,7 @@ public class StylesInlinerFilter implements Filter {
                 touched = true;
                 LOG.debug("Processing time: {} ms.", System.currentTimeMillis() - startTime);
             } else {
-                LOG.trace("Path {} is not processed since it is not a campaign path.", resource.getPath());
+                LOG.trace("Path {} is not processed since it has the wrong type {}.", resource.getPath(), resource.getResourceType());
             }
         } else {
             LOG.debug("Request is not a SlingHttpServletRequest or content type {} is not valid.", response.getContentType());
