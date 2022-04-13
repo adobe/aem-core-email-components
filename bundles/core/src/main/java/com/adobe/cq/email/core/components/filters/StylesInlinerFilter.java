@@ -39,13 +39,13 @@ import com.adobe.cq.email.core.components.services.StylesInlinerService;
 @Component(
         service = Filter.class,
         property = {
-            "service.ranking:Integer=-2502",
-            "sling.filter.extensions=json",
-            "sling.filter.extensions=html",
-            "sling.filter.pattern=/content/campaigns/.*",
-            "sling.filter.scope=include",
-            "sling.filter.selectors=campaign",
-            "sling.filter.selectors=content"
+                "service.ranking:Integer=-2502",
+                "sling.filter.extensions=json",
+                "sling.filter.extensions=html",
+                "sling.filter.pattern=/content/campaigns/.*",
+                "sling.filter.scope=include",
+                "sling.filter.selectors=campaign",
+                "sling.filter.selectors=content"
         }
 )
 public class StylesInlinerFilter implements Filter {
@@ -53,6 +53,7 @@ public class StylesInlinerFilter implements Filter {
     static final String RESOURCE_TYPE = "core/email/components/page";
 
     private static final List<String> CONTENT_TYPES = new ArrayList<>();
+
     static {
         CONTENT_TYPES.add("text/");
         CONTENT_TYPES.add("application/json");
@@ -95,11 +96,12 @@ public class StylesInlinerFilter implements Filter {
 
     /**
      * Moved to separate method to better test this code.
-     * @param request   Current request
-     * @param response  current response
-     * @param wrapper   our inliner wrapper object
-     * @return  true, if we processed response object
-     * @throws IOException  could happen
+     *
+     * @param request  Current request
+     * @param response current response
+     * @param wrapper  our inliner wrapper object
+     * @return true, if we processed response object
+     * @throws IOException could happen
      */
     protected boolean process(ServletRequest request, ServletResponse response, InlinerResponseWrapper wrapper) throws IOException {
         boolean touched = false;
@@ -110,7 +112,8 @@ public class StylesInlinerFilter implements Filter {
             if (resource.isResourceType("core/email/components/page")) {
                 String content = wrapper.getResponseAsString();
                 LOG.trace("Original content: {}.", content);
-                String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content);
+                String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content,
+                        wrapper.getCharacterEncoding());
                 LOG.trace("Replaced content. New response: {}.", replacedContent);
                 response.getWriter().write(replacedContent);
                 response.getWriter().close();
@@ -127,8 +130,9 @@ public class StylesInlinerFilter implements Filter {
 
     /**
      * Check if response has the right content type.
-     * @param response  response object
-     * @return          true if correct - we do not process digital files
+     *
+     * @param response response object
+     * @return true if correct - we do not process digital files
      */
     private boolean isValidContent(ServletResponse response) {
         String contentType = response.getContentType();

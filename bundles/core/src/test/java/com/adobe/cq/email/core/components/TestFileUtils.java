@@ -25,7 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileUtils {
-    public final static String INTERNAL_CSS_FILE_PATH = "testpage/internal_css.html";
+    public final static String INTERNAL_CSS_HTML_FILE_PATH = "testpage/internal_css.html";
+    public final static String INTERNAL_CSS_JSON_FILE_PATH = "testpage/internal_css.json";
     public final static String EXTERNAL_CSS_FILE_PATH = "testpage/external_css.html";
     public final static String INTERNAL_AND_EXTERNAL_CSS_FILE_PATH = "testpage/internal_and_external_css.html";
     public final static String OUTPUT_FILE_PATH = "testpage/output_without_style.html";
@@ -43,8 +44,10 @@ public class TestFileUtils {
         if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
             assertEquals(expected, actual);
         } else {
-            assertEquals(expected.replaceAll("\\s+", " ").trim(), actual.replaceAll("\\s+",
-                    " ").trim());
+            String normalizedExpected = expected.replaceAll("\n", "").replaceAll("\t", "").replaceAll("\\s+", " ").trim();
+            String normalizedActual = actual.replaceAll("\n", " ").replaceAll("\t", " ").replaceAll("\\s+",
+                    " ").trim();
+            assertEquals(normalizedExpected, normalizedActual);
         }
     }
 }
