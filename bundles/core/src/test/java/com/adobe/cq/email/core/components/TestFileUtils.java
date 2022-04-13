@@ -40,12 +40,23 @@ public class TestFileUtils {
         return new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(path).toURI())));
     }
 
-    public static void compare(String expected, String actual) {
+    public static void compareRemovingNewLinesAndTabs(String expected, String actual) {
         if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
             assertEquals(expected, actual);
         } else {
             String normalizedExpected = expected.replaceAll("\n", "").replaceAll("\t", "").replaceAll("\\s+", " ").trim();
             String normalizedActual = actual.replaceAll("\n", " ").replaceAll("\t", " ").replaceAll("\\s+",
+                    " ").trim();
+            assertEquals(normalizedExpected, normalizedActual);
+        }
+    }
+
+    public static void compare(String expected, String actual) {
+        if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
+            assertEquals(expected, actual);
+        } else {
+            String normalizedExpected = expected.replaceAll("\\s+", " ").trim();
+            String normalizedActual = actual.replaceAll("\\s+",
                     " ").trim();
             assertEquals(normalizedExpected, normalizedActual);
         }

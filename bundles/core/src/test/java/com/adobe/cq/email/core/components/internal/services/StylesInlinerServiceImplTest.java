@@ -45,6 +45,7 @@ import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
+import static com.adobe.cq.email.core.components.TestFileUtils.compareRemovingNewLinesAndTabs;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,7 +72,7 @@ class StylesInlinerServiceImplTest {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        compare(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
+        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
                 document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"));
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"));
@@ -93,7 +94,7 @@ class StylesInlinerServiceImplTest {
         JsonReader reader = Json.createReader(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
         String html = reader.readObject().getString("html");
         Document document = Jsoup.parse(html);
-        compare(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
+        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
                 document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"));
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"));
