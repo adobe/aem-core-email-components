@@ -15,12 +15,16 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.json.Json;
+import javax.json.JsonReader;
 
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.engine.SlingRequestProcessor;
@@ -35,13 +39,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
-import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
+import static com.adobe.cq.email.core.components.TestFileUtils.compareRemovingNewLinesAndTabs;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,10 +70,31 @@ class StylesInlinerServiceImplTest {
     @Test
     void success() throws URISyntaxException, IOException {
         String result =
-                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_FILE_PATH), StyleMergerMode.PROCESS_SPECIFICITY
-                        , HtmlSanitizingMode.FULL);
+                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        compare(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
+        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
+                document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"));
+        checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"));
+        checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"));
+        checkElements(document, "img", Arrays.asList("-ms-interpolation-mode: bicubic", "border: 10px solid red"));
+        checkElements(document, "table", Arrays.asList("text-align: center !important", "width: 100%"));
+        checkElements(document, "table td", Collections.singletonList("background-color: #ccc"));
+        checkElements(document, ".blocked", Collections.singletonList("display: block"));
+        checkElements(document, ".footer h3", Arrays.asList("border-bottom-width: 12px", "border: 3px solid green", "color: darkgrey"));
+        checkElements(document, "h3.example", Arrays.asList("border-bottom-width: 12px", "border: 3px solid green", "color: darkgrey"));
+        checkElements(document, "h3.example2", Arrays.asList("border-bottom-width: 12px", "border: 3px solid green", "color: darkgrey"));
+    }
+
+    @Test
+    void succes_Json() throws URISyntaxException, IOException {
+        String result =
+                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_JSON_FILE_PATH),
+                        StandardCharsets.UTF_8.name());
+        JsonReader reader = Json.createReader(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
+        String html = reader.readObject().getString("html");
+        Document document = Jsoup.parse(html);
+        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
                 document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"));
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"));

@@ -22,7 +22,6 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.pojo.StyleProperty;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
@@ -34,11 +33,7 @@ public class StyleMerger {
         // to avoid instantiation
     }
 
-    public static String merge(StyleToken elementStyleToken, StyleToken styleToken,
-                               StyleMergerMode styleMergerMode) {
-        if (Objects.isNull(styleMergerMode)) {
-            styleMergerMode = StyleMergerMode.PROCESS_SPECIFICITY;
-        }
+    public static String merge(StyleToken elementStyleToken, StyleToken styleToken) {
         if (Objects.isNull(styleToken)) {
             styleToken = StyleTokenFactory.create(EMPTY_TOKEN_SELECTOR);
         }
@@ -48,7 +43,7 @@ public class StyleMerger {
         StyleToken merged = StyleTokenFactory.create(elementStyleToken.getSelector());
         merged.setSpecificity(StyleSpecificityFactory.getSpecificity(elementStyleToken.getSelector()));
         Map<String, StyleProperty> stylePropertiesByName = new LinkedHashMap<>();
-        processStyleTokens(stylePropertiesByName, elementStyleToken, styleToken, styleMergerMode);
+        processStyleTokens(stylePropertiesByName, elementStyleToken, styleToken);
         for (Map.Entry<String, StyleProperty> entry : stylePropertiesByName.entrySet()) {
             StyleTokenFactory.addProperties(merged, entry.getValue().getFullProperty());
         }
@@ -56,32 +51,25 @@ public class StyleMerger {
     }
 
     private static void processStyleTokens(Map<String, StyleProperty> stylePropertiesByName, StyleToken elementStyleToken,
-                                           StyleToken styleToken, StyleMergerMode styleMergerMode) {
-        if (StyleMergerMode.PROCESS_SPECIFICITY.equals(styleMergerMode)) {
-            processStyleToken(stylePropertiesByName, styleToken, styleMergerMode, 0);
-            processStyleToken(stylePropertiesByName, elementStyleToken, styleMergerMode, 0);
-        } else {
-            processStyleToken(stylePropertiesByName, elementStyleToken, styleMergerMode, 0);
-            processStyleToken(stylePropertiesByName, styleToken, styleMergerMode, 1);
-        }
+                                           StyleToken styleToken) {
+        processStyleToken(stylePropertiesByName, styleToken, 0);
+        processStyleToken(stylePropertiesByName, elementStyleToken, 0);
     }
 
-    private static void processStyleToken(Map<String, StyleProperty> styleProperties, StyleToken styleToken,
-                                          StyleMergerMode styleMergerMode, int order) {
+    private static void processStyleToken(Map<String, StyleProperty> styleProperties, StyleToken styleToken, int order) {
         for (int i = 0; i < styleToken.getProperties().size(); i++) {
             String property = styleToken.getProperties().get(i);
             StyleProperty styleProperty = parse(property, styleToken.getSpecificity());
             String propertyName = styleProperty.getName();
+            /*
+             not sure if we need this at all.
             if (StyleMergerMode.ALWAYS_APPEND.equals(styleMergerMode)) {
                 styleProperties.put(propertyName + order + i, styleProperty);
                 continue;
             }
+             */
             StyleProperty alreadyFoundStyleProperty = styleProperties.get(propertyName);
             if (Objects.isNull(alreadyFoundStyleProperty)) {
-                styleProperties.put(propertyName, styleProperty);
-                continue;
-            }
-            if (StyleMergerMode.IGNORE_SPECIFICITY.equals(styleMergerMode)) {
                 styleProperties.put(propertyName, styleProperty);
                 continue;
             }
