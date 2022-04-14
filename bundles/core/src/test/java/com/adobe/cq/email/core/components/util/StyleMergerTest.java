@@ -17,7 +17,6 @@ package com.adobe.cq.email.core.components.util;
 
 import org.junit.jupiter.api.Test;
 
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
@@ -30,7 +29,7 @@ class StyleMergerTest {
         StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
         StyleToken styleToken = create("font-size: 20px; color: #004488; Margin: 0px;", false);
         assertEquals("font-size: 20px; color: #004488; Margin: 0px; background-color: #ccc; font-family: " +
-                "'Timmana', 'Gill Sans', sans-serif;", StyleMerger.merge(elementStyle, styleToken, null));
+                "'Timmana', 'Gill Sans', sans-serif;", StyleMerger.merge(elementStyle, styleToken));
     }
 
     @Test
@@ -54,70 +53,6 @@ class StyleMergerTest {
     }
 
     @Test
-    void allDifferentProperties() {
-        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
-        StyleToken styleToken = create("font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(elementStyle, styleToken, "font-size: 20px; color: #004488; Margin: 0px; background-color: #ccc; font-family: " +
-                        "'Timmana', 'Gill Sans', sans-serif;",
-                "background-color: #ccc; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; Margin: " +
-                        "0px;",
-                "background-color: #ccc; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; Margin: 0px;"
-        );
-    }
-
-    @Test
-    void conflictingNotImportantProperties() {
-        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
-        StyleToken styleToken = create("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(elementStyle, styleToken,
-                "background-color: #ccc; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans', " +
-                        "sans-serif;",
-                "background-color: #aaa; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; Margin: " +
-                        "0px;",
-                "background-color: #ccc; font-family: 'Timmana', 'Gill Sans', sans-serif; background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;"
-        );
-    }
-
-    @Test
-    void conflictingImportantProperties() {
-        StyleToken elementStyle = create("background-color: #ccc !important; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
-                true);
-        StyleToken styleToken = create("background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(elementStyle, styleToken,
-                "background-color: #ccc !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
-                        " sans-serif;",
-                "background-color: #aaa !important; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; " +
-                        "Margin: 0px;",
-                "background-color: #ccc !important; font-family: 'Timmana', 'Gill Sans', sans-serif; background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;");
-    }
-
-    @Test
-    void conflictingImportantPropertyWithHigherSpecificity() {
-        StyleToken elementStyle = create("background-color: #ccc !important; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
-                true);
-        StyleToken styleToken = create("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(elementStyle, styleToken,
-                "background-color: #ccc !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
-                        " sans-serif;",
-                "background-color: #aaa; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; Margin: " +
-                        "0px;",
-                "background-color: #ccc !important; font-family: 'Timmana', 'Gill Sans', sans-serif; background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;");
-    }
-
-    @Test
-    void conflictingImportantPropertyWithLowerSpecificity() {
-        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
-                true);
-        StyleToken styleToken = create("background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(elementStyle, styleToken,
-                "background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
-                        " sans-serif;",
-                "background-color: #aaa !important; font-family: 'Timmana', 'Gill Sans', sans-serif; font-size: 20px; color: #004488; " +
-                        "Margin: 0px;",
-                "background-color: #ccc; font-family: 'Timmana', 'Gill Sans', sans-serif; background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;");
-    }
-
-    @Test
     void nestedSelector() {
         StyleToken elementStyle = create("", true);
         StyleToken styleToken = create("td.layout-column { display: block !important; width: 100% !important; }",
@@ -125,19 +60,11 @@ class StyleMergerTest {
         testAllModes(elementStyle, styleToken, null, null, null);
     }
 
-    @Test
-    void samePropertyMultipleTimes() {
-        StyleToken elementStyle = create("", true);
-        StyleToken styleToken = create("display: block; display: inline-block", false);
-        testAllModes(elementStyle, styleToken, "display: inline-block;", "display: inline-block;", "display: block; display: " +
-                "inline-block;");
-    }
-
     private void testAllModes(StyleToken elementStyle, StyleToken styleToken, String processSpecificityExpectedResult,
                               String ignoreSpecificityExpectedResult, String alwaysAppend) {
-        assertEquals(processSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.PROCESS_SPECIFICITY));
-        assertEquals(ignoreSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.IGNORE_SPECIFICITY));
-        assertEquals(alwaysAppend, StyleMerger.merge(elementStyle, styleToken, StyleMergerMode.ALWAYS_APPEND));
+        assertEquals(processSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken));
+        assertEquals(ignoreSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken));
+        assertEquals(alwaysAppend, StyleMerger.merge(elementStyle, styleToken));
     }
 
     private StyleToken create(String properties, boolean styleAttribute) {

@@ -6,6 +6,10 @@
             font-size: 20px;
         }
 
+        h3 {
+            color: red;
+        }
+
         h1, p {
             color: #004488;
             Margin: 0px;
@@ -55,12 +59,16 @@
             width: 100%;
         }
 
+        .footer h3 {
+            color: darkgrey;
+        }
+
         h3.example {
             border-bottom-width: 12px;
         }
 
         h3.example2 {
-        	border:3px solid green;
+        	border: 3px solid green;
         }
 
         h4 {
