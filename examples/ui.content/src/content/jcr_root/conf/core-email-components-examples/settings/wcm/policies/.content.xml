@@ -18,10 +18,30 @@
                         components="[/libs/wcm/foundation/components/responsivegrid,group:core-email,core/email/components/experiencefragment,core/email/components/container,core/email/components/segmenation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
+                    <email-page-default
+                        jcr:description="Default policy for layout containers"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Email-page Default"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:core-email,group:.hidden]">
+                    </email-page-default>
                 </responsivegrid>
             </components>
         </foundation>
     </wcm>
+    <email-page jcr:primaryType="nt:unstructured"
+        sling:resourceType="nt:unstructured">
+        <page jcr:primaryType="nt:unstructured"
+            sling:resourceType="nt:unstructured">
+            <experience-fragment jcr:primaryType="nt:unstructured"
+                sling:resourceType="nt:unstructured">
+                <default jcr:description="Policy for XF"
+                    jcr:primaryType="nt:unstructured"
+                    jcr:title="XF Page"
+                    sling:resourceType="wcm/core/components/policy/policy"/>
+            </experience-fragment>
+        </page>
+    </email-page>
     <core jcr:primaryType="nt:unstructured">
         <email jcr:primaryType="nt:unstructured">
             <components jcr:primaryType="nt:unstructured">

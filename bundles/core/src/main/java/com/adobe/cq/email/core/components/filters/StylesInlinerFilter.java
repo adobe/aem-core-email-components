@@ -15,59 +15,52 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.filters;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jackrabbit.JcrConstants;
+import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.engine.SlingRequestProcessor;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
-import com.adobe.cq.email.core.components.internal.css.CssInliner;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.day.cq.contentsync.handler.util.RequestResponseFactory;
-import com.day.cq.wcm.api.WCMMode;
 
 @Component(
         service = Filter.class,
         property = {
-                "sling.filter.scope=request",
                 "service.ranking:Integer=-2502",
-                "sling.filter.extensions=html"
+                "sling.filter.extensions=json",
+                "sling.filter.extensions=html",
+                "sling.filter.pattern=/content/campaigns/.*",
+                "sling.filter.scope=include",
+                "sling.filter.selectors=campaign",
+                "sling.filter.selectors=content"
         }
 )
 public class StylesInlinerFilter implements Filter {
-    private static final Logger LOG = LoggerFactory.getLogger(CssInliner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerFilter.class);
     static final String RESOURCE_TYPE = "core/email/components/page";
-    static final String PROCESSED_ATTRIBUTE = "styles_filter_processed";
-    static final String STYLE_MERGER_MODE_PROPERTY = "styleMergerMode";
-    static final String HTML_SANITIZING_MODE_PROPERTY = "htmlSanitizingMode";
 
-    @Reference
-    private transient RequestResponseFactory requestResponseFactory;
+    private static final List<String> CONTENT_TYPES = new ArrayList<>();
 
-    @Reference
-    private transient SlingRequestProcessor requestProcessor;
+    static {
+        CONTENT_TYPES.add("text/");
+        CONTENT_TYPES.add("application/json");
+        CONTENT_TYPES.add("application/xml");
+        CONTENT_TYPES.add("application/xhtml+xml");
+    }
+
 
     @Reference
     private transient StylesInlinerService stylesInlinerService;
@@ -79,36 +72,21 @@ public class StylesInlinerFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        SlingHttpServletRequest request = (SlingHttpServletRequest) servletRequest;
-        boolean alreadyProcessed = hasBeenProcessed(request);
-        Resource resource = request.getResource();
-        Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
-        if (Objects.isNull(contentResource) || !contentResource.getResourceType().equals(RESOURCE_TYPE) ||
-                !WCMMode.DISABLED.equals(WCMMode.fromRequest(request)) ||
-                alreadyProcessed) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+
+        InlinerResponseWrapper wrapper = new InlinerResponseWrapper((HttpServletResponse) response);
+
+        boolean touched = false;
+        if (filterChain == null) {
+            LOG.error("Filterchain is null.");
+        } else {
+            filterChain.doFilter(request, wrapper);
+            touched = process(request, response, wrapper);
         }
-        Map<String, Object> params = new HashMap<>();
-        String pagePath = resource.getPath();
-        HttpServletRequest req = requestResponseFactory.createRequest("GET", pagePath + ".html",
-                params);
-        req.setAttribute(PROCESSED_ATTRIBUTE, true);
-        WCMMode.DISABLED.toRequest(req);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        HttpServletResponse response = requestResponseFactory.createResponse(out);
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        requestProcessor.processRequest(req, response, request.getResourceResolver());
-        StyleInlinerConfig config = getConfig(contentResource);
-        String htmlWithInlineStyles =
-                stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()),
-                        config.getStyleMergerMode(), config.getHtmlSanitizingMode());
-        servletResponse.setContentType("text/html");
-        servletResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        PrintWriter pw = servletResponse.getWriter();
-        pw.write(htmlWithInlineStyles);
+        if (!touched) {
+            response.getWriter().write(wrapper.getResponseAsString());
+        }
     }
 
     @Override
@@ -116,63 +94,61 @@ public class StylesInlinerFilter implements Filter {
         // do nothing
     }
 
-    void setRequestResponseFactory(RequestResponseFactory requestResponseFactory) {
-        this.requestResponseFactory = requestResponseFactory;
-    }
-
-    void setRequestProcessor(SlingRequestProcessor requestProcessor) {
-        this.requestProcessor = requestProcessor;
-    }
-
-    void setStylesInlinerService(StylesInlinerService stylesInlinerService) {
-        this.stylesInlinerService = stylesInlinerService;
-    }
-
-    private boolean hasBeenProcessed(SlingHttpServletRequest request) {
-        try {
-            Object parameter = request.getAttribute(PROCESSED_ATTRIBUTE);
-            if (Objects.isNull(parameter)) {
-                return false;
+    /**
+     * Moved to separate method to better test this code.
+     *
+     * @param request  Current request
+     * @param response current response
+     * @param wrapper  our inliner wrapper object
+     * @return true, if we processed response object
+     * @throws IOException could happen
+     */
+    protected boolean process(ServletRequest request, ServletResponse response, InlinerResponseWrapper wrapper) throws IOException {
+        boolean touched = false;
+        if (request instanceof SlingHttpServletRequest && isValidContent(response)) {
+            long startTime = System.currentTimeMillis();
+            SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
+            Resource resource = slingRequest.getResource();
+            if (resource.isResourceType("core/email/components/page")) {
+                String content = wrapper.getResponseAsString();
+                LOG.trace("Original content: {}.", content);
+                String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content,
+                        wrapper.getCharacterEncoding());
+                LOG.trace("Replaced content. New response: {}.", replacedContent);
+                response.getWriter().write(replacedContent);
+                response.getWriter().close();
+                touched = true;
+                LOG.debug("Processing time: {} ms.", System.currentTimeMillis() - startTime);
+            } else {
+                LOG.trace("Path {} is not processed since it has the wrong type {}.", resource.getPath(), resource.getResourceType());
             }
-            if (parameter.getClass().isAssignableFrom(Boolean.class)) {
-                return (boolean) parameter;
+        } else {
+            LOG.debug("Request is not a SlingHttpServletRequest or content type {} is not valid.", response.getContentType());
+        }
+        return touched;
+    }
+
+    /**
+     * Check if response has the right content type.
+     *
+     * @param response response object
+     * @return true if correct - we do not process digital files
+     */
+    private boolean isValidContent(ServletResponse response) {
+        String contentType = response.getContentType();
+        boolean returnValue = false;
+        if (StringUtils.isNotEmpty(contentType)) {
+            for (String configEntry : CONTENT_TYPES) {
+                if (StringUtils.startsWith(contentType, configEntry)) {
+                    returnValue = true;
+                    LOG.trace("Content type {} is valid because of config entry {}.", contentType, configEntry);
+                    break;
+                }
             }
-            return Boolean.parseBoolean(String.valueOf(parameter));
-        } catch (Throwable e) {
-            return false;
         }
+        if (!returnValue) {
+            LOG.trace("Content type {} is not valid. Return false.", contentType);
+        }
+        return returnValue;
     }
-
-    private StyleInlinerConfig getConfig(Resource contentResource) {
-        StyleInlinerConfig fallback = new StyleInlinerConfig(StyleMergerMode.PROCESS_SPECIFICITY, HtmlSanitizingMode.FULL);
-        try {
-            ValueMap valueMap = contentResource.getValueMap();
-            String styleMergerMode = valueMap.get(STYLE_MERGER_MODE_PROPERTY, String.class);
-            String htmlSanitizingMode = valueMap.get(HTML_SANITIZING_MODE_PROPERTY, String.class);
-            return new StyleInlinerConfig(StyleMergerMode.getByValue(styleMergerMode), HtmlSanitizingMode.getByValue(htmlSanitizingMode));
-        } catch (Throwable e) {
-            LOG.warn("Error retrieving Style Inliner config: " + e.getMessage(), e);
-        }
-        return fallback;
-    }
-
-    private static class StyleInlinerConfig {
-        private final StyleMergerMode styleMergerMode;
-        private final HtmlSanitizingMode htmlSanitizingMode;
-
-        public StyleInlinerConfig(StyleMergerMode styleMergerMode,
-                                  HtmlSanitizingMode htmlSanitizingMode) {
-            this.styleMergerMode = styleMergerMode;
-            this.htmlSanitizingMode = htmlSanitizingMode;
-        }
-
-        public StyleMergerMode getStyleMergerMode() {
-            return styleMergerMode;
-        }
-
-        public HtmlSanitizingMode getHtmlSanitizingMode() {
-            return htmlSanitizingMode;
-        }
-    }
-
 }

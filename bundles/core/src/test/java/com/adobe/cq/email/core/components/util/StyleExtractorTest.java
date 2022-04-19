@@ -38,7 +38,7 @@ import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.EXTERNAL_CSS_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_AND_EXTERNAL_CSS_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.OUTPUT_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
@@ -89,7 +89,7 @@ class StyleExtractorTest {
 
     @Test
     void extractFromInternalStyleTagOnly() throws URISyntaxException, IOException {
-        Document document = Jsoup.parse(getFileContent(INTERNAL_CSS_FILE_PATH));
+        Document document = Jsoup.parse(getFileContent(INTERNAL_CSS_HTML_FILE_PATH));
         List<String> styles = StyleExtractor.extract(document,
                 requestResponseFactory, requestProcessor, resourceResolver
         );

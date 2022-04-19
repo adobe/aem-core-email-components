@@ -20,11 +20,8 @@ import java.net.URISyntaxException;
 
 import org.junit.jupiter.api.Test;
 
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-
 import static com.adobe.cq.email.core.components.TestFileUtils.SANITIZED_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.TO_BE_SANITIZED_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.WITHOUT_SCRIPTS_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -34,38 +31,25 @@ class HtmlSanitizerTest {
 
     @Test
     void nullHtml() {
-        assertNull(HtmlSanitizer.sanitizeDocument(HtmlSanitizingMode.FULL, null));
+        assertNull(HtmlSanitizer.sanitizeDocument(null));
     }
 
     @Test
     void emptyHtml() {
-        assertTrue(HtmlSanitizer.sanitizeHtml(HtmlSanitizingMode.FULL, "").isEmpty());
-    }
-
-    @Test
-    void doNotSanitize() throws URISyntaxException, IOException {
-        compare(getFileContent(TO_BE_SANITIZED_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(HtmlSanitizingMode.NONE, getFileContent(TO_BE_SANITIZED_FILE_PATH)));
-    }
-
-    @Test
-    void removeScriptsOnly() throws URISyntaxException, IOException {
-        compare(getFileContent(WITHOUT_SCRIPTS_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(HtmlSanitizingMode.REMOVE_SCRIPT_TAGS_ONLY, getFileContent(TO_BE_SANITIZED_FILE_PATH))
-        );
+        assertTrue(HtmlSanitizer.sanitizeHtml("").isEmpty());
     }
 
     @Test
     void removeAll() throws URISyntaxException, IOException {
         compare(getFileContent(SANITIZED_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(HtmlSanitizingMode.FULL, getFileContent(TO_BE_SANITIZED_FILE_PATH))
+                HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH))
         );
     }
 
     @Test
     void nullSanitizingMode() throws URISyntaxException, IOException {
         compare(getFileContent(SANITIZED_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(null, getFileContent(TO_BE_SANITIZED_FILE_PATH))
+                HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH))
         );
     }
 

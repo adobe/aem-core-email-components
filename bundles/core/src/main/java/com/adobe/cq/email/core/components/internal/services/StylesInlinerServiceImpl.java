@@ -15,9 +15,14 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -35,8 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
 import com.adobe.cq.email.core.components.exceptions.StylesInlinerException;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
@@ -73,8 +76,25 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
     private static final StyleSpecificity STYLE_SPECIFICITY = new StyleSpecificity(1, 0, 0, 0);
 
     @Override
-    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html, StyleMergerMode styleMergerMode,
-                                          HtmlSanitizingMode htmlSanitizingMode) {
+    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String content, String charset) {
+        JsonObject jsonObject = parse(content, charset);
+        if (Objects.isNull(jsonObject)) {
+            return getHtmlWithInlineStyles(resourceResolver, content);
+        }
+        try {
+            String html = jsonObject.getString("html");
+            String htmlWithInlineStyles = getHtmlWithInlineStyles(resourceResolver, html);
+            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+            jsonObject.forEach(jsonObjectBuilder::add);
+            jsonObjectBuilder.add("html", htmlWithInlineStyles);
+            return jsonObjectBuilder.build().toString();
+        } catch (Throwable e) {
+            throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String html) {
         try {
             Document doc = Jsoup.parse(html);
             doc.outputSettings().prettyPrint(false);
@@ -91,12 +111,25 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                     populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
                 }
             }
-            HtmlSanitizer.sanitizeDocument(htmlSanitizingMode, doc);
-            applyStyles(doc, styleTokens, styleMergerMode);
+            HtmlSanitizer.sanitizeDocument(doc);
+            applyStyles(doc, styleTokens);
             writeStyleTag(doc, styleSb, unInlinableStyleTokens);
-            return doc.outerHtml();
+            String outerHtml = doc.outerHtml();
+            if (StringUtils.isEmpty(outerHtml)) {
+                return outerHtml;
+            }
+            return outerHtml.replaceAll("\n", "").replaceAll("\t", "");
         } catch (Throwable e) {
             throw new StylesInlinerException("An error occured during execution: " + e.getMessage(), e);
+        }
+    }
+
+    private JsonObject parse(String content, String charset) {
+        try {
+            JsonReader reader = Json.createReader(new ByteArrayInputStream(content.getBytes(charset)));
+            return reader.readObject();
+        } catch (Throwable e) {
+            return null;
         }
     }
 
@@ -151,7 +184,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         return styleToken;
     }
 
-    private void applyStyles(Document document, List<StyleToken> styleTokens, StyleMergerMode styleMergerMode) {
+    private void applyStyles(Document document, List<StyleToken> styleTokens) {
         for (StyleToken styleToken : styleTokens) {
             String elementSelector = styleToken.getSelector();
             for (Element elementToApply : document.select(elementSelector)) {
@@ -163,7 +196,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 StyleToken currentElement = StyleTokenFactory.create(elementSelector);
                 currentElement.setSpecificity(STYLE_SPECIFICITY);
                 StyleTokenFactory.addProperties(currentElement, currentElementStyle);
-                String style = StyleMerger.merge(currentElement, styleToken, styleMergerMode);
+                String style = StyleMerger.merge(currentElement, styleToken);
                 if (StringUtils.isNotEmpty(style)) {
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
                 }
