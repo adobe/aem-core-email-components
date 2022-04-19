@@ -87,7 +87,7 @@ class StylesInlinerServiceImplTest {
     }
 
     @Test
-    void succes_Json() throws URISyntaxException, IOException {
+    void success_Json() throws URISyntaxException, IOException {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_JSON_FILE_PATH),
                         StandardCharsets.UTF_8.name());

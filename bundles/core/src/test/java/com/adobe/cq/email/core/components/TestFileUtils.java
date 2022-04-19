@@ -44,7 +44,7 @@ public class TestFileUtils {
         if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
             assertEquals(expected, actual);
         } else {
-            String normalizedExpected = expected.replaceAll("\n", "").replaceAll("\t", "").replaceAll("\\s+", " ").trim();
+            String normalizedExpected = expected.replaceAll(System.lineSeparator(), "").replaceAll("\t", "").replaceAll("\\s+", " ").trim();
             String normalizedActual = actual.replaceAll("\n", " ").replaceAll("\t", " ").replaceAll("\\s+",
                     " ").trim();
             assertEquals(normalizedExpected, normalizedActual);
