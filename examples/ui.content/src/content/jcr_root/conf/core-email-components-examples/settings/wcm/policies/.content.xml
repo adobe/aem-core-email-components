@@ -23,7 +23,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email-page Default"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,group:.hidden]">
+                        components="[group:core-email]">
                     </email-page-default>
                 </responsivegrid>
             </components>
