@@ -26,6 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -74,18 +75,26 @@ public class StylesInlinerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
+        if(hasBothSelectors(request)) {
+            InlinerResponseWrapper wrapper = new InlinerResponseWrapper((HttpServletResponse) response);
 
-        InlinerResponseWrapper wrapper = new InlinerResponseWrapper((HttpServletResponse) response);
-
-        boolean touched = false;
-        if (filterChain == null) {
-            LOG.error("Filterchain is null.");
-        } else {
-            filterChain.doFilter(request, wrapper);
-            touched = process(request, response, wrapper);
+            boolean touched = false;
+            if (filterChain == null) {
+                LOG.error("Filterchain is null.");
+            } else {
+                filterChain.doFilter(request, wrapper);
+                touched = process(request, response, wrapper);
+            }
+            if (!touched) {
+                response.getWriter().write(wrapper.getResponseAsString());
+            }
         }
-        if (!touched) {
-            response.getWriter().write(wrapper.getResponseAsString());
+        else {
+            if (filterChain == null) {
+                LOG.error("Filterchain is null.");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         }
     }
 
@@ -150,5 +159,22 @@ public class StylesInlinerFilter implements Filter {
             LOG.trace("Content type {} is not valid. Return false.", contentType);
         }
         return returnValue;
+    }
+
+    /**
+     * Checks if the request has both selectors, campaign and content
+     * @param request the request to check
+     * @return boolean
+     */
+    private boolean hasBothSelectors(ServletRequest request) {
+        if(request instanceof SlingHttpServletRequest) {
+            SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
+            String[] selectors = slingRequest.getRequestPathInfo().getSelectors();
+            if(ArrayUtils.contains(selectors, "campaign")
+            && ArrayUtils.contains(selectors, "content")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
