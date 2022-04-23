@@ -35,6 +35,7 @@ public class TestFileUtils {
     public final static String TO_BE_SANITIZED_FILE_PATH = "testpage/to_be_sanitized.html";
     public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
     public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";
+    public final static String WRAPPER_DIV_REMOVAL_INPUT_FILE_PATH = "wrapper-div-removal/input.html";
 
     public static String getFileContent(String path) throws URISyntaxException, IOException {
         return new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(path).toURI())));
