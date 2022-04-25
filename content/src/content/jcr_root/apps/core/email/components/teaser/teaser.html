@@ -26,13 +26,19 @@
      class="cmp-teaser${!wcmmode.disabled && teaser.imageResource ? ' cq-dd-image' : ''}"
      data-cmp-data-layer="${teaser.data.json}">
     <div data-sly-test="${properties.backgroundImage == 'true'}" class="background-image"
-         style="background-image: url('${properties.fileReference @ context='styleString'}')">
+         style="background-image: url('${image.src @ context='styleString'}')">
     <div class="cmp-teaser__content">
         <sly data-sly-call="${pretitleTemplate.pretitle @ teaser=teaser}"></sly>
         <sly data-sly-call="${titleTemplate.title @ teaser=teaser}"></sly>
         <sly data-sly-call="${descriptionTemplate.description @ teaser=teaser}"></sly>
         <sly data-sly-call="${actionsTemplate.actions @ teaser=teaser}"></sly>
     </div>
+    </div>
+    <div data-sly-test="${properties.backgroundImage == 'false'}" class="cmp-teaser__content">
+        <sly data-sly-call="${pretitleTemplate.pretitle @ teaser=teaser}"></sly>
+        <sly data-sly-call="${titleTemplate.title @ teaser=teaser}"></sly>
+        <sly data-sly-call="${descriptionTemplate.description @ teaser=teaser}"></sly>
+        <sly data-sly-call="${actionsTemplate.actions @ teaser=teaser}"></sly>
     </div>
     <sly data-sly-test="${properties.backgroundImage == 'false'}" data-sly-call="${imageTemplate.image @ teaser=teaser}"></sly>
 </div>
