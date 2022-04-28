@@ -49,6 +49,7 @@
                         <exclude>**/resources/css/*</exclude>
                         <exclude>**/resources/testpage/*</exclude>
                         <exclude>**/resources/sanitizer/*</exclude>
+                        <exclude>**/resources/wrapper-div-removal/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
