@@ -130,9 +130,9 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             if (StringUtils.isEmpty(outerHtml)) {
                 return outerHtml;
             }
-            return outerHtml.replaceAll(System.lineSeparator(), "").replaceAll("\t", "");
+            return outerHtml.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "");
         } catch (Throwable e) {
-            throw new StylesInlinerException("An error occured during execution: " + e.getMessage(), e);
+            throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
         }
     }
 
