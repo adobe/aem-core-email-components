@@ -1,8 +1,22 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ Copyright 2022 Adobe
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.util;
 
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,28 +34,31 @@ public class WrapperDivRemover {
         if (Objects.isNull(doc) || Objects.isNull(wrapperDivClassesToBeRemoved) || wrapperDivClassesToBeRemoved.length == 0) {
             return;
         }
-        Element parent = doc.parent();
-        Elements children = doc.children();
-        removeWrapperDivs(parent, children, wrapperDivClassesToBeRemoved);
-        for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
-            Elements select = doc.getElementsByClass(wrapperDivClassToBeRemoved);
-            for (Element element : select) {
-                LOG.warn(element.toString());
-            }
+        try {
+            Element parent = doc.parent();
+            Elements children = doc.children();
+            removeWrapperDivs(parent, children, wrapperDivClassesToBeRemoved);
+        } catch (Throwable e) {
+            LOG.warn("Error removing wrapper DIVs: " + e.getMessage(), e);
         }
     }
 
     private static void removeWrapperDivs(Element parent, Elements children, String[] wrapperDivClassesToBeRemoved) {
-        if (Objects.isNull(children)||children.isEmpty()) {
+        if (Objects.isNull(children) || children.isEmpty()) {
             return;
         }
         for (Element child : children) {
             for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
-                if (child.is("." +wrapperDivClassToBeRemoved)) {
+                if (child.is("." + wrapperDivClassToBeRemoved)) {
                     Elements removedDivChildren = child.children();
                     int index = child.siblingIndex();
-                    child.remove();
-                    parent.insertChildren(index, removedDivChildren);
+                    if (Objects.nonNull(child.parentNode())) {
+                        child.remove();
+                        parent.insertChildren(index, removedDivChildren);
+                        removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
+                    }
+                } else {
+                    removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
                 }
             }
         }

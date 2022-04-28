@@ -36,6 +36,9 @@ public class TestFileUtils {
     public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
     public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";
     public final static String WRAPPER_DIV_REMOVAL_INPUT_FILE_PATH = "wrapper-div-removal/input.html";
+    public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_removed.html";
+    public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_NOT_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_not_removed.html";
+
 
     public static String getFileContent(String path) throws URISyntaxException, IOException {
         return new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(path).toURI())));
@@ -45,9 +48,11 @@ public class TestFileUtils {
         if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
             assertEquals(expected, actual);
         } else {
-            String normalizedExpected = expected.replaceAll(System.lineSeparator(), "").replaceAll("\t", "").replaceAll("\\s+", " ").trim();
-            String normalizedActual = actual.replaceAll("\n", " ").replaceAll("\t", " ").replaceAll("\\s+",
-                    " ").trim();
+            String normalizedExpected = expected.replaceAll(System.lineSeparator(), "").replaceAll("\t", "")
+                    .replaceAll(">\\s+<", "><").replaceAll("\\s+", " ").trim();
+            String normalizedActual =
+                    actual.replaceAll(System.lineSeparator(), "").replaceAll("\t", "").replaceAll(">\\s+<", "><").replaceAll("\\s+",
+                            " ").trim();
             assertEquals(normalizedExpected, normalizedActual);
         }
     }

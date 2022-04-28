@@ -38,6 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.adobe.cq.email.core.components.configs.StylesInlinerConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
@@ -65,6 +66,7 @@ class StylesInlinerServiceImplTest {
         this.sut = new StylesInlinerServiceImpl();
         this.sut.setRequestResponseFactory(requestResponseFactory);
         this.sut.setRequestProcessor(requestProcessor);
+        this.sut.activate(null);
     }
 
     @Test
