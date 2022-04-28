@@ -49,7 +49,7 @@ public class WrapperDivRemover {
         }
         for (Element child : children) {
             for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
-                if (child.is("." + wrapperDivClassToBeRemoved)) {
+                if (child.tagName().equalsIgnoreCase("div") && child.is("." + wrapperDivClassToBeRemoved)) {
                     Elements removedDivChildren = child.children();
                     int index = child.siblingIndex();
                     if (Objects.nonNull(child.parentNode())) {
