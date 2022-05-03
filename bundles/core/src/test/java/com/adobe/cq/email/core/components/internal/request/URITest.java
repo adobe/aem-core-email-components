@@ -15,59 +15,98 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.request;
 
+import java.util.BitSet;
+
 import org.junit.jupiter.api.Test;
+
+import com.google.common.primitives.Bytes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class URITest {
 
     @Test
     void notEscapedInvalidCharactersUriReference() {
-        URI uri = new URI("https://www.emailtest.dev/content/Hello Günter.json", false);
-        assertEquals("https://www.emailtest.dev/content/Hello Günter.json", uri.getURI());
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", false);
+        assertEquals("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", uri.getURI());
     }
 
     @Test
     void notEscapedValidCharactersUriReference() {
-        URI uri = new URI("https://www.emailtest.dev/content/Hello.json", false);
-        assertEquals("https://www.emailtest.dev/content/Hello.json", uri.getURI());
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello.json?param1=1&param2=2", false);
+        assertEquals("https://www.emailtest.dev:8080/content/Hello.json?param1=1&param2=2", uri.getURI());
     }
 
     @Test
     void escapedInvalidCharactersUriReference() {
-        assertThrows(URIException.class, () -> new URI("https://www.emailtest.dev/content/Hello Günter.json", true));
+        assertThrows(URIException.class, () -> new URI("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", true));
     }
 
     @Test
     void escapedValidCharactersUriReference() {
-        URI uri = new URI("https://www.emailtest.dev/content/Hello.json", true);
-        assertEquals("https://www.emailtest.dev/content/Hello.json", uri.getURI());
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertEquals("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", uri.getURI());
+    }
+
+    @Test
+    void prevalidate() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertTrue(uri.prevalidate("www.emailtest.dev:8080", new BitSet(256)));
+    }
+
+    @Test
+    void getScheme() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertEquals("https", uri.getScheme());
+    }
+
+    @Test
+    void getPort() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertEquals(8080, uri.getPort());
+    }
+
+    @Test
+    void getPath() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertEquals("/content/Hello Günter.json", uri.getPath());
+    }
+
+    @Test
+    void getEscapedUriReference() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", false);
+        assertEquals("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", uri.getEscapedURIReference());
+    }
+
+    @Test
+    void getUriReference() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
+        assertEquals("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", uri.getURIReference());
     }
 
     @Test
     void testEquals() {
-        assertEquals(new URI("https://www.emailtest.dev/content/Hello.json", true), new URI("https://www.emailtest.dev/content/Hello" +
-                ".json", true));
+        assertEquals(new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true),
+                new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true));
     }
 
     @Test
     void testHashCode() {
-        assertEquals(new URI("https://www.emailtest.dev/content/Hello.json", true).hashCode(),
-                new URI("https://www.emailtest.dev/content/Hello" +
-                        ".json", true).hashCode());
+        assertEquals(new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true).hashCode(),
+                new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true).hashCode());
     }
 
     @Test
     void testCompareTo() {
-        assertEquals(0, new URI("https://www.emailtest.dev/content/Hello.json", true).compareTo(new URI("https://www.emailtest" +
-                ".dev/content/Hello" +
-                ".json", true)));
+        assertEquals(0, new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true).compareTo(
+                new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true)));
     }
 
     @Test
     void testClone() throws CloneNotSupportedException {
-        URI uri = new URI("https://www.emailtest.dev/content/Hello.json", true);
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
         assertEquals(uri, uri.clone());
     }
 }

@@ -1558,61 +1558,6 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	}
 
 	/**
-	 * The charset-changed normal operation to represent to be required to alert
-	 */
-	@SuppressWarnings("serial")
-	public static class DefaultCharsetChanged extends SlingException {
-
-		/**
-		 * The constructor with a reason string and its code arguments.
-		 *
-		 * @param reasonCode
-		 *            the reason code
-		 * @param reason
-		 *            the reason
-		 */
-		public DefaultCharsetChanged(int reasonCode, String reason) {
-			super(reason);
-			this.reason = reason;
-			this.reasonCode = reasonCode;
-		}
-
-		/** No specified reason code. */
-		public static final int UNKNOWN = 0;
-
-		/** Protocol charset changed. */
-		public static final int PROTOCOL_CHARSET = 1;
-
-		/** Document charset changed. */
-		public static final int DOCUMENT_CHARSET = 2;
-
-		/** The reason code. */
-		private int reasonCode;
-
-		/** The reason message. */
-		private String reason;
-
-		/**
-		 * Get the reason code.
-		 *
-		 * @return the reason code
-		 */
-		public int getReasonCode() {
-			return reasonCode;
-		}
-
-		/**
-		 * Get the reason message.
-		 *
-		 * @return the reason message
-		 */
-		public String getReason() {
-			return reason;
-		}
-
-	}
-
-	/**
 	 * A mapping to determine the (somewhat arbitrarily) preferred charset for
 	 */
 	public static class LocaleToCharsetMap {
