@@ -19,13 +19,72 @@ import java.util.BitSet;
 
 import org.junit.jupiter.api.Test;
 
-import com.google.common.primitives.Bytes;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class URITest {
+
+    @Test
+    void testIPv4Address() throws URIException {
+        URI uri = new URI("http://10.0.1.10:8830", false);
+        assertTrue(uri.isIPv4address());
+        uri = new URI("http://10.0.1.10:8830/04-1.html", false);
+        assertTrue(uri.isIPv4address());
+        uri = new URI("/04-1.html", false);
+        assertFalse(uri.isIPv4address());
+        uri = new URI("http://10.0.1.10:8830/04-1.html", false);
+        assertTrue(uri.isIPv4address());
+        uri = new URI("http://10.0.1.10:8830/04-1.html", false);
+        assertTrue(uri.isIPv4address());
+        uri = new URI("http://host.org/04-1.html", false);
+        assertFalse(uri.isIPv4address());
+    }
+
+    @Test
+    void testUrl() throws URIException {
+        URI url = new URI("http://jakarta.apache.org", false);
+        assertEquals(-1, url.getPort()); // URI itself has no knowledge of default ports.
+        assertEquals("http", url.getScheme());
+
+        url = new URI("https://jakarta.apache.org", false);
+        assertEquals(-1, url.getPort()); // URI itself has no knowledge of default ports.
+        assertEquals("https", url.getScheme());
+    }
+
+    @Test
+    void testTestURIAuthorityString() throws Exception {
+        URI url = new URI("ftp://user:password@localhost", false);
+        assertEquals("ftp://user:password@localhost", url.toString());
+    }
+
+    @Test
+    void testVariousCharacters() throws Exception {
+        verifyInvalidURI("http://authority:123/path/path?query&name=val ue");
+        verifyInvalidURI("http://authority:123/path/path?query&na me=value");
+        verifyInvalidURI("http://authority:123/path/path?qu ery&name=value");
+        verifyInvalidURI("http://authority:123/path/pa th?query&name=value");
+        verifyInvalidURI("http://authority:123/pa th/path?query&name=value");
+        verifyInvalidURI("http://authority:12 3/path/path?query&name=value");
+        verifyInvalidURI("http://autho rity:123/path/path?query&name=value");
+        verifyInvalidURI("htt p://authority:123/path/path?query&name=value");
+    }
+
+    private void verifyInvalidURI(String uri) {
+        try {
+            new URI(uri, true);
+            throw new RuntimeException("should have thrown URIException");
+        } catch (URIException e) {
+            /* expected */
+        }
+    }
+
+    @Test
+    void testRelativeWithDoubleSlash() throws Exception {
+        URI rel = new URI("foo//bar//baz", true);
+        assertEquals("foo//bar//baz", rel.toString());
+    }
 
     @Test
     void notEscapedInvalidCharactersUriReference() {

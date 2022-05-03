@@ -1798,4 +1798,8 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		}
 		return buffer.toByteArray();
 	}
+
+	boolean isIPv4address() {
+		return isIPv4address;
+	}
 }
