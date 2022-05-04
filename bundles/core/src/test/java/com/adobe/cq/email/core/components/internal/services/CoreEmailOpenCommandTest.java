@@ -15,9 +15,13 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -39,13 +43,11 @@ import com.day.cq.wcm.api.commands.WCMCommandContext;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentManager;
 
-import static com.adobe.cq.email.core.components.TestFileUtils.compareRemovingNewLinesAndTabs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -384,9 +386,11 @@ class CoreEmailOpenCommandTest {
         verify(response).setContentType(eq("application/json"));
         verify(response).setCharacterEncoding(eq("utf-8"));
         verify(response).getWriter();
-        compareRemovingNewLinesAndTabs("{ \"Location\": \"https://server:port/resource/path/with/some/params" +
-                ".html?param1=1&param2=2\"" +
-                "}", out.toString());
+        JsonReader reader = Json.createReader(new ByteArrayInputStream(out.toByteArray()));
+        JsonObject jsonObject = reader.readObject();
+        assertEquals(1, jsonObject.keySet().size());
+        String location = jsonObject.getString("Location");
+        assertEquals("https://server:port/resource/path/with/some/params.html?param1=1&param2=2", location);
     }
 
 }
