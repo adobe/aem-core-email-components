@@ -14,94 +14,97 @@ Set of standardized Email components for [Adobe Experience Manager (AEM)](https:
 
 ## Documentation
 
-* **[Component Library](https://www.adobe.com/go/aem_cmp_library):** A collection of examples to view the components in their various configurations.
-* **[Component Documentation](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/introduction.html):** For developers and authors, with details about each component.
-* Get Started:
-  - **[WKND Tutorial](https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/overview.html):** A two-day tutorial for building a new site.
-  - **[Summit Tutorial](https://expleague.azureedge.net/labs/L767/index.html):** A two-hour tutorial for building a new site (from a Lab at US Summit 2019).
-  - **[Gems Webinar](https://helpx.adobe.com/experience-manager/kt/eseminars/gems/AEM-Core-Components.html):** A guided tour of the Core Components (recorded on Dec 2018).
+* **[Component Documentation](https://github.com/adobe/aem-core-email-components/wiki):** Wiki for developers and authors, with details about each component.
 
-## Features
-
-* **Production-Ready:** 28 robust components that are well tested, widely used, and that perform well.
-* **Cloud-Ready:** Whether on [AEM as a Cloud Service](https://docs.adobe.com/content/help/en/experience-manager-cloud-service/landing/home.html), on [Adobe Managed Services](https://github.com/adobe/aem-project-archetype/tree/master/src/main/archetype/dispatcher.ams), or on-premise, they just work.
-* **Versatile:** The components represent generic concepts with which the authors can assemble nearly any layout.
-* **Configurable:** Template-level [content policies](https://docs.adobe.com/content/help/en/experience-manager-65/developing/platform/templates/page-templates-editable.html#content-policies) define which features the page authors are allowed to use or not.
-* **Trackable:** The [Adobe Client Data Layer](DATA_LAYER_INTEGRATION.md) integration allows to track all aspects of the visitor experience.
-* **Accessible:** They comply [WCAG 2.1 standard](https://www.w3.org/TR/WCAG21/), provide ARIA labels, and support keyboard navigation.
-* **SEO-Friendly:** The HTML output is semantic and provides schema.org microdata annotations.
-* **WebApp-Ready:** The [streamlined JSON output](https://docs.adobe.com/content/help/en/experience-manager-learn/foundation/development/develop-sling-model-exporter.html) allows client-side rendering, still with a possibility of [in-context editing](https://docs.adobe.com/content/help/en/experience-manager-learn/sites/spa-editor/spa-editor-framework-feature-video-use.html).
-* **Design Kit:** A [UI kit for Adobe XD](https://experienceleague.adobe.com/docs/experience-manager-learn/assets/AEM-CoreComponents-UI-Kit.xd) allows designers to create wireframes that they can then [style as needed](https://github.com/adobe/aem-guides-wknd/releases/download/aem-guides-wknd-0.0.2/AEM_UI-kit-WKND.xd).
-* **Themeable:** The components implement the [Style System](https://docs.adobe.com/content/help/en/experience-manager-65/developing/components/style-system.html), and the markup follows [BEM CSS conventions](http://getbem.com/).
-* **Customizable:** Several patterns allow [easy customization](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/developing/customizing.html), from adjusting the HTML to advanced functionality reuse.
-* **Versioned:** The [versioning policy](https://github.com/adobe/aem-core-email-components/wiki/Versioning-policies) ensures we won't break your site when improving things that might impact you.
-* **Open Sourced:** If something is not as it should, [contribute](CONTRIBUTING.md) your improvements!
 
 ### Template Components
 
-1. [Page](content/src/content/jcr_root/apps/core/email/components/page/v2/page)
+1. [Page](content/src/content/jcr_root/apps/core/email/components/page)
 
 ### Page Authoring Components
 
-2. [Title](content/src/content/jcr_root/apps/core/email/components/title/v2/title)
-3. [Text](content/src/content/jcr_root/apps/core/email/components/text/v2/text)
-4. [Image](content/src/content/jcr_root/apps/core/email/components/image/v2/image)
-5. [Button](content/src/content/jcr_root/apps/core/email/components/button/v1/button)
-6. [Teaser](content/src/content/jcr_root/apps/core/email/components/teaser/v1/teaser)
-7. [Experience Fragment](content/src/content/jcr_root/apps/core/email/components/experiencefragment/v1/experiencefragment)
-8. [Content Fragment](content/src/content/jcr_root/apps/core/email/components/contentfragment/v1/contentfragment)
+2. [Title](content/src/content/jcr_root/apps/core/email/components/title)
+3. [Text](content/src/content/jcr_root/apps/core/email/components/text)
+4. [Image](content/src/content/jcr_root/apps/core/email/components/image)
+5. [Button](content/src/content/jcr_root/apps/core/email/components/button)
+6. [Teaser](content/src/content/jcr_root/apps/core/email/components/teaser)
+7. [Experience Fragment](content/src/content/jcr_root/apps/core/email/components/experiencefragment)
+8. [Content Fragment](content/src/content/jcr_root/apps/core/email/components/contentfragment)
 
 
 ### Container Components
 
-9. [Container](content/src/content/jcr_root/apps/core/email/components/container/v1/container)
+9. [Container](content/src/content/jcr_root/apps/core/email/components/container)
+10. [Segmentation](content/src/content/jcr_root/apps/core/email/components/segmentation)
 
-
-### Roadmap
-
-To learn about the main upcoming components and features, visit the [roadmap wiki page](https://github.com/adobe/aem-core-email-components/wiki).
-
-## Usage
-
-To include the Core Components in a new project, we strongly advise to use the [AEM Project Archetype](https://github.com/adobe/aem-project-archetype); this guarantees a starting point that complies to all recommended practices from Adobe.
-
-For existing projects, take example from the [AEM Project Archetype](https://github.com/adobe/aem-project-archetype) by looking at the `core.email.components` references in the main [`pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/pom.xml), in [`all/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/all/pom.xml), and in [`ui.apps/pom.xml`](https://github.com/adobe/aem-project-archetype/blob/master/src/main/archetype/ui.apps/pom.xml). For the rest, make sure to create Proxy Components, to load the client libraries and to allow the components on the template, as instructed in [Using Core Components](https://docs.adobe.com/content/help/en/experience-manager-core-components/using/get-started/using.html).
 
 ### System Requirements
 
-Core Components | AEM as a Cloud Service | AEM 6.5 | AEM 6.4 | Java SE | Maven
-----------------|------------------------|---------|---------|---------|---------
+Core Components | AEM as a Cloud Service | AEM 6.5 SP13 | Java SE | Maven
+----------------|------------------------|--------------|---------|---------|
 
 
-For the requirements from previous Core Component releases, see [Historical System Requirements](VERSIONS.md).
-
-The Core Components require the use of [editable templates](https://docs.adobe.com/content/help/en/experience-manager-learn/sites/page-authoring/template-editor-feature-video-use.html) and do not support Classic UI nor static templates. If needed, check out the [AEM Modernization Tools](https://opensource.adobe.com/aem-modernize-tools/pages/tools.html).
-
-Setup your local development environment for [AEM as a Cloud Service SDK](https://docs.adobe.com/content/help/en/experience-manager-learn/cloud-service/local-development-environment-set-up/overview.html) or for [older versions of AEM](https://docs.adobe.com/content/help/en/experience-manager-learn/foundation/development/set-up-a-local-aem-development-environment.html).
-
-### Building
-
-To compile your own version of the Core Components, you can build and install everything on your running AEM instance by issuing the following command in the top level folder of the project:
-
-    mvn clean install -PautoInstallSinglePackage
-
-You can also install individual packages/bundles by issuing the following command in the top-level folder of the project:
-
-    mvn clean install -PautoInstallPackage -pl <project_name(s)> -am
-
-With AEM as a Cloud Service SDK, use the `cloud` profile as follows to deploy the components into `/libs` instead of `/apps`:
-
-    mvn clean install -PautoInstallSinglePackage,cloud
-
-Note that:
-* `-pl/-projects` option specifies the list of projects that you want to install
-* `-am/-also-make` options specifies that dependencies should also be built
-
-For detailed informations see [BUILDING.md](BUILDING.md).
-
-### Configuration
-
-The Core Components leverage both OSGi configurations and Sling context-aware configurations. For a description of defined configurations see [CONFIGS.md](CONFIGS.md)
+The Email Core Components require the use of [editable templates](https://docs.adobe.com/content/help/en/experience-manager-learn/sites/page-authoring/template-editor-feature-video-use.html) and do not support Classic UI nor static templates. If needed, check out the [AEM Modernization Tools](https://opensource.adobe.com/aem-modernize-tools/pages/tools.html).
 
 ### Known Issues
+
+## Release Notes
+
+### Current release:
+
+#### V0.6 (scheduled 04/20)
+* Title component: https://github.com/adobe/aem-core-email-components/issues/8
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Title-component:-Technical-documentation
+* Content Fragment component: https://github.com/adobe/aem-core-email-components/issues/10
+    * https://github.com/adobe/aem-core-email-components/wiki/Content-Fragment-(Technical-Documentation)
+* Experience Fragment component: https://github.com/adobe/aem-core-email-components/issues/11
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Experience-Fragment-component-(Technical-Documentation)
+* Provide content structure: https://github.com/adobe/aem-core-email-components/issues/60
+* Button component: https://github.com/adobe/aem-core-email-components/issues/7
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Button-component:-Technical-documentation
+
+### Past releases:
+
+#### V0.5 (scheduled 04/06)
+* Fix RTE personalization in Text component: https://github.com/adobe/aem-core-email-components/issues/61
+* Segmentation Component - no "default" option (like Targeting Mode): https://github.com/adobe/aem-core-email-components/issues/66
+* Remove CaConfig for StylesInliner and move its options to EmailPage properties: https://github.com/adobe/aem-core-email-components/issues/79
+* Style Inliner inlines the generic styles instead of specific one: https://github.com/adobe/aem-core-email-components/issues/63
+* Style inliner: always call it when displaying page in "wcmmode=disabled": https://github.com/adobe/aem-core-email-components/issues/75
+* Segmentation Component - Adobe Campaign Classic is unable to evaluate the segmentation conditions: https://github.com/adobe/aem-core-email-components/issues/71
+* Multiple Javascript errors when loading a page in editor.html: https://github.com/adobe/aem-core-email-components/issues/64
+* Container Component - loads with 0px width: https://github.com/adobe/aem-core-email-components/issues/69
+* Segmentation Component - Tabs are not appearing as Tabs: https://github.com/adobe/aem-core-email-components/issues/65
+
+#### V0.4 (scheduled 03/23)
+* Integration AEM -> ACC
+    * Technical documentation: Integrating AEM with ACC
+* Image component: https://github.com/adobe/aem-core-email-components/issues/6
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Image-component:-Technical-documentation
+* Segmentation component: https://github.com/adobe/aem-core-email-components/issues/12
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Segmentation-component-(Technical-Documentation)
+    * Technical documentation Segmentation Item: https://github.com/adobe/aem-core-email-components/wiki/Segmentation-Item-component-(Technical-Documentation)
+* Externalize URLs: https://github.com/adobe/aem-core-email-components/issues/33
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/UrlMapperService:-Technical-documentation
+
+#### V0.3 (released 03/09)
+* Container component: https://github.com/adobe/aem-core-email-components/issues/4
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Container-Component-(Technical-Documentation)
+* Text component: https://github.com/adobe/aem-core-email-components/issues/5
+    * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Text-component:-Technical-documentation
+* Moved Email header component to page properties: https://github.com/adobe/aem-core-email-components/issues/38
+    * RTE Personalization: https://github.com/adobe/aem-core-email-components/wiki/RTE-Personalization
+
+####  V0.2 (released 02/23)
+* Page component: https://github.com/adobe/aem-core-email-components/issues/3
+* Push content from AEM to ACC: https://github.com/adobe/aem-core-email-components/issues/18
+    * This will not be part of the AEM Core Email Components project, but of AEM Service Pack 6.5.13
+    * For details on how to connect AEM with ACC, please check https://github.com/adobe/aem-core-email-components/wiki/Integrating-AEM-with-ACC
+
+### Upcoming releases:
+
+#### V0.7 (scheduled 05/04)
+* Teaser component: https://github.com/adobe/aem-core-email-components/issues/9
+* Update status section: https://github.com/adobe/aem-core-email-components/issues/62
+* Component HTML Markup: https://github.com/adobe/aem-core-email-components/issues/20 https://github.com/adobe/aem-core-email-components/issues/23
 

@@ -25,7 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileUtils {
-    public final static String INTERNAL_CSS_FILE_PATH = "testpage/internal_css.html";
+    public final static String INTERNAL_CSS_HTML_FILE_PATH = "testpage/internal_css.html";
+    public final static String INTERNAL_CSS_JSON_FILE_PATH = "testpage/internal_css.json";
     public final static String EXTERNAL_CSS_FILE_PATH = "testpage/external_css.html";
     public final static String INTERNAL_AND_EXTERNAL_CSS_FILE_PATH = "testpage/internal_and_external_css.html";
     public final static String OUTPUT_FILE_PATH = "testpage/output_without_style.html";
@@ -34,17 +35,36 @@ public class TestFileUtils {
     public final static String TO_BE_SANITIZED_FILE_PATH = "testpage/to_be_sanitized.html";
     public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
     public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";
+    public final static String WRAPPER_DIV_REMOVAL_INPUT_FILE_PATH = "wrapper-div-removal/input.html";
+    public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_removed.html";
+    public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_NOT_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_not_removed.html";
+
 
     public static String getFileContent(String path) throws URISyntaxException, IOException {
         return new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(path).toURI())));
+    }
+
+    public static void compareRemovingNewLinesAndTabs(String expected, String actual) {
+        if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
+            assertEquals(expected, actual);
+        } else {
+            String normalizedExpected = expected.replaceAll(System.lineSeparator(), "").replaceAll("\t", "")
+                    .replaceAll(">\\s+<", "><").replaceAll("\\s+", " ").trim();
+            String normalizedActual =
+                    actual.replaceAll(System.lineSeparator(), "").replaceAll("\t", "").replaceAll(">\\s+<", "><").replaceAll("\\s+",
+                            " ").trim();
+            assertEquals(normalizedExpected, normalizedActual);
+        }
     }
 
     public static void compare(String expected, String actual) {
         if (StringUtils.isEmpty(expected) || StringUtils.isEmpty(actual)) {
             assertEquals(expected, actual);
         } else {
-            assertEquals(expected.replaceAll("\\s+", " ").trim(), actual.replaceAll("\\s+",
-                    " ").trim());
+            String normalizedExpected = expected.replaceAll("\\s+", " ").trim();
+            String normalizedActual = actual.replaceAll("\\s+",
+                    " ").trim();
+            assertEquals(normalizedExpected, normalizedActual);
         }
     }
 }

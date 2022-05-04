@@ -4,4 +4,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Segmentation Component"
     sling:resourceSuperType="core/wcm/components/tabs/v1/tabs"
-    componentGroup="core-email"/>
+    componentGroup="core-email-segmentation"/>

@@ -13,4 +13,12 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.enumerations;
+package com.adobe.cq.email.core.components.configs;
+
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+
+@ObjectClassDefinition(name = "Styles inliner configuration")
+public @interface StylesInlinerConfig {
+
+    String[] wrapperDivClassesToBeRemoved() default {"aem-Grid", "aem-GridColumn"};
+}

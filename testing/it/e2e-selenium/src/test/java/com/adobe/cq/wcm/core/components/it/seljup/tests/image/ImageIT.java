@@ -20,9 +20,9 @@ import org.apache.http.HttpStatus;
 import org.apache.sling.testing.clients.ClientException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -36,6 +36,7 @@ import com.codeborne.selenide.WebDriverRunner;
 
 import static com.codeborne.selenide.Selenide.$;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImageIT extends AuthorBaseUITest {
@@ -67,6 +68,7 @@ public class ImageIT extends AuthorBaseUITest {
     }
 
     @Test
+    @DisplayName("Test: Set fixed width")
     void setFixedWidth() throws InterruptedException {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);
@@ -76,18 +78,20 @@ public class ImageIT extends AuthorBaseUITest {
         assertTrue(element.isDisplayed());
         assertTrue(element.isEnabled());
         click(act, element);
-        element.sendKeys(Keys.DELETE, Keys.DELETE, Keys.DELETE, Keys.DELETE);
+        element.clear();
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         element.sendKeys("2500");
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         confirmEditDialog(webDriver, act);
         viewAsPublished(webDriver);
         WebElement img = webDriver.findElement(By.tagName("img"));
-        assertEquals("2500", img.getAttribute("width"));
+        assertNotNull(img.getAttribute("width"));
         assertTrue(isAbsolute(img.getAttribute("src")));
         assertEquals("width: 2500px;", img.getAttribute("style"));
     }
 
     @Test
+    @DisplayName("Test: Set scale image to available width")
     void setScaleImageToAvailableWidth() throws InterruptedException {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);

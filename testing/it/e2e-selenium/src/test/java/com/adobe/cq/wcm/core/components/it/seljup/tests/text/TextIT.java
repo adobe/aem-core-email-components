@@ -23,7 +23,6 @@ import org.apache.sling.testing.clients.ClientException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.adobe.cq.testing.selenium.pageobject.EditorPage;
@@ -41,7 +40,6 @@ import com.codeborne.selenide.SelenideElement;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("group3")
 public class TextIT extends AuthorBaseUITest {
 
     private final String textRT = "core/email/components/text";
@@ -75,7 +73,7 @@ public class TextIT extends AuthorBaseUITest {
     }
 
     @Test
-    @DisplayName("Test: Check if personalization plugin button exists in inline editor")
+    @DisplayName("Test: Check if personalization plugin button exists in inline editor (Text component)")
     public void testCheckInlineEditor() throws TimeoutException {
         InlineEditor inlineEditor = Commons.openInlineEditor(this.editorPage, this.compPath);
         RichTextToolbar rte = inlineEditor.getRichTextToolbar();
@@ -85,7 +83,7 @@ public class TextIT extends AuthorBaseUITest {
     }
 
     @Test
-    @DisplayName("Test: Check if personalization plugin button exists in fullscreen editor")
+    @DisplayName("Test: Check if personalization plugin button exists in fullscreen editor (Text component)")
     public void testCheckFullScreenEditor() throws TimeoutException, InterruptedException {
         InlineEditor inlineEditor = Commons.openInlineEditor(this.editorPage, this.compPath);
         RichTextToolbar rte = inlineEditor.getRichTextToolbar();
@@ -98,7 +96,7 @@ public class TextIT extends AuthorBaseUITest {
     }
 
     @Test
-    @DisplayName("Test: Check if personalization plugin button exists in configure dialog")
+    @DisplayName("Test: Check if personalization plugin button exists in configure dialog (Text component)")
     public void testCheckConfigureDialog() throws TimeoutException, InterruptedException {
         Commons.openEditDialog(this.editorPage, this.compPath);
         Selenide.$("[data-editor-type=\"text\"]").click();
@@ -109,7 +107,7 @@ public class TextIT extends AuthorBaseUITest {
     }
 
     @Test
-    @DisplayName("Test: Check if personalization plugin button exists in configure dialog (full-screen)")
+    @DisplayName("Test: Check if personalization plugin button exists in fullscreen configure dialog (Text component)")
     public void testCheckConfigureDialogFullScreen() throws TimeoutException, InterruptedException {
         Commons.openEditDialog(this.editorPage, this.compPath);
         Selenide.$("[data-editor-type=\"text\"]").click();

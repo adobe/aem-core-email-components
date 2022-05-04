@@ -22,6 +22,7 @@ import org.apache.http.HttpStatus;
 import org.apache.sling.testing.clients.ClientException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,8 +39,8 @@ import com.codeborne.selenide.WebDriverRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SegmentationIT extends AuthorBaseUITest {
-    public static final String EXPECTED_FIRST_SEGMENTATION_ITEM_CONTENT = "<% if (recipient.age >= 18) { %>\nAdults only\n<% } %>";
-    public static final String EXPECTED_SECOND_SEGMENTATION_ITEM_CONTENT = "<% if (recipient.age < 18) { %>\nKids only\n<% } %>";
+    public static final String EXPECTED_FIRST_SEGMENTATION_ITEM_CONTENT = "<% if (recipient.age >= 18) { %>\nAdults only\n<% } else if (recipient.age < 18) { %>";
+    public static final String EXPECTED_SECOND_SEGMENTATION_ITEM_CONTENT = "Kids only\n<% } %>";
     private String proxyPath;
     private String testPage;
 
@@ -68,6 +69,7 @@ public class SegmentationIT extends AuthorBaseUITest {
     }
 
     @Test
+    @DisplayName("Test: Create segmentation")
     void createSegmentation() throws InterruptedException {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);
@@ -133,7 +135,9 @@ public class SegmentationIT extends AuthorBaseUITest {
     }
 
     private void openContentTree(WebDriver webDriver, Actions act) throws InterruptedException {
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         WebElement contentTreeButton = webDriver.findElement(By.cssSelector("[title=\"Content Tree\"]"));
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         if (!contentTreeButton.isDisplayed()) {
             click(act, webDriver.findElement(By.id("sidepanel-toggle-button")));
         }

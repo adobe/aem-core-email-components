@@ -74,15 +74,15 @@ public class EmailPageImpl implements EmailPage {
 
     private Page page;
 
-    private String statusHeader = "";
+    private String statusHeader = null;
 
-    private String statusMessage = "";
+    private String statusMessage = null;
 
     private String alertType = "info";
 
-    private String errorMessage = "";
+    private String errorMessage = null;
 
-    private String errorMessageTech = "";
+    private String errorMessageTech = null;
 
     private I18n i18n;
 
