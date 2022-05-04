@@ -59,6 +59,7 @@
                         <exclude>**/*.stylelintrc.yaml</exclude>
                         <exclude>**/*.eslintignore</exclude>
                         <exclude>.java-version</exclude>
+                        <exclude>codecov.yml</exclude>
                     </excludes>
                 </configuration>
             </plugin>
