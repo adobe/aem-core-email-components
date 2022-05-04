@@ -272,7 +272,7 @@
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>aem-cloud-testing-clients</artifactId>
-            <version>0.8.0-SNAPSHOT</version>
+            <version>0.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.adobe.cq</groupId>
