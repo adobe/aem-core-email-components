@@ -52,6 +52,12 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 ### Current release:
 
+#### V0.7 (scheduled 05/04)
+* Update status section: https://github.com/adobe/aem-core-email-components/issues/62
+* Component HTML Markup: https://github.com/adobe/aem-core-email-components/issues/20
+
+### Past releases:
+
 #### V0.6 (scheduled 04/20)
 * Title component: https://github.com/adobe/aem-core-email-components/issues/8
     * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Title-component:-Technical-documentation
@@ -62,8 +68,6 @@ The Email Core Components require the use of [editable templates](https://docs.a
 * Provide content structure: https://github.com/adobe/aem-core-email-components/issues/60
 * Button component: https://github.com/adobe/aem-core-email-components/issues/7
     * Technical documentation: https://github.com/adobe/aem-core-email-components/wiki/Button-component:-Technical-documentation
-
-### Past releases:
 
 #### V0.5 (scheduled 04/06)
 * Fix RTE personalization in Text component: https://github.com/adobe/aem-core-email-components/issues/61
@@ -100,11 +104,4 @@ The Email Core Components require the use of [editable templates](https://docs.a
 * Push content from AEM to ACC: https://github.com/adobe/aem-core-email-components/issues/18
     * This will not be part of the AEM Core Email Components project, but of AEM Service Pack 6.5.13
     * For details on how to connect AEM with ACC, please check https://github.com/adobe/aem-core-email-components/wiki/Integrating-AEM-with-ACC
-
-### Upcoming releases:
-
-#### V0.7 (scheduled 05/04)
-* Teaser component: https://github.com/adobe/aem-core-email-components/issues/9
-* Update status section: https://github.com/adobe/aem-core-email-components/issues/62
-* Component HTML Markup: https://github.com/adobe/aem-core-email-components/issues/20 https://github.com/adobe/aem-core-email-components/issues/23
 
