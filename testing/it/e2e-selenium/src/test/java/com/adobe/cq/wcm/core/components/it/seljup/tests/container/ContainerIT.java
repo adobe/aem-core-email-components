@@ -40,7 +40,6 @@ import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
 import com.codeborne.selenide.WebDriverRunner;
 
-@Tag("group3")
 public class ContainerIT extends AuthorBaseUITest {
 
     private String proxyPath;

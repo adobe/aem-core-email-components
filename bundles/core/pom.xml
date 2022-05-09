@@ -25,12 +25,12 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <version>0.8.0-SNAPSHOT</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.core</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Adobe Experience Manager Core Email Components Core Bundle</name>
@@ -49,6 +49,7 @@
                         <exclude>**/resources/css/*</exclude>
                         <exclude>**/resources/testpage/*</exclude>
                         <exclude>**/resources/sanitizer/*</exclude>
+                        <exclude>**/resources/wrapper-div-removal/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -166,13 +167,6 @@
                                         </rule>
                                     </rules>
                                     <excludes>
-                                        <!-- private enum; cannot test valueOf / values -->
-                                        <exclude>
-                                            com/adobe/cq/wcm/core/components/internal/models/v1/SocialMediaHelperImpl$WebsiteMetadata$Type.class
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/wcm/core/components/internal/servlets/AdaptiveImageServlet$Source.class
-                                        </exclude>
                                         <exclude>
                                             com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
                                         </exclude>
@@ -195,6 +189,12 @@
                                         <!-- do not test default values for interfaces -->
                                         <exclude>
                                             com/adobe/cq/email/core/components/models/**
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/enumerations/**
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/filters/**
                                         </exclude>
                                     </excludes>
                                 </configuration>
@@ -463,6 +463,11 @@
             <artifactId>com.adobe.aem.wcm.seo</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.engine</artifactId>
+        </dependency>
+        <!-- Thanks for using https://jar-download.com -->
 
         <!-- Testing dependencies -->
         <dependency>

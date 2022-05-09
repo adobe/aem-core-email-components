@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.filters;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
@@ -35,22 +37,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import com.adobe.cq.email.core.components.enumerations.HtmlSanitizingMode;
-import com.adobe.cq.email.core.components.enumerations.StyleMergerMode;
+import com.adobe.cq.email.core.components.internal.services.CoreEmailOpenCommand;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.drew.lang.Charsets;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -78,7 +84,7 @@ class StylesInlinerFilterTest {
     @Mock
     SlingHttpServletRequest request;
     @Mock
-    SlingHttpServletResponse resp;
+    SlingHttpServletResponse response;
     @Mock
     ResourceResolver resourceResolver;
     @Mock
@@ -89,158 +95,83 @@ class StylesInlinerFilterTest {
     @BeforeEach
     void setUp() throws IOException {
         this.sut = new StylesInlinerFilter();
-        this.sut.setRequestResponseFactory(requestResponseFactory);
-        this.sut.setRequestProcessor(requestProcessor);
-        this.sut.setStylesInlinerService(
-                stylesInlinerService
-        );
+    }
+
+    @Test
+    void noSelectors() throws ServletException, IOException {
+        RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
+        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
+        when(requestPathInfo.getSelectors()).thenReturn(new String[]{});
+        sut.doFilter(request, response, filterChain);
+        verify(request).getRequestPathInfo();
+        verify(filterChain).doFilter(eq(request), eq(response));
+        verifyNoMoreInteractions(filterChain, request, response);
+    }
+
+    @Test
+    void invalidContent() throws ServletException, IOException {
+        RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
+        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
+        when(requestPathInfo.getSelectors()).thenReturn(new String[]{"campaign", "content"});
+        when(response.getWriter()).thenReturn(printWriter);
+        when(response.getCharacterEncoding()).thenReturn(Charsets.UTF_8.name());
+        sut.doFilter(request, response, filterChain);
+        verify(printWriter).write(anyString());
+        verify(request).getRequestPathInfo();
+        verify(filterChain).doFilter(eq(request), isA(InlinerResponseWrapper.class));
+        verify(response, atLeast(1)).getContentType();
+        verify(response).getBufferSize();
+        verifyNoMoreInteractions(filterChain, request, response);
+    }
+
+    @Test
+    void invalidResourceType() throws IOException, ServletException {
+        RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
+        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
+        when(requestPathInfo.getSelectors()).thenReturn(new String[]{"campaign", "content"});
+        when(response.getWriter()).thenReturn(printWriter);
+        when(response.getCharacterEncoding()).thenReturn(Charsets.UTF_8.name());
         when(request.getResource()).thenReturn(resource);
-        when(resource.getPath()).thenReturn("TEST_PATH");
-        when(resource.getChild(eq(JcrConstants.JCR_CONTENT))).thenReturn(contentResource);
-        when(contentResource.getResourceType()).thenReturn(StylesInlinerFilter.RESOURCE_TYPE);
-        when(contentResource.getValueMap()).thenReturn(valueMap);
-        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-        when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);
-        doAnswer(i -> {
-            OutputStream outputStream = (OutputStream) i.getArguments()[0];
-            IOUtils.write(INPUT, outputStream, Charsets.UTF_8);
-            return mock(HttpServletResponse.class);
-        }).when(requestResponseFactory).createResponse(any());
+        when(resource.isResourceType(eq("core/email/components/page"))).thenReturn(false);
+        when(response.getContentType()).thenReturn("application/json");
+        sut.doFilter(request, response, filterChain);
+        verify(printWriter).write(anyString());
+        verify(request).getRequestPathInfo();
+        verify(filterChain).doFilter(eq(request), isA(InlinerResponseWrapper.class));
+        verify(response, atLeast(1)).getContentType();
+        verify(response).getBufferSize();
+        verifyNoMoreInteractions(filterChain, request, response);
+    }
+
+    @Test
+    void success() throws IOException, ServletException {
+        injectReferences();
+        RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
+        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
+        when(requestPathInfo.getSelectors()).thenReturn(new String[]{"campaign", "content"});
+        when(response.getWriter()).thenReturn(printWriter);
+        when(response.getCharacterEncoding()).thenReturn(Charsets.UTF_8.name());
+        when(request.getResource()).thenReturn(resource);
+        when(resource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        when(response.getContentType()).thenReturn("application/json");
         when(request.getResourceResolver()).thenReturn(resourceResolver);
-        when(resp.getWriter()).thenReturn(printWriter);
-        doAnswer(i -> {
-            StyleMergerMode styleMergerMode = i.getArgument(2);
-            if (StyleMergerMode.IGNORE_SPECIFICITY.equals(styleMergerMode)) {
-                return OUTPUT_IGNORING_CSS_SPECIFICITY;
-            }
-            if (StyleMergerMode.ALWAYS_APPEND.equals(styleMergerMode)) {
-                return OUTPUT_ALWAYS_APPENDING_CSS_PROPERTIES;
-            }
-            return OUTPUT_PROCESSING_CSS_SPECIFICITY;
-        }).when(stylesInlinerService).getHtmlWithInlineStyles(eq(resourceResolver), eq(INPUT),
-                any(), any());
+        when(stylesInlinerService.getHtmlWithInlineStyles(eq(resourceResolver), anyString(), anyString())).thenReturn("RESULT");
+        sut.doFilter(request, response, filterChain);
+        verify(printWriter).write(eq("RESULT"));
+        verify(request).getRequestPathInfo();
+        verify(filterChain).doFilter(eq(request), isA(InlinerResponseWrapper.class));
+        verify(response, atLeast(1)).getContentType();
+        verify(response).getBufferSize();
+        verifyNoMoreInteractions(filterChain, request, response);
     }
 
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void noGetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
+    private void injectReferences() {
+        try {
+            Field stylesInlinerServiceField = StylesInlinerFilter.class.getDeclaredField("stylesInlinerService");
+            stylesInlinerServiceField.setAccessible(true);
+            stylesInlinerServiceField.set(sut, stylesInlinerService);
+        } catch (Throwable e) {
+            throw new RuntimeException("Error!");
+        }
     }
-
-    @Test
-    void noConfig() throws ServletException, IOException {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void noConfig_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        sut.doFilter(request, resp, filterChain);
-        verify(filterChain).doFilter(eq(request), eq(resp));
-        verifyZeroInteractions(printWriter);
-    }
-
-    @Test
-    void noStyleMergerMode() throws ServletException, IOException {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void noStyleMergerMode_GetRenderedHtmlAttributeInRequest() throws ServletException, IOException {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(null);
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        sut.doFilter(request, resp, filterChain);
-        verify(filterChain).doFilter(eq(request), eq(resp));
-        verifyZeroInteractions(printWriter);
-    }
-
-    @Test
-    void processingCssSpecificity() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.PROCESS_SPECIFICITY.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_PROCESSING_CSS_SPECIFICITY));
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void processingCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.PROCESS_SPECIFICITY.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        sut.doFilter(request, resp, filterChain);
-        verify(filterChain).doFilter(eq(request), eq(resp));
-        verifyZeroInteractions(printWriter);
-    }
-
-    @Test
-    void ignoringCssSpecificity() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.IGNORE_SPECIFICITY.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_IGNORING_CSS_SPECIFICITY));
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void ignoringCssSpecificity_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.IGNORE_SPECIFICITY.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        sut.doFilter(request, resp, filterChain);
-        verify(filterChain).doFilter(eq(request), eq(resp));
-        verifyZeroInteractions(printWriter);
-    }
-
-    @Test
-    void alwaysAppendingCssProperties() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.ALWAYS_APPEND.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        sut.doFilter(request, resp, filterChain);
-        verifyZeroInteractions(filterChain);
-        verify(printWriter).write(eq(OUTPUT_ALWAYS_APPENDING_CSS_PROPERTIES));
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void alwaysAppendingCssProperties_GetRenderedHtmlAttributeInRequest() throws Exception {
-        when(valueMap.get(eq(StylesInlinerFilter.STYLE_MERGER_MODE_PROPERTY), eq(String.class))).thenReturn(
-                StyleMergerMode.ALWAYS_APPEND.name());
-        when(valueMap.get(eq(StylesInlinerFilter.HTML_SANITIZING_MODE_PROPERTY), eq(String.class))).thenReturn(
-                HtmlSanitizingMode.FULL.name());
-        when(request.getAttribute(StylesInlinerFilter.PROCESSED_ATTRIBUTE)).thenReturn(true);
-        sut.doFilter(request, resp, filterChain);
-        verify(filterChain).doFilter(eq(request), eq(resp));
-        verifyZeroInteractions(printWriter);
-    }
-
 }

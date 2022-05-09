@@ -1,0 +1,2 @@
+ignore:
+  - "bundles/core/src/main/java/com/adobe/cq/email/core/components/internal/request/URI.java"

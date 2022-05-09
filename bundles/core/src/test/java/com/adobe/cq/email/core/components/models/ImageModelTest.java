@@ -15,7 +15,6 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -97,6 +96,12 @@ class ImageModelTest {
     }
 
     @Test
+    void getWidth_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getWidth());
+    }
+
+    @Test
     void getHeight_ScaleToFullWidth() {
         this.sut.scaleToFullWidth = true;
         assertNull(sut.getHeight());
@@ -105,14 +110,19 @@ class ImageModelTest {
     @Test
     void getHeight_FixedWidth() {
         this.sut.fixedWidth = 400L;
-        assertNull(
-                sut.getHeight());
+        assertNull(sut.getHeight());
     }
 
     @Test
     void getHeight_Delegate() {
         when(delegate.getHeight()).thenReturn("600px");
         assertEquals("600px", sut.getHeight());
+    }
+
+    @Test
+    void getHeight_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getHeight());
     }
 
     @Test
@@ -141,12 +151,31 @@ class ImageModelTest {
     }
 
     @Test
+    void getFullWidthStyle_NullDelegate() {
+        this.sut.delegate = null;
+        this.sut.scaleToFullWidth = false;
+        assertNull(sut.getFullWidthStyle());
+    }
+
+    @Test
     void getSrc() {
         String src = "/content/path/image.jpg";
         String imageAbsoluteUrl = "https://domain.com" + src;
         when(delegate.getSrc()).thenReturn(src);
         when(urlMapperService.getMappedUrl(any(), any(), eq(src))).thenReturn(imageAbsoluteUrl);
         assertEquals(imageAbsoluteUrl, sut.getSrc());
+    }
+
+    @Test
+    void getSrc_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getSrc());
+    }
+
+    @Test
+    void getSrc_NullUrlMapperService() {
+        this.sut.urlMapperService = null;
+        assertNull(sut.getSrc());
     }
 
     @Test
@@ -169,15 +198,33 @@ class ImageModelTest {
     }
 
     @Test
+    void getAlt_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getAlt());
+    }
+
+    @Test
     void getTitle() {
         when(delegate.getTitle()).thenReturn("TITLE");
         assertEquals("TITLE", sut.getTitle());
     }
 
     @Test
+    void getTitle_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getTitle());
+    }
+
+    @Test
     void getUuid() {
         when(delegate.getUuid()).thenReturn("UUID");
         assertEquals("UUID", sut.getUuid());
+    }
+
+    @Test
+    void getUuid_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getUuid());
     }
 
     @Test
@@ -188,9 +235,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getImageLink_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getImageLink());
+    }
+
+    @Test
     void getLink() {
         when(delegate.getLink()).thenReturn("LINK");
         assertEquals("LINK", sut.getLink());
+    }
+
+    @Test
+    void getLink_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getLink());
     }
 
     @Test
@@ -200,15 +259,33 @@ class ImageModelTest {
     }
 
     @Test
+    void displayPopupTitle_NullDelegate() {
+        this.sut.delegate = null;
+        assertFalse(sut.displayPopupTitle());
+    }
+
+    @Test
     void getFileReference() {
         when(delegate.getFileReference()).thenReturn("FILE_REFERENCE");
         assertEquals("FILE_REFERENCE", sut.getFileReference());
     }
 
     @Test
+    void getFileReference_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getFileReference());
+    }
+
+    @Test
     void getJson() {
         when(delegate.getJson()).thenReturn("JSON");
         assertEquals("JSON", sut.getJson());
+    }
+
+    @Test
+    void getJson_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getJson());
     }
 
     @Test
@@ -219,13 +296,31 @@ class ImageModelTest {
     }
 
     @Test
+    void getWidths_NullDelegate() {
+        this.sut.delegate = null;
+        assertEquals(0, sut.getWidths().length);
+    }
+
+    @Test
     void getSrcUriTemplate() {
         when(delegate.getSrcUriTemplate()).thenReturn("SRC_URI_TEMPLATE");
         assertEquals("SRC_URI_TEMPLATE", sut.getSrcUriTemplate());
     }
 
     @Test
+    void getSrcUriTemplate_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getSrcUriTemplate());
+    }
+
+    @Test
     void isLazyEnabled() {
+        assertFalse(sut.isLazyEnabled());
+    }
+
+    @Test
+    void isLazyEnabled_NullDelegate() {
+        this.sut.delegate = null;
         assertFalse(sut.isLazyEnabled());
     }
 
@@ -236,9 +331,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getScrset_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getSrcset());
+    }
+
+    @Test
     void getLazyThreshold() {
         when(delegate.getLazyThreshold()).thenReturn(42);
         assertEquals(42, sut.getLazyThreshold());
+    }
+
+    @Test
+    void getLazyThreshold_NullDelegate() {
+        this.sut.delegate = null;
+        assertEquals(0, sut.getLazyThreshold());
     }
 
     @Test
@@ -249,9 +356,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getAreas_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getAreas());
+    }
+
+    @Test
     void isDecorative() {
         when(delegate.isDecorative()).thenReturn(true);
         assertTrue(sut.isDecorative());
+    }
+
+    @Test
+    void isDecorative_NullDelegate() {
+        this.sut.delegate = null;
+        assertFalse(sut.isDecorative());
     }
 
     @Test
@@ -261,9 +380,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getSmartCropRendition_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getSmartCropRendition());
+    }
+
+    @Test
     void isDmImage() {
         when(delegate.isDmImage()).thenReturn(true);
         assertTrue(sut.isDmImage());
+    }
+
+    @Test
+    void isDmImage_NullDelegate() {
+        this.sut.delegate = null;
+        assertFalse(sut.isDmImage());
     }
 
     @Test
@@ -274,9 +405,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getComponentData_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getComponentData());
+    }
+
+    @Test
     void getId() {
         when(delegate.getId()).thenReturn("ID");
         assertEquals("ID", sut.getId());
+    }
+
+    @Test
+    void getId_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getId());
     }
 
     @Test
@@ -287,9 +430,21 @@ class ImageModelTest {
     }
 
     @Test
+    void getData_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getData());
+    }
+
+    @Test
     void getAppliedCssClasses() {
         when(delegate.getAppliedCssClasses()).thenReturn("APPLIED_CSS_CLASSES");
         assertEquals("APPLIED_CSS_CLASSES", sut.getAppliedCssClasses());
+    }
+
+    @Test
+    void getAppliedCssClasses_NullDelegate() {
+        this.sut.delegate = null;
+        assertNull(sut.getAppliedCssClasses());
     }
 
     @Test
@@ -298,13 +453,10 @@ class ImageModelTest {
         assertEquals("EXPORTED_TYPE", sut.getExportedType());
     }
 
-    private void setValue(String field, Object value) {
-        try {
-            Field declaredField = ImageModel.class.getDeclaredField(field);
-            declaredField.setAccessible(true);
-            declaredField.set(sut, value);
-        } catch (Throwable e) {
-            throw new RuntimeException("Error setting private field " + field + " value " + value + ": " + e.getMessage(), e);
-        }
+    @Test
+    void getExportedType_NullDelegate() {
+        this.sut.delegate = null;
+        assertEquals("", sut.getExportedType());
     }
+
 }
