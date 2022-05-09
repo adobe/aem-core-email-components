@@ -14,6 +14,7 @@
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <div data-sly-use.teaser="com.adobe.cq.wcm.core.components.models.Teaser"
+     data-sly-use.model="com.adobe.cq.email.core.components.models.TeaserModel"
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
      data-sly-use.imageTemplate="image.html"
      data-sly-use.pretitleTemplate="pretitle.html"
@@ -25,7 +26,7 @@
      class="cmp-teaser${!wcmmode.disabled && teaser.imageResource ? ' cq-dd-image' : ''}"
      data-cmp-data-layer="${teaser.data.json}">
     <div class="${properties.backgroundImage ? 'background-image' : ''}"
-         style="background-image: url('${properties.backgroundImage ? properties.fileReference : '' @ context='styleString'}')"
+         style="background-image: url('${properties.backgroundImage ? model.externalizedUrl : '' @ context='uri'}')"
          role="img" aria-label="${properties.isDecorative ? '' : properties.alt}"
          data-sly-unwrap="${!properties.backgroundImage}">
         <div class="cmp-teaser__content">
