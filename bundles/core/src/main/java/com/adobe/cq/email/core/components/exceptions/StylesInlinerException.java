@@ -15,7 +15,11 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.exceptions;
 
+/**
+ * {@link RuntimeException} thrown if some errors occurs during style inlining
+ */
 public class StylesInlinerException extends RuntimeException {
+
     public StylesInlinerException(String message, Throwable cause) {
         super(message, cause);
     }

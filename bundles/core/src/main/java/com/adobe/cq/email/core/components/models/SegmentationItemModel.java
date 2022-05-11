@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.sun.org.apache.xerces.internal.impl.dv.xs.QNameDV;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -28,6 +29,9 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 
+/**
+ * Segmentation item model class
+ */
 @Model(adaptables = Resource.class)
 public class SegmentationItemModel {
 
@@ -41,7 +45,8 @@ public class SegmentationItemModel {
     @Optional
     private String condition;
 
-    @Inject @Named("default")
+    @Inject
+    @Named("default")
     @Optional
     private boolean defaultBranch = false;
 
@@ -53,24 +58,24 @@ public class SegmentationItemModel {
 
         int currentIndex = 0;
         int total = 0;
-        for(Resource child : segmentationComponent.getChildren()) {
-            if(StringUtils.equals(child.getPath(), resource.getPath())) {
+        for (Resource child : segmentationComponent.getChildren()) {
+            if (StringUtils.equals(child.getPath(), resource.getPath())) {
                 currentIndex = total;
             }
-            if(currentIndex+1 == total) {
+            if (currentIndex + 1 == total) {
                 nextResource = child;
             }
             total++;
         }
 
-        if(StringUtils.isNotBlank(condition) || defaultBranch) {
+        if (StringUtils.isNotBlank(condition) || defaultBranch) {
             if (currentIndex == 0) {
                 openingACCMarkup = "<% if (" + condition + ") { %>";
             } else {
                 openingACCMarkup = "";
             }
 
-            if (currentIndex+1 == total) {
+            if (currentIndex + 1 == total) {
                 closingACCMarkup = "<% } %>";
             } else if (nextResource != null) {
                 ValueMap nextVm = nextResource.getValueMap();
@@ -90,9 +95,20 @@ public class SegmentationItemModel {
         }
     }
 
+    /**
+     * Getter for the ACC markup opening tag
+     *
+     * @return the ACC markup opening tag
+     */
     public String getOpeningACCMarkup() {
         return openingACCMarkup;
     }
+
+    /**
+     * Getter for the ACC markup closing tag
+     *
+     * @return the ACC markup closing tag
+     */
     public String getClosingACCMarkup() {
         return closingACCMarkup;
     }

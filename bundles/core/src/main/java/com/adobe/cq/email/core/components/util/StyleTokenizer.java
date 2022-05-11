@@ -25,12 +25,21 @@ import org.apache.commons.lang3.StringUtils;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
+/**
+ * Utility class that tokenize a CSS stylesheet
+ */
 public class StyleTokenizer {
 
     private StyleTokenizer() {
         // To avoid instantiation
     }
 
+    /**
+     * Process a CSS stylesheet and tokenizes it
+     *
+     * @param css the CSS stylesheet
+     * @return a {@link List} of {@link StyleToken}
+     */
     public static List<StyleToken> tokenize(String css) {
         List<StyleToken> result = new ArrayList<>();
         if (StringUtils.isEmpty(css)) {

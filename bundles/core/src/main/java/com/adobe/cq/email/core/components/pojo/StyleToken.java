@@ -19,59 +19,122 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * POJO that contains details of a tokenized CSS style selector
+ */
 public class StyleToken {
     private String selector;
-    private final List<String> splittedSelectors = new ArrayList<>();
+    private final List<String> splitSelectors = new ArrayList<>();
     private final List<String> properties = new ArrayList<>();
     private StyleSpecificity specificity;
     private boolean mediaQuery;
     private boolean pseudoSelector;
     private boolean nested;
 
+    /**
+     * Getter for the actual CSS selector
+     *
+     * @return the actual CSS selector
+     */
     public String getSelector() {
         return selector;
     }
 
+    /**
+     * Setter for the actual CSS selector
+     *
+     * @param selector the actual CSS selector
+     */
     public void setSelector(String selector) {
         this.selector = selector;
     }
 
-    public List<String> getSplittedSelectors() {
-        return splittedSelectors;
+    /**
+     * Getter for the list of CSS selectors (split if more than one)
+     *
+     * @return the list of CSS selectors (split if more than one)
+     */
+    public List<String> getSplitSelectors() {
+        return splitSelectors;
     }
 
+    /**
+     * Getter for the CSS properties
+     *
+     * @return the CSS properties
+     */
     public List<String> getProperties() {
         return properties;
     }
 
+    /**
+     * Getter for the {@link StyleSpecificity}
+     *
+     * @return the {@link StyleSpecificity}
+     */
     public StyleSpecificity getSpecificity() {
         return specificity;
     }
 
+    /**
+     * Setter for the {@link StyleSpecificity}
+     *
+     * @param specificity the {@link StyleSpecificity}
+     */
     public void setSpecificity(StyleSpecificity specificity) {
         this.specificity = specificity;
     }
 
+    /**
+     * Getter for media query attribute
+     *
+     * @return true if the current token is a media query, false otherwise
+     */
     public boolean isMediaQuery() {
         return mediaQuery;
     }
 
+    /**
+     * Setter for media query attribute
+     *
+     * @param mediaQuery true if the current token is a media query, false otherwise
+     */
     public void setMediaQuery(boolean mediaQuery) {
         this.mediaQuery = mediaQuery;
     }
 
+    /**
+     * Getter for pseudo selector attribute
+     *
+     * @return true if the current token is a pseudo selector, false otherwise
+     */
     public boolean isPseudoSelector() {
         return pseudoSelector;
     }
 
+    /**
+     * Setter for pseudo selector attribute
+     *
+     * @param pseudoSelector true if the current token is a pseudo selector, false otherwise
+     */
     public void setPseudoSelector(boolean pseudoSelector) {
         this.pseudoSelector = pseudoSelector;
     }
 
+    /**
+     * Getter for nested attribute
+     *
+     * @return true if the current token is a nested selector, false otherwise
+     */
     public boolean isNested() {
         return nested;
     }
 
+    /**
+     * Setter for nested attribute
+     *
+     * @param nested true if the current token is a nested selector, false otherwise
+     */
     public void setNested(boolean nested) {
         this.nested = nested;
     }
@@ -86,12 +149,12 @@ public class StyleToken {
         }
         StyleToken that = (StyleToken) o;
         return mediaQuery == that.mediaQuery && pseudoSelector == that.pseudoSelector && nested == that.nested &&
-                Objects.equals(selector, that.selector) && Objects.equals(splittedSelectors, that.splittedSelectors) &&
+                Objects.equals(selector, that.selector) && Objects.equals(splitSelectors, that.splitSelectors) &&
                 Objects.equals(properties, that.properties) && Objects.equals(specificity, that.specificity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selector, splittedSelectors, properties, specificity, mediaQuery, pseudoSelector, nested);
+        return Objects.hash(selector, splitSelectors, properties, specificity, mediaQuery, pseudoSelector, nested);
     }
 }

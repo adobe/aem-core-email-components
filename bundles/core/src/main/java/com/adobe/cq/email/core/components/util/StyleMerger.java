@@ -26,6 +26,9 @@ import com.adobe.cq.email.core.components.pojo.StyleProperty;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
+/**
+ * Utility class that merges the current style of an HTML element with the one that came from the style tag
+ */
 public class StyleMerger {
     private static final String EMPTY_TOKEN_SELECTOR = "";
 
@@ -33,6 +36,13 @@ public class StyleMerger {
         // to avoid instantiation
     }
 
+    /**
+     * Merges the current {@link StyleToken} of an HTML element with another {@link StyleToken}
+     *
+     * @param elementStyleToken the current HTML element style
+     * @param styleToken        another {@link StyleToken}
+     * @return the merged CSS style of the HTML element
+     */
     public static String merge(StyleToken elementStyleToken, StyleToken styleToken) {
         if (Objects.isNull(styleToken)) {
             styleToken = StyleTokenFactory.create(EMPTY_TOKEN_SELECTOR);

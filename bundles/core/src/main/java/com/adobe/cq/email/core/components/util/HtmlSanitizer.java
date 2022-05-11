@@ -30,13 +30,21 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utility class for HTML pages sanitization
+ */
 public class HtmlSanitizer {
     private static final String XSS_TAGS_RESOURCE = "sanitizer/xss_tags.txt";
     private static final String XSS_EVENTS_RESOURCE = "sanitizer/xss_events.txt";
 
     private static final Logger LOG = LoggerFactory.getLogger(HtmlSanitizer.class.getName());
 
-
+    /**
+     * Sanitizes the HTML page
+     *
+     * @param html the HTML page
+     * @return the sanitized HTML page
+     */
     public static String sanitizeHtml(String html) {
         if (StringUtils.isEmpty(html)) {
             return html;
@@ -48,6 +56,12 @@ public class HtmlSanitizer {
         return document.outerHtml();
     }
 
+    /**
+     * Sanitizes the HTML {@link Document}
+     *
+     * @param parsed the HTML {@link Document}
+     * @return the sanitized HTML {@link Document}
+     */
     public static Document sanitizeDocument(Document parsed) {
         if (Objects.isNull(parsed)) {
             return null;
