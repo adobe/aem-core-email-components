@@ -19,6 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 
+/**
+ * {@link StyleSpecificity} factory class
+ */
 public class StyleSpecificityFactory {
 
     private StyleSpecificityFactory() {

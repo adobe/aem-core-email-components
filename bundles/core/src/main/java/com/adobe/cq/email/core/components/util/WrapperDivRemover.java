@@ -23,6 +23,9 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utility class that remove specific DIVs from an HTML page
+ */
 public class WrapperDivRemover {
     private static final Logger LOG = LoggerFactory.getLogger(WrapperDivRemover.class);
 
@@ -30,6 +33,12 @@ public class WrapperDivRemover {
         // to avoid instantiation
     }
 
+    /**
+     * Remove the DIVs selected from the HTML {@link Document}
+     *
+     * @param doc                          the HTML {@link Document}
+     * @param wrapperDivClassesToBeRemoved the DIV classes to be removed
+     */
     public static void removeWrapperDivs(Document doc, String[] wrapperDivClassesToBeRemoved) {
         if (Objects.isNull(doc) || Objects.isNull(wrapperDivClassesToBeRemoved) || wrapperDivClassesToBeRemoved.length == 0) {
             return;

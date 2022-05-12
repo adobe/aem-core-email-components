@@ -17,6 +17,9 @@ package com.adobe.cq.email.core.components.pojo;
 
 import java.util.Objects;
 
+/**
+ * POJO that contains the details of o CSS style property
+ */
 public class StyleProperty {
     private String name;
     private String value;
@@ -24,42 +27,92 @@ public class StyleProperty {
     private String fullProperty;
     private StyleSpecificity specificity;
 
+    /**
+     * Getter for the property name
+     *
+     * @return the property name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter for the property name
+     *
+     * @param name the property name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Getter for the property value
+     *
+     * @return the property value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Setter for the property value
+     *
+     * @param value the property value
+     */
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * Getter for the important attribute value
+     *
+     * @return the important attribute value
+     */
     public boolean isImportant() {
         return important;
     }
 
+    /**
+     * Setter for the important attribute value
+     *
+     * @param important the important attribute value
+     */
     public void setImportant(boolean important) {
         this.important = important;
     }
 
+    /**
+     * Getter for the full CSS property
+     *
+     * @return the full CSS property
+     */
     public String getFullProperty() {
         return fullProperty;
     }
 
+    /**
+     * Setter for the full CSS property
+     *
+     * @param fullProperty the full CSS property
+     */
     public void setFullProperty(String fullProperty) {
         this.fullProperty = fullProperty;
     }
 
+    /**
+     * Getter for the {@link StyleSpecificity}
+     *
+     * @return the {@link StyleSpecificity}
+     */
     public StyleSpecificity getSpecificity() {
         return specificity;
     }
 
+    /**
+     * Setter for the {@link StyleSpecificity}
+     *
+     * @param specificity the {@link StyleSpecificity}
+     */
     public void setSpecificity(StyleSpecificity specificity) {
         this.specificity = specificity;
     }

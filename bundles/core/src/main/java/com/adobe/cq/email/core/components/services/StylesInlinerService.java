@@ -17,6 +17,9 @@ package com.adobe.cq.email.core.components.services;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
+/**
+ * Service that processes HTML pages and inlines CSS style
+ */
 public interface StylesInlinerService {
 
     /**
@@ -24,7 +27,7 @@ public interface StylesInlinerService {
      * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the <style> tag.
      *
      * @param resourceResolver the resource resolver object
-     * @param jsonContent          the json string containing HTML
+     * @param jsonContent      the json string containing HTML
      * @param charset          the request charset
      * @return jsonContent with inline styles
      */

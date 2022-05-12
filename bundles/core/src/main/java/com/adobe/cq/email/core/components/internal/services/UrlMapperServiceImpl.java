@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.internal.services;
 import java.util.Objects;
 
 import com.day.cq.wcm.api.WCMMode;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -34,6 +35,9 @@ import com.adobe.cq.email.core.components.internal.request.ResolverRequestWrappe
 import com.adobe.cq.email.core.components.services.UrlMapperService;
 import com.day.cq.commons.Externalizer;
 
+/**
+ * {@link UrlMapperService} implementation
+ */
 @Component(service = UrlMapperService.class,
            immediate = true,
            scope = ServiceScope.SINGLETON)
@@ -47,7 +51,8 @@ public class UrlMapperServiceImpl implements UrlMapperService {
     @Override
     public String getMappedUrl(ResourceResolver resourceResolver, SlingHttpServletRequest request, String contentPath) {
         if (Objects.isNull(resourceResolver) || Objects.isNull(request) || StringUtils.isEmpty(contentPath)) {
-            LOG.warn("Invalid parameters: resourceResolver={}, request={}, contentPath={}; returning contentPath", resourceResolver, request, contentPath);
+            LOG.warn("Invalid parameters: resourceResolver={}, request={}, contentPath={}; returning contentPath", resourceResolver,
+                    request, contentPath);
             return contentPath;
         }
         String fromResourceResolver = getFromResourceResolver(resourceResolver, request, contentPath);

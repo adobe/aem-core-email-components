@@ -17,8 +17,16 @@ package com.adobe.cq.email.core.components.configs;
 
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
+/**
+ * OSGI configuration class for {@link com.adobe.cq.email.core.components.services.StylesInlinerService}
+ */
 @ObjectClassDefinition(name = "Styles inliner configuration")
 public @interface StylesInlinerConfig {
 
+    /**
+     * DIV classes that will be removed from processed HTML
+     *
+     * @return array of classes, default value is "aem-Grid" and "aem-GridColumn"
+     */
     String[] wrapperDivClassesToBeRemoved() default {"aem-Grid", "aem-GridColumn"};
 }

@@ -17,6 +17,9 @@ package com.adobe.cq.email.core.components.pojo;
 
 import java.util.Objects;
 
+/**
+ * POJO that identifies the style specificity of a CSS rule
+ */
 public class StyleSpecificity implements Comparable<StyleSpecificity> {
     private int styleAttribute;
     private int id;
@@ -30,34 +33,74 @@ public class StyleSpecificity implements Comparable<StyleSpecificity> {
         this.elements = elements;
     }
 
+    /**
+     * Getter for the style attribute
+     *
+     * @return the style attribute
+     */
     public int getStyleAttribute() {
         return styleAttribute;
     }
 
+    /**
+     * Setter for the style attribute
+     *
+     * @param styleAttribute the style attribute
+     */
     public void setStyleAttribute(int styleAttribute) {
         this.styleAttribute = styleAttribute;
     }
 
+    /**
+     * Getter for the id
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Setter for the id
+     *
+     * @param id the id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Getter for the class attribute
+     *
+     * @return the class attribute
+     */
     public int getClassAttribute() {
         return classAttribute;
     }
 
+    /**
+     * Setter for the class attribute
+     *
+     * @param classAttribute the class attribute
+     */
     public void setClassAttribute(int classAttribute) {
         this.classAttribute = classAttribute;
     }
 
+    /**
+     * Getter for the element count
+     *
+     * @return the element count
+     */
     public int getElements() {
         return elements;
     }
 
+    /**
+     * Setter for the element count
+     *
+     * @param elements the element count
+     */
     public void setElements(int elements) {
         this.elements = elements;
     }

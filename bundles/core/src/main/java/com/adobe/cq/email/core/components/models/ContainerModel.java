@@ -23,6 +23,9 @@ import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 
+/**
+ * Container ob
+ */
 @Model(adaptables = Resource.class)
 public class ContainerModel {
 
@@ -31,22 +34,47 @@ public class ContainerModel {
     @Default(values = "6")
     private String layout;
 
+    /**
+     * Getter for column class (1)
+     *
+     * @return the column class (1)
+     */
     public String getColClass1() {
         return colClass1;
     }
 
+    /**
+     * Getter for column class (2)
+     *
+     * @return the column class (2)
+     */
     public String getColClass2() {
         return colClass2;
     }
 
+    /**
+     * Getter for column class (3)
+     *
+     * @return the column class (3)
+     */
     public String getColClass3() {
         return colClass3;
     }
 
+    /**
+     * Getter for column number
+     *
+     * @return the column number
+     */
     public int getColumns() {
         return columns;
     }
 
+    /**
+     * Getter for layout
+     *
+     * @return the layout
+     */
     public String getLayout() {
         return layout;
     }

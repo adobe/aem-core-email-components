@@ -18,15 +18,38 @@ package com.adobe.cq.email.core.components.internal.configuration;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@ObjectClassDefinition(name = "Core Email AuthorUI Service Configuration", description = "")
+/**
+ * Context Aware Configuration class used by {@link com.adobe.cq.email.core.components.internal.services.CoreEmailAuthoringUIModeServiceImpl}
+ */
+@ObjectClassDefinition(name = "Core Email AuthorUI Service Configuration",
+                       description = "")
 public @interface AuthorModeUIConfig {
-    @AttributeDefinition(name = "Default Authoring Mode", description = "")
+
+    /**
+     * Getter for the default authoring UI mode
+     *
+     * @return the default authoring UI mode, default value = "TOUCH"
+     */
+    @AttributeDefinition(name = "Default Authoring Mode",
+                         description = "")
     String getDefaultAuthoringUIMode() default "TOUCH";
 
-    @AttributeDefinition(name = "Classic Editor URL", description = "")
+    /**
+     * Getter for the classic editor URL
+     *
+     * @return the classic editor URL, default value = "/cf#"
+     */
+    @AttributeDefinition(name = "Classic Editor URL",
+                         description = "")
     String getClassicEditorUrl() default "/cf#";
 
-    @AttributeDefinition(name = "Touch Editor URL", description = "")
+    /**
+     * Getter for the touch editor URL
+     *
+     * @return the touch editor URL, default value = "/editor.html"
+     */
+    @AttributeDefinition(name = "Touch Editor URL",
+                         description = "")
     String getTouchEditorUrl() default "/editor.html";
 
 }

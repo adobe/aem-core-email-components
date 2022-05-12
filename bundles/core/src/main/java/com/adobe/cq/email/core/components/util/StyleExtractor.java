@@ -44,7 +44,7 @@ import static com.adobe.cq.email.core.components.constants.StylesInlinerConstant
 import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLESHEET_ATTRIBUTE;
 
 /**
- * This is a utility for the styles inliner service.
+ * Utility that extracts CSS from a HTML page
  */
 public class StyleExtractor {
 
@@ -55,7 +55,7 @@ public class StyleExtractor {
     private static final Logger LOG = LoggerFactory.getLogger(StyleExtractor.class.getName());
 
     /**
-     * This method extracts all the style rules from both the embedded styles and external style sheet
+     * Extracts all the style rules from both the embedded styles and external style sheet
      *
      * @param doc                    the jsoup document which holds the html
      * @param requestResponseFactory the request response factory

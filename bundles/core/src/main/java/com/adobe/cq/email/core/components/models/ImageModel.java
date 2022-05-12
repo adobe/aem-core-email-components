@@ -48,6 +48,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+/**
+ * Image component model class
+ */
 @Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
        adapters = {Image.class, ComponentExporter.class},
        resourceType = "core/email/components/image",
@@ -113,14 +116,29 @@ public class ImageModel implements Image {
         return delegate.getHeight();
     }
 
+    /**
+     * Getter for fixed width
+     *
+     * @return the fixed width
+     */
     public Long getFixedWidth() {
         return fixedWidth;
     }
 
+    /**
+     * Getter for scale to full width boolean
+     *
+     * @return the scale to full width boolean
+     */
     public boolean isScaleToFullWidth() {
         return scaleToFullWidth;
     }
 
+    /**
+     * Getter for role
+     *
+     * @return the role
+     */
     public String getRole() {
         if (isDecorative()) {
             return "presentation";
@@ -128,6 +146,11 @@ public class ImageModel implements Image {
         return null;
     }
 
+    /**
+     * Getter for full width style
+     *
+     * @return the full width style
+     */
     public String getFullWidthStyle() {
         if (scaleToFullWidth) {
             return "100%";

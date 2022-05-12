@@ -81,6 +81,11 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
 
     private StylesInlinerConfig stylesInlinerConfig;
 
+    /**
+     * Activate method
+     *
+     * @param stylesInlinerConfig the {@link StylesInlinerConfig}
+     */
     @Activate
     public void activate(final StylesInlinerConfig stylesInlinerConfig) {
         this.stylesInlinerConfig = Optional.ofNullable(stylesInlinerConfig).orElse(defaultStylesInlinerConfig());
@@ -159,7 +164,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             unInlinableStyleTokens.add(styleToken);
             return;
         }
-        List<String> cssSelectors = styleToken.getSplittedSelectors();
+        List<String> cssSelectors = styleToken.getSplitSelectors();
         for (String cssSelector : cssSelectors) {
             try {
                 Elements selectedElements = doc.select(cssSelector);

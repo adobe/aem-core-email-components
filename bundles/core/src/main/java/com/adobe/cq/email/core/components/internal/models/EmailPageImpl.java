@@ -45,6 +45,9 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+/**
+ * {@link EmailPage} implementation
+ */
 @Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page")
 public class EmailPageImpl implements EmailPage {
     @ValueMapValue
@@ -112,23 +115,35 @@ public class EmailPageImpl implements EmailPage {
 
     /**
      * Get the reference url for links.
-     * @return  reference url
+     * @return reference url
      */
     @Override
     public String getReferenceUrl() {
         return referenceUrl;
     }
 
+    /**
+     * Get the status header
+     * @return status header
+     */
     @Override
     public String getStatusHeader() {
         return statusHeader;
     }
 
+    /**
+     * Get the status message
+     * @return status message
+     */
     @Override
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    /**
+     * Get the alert type
+     * @return alert type
+     */
     @Override
     public String getAlertType() {
         return alertType;

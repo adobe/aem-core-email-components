@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.osgi.annotation.versioning.ConsumerType;
 
+/**
+ * Email page component model class
+ */
 @ConsumerType
 public interface EmailPage {
 

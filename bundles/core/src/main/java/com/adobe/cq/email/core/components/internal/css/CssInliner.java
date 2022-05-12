@@ -28,11 +28,20 @@ import org.jsoup.select.Selector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * CSS style inlining utility class
+ */
 public class CssInliner {
     private static final String STYLE_ELM = "style";
     private static final String STYLE_ATTR = "style";
     private static final Logger LOG = LoggerFactory.getLogger(CssInliner.class);
 
+    /**
+     * Processes the HTML page, inlining the style
+     *
+     * @param html the source HTML page
+     * @return the {@link Result} of the processing
+     */
     public Result process(String html) {
         try {
             Result result = new Result();
@@ -110,36 +119,72 @@ public class CssInliner {
         return oldProperties + properties;
     }
 
+    /**
+     * POJO that contains the result of the style inlining process
+     */
     public static class Result {
         private String inlineStyle;
         private Map<String, String> selectorMap;
         private String outputHtml;
 
+        /**
+         * Getter for the CSS style
+         *
+         * @return the CSS style
+         */
         public String getInlineStyle() {
             return inlineStyle;
         }
 
+        /**
+         * Setter for the CSS style
+         *
+         * @param inlineStyle the CSS style
+         */
         public void setInlineStyle(String inlineStyle) {
             this.inlineStyle = inlineStyle;
         }
 
+        /**
+         * Getter for the CSS selectors map
+         *
+         * @return the CSS selectors map
+         */
         public Map<String, String> getSelectorMap() {
             return selectorMap;
         }
 
+        /**
+         * Setter for the CSS selectors map
+         *
+         * @param selectorMap the CSS selectors map
+         */
         public void setSelectorMap(Map<String, String> selectorMap) {
             this.selectorMap = selectorMap;
         }
 
+        /**
+         * Getter for the output HTML
+         *
+         * @return the output HTML
+         */
         public String getOutputHtml() {
             return outputHtml;
         }
 
+        /**
+         * Setter for the output HTML
+         *
+         * @param outputHtml the output HTML
+         */
         public void setOutputHtml(String outputHtml) {
             this.outputHtml = outputHtml;
         }
     }
 
+    /**
+     * {@link RuntimeException} thrown if some errors occurs during {@link CssInliner} execution
+     */
     public static class CssInlinerException extends RuntimeException {
 
         public CssInlinerException(String message, Throwable cause) {

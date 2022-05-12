@@ -26,6 +26,9 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * {@link HttpServletRequest} empty implementation
+ */
 public class EmptyHttpServletRequest implements HttpServletRequest {
 
     @Override

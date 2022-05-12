@@ -37,6 +37,10 @@ import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 
+/**
+ * {@link Filter} that will trigger {@link StylesInlinerService} execution if the necessary extensions and selectors are present in the
+ * requesta
+ */
 @Component(
         service = Filter.class,
         property = {
@@ -75,7 +79,7 @@ public class StylesInlinerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        if(hasBothSelectors(request)) {
+        if (hasBothSelectors(request)) {
             InlinerResponseWrapper wrapper = new InlinerResponseWrapper((HttpServletResponse) response);
 
             boolean touched = false;
@@ -88,8 +92,7 @@ public class StylesInlinerFilter implements Filter {
             if (!touched) {
                 response.getWriter().write(wrapper.getResponseAsString());
             }
-        }
-        else {
+        } else {
             if (filterChain == null) {
                 LOG.error("Filterchain is null.");
             } else {
@@ -163,15 +166,16 @@ public class StylesInlinerFilter implements Filter {
 
     /**
      * Checks if the request has both selectors, campaign and content
+     *
      * @param request the request to check
      * @return boolean
      */
     private boolean hasBothSelectors(ServletRequest request) {
-        if(request instanceof SlingHttpServletRequest) {
+        if (request instanceof SlingHttpServletRequest) {
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
             String[] selectors = slingRequest.getRequestPathInfo().getSelectors();
-            if(ArrayUtils.contains(selectors, "campaign")
-            && ArrayUtils.contains(selectors, "content")) {
+            if (ArrayUtils.contains(selectors, "campaign")
+                    && ArrayUtils.contains(selectors, "content")) {
                 return true;
             }
         }

@@ -18,6 +18,9 @@ package com.adobe.cq.email.core.components.internal.request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+/**
+ * {@link HttpServletRequest} implementation used for absolute URL retrieval
+ */
 public class ResolverRequestWrapper extends HttpServletRequestWrapper {
 
     private final URI uri;

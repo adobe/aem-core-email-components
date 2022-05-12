@@ -97,6 +97,6 @@ public class StyleTokenFactory {
         if (StringUtils.isEmpty(splittedSelector)) {
             return;
         }
-        styleToken.getSplittedSelectors().add(splittedSelector.trim());
+        styleToken.getSplitSelectors().add(splittedSelector.trim());
     }
 }

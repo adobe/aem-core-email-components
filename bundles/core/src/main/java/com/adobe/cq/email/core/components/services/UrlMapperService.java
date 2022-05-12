@@ -18,7 +18,17 @@ package com.adobe.cq.email.core.components.services;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
 
+/**
+ * Service for retrieving the absolute URL of resources
+ */
 public interface UrlMapperService {
 
+    /**
+     * Retrieves the absolute url of a resource
+     *
+     * @param resourceResolver the {@link ResourceResolver}
+     * @param request          the {@link SlingHttpServletRequest}
+     * @param contentPath      the resource content path
+     */
     String getMappedUrl(ResourceResolver resourceResolver, SlingHttpServletRequest request, String contentPath);
 }
