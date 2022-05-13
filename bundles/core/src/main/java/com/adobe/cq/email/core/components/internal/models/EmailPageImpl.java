@@ -48,7 +48,7 @@ import javax.inject.Inject;
 /**
  * {@link EmailPage} implementation
  */
-@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page")
+@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page/v1/page")
 public class EmailPageImpl implements EmailPage {
     @ValueMapValue
     @Optional

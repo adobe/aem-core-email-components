@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Copyright 2022 Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+    jcr:primaryType="nt:unstructured">
+    <content
+        jcr:primaryType="nt:unstructured">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured">
+                <items jcr:primaryType="nt:unstructured">
+                    <metadata
+                        jcr:primaryType="nt:unstructured">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <fixedWidth
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/foundation/form/numberfield"
+                                                fieldDescription="Fixed width (in pixels)"
+                                                fieldLabel="Fixed width (px)"
+                                                typeHint="Long"
+                                                required="{Boolean}false"
+                                                min="{Long}0"
+                                                max="{Long}3840"
+                                                value="${not empty cqDesign.defaultWidth ? cqDesign.defaultWidth : 1280}"
+                                                name="./fixedWidth"/>
+                                            <scaleToFullWidth
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                checked="false"
+                                                fieldDescription="Applies &quot;width&quot;: &quot;100%&quot; to image style attribute"
+                                                name="./scaleToFullWidth"
+                                                text="Scale image to available width"
+                                                uncheckedValue="false"
+                                                value="{Boolean}true"/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </metadata>
+                    <asset
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                margin="{Boolean}true">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <imageFromPageImage
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                checked="${true}"
+                                                fieldDescription="Use the featured image defined in the properties of the linked page, or in the properties of the current page when no link is defined."
+                                                name="./imageFromPageImage"
+                                                text="Inherit featured image from page"
+                                                uncheckedValue="false"
+                                                value="{Boolean}true"/>
+                                            <pageImageThumbnail
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="core/wcm/components/commons/editor/dialog/pageimagethumbnail/v1/pageimagethumbnail"/>
+                                            <file
+                                                granite:class="cmp-image__editor-file-upload"
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                                                autoStart="{Boolean}false"
+                                                class="cq-droptarget"
+                                                fileNameParameter="./fileName"
+                                                fileReferenceParameter="./fileReference"
+                                                mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
+                                                multiple="{Boolean}false"
+                                                name="./file"
+                                                title="Upload Image Asset"
+                                                uploadUrl="${suffix.path}"
+                                                useHTML5="{Boolean}true"/>
+                                            <alternativeGroup
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/well"
+                                                granite:class="cmp-image__editor-alt">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <alt
+                                                        granite:class="cmp-image__editor-alt-text"
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldDescription="Textual alternative of the meaning or function of the image, for visually impaired readers."
+                                                        fieldLabel="Alternative text for accessibility"
+                                                        name="./alt"
+                                                        required="{Boolean}true"/>
+                                                    <altValueFromPageImage
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                        checked="true"
+                                                        fieldDescription="Use the description defined on the referenced asset, or the alternative text defined in the page properties."
+                                                        name="./altValueFromPageImage"
+                                                        text="Inherit alternative text from page"
+                                                        uncheckedValue="false"
+                                                        value="{Boolean}true"/>
+                                                    <altValueFromDAM
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                        checked="${not empty cqDesign.altValueFromDAM ? cqDesign.altValueFromDAM : true}"
+                                                        fieldDescription="When checked, populate the image's alt attribute with the value of the dc:description metadata in DAM."
+                                                        name="./altValueFromDAM"
+                                                        text="Inherit from description of asset"
+                                                        uncheckedValue="false"
+                                                        value="{Boolean}true"/>
+                                                </items>
+                                            </alternativeGroup>
+                                            <decorative
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                checked="${not empty cqDesign.isDecorative ? cqDesign.isDecorative : false}"
+                                                fieldDescription="If the image is mostly decorative and doesn't convey additional meaning to a visitor, then it might be acceptable to not provide an alternative text, which will make the image ignored by assistive technology like screen readers."
+                                                name="./isDecorative"
+                                                text="Don’t provide an alternative text"
+                                                uncheckedValue="false"
+                                                value="{Boolean}true"/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </asset>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

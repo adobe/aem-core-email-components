@@ -140,8 +140,8 @@ class CoreEmailOpenCommandTest {
         Resource jcrContentResource = mock(Resource.class);
         when(resourceResolver.getResource(eq("/content/campaigns/resource/path/with/some/params/jcr:content"))).thenReturn(
                 jcrContentResource);
-        doAnswer(i -> "core/email/components/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
-        when(jcrContentResource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        doAnswer(i -> "core/email/components/page/v1/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
+        when(jcrContentResource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         ResourceResolver innerResourceResolver = mock(ResourceResolver.class);
         when(resource.getResourceResolver()).thenReturn(innerResourceResolver);
         Resource jcrContentRes = mock(Resource.class);
@@ -167,8 +167,8 @@ class CoreEmailOpenCommandTest {
         Resource jcrContentResource = mock(Resource.class);
         when(resourceResolver.getResource(eq("/content/campaigns/resource/path/with/some/params/jcr:content"))).thenReturn(
                 jcrContentResource);
-        doAnswer(i -> "core/email/components/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
-        when(jcrContentResource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        doAnswer(i -> "core/email/components/page/v1/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
+        when(jcrContentResource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         ResourceResolver innerResourceResolver = mock(ResourceResolver.class);
         when(resource.getResourceResolver()).thenReturn(innerResourceResolver);
         Resource jcrContentRes = mock(Resource.class);
@@ -199,8 +199,8 @@ class CoreEmailOpenCommandTest {
         Resource jcrContentResource = mock(Resource.class);
         when(resourceResolver.getResource(eq("/content/campaigns/resource/path/with/some/params/jcr:content"))).thenReturn(
                 jcrContentResource);
-        doAnswer(i -> "core/email/components/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
-        when(jcrContentResource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        doAnswer(i -> "core/email/components/page/v1/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
+        when(jcrContentResource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         ResourceResolver innerResourceResolver = mock(ResourceResolver.class);
         when(resource.getResourceResolver()).thenReturn(innerResourceResolver);
         ValueMap valueMap = mock(ValueMap.class);
@@ -224,8 +224,8 @@ class CoreEmailOpenCommandTest {
         Resource jcrContentResource = mock(Resource.class);
         when(resourceResolver.getResource(eq("/content/campaigns/resource/path/with/some/params/jcr:content"))).thenReturn(
                 jcrContentResource);
-        doAnswer(i -> "core/email/components/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
-        when(jcrContentResource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        doAnswer(i -> "core/email/components/page/v1/page".equals(i.getArgument(0))).when(jcrContentResource).isResourceType(anyString());
+        when(jcrContentResource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         ResourceResolver innerResourceResolver = mock(ResourceResolver.class);
         when(resource.getResourceResolver()).thenReturn(innerResourceResolver);
         ValueMap valueMap = mock(ValueMap.class);

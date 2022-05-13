@@ -53,7 +53,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
        adapters = {Image.class, ComponentExporter.class},
-       resourceType = "core/email/components/image",
+       resourceType = "core/email/components/image/v1/image",
        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class ImageModel implements Image {
     static final String DEFAULT_WIDTH_PROPERTY = "defaultWidth";

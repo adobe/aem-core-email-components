@@ -15,7 +15,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Components Examples - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment,core/email/components/container,group:core-email-segmentation]">
+                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,group:core-email-segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
                     <email-page-default
@@ -23,7 +23,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email-page Default"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment,group:core-email-segmentation]">
+                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
                     </email-page-default>
                 </responsivegrid>
             </components>
@@ -46,41 +46,57 @@
         <email jcr:primaryType="nt:unstructured">
             <components jcr:primaryType="nt:unstructured">
                 <container jcr:primaryType="nt:unstructured">
-                    <policy_container
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Container policy"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment,group:core-email-segmentation]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_container>
+                    <v1 jcr:primaryType="nt:unstructured">
+                        <container jcr:primaryType="nt:unstructured">
+                            <policy_container
+                                jcr:primaryType="nt:unstructured"
+                                jcr:title="Container policy"
+                                sling:resourceType="wcm/core/components/policy/policy"
+                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                                <jcr:content jcr:primaryType="nt:unstructured"/>
+                            </policy_container>
+                        </container>
+                    </v1>
                 </container>
                 <page jcr:primaryType="nt:unstructured">
-                    <policy_212634895490169
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Email Components Examples - Page"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        appResourcesClientlib="cmp-email-examples.site"
-                        clientlibs="cmp-email-examples.base">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_212634895490169>
+                    <v1 jcr:primaryType="nt:unstructured">
+                        <page jcr:primaryType="nt:unstructured">
+                            <policy_212634895490169
+                                jcr:primaryType="nt:unstructured"
+                                jcr:title="Email Components Examples - Page"
+                                sling:resourceType="wcm/core/components/policy/policy"
+                                appResourcesClientlib="cmp-email-examples.site"
+                                clientlibs="cmp-email-examples.base">
+                                <jcr:content jcr:primaryType="nt:unstructured"/>
+                            </policy_212634895490169>
+                        </page>
+                    </v1>
                 </page>
                 <segmentation jcr:primaryType="nt:unstructured">
-                    <policy_1647261804902
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Segmentation Policy"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="/apps/core/email/components/segmentation-item">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_1647261804902>
+                    <v1 jcr:primaryType="nt:unstructured">
+                        <segmentation jcr:primaryType="nt:unstructured">
+                            <policy_1647261804902
+                                jcr:primaryType="nt:unstructured"
+                                jcr:title="Segmentation Policy"
+                                sling:resourceType="wcm/core/components/policy/policy"
+                                components="/apps/core/email/components/segmentation-item/v1/segmentation-item">
+                                <jcr:content jcr:primaryType="nt:unstructured"/>
+                            </policy_1647261804902>
+                        </segmentation>
+                    </v1>
                 </segmentation>
                 <segmentation-item jcr:primaryType="nt:unstructured">
-                    <policy_1647261804900
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Segmentation Item Policy"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment,group:core-email-segmentation]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_1647261804900>
+                    <v1 jcr:primaryType="nt:unstructured">
+                        <segmentation-item jcr:primaryType="nt:unstructured">
+                            <policy_1647261804900
+                                jcr:primaryType="nt:unstructured"
+                                jcr:title="Segmentation Item Policy"
+                                sling:resourceType="wcm/core/components/policy/policy"
+                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                                <jcr:content jcr:primaryType="nt:unstructured"/>
+                            </policy_1647261804900>
+                        </segmentation-item>
+                    </v1>
                 </segmentation-item>
             </components>
         </email>

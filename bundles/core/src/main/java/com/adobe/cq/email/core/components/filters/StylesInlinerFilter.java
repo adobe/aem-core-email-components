@@ -55,7 +55,7 @@ import com.adobe.cq.email.core.components.services.StylesInlinerService;
 )
 public class StylesInlinerFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerFilter.class);
-    static final String RESOURCE_TYPE = "core/email/components/page";
+    static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
 
     private static final List<String> CONTENT_TYPES = new ArrayList<>();
 
@@ -121,7 +121,7 @@ public class StylesInlinerFilter implements Filter {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
             Resource resource = slingRequest.getResource();
-            if (resource.isResourceType("core/email/components/page")) {
+            if (resource.isResourceType("core/email/components/page/v1/page")) {
                 String content = wrapper.getResponseAsString();
                 LOG.trace("Original content: {}.", content);
                 String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content,

@@ -19,23 +19,23 @@ Set of standardized Email components for [Adobe Experience Manager (AEM)](https:
 
 ### Template Components
 
-1. [Page](content/src/content/jcr_root/apps/core/email/components/page)
+1. [Page](content/src/content/jcr_root/apps/core/email/components/page/v1/page)
 
 ### Page Authoring Components
 
-2. [Title](content/src/content/jcr_root/apps/core/email/components/title)
-3. [Text](content/src/content/jcr_root/apps/core/email/components/text)
-4. [Image](content/src/content/jcr_root/apps/core/email/components/image)
-5. [Button](content/src/content/jcr_root/apps/core/email/components/button)
-6. [Teaser](content/src/content/jcr_root/apps/core/email/components/teaser)
-7. [Experience Fragment](content/src/content/jcr_root/apps/core/email/components/experiencefragment)
-8. [Content Fragment](content/src/content/jcr_root/apps/core/email/components/contentfragment)
+2. [Title](content/src/content/jcr_root/apps/core/email/components/title/v1/title)
+3. [Text](content/src/content/jcr_root/apps/core/email/components/text/v1/text)
+4. [Image](content/src/content/jcr_root/apps/core/email/components/image/v1/image)
+5. [Button](content/src/content/jcr_root/apps/core/email/components/button/v1/button)
+6. [Teaser](content/src/content/jcr_root/apps/core/email/components/teaser/v1/teaser)
+7. [Experience Fragment](content/src/content/jcr_root/apps/core/email/components/experiencefragment/v1/experiencefragment)
+8. [Content Fragment](content/src/content/jcr_root/apps/core/email/components/contentfragment/v1/contentfragment)
 
 
 ### Container Components
 
-9. [Container](content/src/content/jcr_root/apps/core/email/components/container)
-10. [Segmentation](content/src/content/jcr_root/apps/core/email/components/segmentation)
+9. [Container](content/src/content/jcr_root/apps/core/email/components/container/v1/container)
+10. [Segmentation](content/src/content/jcr_root/apps/core/email/components/segmentation/v1/segmentation)
 
 
 ### System Requirements

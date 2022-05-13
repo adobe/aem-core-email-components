@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExperienceFragmentIT extends AuthorBaseUITest {
 
-    private final String experienceFragmentRT = "core/email/components/experiencefragment";
+    private final String experienceFragmentRT = "core/email/components/experiencefragment/v1/experiencefragment";
     private String proxyPath;
     private String testPage;
     private String compPath;

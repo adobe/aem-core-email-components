@@ -340,8 +340,8 @@ class CoreEmailAuthoringUIModeServiceImplTest {
         when(resource.adaptTo(eq(Page.class))).thenReturn(mock(Page.class));
         Resource child = mock(Resource.class);
         when(resource.getChild(eq("jcr:content"))).thenReturn(child);
-        doAnswer(i -> i.getArgument(0).equals("core/email/components/page")).when(child).isResourceType(anyString());
-        when(child.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        doAnswer(i -> i.getArgument(0).equals("core/email/components/page/v1/page")).when(child).isResourceType(anyString());
+        when(child.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         sut.doFilter(request, response, filterChain);
         verify(request).setAttribute(eq(AuthoringUIMode.REQUEST_ATTRIBUTE_NAME), eq(AuthoringUIMode.TOUCH));
         verify(filterChain).doFilter(eq(request), eq(response));

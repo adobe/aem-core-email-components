@@ -50,7 +50,7 @@ public class SegmentationIT extends AuthorBaseUITest {
         testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
                 "/templates/email-template").getSlingPath();
         // create a proxy component
-        String segmentationRT = "core/email/components/segmentation";
+        String segmentationRT = "core/email/components/segmentation/v1/segmentation";
         proxyPath = Commons.createProxyComponent(adminClient, segmentationRT, Commons.proxyPath, null, null);
         // add the core form container component
         String segmentation = Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "segmentation", null);
