@@ -65,7 +65,7 @@ public class TitleModel implements Title {
     @Inject
     protected ResourceResolver resourceResolver;
 
-    private Link accLink;
+    Link accLink;
 
     @PostConstruct
     protected void initModel() {
@@ -97,13 +97,12 @@ public class TitleModel implements Title {
 
     @Override
     public @Nullable Link getLink() {
-        return Optional.ofNullable(accLink).orElse(Optional.ofNullable(delegate).orElse(new TitleModel()).getLink());
+        return Optional.ofNullable(accLink).orElse(Optional.ofNullable(delegate).map(Title::getLink).orElse(null));
     }
 
     @Override
     public String getLinkURL() {
-        return Optional.ofNullable(
-                accLink).map(Link::getURL).orElse(Optional.ofNullable(delegate).orElse(new TitleModel()).getLinkURL());
+        return Optional.ofNullable(accLink).map(Link::getURL).orElse(Optional.ofNullable(delegate).map(Title::getLinkURL).orElse(null));
     }
 
     @Override

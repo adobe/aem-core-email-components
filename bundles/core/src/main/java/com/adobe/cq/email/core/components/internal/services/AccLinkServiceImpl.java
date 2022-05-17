@@ -174,5 +174,21 @@ public class AccLinkServiceImpl implements AccLinkService {
             return ImmutableMap.copyOf(attributes);
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            AccLink<?> accLink = (AccLink<?>) o;
+            return Objects.equals(url, accLink.url) && Objects.equals(htmlAttributes, accLink.htmlAttributes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(url, htmlAttributes);
+        }
     }
 }

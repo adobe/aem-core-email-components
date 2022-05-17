@@ -68,7 +68,7 @@ public class ButtonModel implements Button {
     @Inject
     protected ResourceResolver resourceResolver;
 
-    private Link accLink;
+    Link accLink;
 
     @PostConstruct
     protected void initModel() {
@@ -92,14 +92,14 @@ public class ButtonModel implements Button {
 
     @Override
     public Link getButtonLink() {
-        return Optional.ofNullable(accLink).orElse(Optional.ofNullable(delegate).orElse(new ButtonModel()).getButtonLink());
+        return Optional.ofNullable(accLink).orElse(Optional.ofNullable(delegate).map(Button::getButtonLink).orElse(null));
     }
 
     @Override
     @Deprecated
     public String getLink() {
         return Optional.ofNullable(
-                accLink).map(Link::getURL).orElse(Optional.ofNullable(delegate).orElse(new ButtonModel()).getLink());
+                accLink).map(Link::getURL).orElse(Optional.ofNullable(delegate).map(Button::getLink).orElse(null    ));
     }
 
     @Override
