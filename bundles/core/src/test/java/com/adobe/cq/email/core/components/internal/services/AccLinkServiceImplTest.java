@@ -111,6 +111,7 @@ class AccLinkServiceImplTest {
         assertEquals(expected.getHtmlAttributes(), actual.getHtmlAttributes());
         assertEquals(expected.getReference(), actual.getReference());
         assertEquals(expected, actual);
+        assertEquals(expected.hashCode(), actual.hashCode());
     }
 
     @Test
@@ -129,6 +130,7 @@ class AccLinkServiceImplTest {
         assertEquals(expected.getHtmlAttributes(), actual.getHtmlAttributes());
         assertEquals(expected.getReference(), actual.getReference());
         assertEquals(expected, actual);
+        assertEquals(expected.hashCode(), actual.hashCode());
     }
 
     @Test
@@ -144,6 +146,7 @@ class AccLinkServiceImplTest {
         assertEquals(expected.getHtmlAttributes(), actual.getHtmlAttributes());
         assertEquals(expected.getReference(), actual.getReference());
         assertEquals(expected, actual);
+        assertEquals(expected.hashCode(), actual.hashCode());
     }
 
 }
