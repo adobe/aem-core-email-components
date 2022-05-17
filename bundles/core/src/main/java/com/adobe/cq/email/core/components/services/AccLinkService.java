@@ -13,12 +13,27 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-/**
- * <p>
- * This package defines utility classes exposed by the Adobe Experience Manager Core Email Components Bundle.
- * </p>
- */
-@Version("2.1.0")
 package com.adobe.cq.email.core.components.services;
 
-import org.osgi.annotation.versioning.Version;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ResourceResolver;
+
+import com.adobe.cq.wcm.core.components.commons.link.Link;
+
+/**
+ * Service that can create a {@link Link} to an Adobe Campaign Classic instance
+ */
+public interface AccLinkService {
+
+    /**
+     * Creates a {@link Link}
+     *
+     * @param resourceResolver the {@link ResourceResolver}
+     * @param request          the {@link SlingHttpServletRequest}
+     * @param url              the current URL
+     * @return the {@link Link} to ACC instance
+     */
+    Link create(ResourceResolver resourceResolver, SlingHttpServletRequest request, String url);
+
+
+}

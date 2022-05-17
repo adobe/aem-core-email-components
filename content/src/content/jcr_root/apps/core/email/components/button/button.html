@@ -19,10 +19,11 @@
         type="${button.buttonLink.valid ? '' : 'button'}"
         id="${button.id}"
         class="cmp-button"
-        data-sly-attribute="${button.buttonLink.htmlAttributes}"
+        x-cq-linkchecker="skip"
+        href="${button.buttonLink.URL  @ context ='html'}"
         aria-label="${button.accessibilityLabel}"
         data-cmp-clickable="${button.data ? true : false}"
         data-cmp-data-layer="${button.data.json}">
     <sly data-sly-call="${iconTemplate.icon @ icon=button.icon}"></sly>
-    <span data-sly-test="${properties.title}" class="cmp-button__text">${properties.title}</span>
+    <span data-sly-test="${properties.title}" class="cmp-button__text">${properties.title @ context ='html'}</span>
 </button>
