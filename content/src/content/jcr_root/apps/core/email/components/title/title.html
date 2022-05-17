@@ -20,9 +20,10 @@
      id="${title.id}"
      class="cmp-title">
     <h1 class="cmp-title__text" data-sly-element="${title.type}">
-        <a data-sly-unwrap="${!title.link.valid || title.linkDisabled}"
+        <a x-cq-linkchecker="skip"
+           data-sly-unwrap="${!title.link.valid}"
            class="cmp-title__link"
-           href="${title.link @ context = 'html'}">${properties.title @ context ='html'}</a>
+           href="${title.link.URL @ context = 'html'}">${properties.title @ context ='html'}</a>
     </h1>
 </div>
 <sly data-sly-call="${template.placeholder @ isEmpty=!properties.title, classAppend='cmp-title'}"></sly>

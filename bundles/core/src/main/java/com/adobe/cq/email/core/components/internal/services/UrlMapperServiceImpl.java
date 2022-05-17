@@ -56,7 +56,7 @@ public class UrlMapperServiceImpl implements UrlMapperService {
             return contentPath;
         }
         String fromResourceResolver = getFromResourceResolver(resourceResolver, request, contentPath);
-        if (fromResourceResolver != null) {
+        if (fromResourceResolver != null && fromResourceResolver.startsWith("http")) {
             return fromResourceResolver;
         }
         String fromExternalizer = getFromExternalizer(resourceResolver, contentPath, request);
