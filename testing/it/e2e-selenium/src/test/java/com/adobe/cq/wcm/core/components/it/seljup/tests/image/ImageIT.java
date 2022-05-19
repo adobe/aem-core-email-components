@@ -49,7 +49,7 @@ public class ImageIT extends AuthorBaseUITest {
         testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
                 "/templates/email-template").getSlingPath();
         // create a proxy component
-        String imageRT = "core/email/components/image";
+        String imageRT = "core/email/components/image/v1/image";
         proxyPath = Commons.createProxyComponent(adminClient, imageRT, Commons.proxyPath, null, null);
         // add the core form container component
         Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "image", null);

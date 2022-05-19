@@ -9,14 +9,13 @@ AEM uses [OSGi configurations](https://experienceleague.adobe.com/docs/experienc
 | Configuration | Description |
 |---|---|
 | [ComponentConfigImpl](config/src/content/jcr_root/apps/core/email/config/com.adobe.cq.dam.cfm.impl.component.ComponentConfigImpl-core-comp-v1.config) | Enables Content Fragment management for [Content Fragment component](content/src/content/jcr_root/apps/core/email/components/contentfragment/v1/contentfragment). Reference documentation: https://experienceleague.adobe.com/docs/experience-manager-65/developing/extending-aem/content-fragments-config-components-rendering.html |
-| [RTEFilterServletFactory](config/src/content/jcr_root/apps/core/email/config/com.adobe.cq.ui.wcm.commons.internal.servlets.rte.RTEFilterServletFactory.amended-core-components.config) | Enables usage of RTE (Rich Text Editor) with [Text component](content/src/content/jcr_root/apps/core/email/components/text/v2/text). Reference documentation: https://experienceleague.adobe.com/docs/experience-manager-65/administering/operations/rich-text-editor.html |
+| [RTEFilterServletFactory](config/src/content/jcr_root/apps/core/email/config/com.adobe.cq.ui.wcm.commons.internal.servlets.rte.RTEFilterServletFactory.amended-core-components.config) | Enables usage of RTE (Rich Text Editor) with [Text component](content/src/content/jcr_root/apps/core/email/components/text/v1/text). Reference documentation: https://experienceleague.adobe.com/docs/experience-manager-65/administering/operations/rich-text-editor.html |
 | [ServiceUserMapperImpl](config/src/content/jcr_root/apps/core/email/config/org.apache.sling.serviceusermapping.impl.ServiceUserMapperImpl.amended-componentsservice.config) | Enables access rights for [ClientLibraries](bundles/core/src/main/java/com/adobe/cq/wcm/core/components/models/ClientLibraries.java) and [ComponentFiles](bundles/core/src/main/java/com/adobe/cq/wcm/core/components/models/ComponentFiles.java) helpers |
 
 ### `author` Configurations
 | Configuration | Description |
 |---|---|
-| [FormParagraphPostProcessor](config/src/content/jcr_root/apps/core/email/config.author/com.day.cq.wcm.foundation.forms.impl.FormParagraphPostProcessor-core-components.config) | Enables functionality of [Core Form container](content/src/content/jcr_root/apps/core/email/components/form/container/v2/container) |
-| [MobileEmulatorProvider](config/src/content/jcr_root/apps/core/email/config.author/com.day.cq.wcm.mobile.core.impl.MobileEmulatorProvider-core-components.config) | Enables mobile devices emulation in the editor for [Page component](content/src/content/jcr_root/apps/core/email/components/page/v3/page) |
+| [MobileEmulatorProvider](config/src/content/jcr_root/apps/core/email/config.author/com.day.cq.wcm.mobile.core.impl.MobileEmulatorProvider-core-components.config) | Enables mobile devices emulation in the editor for [Page component](content/src/content/jcr_root/apps/core/email/components/page/v1/page) |
 
 ## Context-Aware configurations
 
@@ -24,7 +23,7 @@ The following [context-aware configurations](https://sling.apache.org/documentat
 
 | Configuration | Description |
 |---|---|
-| [HtmlPageItemsConfig](bundles/core/src/main/java/com/adobe/cq/wcm/core/components/config/HtmlPageItemsConfig.java) | Holds information on items to be included by [Page component](content/src/content/jcr_root/apps/core/email/components/page/v3/page): scripts, links, meta elements |
+| [HtmlPageItemsConfig](bundles/core/src/main/java/com/adobe/cq/wcm/core/components/config/HtmlPageItemsConfig.java) | Holds information on items to be included by [Page component](content/src/content/jcr_root/apps/core/email/components/page/v1/page): scripts, links, meta elements |
 
 At the moment, there is no editing UI for context-aware configuration available out-of-the-box. Developers can either:
 

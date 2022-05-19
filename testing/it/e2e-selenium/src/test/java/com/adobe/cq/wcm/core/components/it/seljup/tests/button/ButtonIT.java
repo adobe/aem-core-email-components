@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ButtonIT extends AuthorBaseUITest {
 
-    private final String titleRT = "core/email/components/button";
+    private final String titleRT = "core/email/components/button/v1/button";
     private String proxyPath;
     private String testPage;
     private String compPath;

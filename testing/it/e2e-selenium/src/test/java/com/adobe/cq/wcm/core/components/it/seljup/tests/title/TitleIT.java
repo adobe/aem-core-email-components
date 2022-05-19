@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TitleIT extends AuthorBaseUITest {
 
-    private final String titleRT = "core/email/components/title";
+    private final String titleRT = "core/email/components/title/v1/title";
     private String proxyPath;
     private String testPage;
     private String compPath;

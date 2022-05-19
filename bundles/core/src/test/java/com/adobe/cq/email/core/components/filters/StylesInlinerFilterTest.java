@@ -132,7 +132,7 @@ class StylesInlinerFilterTest {
         when(response.getWriter()).thenReturn(printWriter);
         when(response.getCharacterEncoding()).thenReturn(Charsets.UTF_8.name());
         when(request.getResource()).thenReturn(resource);
-        when(resource.isResourceType(eq("core/email/components/page"))).thenReturn(false);
+        when(resource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(false);
         when(response.getContentType()).thenReturn("application/json");
         sut.doFilter(request, response, filterChain);
         verify(printWriter).write(anyString());
@@ -152,7 +152,7 @@ class StylesInlinerFilterTest {
         when(response.getWriter()).thenReturn(printWriter);
         when(response.getCharacterEncoding()).thenReturn(Charsets.UTF_8.name());
         when(request.getResource()).thenReturn(resource);
-        when(resource.isResourceType(eq("core/email/components/page"))).thenReturn(true);
+        when(resource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         when(response.getContentType()).thenReturn("application/json");
         when(request.getResourceResolver()).thenReturn(resourceResolver);
         when(stylesInlinerService.getHtmlWithInlineStyles(eq(resourceResolver), anyString(), anyString())).thenReturn("RESULT");

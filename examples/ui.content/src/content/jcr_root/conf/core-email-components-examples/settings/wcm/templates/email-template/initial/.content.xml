@@ -7,7 +7,7 @@
     <jcr:content
         cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
         jcr:primaryType="cq:PageContent"
-        sling:resourceType="core/email/components/page"
+        sling:resourceType="core/email/components/page/v1/page"
         acMapping="mapRecipient"
         acTemplateLabel="Email delivery with AEM content"
         acTemplateId="mailAEMContent">
@@ -17,7 +17,7 @@
             <experiencefragment_header
                 jcr:primaryType="nt:unstructured"
                 position="header"
-                sling:resourceType="core/email/components/experiencefragment"
+                sling:resourceType="core/email/components/experiencefragment/v1/experiencefragment"
                 editable="{Boolean}true"/>
             <responsivegrid
                 jcr:primaryType="nt:unstructured"
@@ -25,7 +25,7 @@
             <experiencefragment_footer
                 jcr:primaryType="nt:unstructured"
                 position="footer"
-                sling:resourceType="core/email/components/experiencefragment"
+                sling:resourceType="core/email/components/experiencefragment/v1/experiencefragment"
                 editable="{Boolean}true"/>
         </root>
     </jcr:content>

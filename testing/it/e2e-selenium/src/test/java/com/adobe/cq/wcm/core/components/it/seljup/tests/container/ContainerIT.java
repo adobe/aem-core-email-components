@@ -51,7 +51,7 @@ public class ContainerIT extends AuthorBaseUITest {
         testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
                 "/templates/email-template").getSlingPath();
         // create a proxy component
-        String containerRT = "core/email/components/container";
+        String containerRT = "core/email/components/container/v1/container";
         proxyPath = Commons.createProxyComponent(adminClient, containerRT, Commons.proxyPath, null, null);
         // add the core form container component
         String compPath = Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "container", null);

@@ -19,12 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.QNameDV;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.Self;

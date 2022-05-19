@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextIT extends AuthorBaseUITest {
 
-    private final String textRT = "core/email/components/text";
+    private final String textRT = "core/email/components/text/v1/text";
     private String proxyPath;
     private String testPage;
     private String compPath;
