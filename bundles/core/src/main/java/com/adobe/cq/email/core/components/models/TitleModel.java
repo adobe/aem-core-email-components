@@ -45,7 +45,7 @@ import com.adobe.cq.wcm.core.components.models.datalayer.ComponentData;
  */
 @Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
        adapters = {Title.class, ComponentExporter.class},
-       resourceType = "core/email/components/title",
+       resourceType = "core/email/components/title/v1/title",
        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class TitleModel implements Title {
 

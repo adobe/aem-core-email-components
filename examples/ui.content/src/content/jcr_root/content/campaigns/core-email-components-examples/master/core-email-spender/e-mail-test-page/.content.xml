@@ -22,7 +22,7 @@
                 position="header"/>
             <responsivegrid
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="core/email/components/container"/>
+                sling:resourceType="core/email/components/container/v1/container"/>
             <experiencefragment_footer
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="core/email/components/experiencefragment/v1/experiencefragment"

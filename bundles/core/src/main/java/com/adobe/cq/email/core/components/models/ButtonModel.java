@@ -48,7 +48,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
        adapters = {Button.class, ComponentExporter.class},
-       resourceType = "core/email/components/button",
+       resourceType = "core/email/components/button/v1/button",
        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class ButtonModel implements Button {
 
