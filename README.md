@@ -52,11 +52,18 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 ### Current release:
 
+#### V0.8 (scheduled 05/18)
+* Update and Rename Container Component https://github.com/adobe/aem-core-email-components/issues/90
+* Features/teaser component https://github.com/adobe/aem-core-email-components/issues/9
+* Features/update link title https://github.com/adobe/aem-core-email-components/issues/104
+*  Container Component - Unable to specify Policy for child components https://github.com/adobe/aem-core-email-components/issues/76
+* Create Component Versions https://github.com/adobe/aem-core-email-components/issues/106
+
+### Past releases:
+
 #### V0.7 (scheduled 05/04)
 * Update status section: https://github.com/adobe/aem-core-email-components/issues/62
 * Component HTML Markup: https://github.com/adobe/aem-core-email-components/issues/20
-
-### Past releases:
 
 #### V0.6 (scheduled 04/20)
 * Title component: https://github.com/adobe/aem-core-email-components/issues/8
