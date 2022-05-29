@@ -23,7 +23,7 @@
         <a x-cq-linkchecker="skip"
            data-sly-unwrap="${!title.link.valid}"
            class="cmp-title__link"
-           href="${title.link.URL @ context = 'html'}">${properties.title @ context ='html'}</a>
+           href="${title.link.URL @ context = 'html'}">${text @ context ='html'}</a>
     </h1>
 </div>
 <sly data-sly-call="${template.placeholder @ isEmpty=!properties.title, classAppend='cmp-title'}"></sly>
