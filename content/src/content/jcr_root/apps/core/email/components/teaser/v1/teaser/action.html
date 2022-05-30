@@ -13,23 +13,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<table data-sly-use.title="com.adobe.cq.wcm.core.components.models.Title"
-     data-sly-use.template="core/wcm/components/commons/v1/templates.html"
-     data-sly-test.text="${title.text}"
-     data-cmp-data-layer="${title.data.json}"
-     id="${title.id}"
-     class="cmp-title">
-    <tbody>
+<sly data-sly-template.action="${@ action}">
     <tr>
         <td class="no-background">
-            <h1 class="cmp-title__text" data-sly-element="${title.type}">
-                <a x-cq-linkchecker="skip"
-                   data-sly-unwrap="${!title.link.valid}"
-                   class="cmp-title__link"
-                   href="${title.link.URL @ context = 'html'}">${properties.title @ context ='html'}</a>
-            </h1>
+            <a class="cmp-teaser__action-link"
+               data-sly-attribute="${action.link.htmlAttributes}"
+               data-sly-unwrap="${!action.link.valid}"
+               id="${action.id}"
+               data-cmp-data-layer="${action.data.json}"
+               data-cmp-clickable="${action.data ? true : false}">${action.title}</a>
         </td>
     </tr>
-    </tbody>
-</table>
-<sly data-sly-call="${template.placeholder @ isEmpty=!properties.title, classAppend='cmp-title'}"></sly>
+</sly>
