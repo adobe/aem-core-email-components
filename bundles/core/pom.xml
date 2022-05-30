@@ -176,6 +176,12 @@
                                         <exclude>
                                             com/adobe/cq/email/core/components/exceptions/**
                                         </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
+                                        </exclude>
+                                        <exclude>
+                                            com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
+                                        </exclude>
                                         <!-- package has 90% empty methods and string parsing -->
                                         <exclude>
                                             com/adobe/cq/email/core/components/internal/request/**
