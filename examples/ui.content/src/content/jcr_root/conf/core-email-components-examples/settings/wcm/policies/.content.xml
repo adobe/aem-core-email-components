@@ -25,6 +25,27 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
                     </email-page-default>
+                    <policy_column_0
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Core Email Container's first column policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:core-email,group:core-email-segmentation]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_column_0>
+                    <policy_column_1
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Core Email Container's second column policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:core-email,group:core-email-segmentation]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_column_1>
+                    <policy_column_2
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Core Email Container's third column policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:core-email,group:core-email-segmentation]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_column_2>
                 </responsivegrid>
             </components>
         </foundation>
@@ -52,7 +73,7 @@
                                 jcr:primaryType="nt:unstructured"
                                 jcr:title="Container policy"
                                 sling:resourceType="wcm/core/components/policy/policy"
-                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                                components="[group:core-email,group:core-email-segmentation]">
                                 <jcr:content jcr:primaryType="nt:unstructured"/>
                             </policy_container>
                         </container>
