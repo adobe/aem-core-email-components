@@ -61,17 +61,17 @@ public class AccLinkServiceImpl implements AccLinkService {
             return null;
         }
         try {
+            boolean hasAccMarkup = (url.contains("<%") || url.contains("%>"));
+            if (hasAccMarkup) {
+                return new AccLink(url);
+            }
             String mappedUrl = urlMapperService.getMappedUrl(resourceResolver, request, url);
             if (StringUtils.isEmpty(mappedUrl)) {
                 return null;
             }
-            boolean hasAccMarkup = (url.contains("<%") || url.contains("%>"));
-            mappedUrl = hasAccMarkup ? URLDecoder.decode(mappedUrl) : mappedUrl;
-            if (!hasAccMarkup) {
-                PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
-                if (Objects.nonNull(pageManager) && Objects.nonNull(pageManager.getPage(url))) {
-                    mappedUrl = mappedUrl + ".html";
-                }
+            PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
+            if (Objects.nonNull(pageManager) && Objects.nonNull(pageManager.getPage(url))) {
+                mappedUrl = mappedUrl + ".html";
             }
             return new AccLink<>(mappedUrl);
         } catch (Throwable e) {
