@@ -15,7 +15,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Components Examples - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,group:core-email-segmentation]">
+                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,group:core-email-segmentation,core/email/components/image/v1/image,core/email/components/text/v1/text]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
                     <email-page-default
