@@ -38,17 +38,33 @@
                         margin="{Boolean}true">
                         <items jcr:primaryType="nt:unstructured">
                             <definedcondition
+                                wrapperClass="cq-AllowedStyles-styles"
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
-                                fieldDescription="The background color swatches that can be selected by an author."
-                                fieldLabel="Define Conditions">
+                                fieldLabel="Define Conditions"
+                                composite="{Boolean}true">
                                 <field
+                                    granite:class="cq-AllowedStyles-style"
                                     jcr:primaryType="nt:unstructured"
-                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                    name="./definedCondition"/>
-                                <granite:data
-                                    jcr:primaryType="nt:unstructured"
-                                    cmp-container-v1-dialog-policy-hook="definedcondition"/>
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <field1
+                                            granite:class="cq-AllowedStyles-styleField"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Segment Name"
+                                            name="./definedCondition"/>
+                                        <field2
+                                            granite:class="cq-AllowedStyles-styleField"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Segment Value"
+                                            name="./value"/>
+                                        <granite:data
+                                            jcr:primaryType="nt:unstructured"
+                                            cmp-container-v1-dialog-policy-hook="definedcondition"/>
+                                    </items>
+                                </field>
                             </definedcondition>
                         </items>
                     </allowedconditions>

@@ -23,11 +23,12 @@ import java.util.List;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceMetadata;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.SyntheticResource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
@@ -37,8 +38,6 @@ import org.osgi.service.component.annotations.Component;
 import com.adobe.granite.ui.components.Value;
 import com.adobe.granite.ui.components.ds.DataSource;
 import com.adobe.granite.ui.components.ds.SimpleDataSource;
-import com.adobe.granite.ui.components.ds.ValueMapResource;
-import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.policies.ContentPolicy;
 import com.day.cq.wcm.api.policies.ContentPolicyManager;
 
@@ -79,13 +78,53 @@ public class DefineConditionsDataSourceServlet extends SlingSafeMethodsServlet {
                         for (String allowedCondition : allowedConditions) {
                             condition = new ValueMapDecorator(new HashMap<String, Object>());
                             condition.put(PN_DEFINED_CONDITION, allowedCondition);
-                            conditions.add(new ValueMapResource(resolver, new ResourceMetadata(), JcrConstants.NT_UNSTRUCTURED,
-                                    condition));
+                            conditions.add(new ConditionElementResource(allowedCondition, resolver));
                         }
                     }
                 }
             }
         }
         return conditions;
+    }
+    private static class ConditionElementResource extends SyntheticResource {
+
+        private final String elementName;
+        private ValueMap valueMap;
+
+        ConditionElementResource(String headingElement, ResourceResolver resourceResolver) {
+            super(resourceResolver, StringUtils.EMPTY, RESOURCE_TYPE_NON_EXISTING);
+            this.elementName = headingElement;
+        }
+        public <AdapterType> AdapterType adaptTo(Class<AdapterType> type) {
+            if (type == ValueMap.class) {
+                if (this.valueMap == null) {
+                    this.initValueMap();
+                }
+
+                return (AdapterType) this.valueMap;
+            } else {
+                return super.adaptTo(type);
+            }
+        }
+
+        private void initValueMap() {
+            this.valueMap = new ValueMapDecorator(new HashMap());
+            this.valueMap.put("value", this.getValue());
+            this.valueMap.put("text", this.getText());
+            this.valueMap.put("selected", this.getSelected());
+        }
+
+
+        public String getText() {
+            return elementName;
+        }
+
+        public String getValue() {
+            return elementName;
+        }
+
+        public boolean getSelected() {
+            return false;
+        }
     }
 }

@@ -30,7 +30,7 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
  * Segmentation item model class
  */
 @Model(adaptables = Resource.class)
-public class SegmentationItemModel {
+public class SegmentationModel {
 
     @Self
     Resource resource;

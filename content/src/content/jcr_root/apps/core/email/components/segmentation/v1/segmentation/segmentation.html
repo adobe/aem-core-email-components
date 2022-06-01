@@ -15,7 +15,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <div data-sly-unwrap="${wcmmode.disabled}" data-sly-use.tabs="com.adobe.cq.wcm.core.components.models.Tabs"
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
-     data-panelcontainer="${wcmmode.edit && 'tabs'}"
+     data-panelcontainer="${wcmmode.edit && 'tabs'}" data-sly-use.model="com.adobe.cq.email.core.components.models.SegmentationModel"
      id="${tabs.id}"
      class="cmp-tabs"
      data-cmp-is="tabs"
@@ -44,6 +44,13 @@
          class="${wcmmode.edit ? 'cmp-tabs__tabpanel cmp-tabs__tabpanel--active' : ''}"
          data-cmp-hook-tabs="tabpanel"
          data-cmp-data-layer="${item.data.json}"></div>
+    <sly data-sly-use.template="core/wcm/components/commons/v1/templates.html">
+        <sly data-sly-call="${template.placeholder @ isEmpty=!properties.condition}"></sly>
+        <sly data-sly-test="${!wcmmode.edit}">${model.openingACCMarkup @ context='html'}</sly>
+        <sly data-sly-test="${wcmmode.edit && !properties.default}">${properties.defineCondition}</sly>
+        <div data-sly-test="${properties.condition || properties.default}" data-sly-resource="${@path='par', resourceType='foundation/components/parsys'}"></div>
+        <sly data-sly-test="${!wcmmode.edit}">${model.closingACCMarkup @ context='html'}</sly>
+    </sly>
     <sly data-sly-resource="${resource.path @ resourceType='mcm/campaign/components/parsys', appendPath='/*', decorationTagName='div', cssClassName='new section aem-Grid-newComponent'}"
          data-sly-test="${(wcmmode.edit || wcmmode.preview) && tabs.items.size < 1}"></sly>
 </div>

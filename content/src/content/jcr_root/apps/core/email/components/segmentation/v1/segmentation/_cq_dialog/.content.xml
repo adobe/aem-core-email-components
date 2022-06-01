@@ -58,9 +58,6 @@
                                             <datasource
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="core/email/components/commons/datasources/definecondition/v1"/>
-                                            <granite:data
-                                                jcr:primaryType="nt:unstructured"
-                                                cmp-container-v1-dialog-edit-hook="condition"/>
                                         </condition>
                                     </items>
                                 </column>
