@@ -15,59 +15,55 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceWrapper;
+import org.apache.sling.api.resource.SyntheticResource;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
+import org.apache.sling.models.annotations.Via;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
+import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.SlingObject;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+
+import com.day.cq.wcm.api.TemplatedResource;
+import com.day.cq.wcm.foundation.model.responsivegrid.ResponsiveColumn;
 
 /**
  * Container ob
  */
-@Model(adaptables = Resource.class)
+@Model(adaptables = SlingHttpServletRequest.class)
 public class ContainerModel {
 
     @Inject
+    @Via("resource")
     @Optional
     @Default(values = "6")
-    private String layout;
+    private String layout = "6";
+
+    @Self
+    private SlingHttpServletRequest request;
+
+    @SlingObject
+    private Resource resource;
+
+    private List<ContainerColumn> resources = new ArrayList<>();
 
     /**
-     * Getter for column class (1)
+     * Getter for columns
      *
-     * @return the column class (1)
+     * @return the list column resources
      */
-    public String getColClass1() {
-        return colClass1;
-    }
-
-    /**
-     * Getter for column class (2)
-     *
-     * @return the column class (2)
-     */
-    public String getColClass2() {
-        return colClass2;
-    }
-
-    /**
-     * Getter for column class (3)
-     *
-     * @return the column class (3)
-     */
-    public String getColClass3() {
-        return colClass3;
-    }
-
-    /**
-     * Getter for column number
-     *
-     * @return the column number
-     */
-    public int getColumns() {
-        return columns;
+    public List<? extends ContainerColumn> getColumns() {
+        return resources;
     }
 
     /**
@@ -79,17 +75,12 @@ public class ContainerModel {
         return layout;
     }
 
-    private String colClass1;
-    private String colClass2;
-    private String colClass3;
-    private int columns;
-
+    private String[] colClasses = new String[3];
 
     @PostConstruct
     private void initModel() {
-        columns = 1;
-        initializeGrid();
         buildClass();
+        initializeGrid();
     }
 
     private void initializeGrid() {
@@ -97,27 +88,56 @@ public class ContainerModel {
             case "3-3":
             case "2-4":
             case "4-2":
-                columns = 2;
+                initColumns(2);
                 break;
             case "2-2-2":
-                columns = 3;
+                initColumns(3);
                 break;
             case "6":
             default:
-                columns = 1;
+                initColumns(1);;
+        }
+    }
+
+    private void initColumns(int i) {
+        Resource effectiveResource = getEffectiveResource();
+        for (int j = 0; j < i; j++) {
+            Resource child = effectiveResource.getChild("col-" + j);
+            if (child != null) {
+                resources.add(new ContainerColumn(colClasses[j], child));
+            }
+        }
+    }
+
+    public <T extends Resource> T getEffectiveResource() {
+        if (resource instanceof TemplatedResource) {
+            return (T) resource;
+        }
+        if (resource instanceof ResourceWrapper) {
+            Resource wrappedResource = ((ResourceWrapper) resource).getResource();
+            if (wrappedResource instanceof TemplatedResource) {
+                return (T) resource;
+            }
+        }
+        Resource templatedResource = request.adaptTo(TemplatedResource.class);
+
+        if (templatedResource == null) {
+            return (T) resource;
+        } else {
+            return (T) templatedResource;
         }
     }
 
     private void buildClass() {
         String[] splitString = layout.split("-");
         if (splitString.length > 0) {
-            colClass1 = "grid-" + splitString[0];
+            colClasses[0] = "grid-" + splitString[0];
         }
         if (splitString.length > 1) {
-            colClass2 = "grid-" + splitString[1];
+            colClasses[1] = "grid-" + splitString[1];
         }
         if (splitString.length > 2) {
-            colClass3 = "grid-" + splitString[2];
+            colClasses[2] = "grid-" + splitString[2];
         }
 
     }

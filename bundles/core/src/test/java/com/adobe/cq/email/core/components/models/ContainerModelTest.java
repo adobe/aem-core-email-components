@@ -16,78 +16,72 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class ContainerModelTest {
+
+    private final AemContext ctx = new AemContext();
+    private ContainerModel underTest;
+
+    @BeforeEach
+    void setUp() {
+        ctx.addModelsForClasses(ContainerModel.class);
+        ctx.load().json("/content/TestPage.json", "/content");
+    }
 
     @Test
     void layout6() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "6");
-        assertEquals(1, sut.getColumns());
-        assertEquals("grid-6", sut.getColClass1());
-        assertNull(sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertEquals(1, underTest.getColumns().size());
+        assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
     }
 
     @Test
     void layout33() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "3-3");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-3", sut.getColClass1());
-        assertEquals("grid-3", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-33");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-3", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-3", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout24() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "2-4");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-2", sut.getColClass1());
-        assertEquals("grid-4", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-24");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-4", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout42() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "4-2");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-4", sut.getColClass1());
-        assertEquals("grid-2", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-42");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-4", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout222() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "2-2-2");
-        assertEquals(3, sut.getColumns());
-        assertEquals("grid-2", sut.getColClass1());
-        assertEquals("grid-2", sut.getColClass2());
-        assertEquals("grid-2", sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-222");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertEquals(3, underTest.getColumns().size());
+        assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(2).getClassName());
     }
 
-    private void setUp(ContainerModel containerModel,
-                       String layout) {
-        try {
-            Field layoutField = ContainerModel.class.getDeclaredField("layout");
-            layoutField.setAccessible(true);
-            layoutField.set(containerModel, layout);
-            Method initMethod = ContainerModel.class.getDeclaredMethod("initModel");
-            initMethod.setAccessible(true);
-            initMethod.invoke(containerModel);
-        } catch (Throwable e) {
-            throw new RuntimeException("Error!");
-        }
-    }
 
 }

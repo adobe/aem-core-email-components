@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0"
-          xmlns:jcr="http://www.jcp.org/jcr/1.0"
-          jcr:primaryType="cq:Template">
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Template">
     <jcr:content
-            cq:template="/conf/core-email-components-examples/settings/wcm/templates/experience-fragment"
-            jcr:primaryType="cq:PageContent"
-            jcr:title="Experience Fragment"
-            status="enabled"/>
+        cq:template="/conf/core-email-components-examples/settings/wcm/templates/experience-fragment"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Experience Fragment"
+        status="enabled"/>
 </jcr:root>
-

@@ -89,6 +89,56 @@
             "sling:resourceType":"weretail/components/content/text",
             "textIsRich":"true"
           }
+        },
+        "container-6": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "layout": "6",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
+        },
+        "container-42": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "layout": "4-2",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          },
+          "col-1": {
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
+        },
+        "container-24": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "layout": "2-4",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          },
+          "col-1": {
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
+        },
+        "container-33": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "layout": "3-3",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          },
+          "col-1": {
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
+        },
+        "container-222": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "layout": "2-2-2",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          },
+          "col-1": {
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          },
+          "col-2": {
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
         }
       }
     },

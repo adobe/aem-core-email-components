@@ -18,18 +18,17 @@
         <table class="layout" role="presentation">
             <tbody>
             <tr>
-                <th class="layout-column ${model.colClass1}">
-                    <td data-sly-resource="${'grid-6-6-0' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></td>
-                </th>
-                <th class="layout-column ${model.colClass2}" data-sly-test="${model.columns > 1}">
-                    <td data-sly-resource="${'grid-6-6-1' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></td>
-                </th>
-                <th class="layout-column ${model.colClass3}" data-sly-test="${model.columns > 2}">
-                    <td data-sly-resource="${'grid-6-6-2' @ resourceType = 'wcm/foundation/components/responsivegrid'}"
-                         data-sly-unwrap></td>
-                </th>
+                <sly data-sly-test="${model.columns.size > 0}" data-sly-repeat.column="${model.columns}">
+                    <th class="layout-column ${column.className}">
+                        <td data-sly-resource="${column.resource}"
+                            data-sly-unwrap></td>
+                    </th>
+                </sly>
+                <sly data-sly-test="${model.columns.size == 0}">
+                    <th class="layout-column grid-6">
+                        <td data-sly-resource="${resource @ resourceType='wcm/foundation/components/responsivegrid'}" data-sly-unwrap></td>
+                    </th>
+                </sly>
             </tr>
             </tbody>
         </table>
