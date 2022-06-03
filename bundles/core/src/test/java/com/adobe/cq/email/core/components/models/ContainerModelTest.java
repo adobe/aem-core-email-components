@@ -16,6 +16,8 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,8 @@ import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class ContainerModelTest {
@@ -40,10 +44,15 @@ class ContainerModelTest {
 
     @Test
     void layout6() {
-        ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
+        Resource resource = ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
         underTest = ctx.request().adaptTo(ContainerModel.class);
         assertEquals(1, underTest.getColumns().size());
         assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
+        assertEquals("/content/experiencepage/jcr:content/root/container-6/col-0", underTest.getColumns().get(0).getPath());
+        assertEquals("wcm/foundation/components/responsivegrid", underTest.getColumns().get(0).getResourceType());
+        assertNull(underTest.getColumns().get(0).getResourceSuperType());
+        assertEquals(new ResourceMetadata(), underTest.getColumns().get(0).getResourceMetadata());
+        assertNotNull(underTest.getColumns().get(0).getResource());
     }
 
     @Test
