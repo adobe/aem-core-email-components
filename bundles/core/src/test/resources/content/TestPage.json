@@ -90,6 +90,12 @@
             "textIsRich":"true"
           }
         },
+        "container": {
+          "sling:resourceType": "core/email/components/container/v1/container",
+          "col-0" :{
+            "sling:resourceType": "wcm/foundation/components/responsivegrid"
+          }
+        },
         "container-6": {
           "sling:resourceType": "core/email/components/container/v1/container",
           "layout": "6",

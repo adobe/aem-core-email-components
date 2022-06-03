@@ -53,9 +53,25 @@ class ContainerModelTest {
     }
 
     @Test
-    void layout6() {
-        Resource resource = ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
+    void layoutDefault() {
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container");
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(1, underTest.getColumns().size());
+        assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
+        assertEquals("/content/experiencepage/jcr:content/root/container/col-0", underTest.getColumns().get(0).getPath());
+        assertEquals("wcm/foundation/components/responsivegrid", underTest.getColumns().get(0).getResourceType());
+        assertNull(underTest.getColumns().get(0).getResourceSuperType());
+        assertEquals(new ResourceMetadata(), underTest.getColumns().get(0).getResourceMetadata());
+        assertEquals(ctx.resourceResolver(), underTest.getColumns().get(0).getResourceResolver());
+        assertNotNull(underTest.getColumns().get(0).getResource());
+    }
+
+    @Test
+    void layout6() {
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(1, underTest.getColumns().size());
         assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
         assertEquals("/content/experiencepage/jcr:content/root/container-6/col-0", underTest.getColumns().get(0).getPath());
@@ -70,6 +86,7 @@ class ContainerModelTest {
     void layout33() {
         ctx.currentResource("/content/experiencepage/jcr:content/root/container-33");
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(2, underTest.getColumns().size());
         assertEquals("grid-3", underTest.getColumns().get(0).getClassName());
         assertEquals("grid-3", underTest.getColumns().get(1).getClassName());
@@ -79,6 +96,7 @@ class ContainerModelTest {
     void layout24() {
         ctx.currentResource("/content/experiencepage/jcr:content/root/container-24");
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(2, underTest.getColumns().size());
         assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
         assertEquals("grid-4", underTest.getColumns().get(1).getClassName());
@@ -88,6 +106,7 @@ class ContainerModelTest {
     void layout42() {
         ctx.currentResource("/content/experiencepage/jcr:content/root/container-42");
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(2, underTest.getColumns().size());
         assertEquals("grid-4", underTest.getColumns().get(0).getClassName());
         assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
@@ -97,6 +116,7 @@ class ContainerModelTest {
     void layout222() {
         ctx.currentResource("/content/experiencepage/jcr:content/root/container-222");
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(3, underTest.getColumns().size());
         assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
         assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
@@ -112,6 +132,7 @@ class ContainerModelTest {
         ctx.currentResource(templatedResource);
         new MockSlingHttpServletRequest(ctx.bundleContext());
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(2, underTest.getColumns().size());
     }
 
@@ -124,13 +145,14 @@ class ContainerModelTest {
         ResourceWrapper resourceWrapper = new ResourceWrapper(templatedResource);
         ctx.currentResource(resourceWrapper);
         underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
         assertEquals(2, underTest.getColumns().size());
     }
 
 
 
     private static class MockTemplatedResource implements TemplatedResource {
-        private Resource wrappedResource;
+        private final Resource wrappedResource;
 
         public MockTemplatedResource(Resource wrappedResource) {
             this.wrappedResource = wrappedResource;

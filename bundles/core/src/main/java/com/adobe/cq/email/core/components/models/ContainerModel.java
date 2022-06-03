@@ -16,26 +16,20 @@
 package com.adobe.cq.email.core.components.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceWrapper;
-import org.apache.sling.api.resource.SyntheticResource;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
-import org.apache.sling.models.annotations.Via;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import com.day.cq.wcm.api.TemplatedResource;
-import com.day.cq.wcm.foundation.model.responsivegrid.ResponsiveColumn;
 
 /**
  * Container ob
@@ -43,11 +37,9 @@ import com.day.cq.wcm.foundation.model.responsivegrid.ResponsiveColumn;
 @Model(adaptables = SlingHttpServletRequest.class)
 public class ContainerModel {
 
-    @Inject
-    @Via("resource")
-    @Optional
+    @ValueMapValue(injectionStrategy = InjectionStrategy.OPTIONAL)
     @Default(values = "6")
-    private String layout = "6";
+    private String layout;
 
     @Self
     private SlingHttpServletRequest request;
@@ -55,7 +47,7 @@ public class ContainerModel {
     @SlingObject
     private Resource resource;
 
-    private List<ContainerColumn> resources = new ArrayList<>();
+    private final List<ContainerColumn> resources = new ArrayList<>();
 
     /**
      * Getter for columns
@@ -75,7 +67,7 @@ public class ContainerModel {
         return layout;
     }
 
-    private String[] colClasses = new String[3];
+    private final String[] colClasses = new String[3];
 
     @PostConstruct
     private void initModel() {
@@ -95,7 +87,7 @@ public class ContainerModel {
                 break;
             case "6":
             default:
-                initColumns(1);;
+                initColumns(1);
         }
     }
 
@@ -109,6 +101,7 @@ public class ContainerModel {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Resource> T getEffectiveResource() {
         if (resource instanceof TemplatedResource) {
             return (T) resource;
