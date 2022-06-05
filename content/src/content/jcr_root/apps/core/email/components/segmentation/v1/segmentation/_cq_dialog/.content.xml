@@ -31,40 +31,10 @@
                 sling:resourceType="granite/ui/components/coral/foundation/tabs"
                 maximized="{Boolean}true">
                 <items jcr:primaryType="nt:unstructured">
-                <cq:styles
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="granite/ui/components/coral/foundation/include"
-                    path="/mnt/overlay/cq/gui/components/authoring/dialog/style/tab_edit/styletab"/>
-                <definedCondition
-                    jcr:primaryType="nt:unstructured"
-                    jcr:title="Conditions"
-                    sling:resourceType="granite/ui/components/coral/foundation/container"
-                    margin="{Boolean}true">
-                    <items jcr:primaryType="nt:unstructured">
-                        <columns
-                            jcr:primaryType="nt:unstructured"
-                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
-                            margin="{Boolean}true">
-                            <items jcr:primaryType="nt:unstructured">
-                                <column
-                                    jcr:primaryType="nt:unstructured"
-                                    sling:resourceType="granite/ui/components/coral/foundation/container">
-                                    <items jcr:primaryType="nt:unstructured">
-                                        <condition
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                            fieldLabel="Default Condition"
-                                            name="./defineCondition">
-                                            <datasource
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="core/email/components/commons/datasources/definecondition/v1"/>
-                                        </condition>
-                                    </items>
-                                </column>
-                            </items>
-                        </columns>
-                    </items>
-                </definedCondition>
+                    <cq:styles
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/include"
+                        path="/mnt/overlay/cq/gui/components/authoring/dialog/style/tab_edit/styletab"/>
                 </items>
             </tabs>
         </items>

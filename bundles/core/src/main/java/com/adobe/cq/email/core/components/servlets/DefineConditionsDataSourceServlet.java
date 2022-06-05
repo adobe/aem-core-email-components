@@ -49,6 +49,7 @@ import com.day.cq.wcm.api.policies.ContentPolicyManager;
                 "sling.servlet.extensions=html"
         }
 )
+@NotNull
 public class DefineConditionsDataSourceServlet extends SlingSafeMethodsServlet {
 
     protected static final String RESOURCE_TYPE = "core/email/components/commons/datasources/definecondition/v1";
@@ -62,24 +63,29 @@ public class DefineConditionsDataSourceServlet extends SlingSafeMethodsServlet {
         request.setAttribute(DataSource.class.getName(), allowedConditions);
     }
 
-    protected List<Resource> getDefinedConditions(@NotNull SlingHttpServletRequest request) {
+    protected List<Resource> getDefinedConditions(SlingHttpServletRequest request) {
         List<Resource> conditions = new ArrayList<>();
         ResourceResolver resolver = request.getResourceResolver();
         Resource contentResource = resolver.getResource((String) request.getAttribute(Value.CONTENTPATH_ATTRIBUTE));
         ContentPolicyManager policyMgr = resolver.adaptTo(ContentPolicyManager.class);
-        if (policyMgr != null) {
-            ContentPolicy policy = policyMgr.getPolicy(contentResource);
-            if (policy != null) {
-                ValueMap condition = null;
-                ValueMap properties = policy.getProperties();
-                if (properties != null) {
-                    String[] allowedConditions = properties.get(PN_ALLOWED_CONDITIONS, String[].class);
-                    if (allowedConditions != null && allowedConditions.length > 0) {
-                        for (String allowedCondition : allowedConditions) {
-                            condition = new ValueMapDecorator(new HashMap<String, Object>());
-                            condition.put(PN_DEFINED_CONDITION, allowedCondition);
-                            conditions.add(new ConditionElementResource(allowedCondition, resolver));
-                        }
+        assert contentResource != null;
+        if(contentResource.getParent()!= null){
+            contentResource= contentResource.getParent();
+        }
+        if (policyMgr == null) {
+            return conditions;
+        }
+        ContentPolicy policy = policyMgr.getPolicy(contentResource);
+        if (policy != null) {
+            ValueMap condition = null;
+            ValueMap properties = policy.getProperties();
+            if (properties != null) {
+                String[] allowedConditions = properties.get(PN_ALLOWED_CONDITIONS, String[].class);
+                if (allowedConditions != null && allowedConditions.length > 0) {
+                    for (String allowedCondition : allowedConditions) {
+                        condition = new ValueMapDecorator(new HashMap<String, Object>());
+                        condition.put(PN_DEFINED_CONDITION, allowedCondition);
+                        conditions.add(new ConditionElementResource(allowedCondition, resolver));
                     }
                 }
             }

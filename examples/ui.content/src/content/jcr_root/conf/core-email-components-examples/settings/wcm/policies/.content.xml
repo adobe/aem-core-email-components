@@ -15,7 +15,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Components Examples - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,group:core-email-segmentation]">
+                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,/apps/core/email/components/segmentation/v1/segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
                     <email-page-default
@@ -23,7 +23,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email-page Default"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,/apps/core/email/components/segmentation/v1/segmentation]">
                     </email-page-default>
                 </responsivegrid>
             </components>
@@ -52,7 +52,7 @@
                                 jcr:primaryType="nt:unstructured"
                                 jcr:title="Container policy"
                                 sling:resourceType="wcm/core/components/policy/policy"
-                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,/apps/core/email/components/segmentation/v1/segmentation]">
                                 <jcr:content jcr:primaryType="nt:unstructured"/>
                             </policy_container>
                         </container>
@@ -66,7 +66,8 @@
                                 jcr:title="Email Components Examples - Page"
                                 sling:resourceType="wcm/core/components/policy/policy"
                                 appResourcesClientlib="cmp-email-examples.site"
-                                clientlibs="cmp-email-examples.base">
+                                clientlibs="cmp-email-examples.base"
+                                components="[group:core-email,/apps/core/email/components/segmentation/v1/segmentation]">
                                 <jcr:content jcr:primaryType="nt:unstructured"/>
                             </policy_212634895490169>
                         </page>
@@ -92,7 +93,7 @@
                                 jcr:primaryType="nt:unstructured"
                                 jcr:title="Segmentation Item Policy"
                                 sling:resourceType="wcm/core/components/policy/policy"
-                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]">
+                                components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment]">
                                 <jcr:content jcr:primaryType="nt:unstructured"/>
                             </policy_1647261804900>
                         </segmentation-item>

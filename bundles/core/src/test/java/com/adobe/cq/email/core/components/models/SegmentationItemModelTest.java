@@ -39,18 +39,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SegmentationModelTest {
+class SegmentationItemModelTest {
 
     @Mock
     Resource resource;
     @Mock
     Resource segmentationComponent;
 
-    private SegmentationModel sut;
+    private SegmentationItemModel sut;
 
     @BeforeEach
     void setUp() {
-        this.sut = new SegmentationModel();
+        this.sut = new SegmentationItemModel();
     }
 
     @Test
@@ -88,10 +88,10 @@ class SegmentationModelTest {
 
     private void setValue() {
         try {
-            Field declaredField = SegmentationModel.class.getDeclaredField("condition");
+            Field declaredField = SegmentationItemModel.class.getDeclaredField("condition");
             declaredField.setAccessible(true);
             declaredField.set(sut, "recipient.age >= 18");
-            Method method = SegmentationModel.class.getDeclaredMethod("initModel");
+            Method method = SegmentationItemModel.class.getDeclaredMethod("initModel");
             method.setAccessible(true);
             method.invoke(sut);
         } catch (Throwable e) {
