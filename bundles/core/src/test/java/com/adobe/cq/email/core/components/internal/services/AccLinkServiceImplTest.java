@@ -41,10 +41,8 @@ class AccLinkServiceImplTest {
 
     private static final String URL_WITHOUT_ACC_MARKUP = "/generic/relative/url/without/acc/markup";
     private static final String URL_WITH_ACC_MARKUP = "/generic/relative/url/with/acc/markup/<% recipient.name %>";
-    private static final String ENCODED_URL_WITH_ACC_MARKUP = URLEncoder.encode(URL_WITH_ACC_MARKUP);
+    private static final String ONLY_ACC_MARKUP = "<%=targetData=ctaLink%>";
     private static final String ABSOLUTE_URL_WITHOUT_ACC_MARKUP = "http://server:8080" + URL_WITHOUT_ACC_MARKUP;
-    private static final String ABSOLUTE_URL_WITH_ACC_MARKUP = "http://server:8080" + URL_WITH_ACC_MARKUP;
-    private static final String ENCODED_ABSOLUTE_URL_WITH_ACC_MARKUP = "http://server:8080" + ENCODED_URL_WITH_ACC_MARKUP;
 
 
     @Mock
@@ -134,10 +132,8 @@ class AccLinkServiceImplTest {
     }
 
     @Test
-    void urlWithAccMarkupNotReferringToAPage() {
-        when(urlMapperService.getMappedUrl(eq(resourceResolver), eq(request), eq(URL_WITH_ACC_MARKUP))).thenReturn(
-                ENCODED_ABSOLUTE_URL_WITH_ACC_MARKUP);
-        Link expected = new AccLink<>(ABSOLUTE_URL_WITH_ACC_MARKUP);
+    void urlWithAccMarkup() {
+        Link expected = new AccLink<>(URL_WITH_ACC_MARKUP);
         Link actual = this.sut.create(resourceResolver, request, URL_WITH_ACC_MARKUP);
         assertEquals(expected.isValid(), actual.isValid());
         assertEquals(expected.getURL(), actual.getURL());
@@ -149,4 +145,17 @@ class AccLinkServiceImplTest {
         assertEquals(expected.hashCode(), actual.hashCode());
     }
 
+    @Test
+    void onlyAccMarkup() {
+        Link expected = new AccLink<>(ONLY_ACC_MARKUP);
+        Link actual = this.sut.create(resourceResolver, request, ONLY_ACC_MARKUP);
+        assertEquals(expected.isValid(), actual.isValid());
+        assertEquals(expected.getURL(), actual.getURL());
+        assertEquals(expected.getMappedURL(), actual.getMappedURL());
+        assertEquals(expected.getExternalizedURL(), actual.getExternalizedURL());
+        assertEquals(expected.getHtmlAttributes(), actual.getHtmlAttributes());
+        assertEquals(expected.getReference(), actual.getReference());
+        assertEquals(expected, actual);
+        assertEquals(expected.hashCode(), actual.hashCode());
+    }
 }

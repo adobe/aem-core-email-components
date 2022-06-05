@@ -15,7 +15,13 @@
  */
 
 /* stylelint-disable */
+
 .coral-PathBrowser{
 	width: 100% ;
 }
+
+td.no-background {
+          background-color: transparent;
+        }
+
 /* stylelint-enable */
