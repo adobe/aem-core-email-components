@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
         cq:lastModified="{Date}2022-06-02T15:52:20.366+02:00"
@@ -11,21 +12,12 @@
             cq:policy="wcm/foundation/components/responsivegrid/policy_email_structure"
             jcr:primaryType="nt:unstructured"
             sling:resourceType="wcm/core/components/policies/mapping">
-            <responsivegrid
-                cq:policy="wcm/foundation/components/responsivegrid/policy_email_structure"
+            <container
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="wcm/core/components/policies/mapping">
                 <core jcr:primaryType="nt:unstructured">
                     <email jcr:primaryType="nt:unstructured">
                         <components jcr:primaryType="nt:unstructured">
-                            <container jcr:primaryType="nt:unstructured">
-                                <v1 jcr:primaryType="nt:unstructured">
-                                    <container
-                                        cq:policy="core/email/components/container/v1/container/policy_container"
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="wcm/core/components/policies/mapping"/>
-                                </v1>
-                            </container>
                             <segmentation jcr:primaryType="nt:unstructured">
                                 <v1 jcr:primaryType="nt:unstructured">
                                     <segmentation
@@ -45,71 +37,16 @@
                         </components>
                     </email>
                 </core>
-                <grid-6-6-0
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_column_0"
+                <col-0
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_1654176940328"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="wcm/core/components/policies/mapping"/>
-                <grid-6-6-1
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_column_1"
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="wcm/core/components/policies/mapping"/>
-                <grid-6-6-2
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_column_2"
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="wcm/core/components/policies/mapping"/>
-            </responsivegrid>
-            <container
-                cq:policy="core/email/components/container/v1/container/policy_container"
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="wcm/core/components/policies/mapping">
-                <grid-6-6-0
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_743104661870295"
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="wcm/core/components/policies/mapping">
-                    <core jcr:primaryType="nt:unstructured">
-                        <email jcr:primaryType="nt:unstructured">
-                            <components jcr:primaryType="nt:unstructured">
-                                <image jcr:primaryType="nt:unstructured">
-                                    <v1 jcr:primaryType="nt:unstructured">
-                                        <image
-                                            cq:policy="core/email/components/image/v1/image/policy_744283675360984"
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="wcm/core/components/policies/mapping"/>
-                                    </v1>
-                                </image>
-                            </components>
-                        </email>
-                    </core>
-                </grid-6-6-0>
-                <grid-6-6-1
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_744283699857540"
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="wcm/core/components/policies/mapping">
-                    <core jcr:primaryType="nt:unstructured">
-                        <email jcr:primaryType="nt:unstructured">
-                            <components jcr:primaryType="nt:unstructured">
-                                <image jcr:primaryType="nt:unstructured">
-                                    <v1 jcr:primaryType="nt:unstructured">
-                                        <image
-                                            cq:policy="core/email/components/image/v1/image/policy_1654162825924"
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="wcm/core/components/policies/mapping"/>
-                                    </v1>
-                                </image>
-                            </components>
-                        </email>
-                    </core>
-                </grid-6-6-1>
                 <col-1
                     cq:policy="wcm/foundation/components/responsivegrid/policy_1654177172799"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="wcm/core/components/policies/mapping"/>
                 <col-2
                     cq:policy="wcm/foundation/components/responsivegrid/policy_744283699857540"
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="wcm/core/components/policies/mapping"/>
-                <col-0
-                    cq:policy="wcm/foundation/components/responsivegrid/policy_1654176940328"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="wcm/core/components/policies/mapping"/>
             </container>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:rep="internal"
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:rep="internal"
     jcr:mixinTypes="[rep:AccessControllable]"
     jcr:primaryType="cq:Page">
     <rep:policy/>
@@ -11,7 +12,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Components Examples - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,core/email/components/container/v1/container,group:core-email-segmentation,core/email/components/image/v1/image,core/email/components/text/v1/text]">
+                        components="[group:core-email,group:core-email-segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_email_structure>
                     <email-page-default
@@ -19,64 +20,28 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Email-page Default"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        components="[group:core-email,core/email/components/experiencefragment/v1/experiencefragment,group:core-email-segmentation]"/>
-                    <policy_column_0
+                        components="[group:core-email,group:core-email-segmentation]"/>
+                    <policy_1654176940328
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Container's first column policy"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:core-email,group:core-email-segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_column_0>
-                    <policy_column_1
+                    </policy_1654176940328>
+                    <policy_1654177172799
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Container's second column policy"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:core-email,group:core-email-segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_column_1>
-                    <policy_column_2
+                    </policy_1654177172799>
+                    <policy_744283699857540
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Core Email Container's third column policy"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:core-email,group:core-email-segmentation]">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_column_2>
-                    <policy_743104661870295
-                        jcr:lastModified="{Date}2022-06-02T12:49:42.620+02:00"
-                        jcr:lastModifiedBy="admin"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="grid-0"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="group:core-email">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_743104661870295>
-                    <policy_744283699857540
-                        jcr:lastModified="{Date}2022-06-02T12:50:13.939+02:00"
-                        jcr:lastModifiedBy="admin"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="grid-2"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="[/apps/core/email/components/image/v1/image,/apps/core/email/components/text/v1/text]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_744283699857540>
-                    <policy_1654176940328
-                        jcr:lastModified="{Date}2022-06-02T15:38:29.109+02:00"
-                        jcr:lastModifiedBy="admin"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="col-0"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="group:core-email">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_1654176940328>
-                    <policy_1654177172799
-                        jcr:lastModified="{Date}2022-06-02T15:39:55.080+02:00"
-                        jcr:lastModifiedBy="admin"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="grid-1"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="[/apps/core/email/components/image/v1/image,/apps/core/email/components/text/v1/text,/apps/core/email/components/title/v1/title]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </policy_1654177172799>
                 </responsivegrid>
             </components>
         </foundation>
@@ -101,21 +66,6 @@
     <core jcr:primaryType="nt:unstructured">
         <email jcr:primaryType="nt:unstructured">
             <components jcr:primaryType="nt:unstructured">
-                <container jcr:primaryType="nt:unstructured">
-                    <v1 jcr:primaryType="nt:unstructured">
-                        <container jcr:primaryType="nt:unstructured">
-                            <policy_container
-                                jcr:lastModified="{Date}2022-06-02T15:52:20.363+02:00"
-                                jcr:lastModifiedBy="admin"
-                                jcr:primaryType="nt:unstructured"
-                                jcr:title="Container policy"
-                                sling:resourceType="wcm/core/components/policy/policy"
-                                components="[group:core-email,group:core-email-segmentation]">
-                                <jcr:content jcr:primaryType="nt:unstructured"/>
-                            </policy_container>
-                        </container>
-                    </v1>
-                </container>
                 <page jcr:primaryType="nt:unstructured">
                     <v1 jcr:primaryType="nt:unstructured">
                         <page jcr:primaryType="nt:unstructured">
