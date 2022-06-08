@@ -17,7 +17,8 @@
     <tr>
         <td class="no-background">
             <a class="cmp-teaser__action-link"
-               data-sly-attribute="${action.link.htmlAttributes}"
+               x-cq-linkchecker="skip"
+               href="${action.link.URL  @ context = 'html'}"
                data-sly-unwrap="${!action.link.valid}"
                id="${action.id}"
                data-cmp-data-layer="${action.data.json}"
