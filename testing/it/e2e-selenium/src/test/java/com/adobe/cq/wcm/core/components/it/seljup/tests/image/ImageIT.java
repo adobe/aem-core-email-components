@@ -52,7 +52,7 @@ public class ImageIT extends AuthorBaseUITest {
         String imageRT = "core/email/components/image/v1/image";
         proxyPath = Commons.createProxyComponent(adminClient, imageRT, Commons.proxyPath, null, null);
         // add the core form container component
-        Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "image", null);
+        Commons.addComponent(adminClient, proxyPath, testPage + REL_PARENT_COMP_PATH, "image", null);
         // open the page in the editor
         EditorPage editorPage = new PageEditorPage(testPage);
         editorPage.open();

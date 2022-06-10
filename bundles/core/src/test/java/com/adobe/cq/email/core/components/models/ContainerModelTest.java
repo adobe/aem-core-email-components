@@ -16,77 +16,221 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.Iterator;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceMetadata;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceWrapper;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.day.cq.wcm.api.TemplatedResource;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class ContainerModelTest {
+
+    private final AemContext ctx = new AemContext();
+    private ContainerModel underTest;
+
+    @BeforeEach
+    void setUp() {
+        ctx.addModelsForClasses(ContainerModel.class);
+        ctx.load().json("/content/TestPage.json", "/content");
+        ctx.load().json("/conf/TestConf.json", "/conf");
+    }
+
+    @Test
+    void layoutDefault() {
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(1, underTest.getColumns().size());
+        assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
+        assertEquals("/content/experiencepage/jcr:content/root/container/col-0", underTest.getColumns().get(0).getPath());
+        assertEquals("wcm/foundation/components/responsivegrid", underTest.getColumns().get(0).getResourceType());
+        assertNull(underTest.getColumns().get(0).getResourceSuperType());
+        assertEquals(new ResourceMetadata(), underTest.getColumns().get(0).getResourceMetadata());
+        assertEquals(ctx.resourceResolver(), underTest.getColumns().get(0).getResourceResolver());
+        assertNotNull(underTest.getColumns().get(0).getResource());
+    }
 
     @Test
     void layout6() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "6");
-        assertEquals(1, sut.getColumns());
-        assertEquals("grid-6", sut.getColClass1());
-        assertNull(sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-6");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(1, underTest.getColumns().size());
+        assertEquals("grid-6", underTest.getColumns().get(0).getClassName());
+        assertEquals("/content/experiencepage/jcr:content/root/container-6/col-0", underTest.getColumns().get(0).getPath());
+        assertEquals("wcm/foundation/components/responsivegrid", underTest.getColumns().get(0).getResourceType());
+        assertNull(underTest.getColumns().get(0).getResourceSuperType());
+        assertEquals(new ResourceMetadata(), underTest.getColumns().get(0).getResourceMetadata());
+        assertEquals(ctx.resourceResolver(), underTest.getColumns().get(0).getResourceResolver());
+        assertNotNull(underTest.getColumns().get(0).getResource());
     }
 
     @Test
     void layout33() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "3-3");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-3", sut.getColClass1());
-        assertEquals("grid-3", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-33");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-3", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-3", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout24() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "2-4");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-2", sut.getColClass1());
-        assertEquals("grid-4", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-24");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-4", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout42() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "4-2");
-        assertEquals(2, sut.getColumns());
-        assertEquals("grid-4", sut.getColClass1());
-        assertEquals("grid-2", sut.getColClass2());
-        assertNull(sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-42");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(2, underTest.getColumns().size());
+        assertEquals("grid-4", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
     }
 
     @Test
     void layout222() {
-        ContainerModel sut = new ContainerModel();
-        setUp(sut, "2-2-2");
-        assertEquals(3, sut.getColumns());
-        assertEquals("grid-2", sut.getColClass1());
-        assertEquals("grid-2", sut.getColClass2());
-        assertEquals("grid-2", sut.getColClass3());
+        ctx.currentResource("/content/experiencepage/jcr:content/root/container-222");
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(3, underTest.getColumns().size());
+        assertEquals("grid-2", underTest.getColumns().get(0).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(1).getClassName());
+        assertEquals("grid-2", underTest.getColumns().get(2).getClassName());
     }
 
-    private void setUp(ContainerModel containerModel,
-                       String layout) {
-        try {
-            Field layoutField = ContainerModel.class.getDeclaredField("layout");
-            layoutField.setAccessible(true);
-            layoutField.set(containerModel, layout);
-            Method initMethod = ContainerModel.class.getDeclaredMethod("initModel");
-            initMethod.setAccessible(true);
-            initMethod.invoke(containerModel);
-        } catch (Throwable e) {
-            throw new RuntimeException("Error!");
+    @Test
+    void templatedResource() {
+        Resource resource = ctx.currentResource(
+                "/conf/core-email-components-examples/settings/wcm/templates/email-template/structure/jcr:content/root" +
+                        "/container");
+        Resource templatedResource = new MockTemplatedResource(resource);
+        ctx.currentResource(templatedResource);
+        new MockSlingHttpServletRequest(ctx.bundleContext());
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(2, underTest.getColumns().size());
+    }
+
+    @Test
+    void wrappedResource() {
+        Resource resource = ctx.currentResource(
+                "/conf/core-email-components-examples/settings/wcm/templates/email-template/structure/jcr:content/root" +
+                        "/container");
+        Resource templatedResource = new MockTemplatedResource(resource);
+        ResourceWrapper resourceWrapper = new ResourceWrapper(templatedResource);
+        ctx.currentResource(resourceWrapper);
+        underTest = ctx.request().adaptTo(ContainerModel.class);
+        assertNotNull(underTest);
+        assertEquals(2, underTest.getColumns().size());
+    }
+
+
+
+    private static class MockTemplatedResource implements TemplatedResource {
+        private final Resource wrappedResource;
+
+        public MockTemplatedResource(Resource wrappedResource) {
+            this.wrappedResource = wrappedResource;
+        }
+
+        @Override
+        public Resource getResource() {
+            return wrappedResource;
+        }
+
+        @Override
+        public @NotNull String getPath() {
+            return wrappedResource.getPath();
+        }
+
+        @Override
+        public @NotNull String getName() {
+            return wrappedResource.getName();
+        }
+
+        @Override
+        public @Nullable Resource getParent() {
+            return wrappedResource.getParent();
+        }
+
+        @Override
+        public @NotNull Iterator<Resource> listChildren() {
+            return wrappedResource.listChildren();
+        }
+
+        @Override
+        public @NotNull Iterable<Resource> getChildren() {
+            return wrappedResource.getChildren();
+        }
+
+        @Override
+        public @Nullable Resource getChild(@NotNull String s) {
+            return wrappedResource.getChild(s);
+        }
+
+        @Override
+        public @NotNull String getResourceType() {
+            return wrappedResource.getResourceType();
+        }
+
+        @Override
+        public @Nullable String getResourceSuperType() {
+            return wrappedResource.getResourceSuperType();
+        }
+
+        @Override
+        public boolean hasChildren() {
+            return wrappedResource.hasChildren();
+        }
+
+        @Override
+        public boolean isResourceType(String s) {
+            return wrappedResource.isResourceType(s);
+        }
+
+        @Override
+        public @NotNull ResourceMetadata getResourceMetadata() {
+            return wrappedResource.getResourceMetadata();
+        }
+
+        @Override
+        public @NotNull ResourceResolver getResourceResolver() {
+            return wrappedResource.getResourceResolver();
+        }
+
+        @Override
+        public @NotNull ValueMap getValueMap() {
+            return wrappedResource.getValueMap();
+        }
+
+        @Override
+        public <AdapterType> @Nullable AdapterType adaptTo(@NotNull Class<AdapterType> aClass) {
+            return wrappedResource.adaptTo(aClass);
         }
     }
 

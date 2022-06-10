@@ -1,0 +1,687 @@
+{
+  "core-email-components-examples": {
+    "jcr:primaryType": "sling:Folder",
+    "jcr:title"      : "Core Email Components Examples",
+    "settings"       : {
+      "jcr:primaryType": "sling:Folder",
+      "wcm"            : {
+        "jcr:primaryType": "cq:Page",
+        "policies"       : {
+          "core"           : {
+            "email"          : {
+              "components"     : {
+                "container"        : {
+                  "jcr:primaryType": "nt:unstructured",
+                  "v1"             : {
+                    "container"      : {
+                      "jcr:primaryType" : "nt:unstructured",
+                      "policy_container": {
+                        "components"        : [
+                          "group:core-email",
+                          "group:core-email-segmentation"
+                        ],
+                        "jcr:content"       : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"   : "nt:unstructured",
+                        "jcr:title"         : "Container policy",
+                        "sling:resourceType": "wcm/core/components/policy/policy"
+                      }
+                    },
+                    "jcr:primaryType": "nt:unstructured"
+                  }
+                },
+                "image"            : {
+                  "jcr:primaryType": "nt:unstructured",
+                  "v1"             : {
+                    "image"          : {
+                      "jcr:primaryType"       : "nt:unstructured",
+                      "policy_1654162825924"  : {
+                        "altValueFromDAM"   : "true",
+                        "defaultWidth"      : "1280",
+                        "displayPopupTitle" : "true",
+                        "isDecorative"      : "true",
+                        "jcr:content"       : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"   : "nt:unstructured",
+                        "jcr:title"         : "image-decorative",
+                        "sling:resourceType": "wcm/core/components/policy/policy",
+                        "titleValueFromDAM" : "true"
+                      },
+                      "policy_744283675360984": {
+                        "altValueFromDAM"   : "false",
+                        "defaultWidth"      : "1280",
+                        "displayPopupTitle" : "true",
+                        "isDecorative"      : "false",
+                        "jcr:content"       : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"   : "nt:unstructured",
+                        "jcr:title"         : "image-no-dam",
+                        "sling:resourceType": "wcm/core/components/policy/policy",
+                        "titleValueFromDAM" : "false"
+                      }
+                    },
+                    "jcr:primaryType": "nt:unstructured"
+                  }
+                },
+                "jcr:primaryType"  : "nt:unstructured",
+                "page"             : {
+                  "jcr:primaryType": "nt:unstructured",
+                  "v1"             : {
+                    "jcr:primaryType": "nt:unstructured",
+                    "page"           : {
+                      "jcr:primaryType"       : "nt:unstructured",
+                      "policy_212634895490169": {
+                        "appResourcesClientlib": "cmp-email-examples.site",
+                        "clientlibs"           : "cmp-email-examples.base",
+                        "jcr:content"          : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"      : "nt:unstructured",
+                        "jcr:title"            : "Email Components Examples - Page",
+                        "sling:resourceType"   : "wcm/core/components/policy/policy"
+                      }
+                    }
+                  }
+                },
+                "segmentation"     : {
+                  "jcr:primaryType": "nt:unstructured",
+                  "v1"             : {
+                    "jcr:primaryType": "nt:unstructured",
+                    "segmentation"   : {
+                      "jcr:primaryType"     : "nt:unstructured",
+                      "policy_1647261804902": {
+                        "components"        : "/apps/core/email/components/segmentation-item/v1/segmentation-item",
+                        "jcr:content"       : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"   : "nt:unstructured",
+                        "jcr:title"         : "Segmentation Policy",
+                        "sling:resourceType": "wcm/core/components/policy/policy"
+                      }
+                    }
+                  }
+                },
+                "segmentation-item": {
+                  "jcr:primaryType": "nt:unstructured",
+                  "v1"             : {
+                    "jcr:primaryType"  : "nt:unstructured",
+                    "segmentation-item": {
+                      "jcr:primaryType"     : "nt:unstructured",
+                      "policy_1647261804900": {
+                        "components"        : [
+                          "group:core-email",
+                          "core/email/components/experiencefragment/v1/experiencefragment",
+                          "group:core-email-segmentation"
+                        ],
+                        "jcr:content"       : {
+                          "jcr:primaryType": "nt:unstructured"
+                        },
+                        "jcr:primaryType"   : "nt:unstructured",
+                        "jcr:title"         : "Segmentation Item Policy",
+                        "sling:resourceType": "wcm/core/components/policy/policy"
+                      }
+                    }
+                  }
+                }
+              },
+              "jcr:primaryType": "nt:unstructured"
+            },
+            "jcr:primaryType": "nt:unstructured"
+          },
+          "email-page"     : {
+            "jcr:primaryType"   : "nt:unstructured",
+            "page"              : {
+              "experience-fragment": {
+                "default"           : {
+                  "jcr:description"   : "Policy for XF",
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "jcr:title"         : "XF Page",
+                  "sling:resourceType": "wcm/core/components/policy/policy"
+                },
+                "jcr:primaryType"   : "nt:unstructured",
+                "sling:resourceType": "nt:unstructured"
+              },
+              "jcr:primaryType"    : "nt:unstructured",
+              "sling:resourceType" : "nt:unstructured"
+            },
+            "sling:resourceType": "nt:unstructured"
+          },
+          "jcr:mixinTypes" : [
+            "rep:AccessControllable"
+          ],
+          "jcr:primaryType": "cq:Page",
+          "wcm"            : {
+            "foundation"     : {
+              "components"     : {
+                "jcr:primaryType": "nt:unstructured",
+                "responsivegrid" : {
+                  "email-page-default"    : {
+                    "components"        : [
+                      "group:core-email",
+                      "core/email/components/experiencefragment/v1/experiencefragment",
+                      "group:core-email-segmentation"
+                    ],
+                    "jcr:description"   : "Default policy for layout containers",
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "Email-page Default",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "jcr:primaryType"       : "nt:unstructured",
+                  "policy_1654176940328"  : {
+                    "components"        : "group:core-email",
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "col-0",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_1654177172799"  : {
+                    "components"        : [
+                      "/apps/core/email/components/image/v1/image",
+                      "/apps/core/email/components/text/v1/text",
+                      "/apps/core/email/components/title/v1/title"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "grid-1",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_743104661870295": {
+                    "components"        : "group:core-email",
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "grid-0",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_744283699857540": {
+                    "components"        : [
+                      "/apps/core/email/components/image/v1/image",
+                      "/apps/core/email/components/text/v1/text"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:lastModified"  : "Thu Jun 02 2022 12:50:13 GMT+0200",
+                    "jcr:lastModifiedBy": "admin",
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "grid-2",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_column_0"       : {
+                    "components"        : [
+                      "group:core-email",
+                      "group:core-email-segmentation"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "Core Email Container's first column policy",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_column_1"       : {
+                    "components"        : [
+                      "group:core-email",
+                      "group:core-email-segmentation"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "Core Email Container's second column policy",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_column_2"       : {
+                    "components"        : [
+                      "group:core-email",
+                      "group:core-email-segmentation"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "Core Email Container's third column policy",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  },
+                  "policy_email_structure": {
+                    "components"        : [
+                      "group:core-email",
+                      "core/email/components/experiencefragment/v1/experiencefragment",
+                      "core/email/components/container/v1/container",
+                      "group:core-email-segmentation",
+                      "core/email/components/image/v1/image",
+                      "core/email/components/text/v1/text"
+                    ],
+                    "jcr:content"       : {
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "jcr:title"         : "Core Email Components Examples - Structure",
+                    "sling:resourceType": "wcm/core/components/policy/policy"
+                  }
+                }
+              },
+              "jcr:primaryType": "nt:unstructured"
+            },
+            "jcr:primaryType": "nt:unstructured"
+          }
+        },
+        "template-types" : {
+          "email-template-types": {
+            "initial"        : {
+              "jcr:content"    : {
+                "jcr:created"       : "Tue May 17 2022 14:30:47 GMT+0200",
+                "jcr:createdBy"     : "admin",
+                "jcr:primaryType"   : "cq:PageContent",
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:created"    : "Tue May 17 2022 14:30:47 GMT+0200",
+              "jcr:createdBy"  : "admin",
+              "jcr:primaryType": "cq:Page"
+            },
+            "jcr:content"    : {
+              "acMapping"      : "mapRecipient",
+              "jcr:primaryType": "cq:PageContent",
+              "jcr:title"      : "Email Component"
+            },
+            "jcr:mixinTypes" : [
+              "mix:lockable"
+            ],
+            "jcr:primaryType": "cq:Template",
+            "policies"       : {
+              "jcr:content"    : {
+                "jcr:primaryType"   : "nt:unstructured",
+                "root"              : {
+                  "cq:policy"         : "wcm/foundation/components/responsivegrid/content-default",
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/core/components/policies/mapping"
+                },
+                "sling:resourceType": "wcm/core/components/policies/mappings"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "ranking"        : 1,
+            "structure"      : {
+              "jcr:content"    : {
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:primaryType": "cq:Page"
+            }
+          },
+          "experience-fragment" : {
+            "initial"        : {
+              "jcr:content"    : {
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/template-types/empty-experience-fragment",
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "responsivegrid"    : {
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "sling:resourceType": "wcm/foundation/components/responsivegrid/email-page-default"
+                  },
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid/email-page-default"
+                },
+                "sling:resourceType": "core/email/components/xfpage/v1/xfpage"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "jcr:content"    : {
+              "cq:templateType": "/conf/core-email-components-examples/settings/wcm/template-types/experience-fragment",
+              "jcr:primaryType": "cq:PageContent",
+              "jcr:title"      : "Experience Fragment",
+              "status"         : "enabled"
+            },
+            "jcr:primaryType": "cq:Template",
+            "policies"       : {
+              "jcr:content"    : {
+                "cq:policy"         : "wcm/foundation/components/responsivegrid/email-page-default",
+                "jcr:primaryType"   : "nt:unstructured",
+                "root"              : {
+                  "cq:policy"         : "email-page/page/experience-fragment/default",
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/core/components/policies/mapping"
+                },
+                "sling:resourceType": "wcm/core/components/policies/mappings"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "structure"      : {
+              "jcr:content"    : {
+                "breakpoints"       : {
+                  "desktop"        : {
+                    "jcr:primaryType": "nt:unstructured",
+                    "title"          : "Desktop",
+                    "width"          : 1280
+                  },
+                  "jcr:primaryType": "nt:unstructured",
+                  "phone"          : {
+                    "jcr:primaryType": "nt:unstructured",
+                    "title"          : "Phone",
+                    "width"          : 768
+                  },
+                  "tablet"         : {
+                    "jcr:primaryType": "nt:unstructured",
+                    "title"          : "Tablet",
+                    "width"          : 1024
+                  }
+                },
+                "cq:deviceGroups"   : [
+                  "etc/mobile/groups/responsive"
+                ],
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/template-types/experience-fragment",
+                "jcr:primaryType"   : "cq:PageContent",
+                "responsivegrid"    : {
+                  "editable"          : true,
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                },
+                "root"              : {
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "thumbnail.png"  : {
+              "jcr:content"    : {
+                ":jcr:data"      : 0,
+                "jcr:mimeType"   : "image/png",
+                "jcr:primaryType": "nt:resource",
+                "jcr:uuid"       : "126095fb-dd42-4ef7-82ff-b001c4e1ad2e"
+              },
+              "jcr:primaryType": "nt:file"
+            }
+          },
+          "jcr:mixinTypes"      : [
+            "rep:AccessControllable"
+          ],
+          "jcr:primaryType"     : "cq:Page",
+          "rep:policy"          : {
+            "allow"          : {
+              "jcr:primaryType"  : "rep:GrantACE",
+              "rep:principalName": "template-authors",
+              "rep:privileges"   : [
+                "jcr:read"
+              ]
+            },
+            "jcr:primaryType": "rep:ACL"
+          }
+        },
+        "templates"      : {
+          "email-template"     : {
+            "initial"        : {
+              "jcr:content"    : {
+                "acMapping"         : "mapRecipient",
+                "acTemplateId"      : "mailAEMContent",
+                "acTemplateLabel"   : "Email delivery with AEM content",
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/templates/email-template",
+                "jcr:created"       : "Tue May 17 2022 14:30:47 GMT+0200",
+                "jcr:createdBy"     : "admin",
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "container"                : {
+                    "col-0"             : {
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                    },
+                    "col-1"             : {
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "layout"            : "3-3",
+                    "sling:resourceType": "core/email/components/container/v1/container"
+                  },
+                  "experiencefragment_footer": {
+                    "editable"          : true,
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "position"          : "footer",
+                    "sling:resourceType": "core/email/components/experiencefragment/v1/experiencefragment"
+                  },
+                  "experiencefragment_header": {
+                    "editable"          : true,
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "position"          : "header",
+                    "sling:resourceType": "core/email/components/experiencefragment/v1/experiencefragment"
+                  },
+                  "jcr:primaryType"          : "nt:unstructured",
+                  "sling:resourceType"       : "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "jcr:content"    : {
+              "cq:templateType": "/conf/core-email-components-examples/settings/wcm/template-types/email-template-types",
+              "jcr:primaryType": "cq:PageContent",
+              "jcr:title"      : "Email Page",
+              "status"         : "enabled"
+            },
+            "jcr:mixinTypes" : [
+              "rep:AccessControllable"
+            ],
+            "jcr:primaryType": "cq:Template",
+            "policies"       : {
+              "jcr:content"    : {
+                "cq:policy"         : "core/email/components/page/v1/page/policy_212634895490169",
+                "jcr:primaryType"   : "nt:unstructured",
+                "root"              : {
+                  "container"         : {
+                    "core"              : {
+                      "email"          : {
+                        "components"     : {
+                          "jcr:primaryType"  : "nt:unstructured",
+                          "segmentation"     : {
+                            "jcr:primaryType": "nt:unstructured",
+                            "v1"             : {
+                              "jcr:primaryType": "nt:unstructured",
+                              "segmentation"   : {
+                                "cq:policy"         : "core/email/components/segmentation/v1/segmentation/policy_1647261804902",
+                                "jcr:primaryType"   : "nt:unstructured",
+                                "sling:resourceType": "wcm/core/components/policies/mapping"
+                              }
+                            }
+                          },
+                          "segmentation-item": {
+                            "jcr:primaryType": "nt:unstructured",
+                            "v1"             : {
+                              "jcr:primaryType"  : "nt:unstructured",
+                              "segmentation-item": {
+                                "cq:policy"         : "core/email/components/segmentation-item/v1/segmentation-item/policy_1647261804900",
+                                "jcr:primaryType"   : "nt:unstructured",
+                                "sling:resourceType": "wcm/core/components/policies/mapping"
+                              }
+                            }
+                          }
+                        },
+                        "jcr:primaryType": "nt:unstructured"
+                      },
+                      "jcr:primaryType": "nt:unstructured"
+                    },
+                    "col-0"             : {
+                      "cq:policy"         : "wcm/foundation/components/responsivegrid/policy_1654176940328",
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/core/components/policies/mapping"
+                    },
+                    "col-1"             : {
+                      "cq:policy"         : "wcm/foundation/components/responsivegrid/policy_1654177172799",
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/core/components/policies/mapping"
+                    },
+                    "col-2"             : {
+                      "cq:policy"         : "wcm/foundation/components/responsivegrid/policy_744283699857540",
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/core/components/policies/mapping"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "sling:resourceType": "wcm/core/components/policies/mapping"
+                  },
+                  "cq:policy"         : "wcm/foundation/components/responsivegrid/policy_email_structure",
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "sling:resourceType": "wcm/core/components/policies/mapping"
+                },
+                "sling:resourceType": "wcm/core/components/policies/mappings"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "structure"      : {
+              "jcr:content"    : {
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/templates/email-template",
+                "jcr:createdBy"     : "admin",
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "container"                : {
+                    "col-0"             : {
+                      "editable"          : true,
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                    },
+                    "col-1"             : {
+                      "editable"          : true,
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                    },
+                    "col-2"             : {
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "layout"            : "3-3",
+                    "sling:resourceType": "core/email/components/container/v1/container"
+                  },
+                  "experiencefragment_footer": {
+                    "editable"          : true,
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "position"          : "footer",
+                    "sling:resourceType": "core/email/components/experiencefragment/v1/experiencefragment"
+                  },
+                  "experiencefragment_header": {
+                    "editable"          : true,
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "position"          : "header",
+                    "sling:resourceType": "core/email/components/experiencefragment/v1/experiencefragment"
+                  },
+                  "jcr:primaryType"          : "nt:unstructured",
+                  "sling:resourceType"       : "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:primaryType": "cq:Page"
+            }
+          },
+          "experience-fragment": {
+            "initial"        : {
+              "jcr:content"    : {
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/templates/experience-fragment",
+                "cq:xfVariantType"  : "web",
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "responsivegrid"    : {
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                  },
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/xfpage/v1/xfpage"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "jcr:content"    : {
+              "cq:template"    : "/conf/core-email-components-examples/settings/wcm/templates/experience-fragment",
+              "jcr:primaryType": "cq:PageContent",
+              "jcr:title"      : "Experience Fragment",
+              "status"         : "enabled"
+            },
+            "jcr:primaryType": "cq:Template",
+            "policies"       : {
+              "jcr:content"    : {
+                "jcr:primaryType"   : "nt:unstructured",
+                "root"              : {
+                  "jcr:primaryType": "nt:unstructured",
+                  "responsivegrid" : {
+                    "cq:policy"         : "wcm/foundation/components/responsivegrid/email-page-default",
+                    "header"            : {
+                      "cq:policy"         : "email-page/page/experience-fragment/default",
+                      "jcr:primaryType"   : "nt:unstructured",
+                      "sling:resourceType": "wcm/core/components/policies/mapping"
+                    },
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "sling:resourceType": "wcm/core/components/policies/mapping"
+                  }
+                },
+                "sling:resourceType": "wcm/core/components/policies/mappings"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "structure"      : {
+              "jcr:content"    : {
+                "cq:deviceGroups"   : [
+                  "/etc/mobile/groups/responsive"
+                ],
+                "cq:responsive"     : {
+                  "breakpoints"    : {
+                    "desktop"        : {
+                      "jcr:primaryType": "nt:unstructured",
+                      "title"          : "Desktop",
+                      "width"          : 1280
+                    },
+                    "jcr:primaryType": "nt:unstructured",
+                    "phone"          : {
+                      "jcr:primaryType": "nt:unstructured",
+                      "title"          : "Phone",
+                      "width"          : 768
+                    },
+                    "tablet"         : {
+                      "jcr:primaryType": "nt:unstructured",
+                      "title"          : "Tablet",
+                      "width"          : 1024
+                    }
+                  },
+                  "jcr:primaryType": "nt:unstructured"
+                },
+                "cq:template"       : "/conf/core-email-components-examples/settings/wcm/templates/experience-fragment",
+                "jcr:primaryType"   : "cq:PageContent",
+                "root"              : {
+                  "jcr:primaryType"   : "nt:unstructured",
+                  "responsivegrid"    : {
+                    "editable"          : true,
+                    "jcr:primaryType"   : "nt:unstructured",
+                    "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                  },
+                  "sling:resourceType": "wcm/foundation/components/responsivegrid"
+                },
+                "sling:resourceType": "core/email/components/page/v1/page"
+              },
+              "jcr:primaryType": "cq:Page"
+            },
+            "thumbnail.png"  : {
+              "jcr:content"    : {
+                ":jcr:data"      : 2160,
+                "jcr:mimeType"   : "image/png",
+                "jcr:primaryType": "nt:resource",
+                "jcr:uuid"       : "9e9cb849-092c-4519-a5d5-22971cf32102"
+              },
+              "jcr:primaryType": "nt:file"
+            }
+          },
+          "jcr:primaryType"    : "cq:Page"
+        }
+      }
+    }
+  }
+}
