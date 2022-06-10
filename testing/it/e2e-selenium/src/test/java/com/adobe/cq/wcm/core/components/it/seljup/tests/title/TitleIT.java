@@ -55,7 +55,7 @@ public class TitleIT extends AuthorBaseUITest {
         // create a proxy component
         proxyPath = Commons.createProxyComponent(adminClient, titleRT, Commons.proxyPath, null, null);
         // add the core form container component
-        compPath = Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "text", null);
+        compPath = Commons.addComponent(adminClient, proxyPath, testPage + REL_PARENT_COMP_PATH, "text", null);
         // open the page in the editor
         editorPage = new PageEditorPage(testPage);
         editorPage.open();

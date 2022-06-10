@@ -53,7 +53,7 @@ public class SegmentationIT extends AuthorBaseUITest {
         String segmentationRT = "core/email/components/segmentation/v1/segmentation";
         proxyPath = Commons.createProxyComponent(adminClient, segmentationRT, Commons.proxyPath, null, null);
         // add the core form container component
-        String segmentation = Commons.addComponent(adminClient, proxyPath, testPage + Commons.relParentCompPath, "segmentation", null);
+        String segmentation = Commons.addComponent(adminClient, proxyPath, testPage + REL_PARENT_COMP_PATH, "segmentation", null);
         // open the page in the editor
         EditorPage editorPage = new PageEditorPage(testPage);
         editorPage.open();

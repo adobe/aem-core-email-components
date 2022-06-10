@@ -42,6 +42,7 @@ import static com.adobe.cq.testing.selenium.pagewidgets.Helpers.setAffinityCooki
 
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class AuthorBaseUITest extends UIAbstractTest {
+    public static final String REL_PARENT_COMP_PATH = "/jcr:content/root/container/col-0/";
 
     public final String randomPassword = RandomStringUtils.randomAlphabetic(8);
     public String rootPage;
