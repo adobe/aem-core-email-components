@@ -33,18 +33,21 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/container">
                         <items jcr:primaryType="nt:unstructured">
-                            <condition
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="Add conditional statement"
-                                fieldLabel="Condition"
-                                name="./condition"/>
                             <default
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                                 text="Default"
                                 name="./default"
                                 value="true"/>
+                            <condition
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                fieldLabel="Segment Condition"
+                                name="./condition">
+                                <datasource
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="core/email/components/commons/datasources/definecondition/v1"/>
+                            </condition>
                         </items>
                     </column>
                 </items>

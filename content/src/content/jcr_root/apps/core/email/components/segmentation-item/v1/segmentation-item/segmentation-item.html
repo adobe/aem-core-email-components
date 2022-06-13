@@ -18,6 +18,7 @@
     <sly data-sly-call="${template.placeholder @ isEmpty=!properties.condition}"></sly>
     <sly data-sly-test="${!wcmmode.edit}">${model.openingACCMarkup @ context='html'}</sly>
     <sly data-sly-test="${wcmmode.edit && !properties.default}">${properties.condition}</sly>
-    <div data-sly-test="${properties.condition || properties.default}" data-sly-resource="${@path='par', resourceType='foundation/components/parsys'}"></div>
+    <div data-sly-test="${properties.condition || properties.default}"
+         data-sly-resource="${@path='container', resourceType='core/email/components/container/v1/container'}"></div>
     <sly data-sly-test="${!wcmmode.edit}">${model.closingACCMarkup @ context='html'}</sly>
 </sly>
