@@ -86,11 +86,10 @@
                                                         <link
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/foundation/form/inputgroup"
-                                                            fieldDescription="Link to a content page, external URL or page anchor."
-                                                            fieldLabel="Link"
                                                             renderReadOnly="{Boolean}false">
                                                             <field
                                                                 jcr:primaryType="nt:unstructured"
+                                                                emptyText="Link"
                                                                 sling:resourceType="granite/ui/components/coral/foundation/form/pathbrowser"
                                                                 name="link"/>
                                                             <rightButton
