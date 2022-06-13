@@ -17,8 +17,6 @@ package com.adobe.cq.email.core.components.internal.services;
 
 import java.util.Objects;
 
-import com.day.cq.wcm.api.WCMMode;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -34,6 +32,7 @@ import com.adobe.cq.email.core.components.internal.request.EmptyHttpServletReque
 import com.adobe.cq.email.core.components.internal.request.ResolverRequestWrapper;
 import com.adobe.cq.email.core.components.services.UrlMapperService;
 import com.day.cq.commons.Externalizer;
+import com.day.cq.wcm.api.WCMMode;
 
 /**
  * {@link UrlMapperService} implementation

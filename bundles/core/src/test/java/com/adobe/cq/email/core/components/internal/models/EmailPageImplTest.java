@@ -15,6 +15,14 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.models;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.factory.ModelFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.adobe.cq.email.core.components.models.EmailPage;
 import com.adobe.cq.mcm.campaign.LinkingStatus;
 import com.adobe.cq.mcm.campaign.LinkingStatusService;
@@ -25,19 +33,11 @@ import com.day.cq.mcm.campaign.CampaignConnector;
 import com.day.cq.mcm.campaign.NewsletterStatus;
 import com.day.cq.mcm.campaign.StatusService;
 import com.day.cq.wcm.api.WCMMode;
-
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.models.factory.ModelFactory;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;

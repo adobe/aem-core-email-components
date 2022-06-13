@@ -15,22 +15,21 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.filters;
 
-import com.adobe.cq.mcm.campaign.NewsletterException;
-import com.day.cq.mcm.campaign.ACConnectorException;
+import java.io.IOException;
+import javax.servlet.ServletOutputStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-
-import javax.servlet.ServletOutputStream;
-
+import com.adobe.cq.mcm.campaign.NewsletterException;
+import com.day.cq.mcm.campaign.ACConnectorException;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class InlinerResponseWrapperTest {

@@ -19,4 +19,7 @@
 td.no-background {
           background-color: transparent;
         }
+.coral-PathBrowser {
+	width: 100% ;
+}
 /* stylelint-enable */

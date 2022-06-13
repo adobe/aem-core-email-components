@@ -38,14 +38,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.configs.StylesInlinerConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.compareRemovingNewLinesAndTabs;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 
