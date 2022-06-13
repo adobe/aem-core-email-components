@@ -15,10 +15,10 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.adobe.cq.wcm.core.components.models.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Email page component model class

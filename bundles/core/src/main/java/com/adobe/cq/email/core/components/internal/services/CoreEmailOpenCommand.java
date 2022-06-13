@@ -15,6 +15,18 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import org.apache.jackrabbit.util.Text;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.servlets.HtmlResponse;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.propertytypes.ServiceDescription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.day.cq.commons.TidyJSONWriter;
 import com.day.cq.commons.servlets.HtmlStatusResponseHelper;
 import com.day.cq.i18n.I18n;
@@ -25,18 +37,6 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.commands.WCMCommand;
 import com.day.cq.wcm.api.commands.WCMCommandContext;
 import com.day.cq.wcm.commons.WCMUtils;
-import org.apache.jackrabbit.util.Text;
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.servlets.HtmlResponse;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.propertytypes.ServiceDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Based on com.day.cq.wcm.core.impl.commands.OpenCommand

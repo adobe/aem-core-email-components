@@ -15,14 +15,6 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
-import com.adobe.cq.email.core.components.internal.configuration.AuthorModeUIConfig;
-import com.adobe.cq.email.core.components.util.HtmlSanitizer;
-import com.day.cq.wcm.api.AuthoringUIMode;
-import com.day.cq.wcm.api.AuthoringUIModeService;
-import com.day.cq.wcm.api.Page;
-import com.day.cq.wcm.api.WCMMode;
-import com.day.text.Text;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
@@ -53,6 +45,13 @@ import org.osgi.service.component.propertytypes.ServiceDescription;
 import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.adobe.cq.email.core.components.internal.configuration.AuthorModeUIConfig;
+import com.day.cq.wcm.api.AuthoringUIMode;
+import com.day.cq.wcm.api.AuthoringUIModeService;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.WCMMode;
+import com.day.text.Text;
 
 /**
  * {@link AuthoringUIModeService} and {@link Filter} implementation based on com.day.cq.wcm.core.impl.AuthoringUIModeServiceImpl

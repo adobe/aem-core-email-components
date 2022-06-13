@@ -15,15 +15,13 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -38,6 +36,7 @@ import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.email.core.components.services.AccLinkService;
+import com.adobe.cq.email.core.components.util.AccUrlProcessor;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.ListItem;
@@ -102,25 +101,14 @@ public class TeaserModel implements Teaser {
         for (ListItem action : actions) {
             Link actionLink = action.getLink();
             if (actionLink != null) {
-                newActions.add(TeaserListItem.create(action, accLinkService.create(resourceResolver, slingHttpServletRequest,
-                        processUrl(actionLink.getURL())).getURL()));
+                newActions.add(
+                        TeaserListItem.create(action, Optional.ofNullable(accLinkService.create(resourceResolver, slingHttpServletRequest,
+                                AccUrlProcessor.process(actionLink.getURL()))).map(Link::getURL).orElse(null)));
             } else {
                 newActions.add(TeaserListItem.create(action, null));
             }
         }
         return newActions;
-    }
-
-    private String processUrl(String url) {
-        if (StringUtils.isEmpty(url)) {
-            return url;
-        }
-        String encodedOpeningAccMarkup = URLEncoder.encode("<%");
-        String encodedClosingAccMarkup = URLEncoder.encode("%>");
-        if (url.contains(encodedOpeningAccMarkup) || url.contains(encodedClosingAccMarkup)) {
-            return URLDecoder.decode(url);
-        }
-        return url;
     }
 
     @Override

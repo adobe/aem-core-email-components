@@ -15,11 +15,9 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -90,14 +88,16 @@ public class TeaserLink<T> implements Link<T> {
     }
 
     public static Link create(Link link, String url) {
-        Optional<Link> optionalLink = Optional.ofNullable(link);
+        if (Objects.isNull(link)) {
+            return null;
+        }
         TeaserLink teaserLink = new TeaserLink<>();
-        teaserLink.setValid(optionalLink.map(Link::isValid).orElse(false));
-        Map<String, String> htmlAttributes = new HashMap<>(optionalLink.map(Link::getHtmlAttributes).orElse(Collections.emptyMap()));
+        teaserLink.setValid(link.isValid());
+        Map<String, String> htmlAttributes = new HashMap<>(link.getHtmlAttributes());
         if (StringUtils.isEmpty(url)) {
-            teaserLink.setUrl(optionalLink.map(Link::getURL).orElse(null));
-            teaserLink.setMappedUrl(optionalLink.map(Link::getMappedURL).orElse(null));
-            teaserLink.setExternalizedUrl(optionalLink.map(Link::getExternalizedURL).orElse(null));
+            teaserLink.setUrl(link.getURL());
+            teaserLink.setMappedUrl(link.getMappedURL());
+            teaserLink.setExternalizedUrl(link.getExternalizedURL());
         } else {
             teaserLink.setUrl(url);
             teaserLink.setMappedUrl(url);
@@ -105,7 +105,7 @@ public class TeaserLink<T> implements Link<T> {
             htmlAttributes.put("href", url);
         }
         teaserLink.setHtmlAttributes(htmlAttributes);
-        teaserLink.setReference(optionalLink.map(Link::getReference).orElse(null));
+        teaserLink.setReference(link.getReference());
         return teaserLink;
     }
 
@@ -119,8 +119,8 @@ public class TeaserLink<T> implements Link<T> {
         }
         TeaserLink<?> that = (TeaserLink<?>) o;
         return valid == that.valid && Objects.equals(url, that.url) && Objects.equals(mappedUrl, that.mappedUrl) &&
-                Objects.equals(externalizedUrl, that.externalizedUrl) &&
-                Objects.equals(htmlAttributes, that.htmlAttributes) && Objects.equals(reference, that.reference);
+                Objects.equals(externalizedUrl, that.externalizedUrl) && Objects.equals(htmlAttributes, that.htmlAttributes) &&
+                Objects.equals(reference, that.reference);
     }
 
     @Override

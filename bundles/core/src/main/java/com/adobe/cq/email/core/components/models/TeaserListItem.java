@@ -17,7 +17,6 @@ package com.adobe.cq.email.core.components.models;
 
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.apache.sling.api.resource.Resource;
 import org.jetbrains.annotations.NotNull;
@@ -155,22 +154,23 @@ public class TeaserListItem implements ListItem {
     }
 
     public static ListItem create(ListItem listItem, String linkUrl) {
-        Optional<ListItem> optionalListItem = Optional.ofNullable(listItem);
+        if (Objects.isNull(listItem)) {
+            return null;
+        }
         TeaserListItem copy = new TeaserListItem();
-        copy.setId(optionalListItem.map(ListItem::getId).orElse(null));
-        copy.setData(optionalListItem.map(ListItem::getData).orElse(null));
-        copy.setAppliedCssClasses(optionalListItem.map(ListItem::getAppliedCssClasses).orElse(null));
-        copy.setExportedType(
-                optionalListItem.map(ListItem::getExportedType).orElse(null));
-        copy.setLink(TeaserLink.create(optionalListItem.map(ListItem::getLink).orElse(null), linkUrl));
-        copy.setUrl(optionalListItem.map(ListItem::getURL).orElse(null));
-        copy.setTitle(optionalListItem.map(ListItem::getTitle).orElse(null));
-        copy.setDescription(optionalListItem.map(ListItem::getDescription).orElse(null));
+        copy.setId(listItem.getId());
+        copy.setData(listItem.getData());
+        copy.setAppliedCssClasses(listItem.getAppliedCssClasses());
+        copy.setExportedType(listItem.getExportedType());
+        copy.setLink(TeaserLink.create(listItem.getLink(), linkUrl));
+        copy.setUrl(listItem.getURL());
+        copy.setTitle(listItem.getTitle());
+        copy.setDescription(listItem.getDescription());
         copy.setLastModified(
-                optionalListItem.map(ListItem::getLastModified).orElse(null));
-        copy.setPath(optionalListItem.map(ListItem::getPath).orElse(null));
-        copy.setName(optionalListItem.map(ListItem::getName).orElse(null));
-        copy.setTeaserResource(optionalListItem.map(ListItem::getTeaserResource).orElse(null));
+                listItem.getLastModified());
+        copy.setPath(listItem.getPath());
+        copy.setName(listItem.getName());
+        copy.setTeaserResource(listItem.getTeaserResource());
         return copy;
     }
 
