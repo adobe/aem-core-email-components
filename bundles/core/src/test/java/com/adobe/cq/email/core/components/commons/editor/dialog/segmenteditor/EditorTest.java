@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor;
 
+import com.adobe.cq.email.core.components.models.SegmentationItem;
 import com.day.cq.wcm.api.policies.ContentPolicyMapping;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit5.AemContext;
@@ -49,7 +50,14 @@ class EditorTest {
         ctx.requestPathInfo().setSuffix("/content/test-page/jcr:content/root/container/col-0/segmentation");
         underTest = ctx.request().adaptTo(Editor.class);
         assertEquals(4, underTest.getConditions().size());
+        assertTrue(underTest.getConditions().stream()
+            .anyMatch(condition -> "child".equals(condition.getName())));
+        assertTrue(underTest.getConditions().stream()
+            .anyMatch(condition -> "person.gender = w".equals(condition.getValue())));
         assertEquals("/content/test-page/jcr:content/root/container/col-0/segmentation", underTest.getContainer().getPath());
         assertEquals(3, underTest.getItems().size());
+        assertTrue(underTest.getItems().stream()
+            .map(SegmentItem.class::cast)
+            .anyMatch(item -> "default".equals(item.getCondition())));
     }
 }

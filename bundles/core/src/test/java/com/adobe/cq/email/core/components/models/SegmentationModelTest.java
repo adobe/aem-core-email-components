@@ -71,6 +71,7 @@ class SegmentationModelTest {
         assertEquals("<% if (person.age <= 21) { %>", segmentationItem.getOpeningACCMarkup());
         assertNull(segmentationItem.getAppliedCssClasses());
         assertNull(segmentationItem.getData());
+        assertNull(segmentationItem.getLastModified());
         assertNull(segmentationItem.getDescription());
         assertEquals("tabs-4adb8faf29-item-36bea02a56", segmentationItem.getId());
         assertEquals("core/email/components/title/v1/title", segmentationItem.getExportedType());
