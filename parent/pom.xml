@@ -65,6 +65,7 @@
         <mockitio.version>2.24.5</mockitio.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <core.components.version>2.18.0</core.components.version>
     </properties>
 
     <!-- ======================================================================= -->
@@ -812,6 +813,16 @@
                 <artifactId>com.adobe.aem.wcm.seo</artifactId>
                 <version>1.0.4</version>
             </dependency>
+            <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.core</artifactId>
+                <version>${core.components.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.it.e2e-selenium-utils</artifactId>
+                <version>${core.components.version}</version>
+            </dependency>
 
             <!--
                 AEM APIs; make sure to not move this bundle upper in the list so that newer APIs available in AEM but not in the Uber
@@ -920,6 +931,18 @@
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.i18n</artifactId>
                 <version>2.4.4</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.testing.aem-mock-plugin</artifactId>
+                <version>${core.components.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.junit.core</artifactId>
+                <version>${core.components.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
