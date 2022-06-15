@@ -12,9 +12,11 @@
         <items jcr:primaryType="nt:unstructured">
             <tabs
                 jcr:primaryType="nt:unstructured">
-                <items jcr:primaryType="nt:unstructured">
+                <items jcr:primaryType="nt:unstructured"
+                       sling:hideChildren="[tabitems]">
                     <containerItems
                         jcr:primaryType="nt:unstructured"
+                        sling:orderBefore="properties"
                         jcr:title="Items"
                         sling:resourceType="granite/ui/components/coral/foundation/container"
                         margin="{Boolean}true">
