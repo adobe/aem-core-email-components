@@ -28,6 +28,7 @@ import com.day.cq.mcm.campaign.ACConnectorException;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -46,6 +47,9 @@ class InlinerResponseWrapperTest {
     void getOutputStreamTest() throws IOException {
         InlinerResponseWrapper wrapper = new InlinerResponseWrapper(ctx.response());
         ServletOutputStream stream = wrapper.getOutputStream();
+        stream.setWriteListener(null);
+        assertFalse(stream.isReady());
+        stream.write(42);
         wrapper.flushBuffer();
         wrapper.getResponseAsBytes();
         assertNotEquals(null, wrapper.getResponseAsString());
@@ -65,4 +69,5 @@ class InlinerResponseWrapperTest {
             wrapper.getOutputStream();
         });
     }
+
 }

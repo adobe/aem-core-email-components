@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.request;
 
+import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 
 import org.junit.jupiter.api.Test;
@@ -122,6 +123,14 @@ class URITest {
     }
 
     @Test
+    void getHost() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true,
+                StandardCharsets.UTF_8.toString());
+        assertEquals("www.emailtest.dev", uri.getHost());
+
+    }
+
+    @Test
     void getPort() {
         URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
         assertEquals(8080, uri.getPort());
@@ -143,6 +152,20 @@ class URITest {
     void getUriReference() {
         URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true);
         assertEquals("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", uri.getURIReference());
+    }
+
+    @Test
+    void getUriReferenceWithSpecifiedCharset() {
+        URI uri = new URI("https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2", true,
+                StandardCharsets.UTF_8.toString());
+        assertEquals("https://www.emailtest.dev:8080/content/Hello Günter.json?param1=1&param2=2", uri.getURIReference());
+    }
+
+    @Test
+    void getRawUri() {
+        String sss = "https://www.emailtest.dev:8080/content/Hello%20G%C3%BCnter.json?param1=1&param2=2";
+        URI uri = new URI(sss, true);
+        assertEquals(sss, new String(uri.getRawURI()));
     }
 
     @Test
