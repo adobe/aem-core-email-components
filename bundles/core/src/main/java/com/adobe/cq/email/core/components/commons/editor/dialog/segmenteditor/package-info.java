@@ -15,10 +15,11 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /**
  * <p>
- * This package defines utility classes exposed by the Adobe Experience Manager Core Email Components Bundle.
+ *      This package defines the Sling Models exposed for the segmenteditor component.
  * </p>
+ *
  */
-@Version("2.1.0")
-package com.adobe.cq.email.core.components.pojo;
+@Version("1.0.0")
+package com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor;
 
 import org.osgi.annotation.versioning.Version;

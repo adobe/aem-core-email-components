@@ -1,5 +1,5 @@
 <!--/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ~ Copyright 2021 Adobe
+  ~ Copyright 2022 Adobe
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -13,11 +13,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<sly data-sly-use.model="com.adobe.cq.email.core.components.models.SegmentationItemModel"
-     data-sly-use.template="core/wcm/components/commons/v1/templates.html">
-    <sly data-sly-call="${template.placeholder @ isEmpty=!properties.condition}"></sly>
-    <sly data-sly-test="${!wcmmode.edit}">${model.openingACCMarkup @ context='html'}</sly>
-    <sly data-sly-test="${wcmmode.edit && !properties.default}">${properties.condition}</sly>
-    <div data-sly-test="${properties.condition || properties.default}" data-sly-resource="${@path='par', resourceType='foundation/components/parsys'}"></div>
-    <sly data-sly-test="${!wcmmode.edit}">${model.closingACCMarkup @ context='html'}</sly>
+<sly data-sly-template.icon="${@ item}">
+    <span class="cmp-segmenteditor__item-icon"
+          data-cmp-hook-segmenteditor="itemIcon">
+        <coral-icon data-sly-test="${item.iconName}" icon="${item.iconName}" title="${item.title}"></coral-icon>
+        <img data-sly-test="${!item.iconName && item.iconPath}" src="${item.iconPath}" title="${item.title}"/>
+        <coral-tag data-sly-test="${!item.iconName && !item.iconPath && item.iconAbbreviation}"
+                   class="cmp-segmenteditor__item-tag"
+                   color="grey"
+                   size="M"
+                   title="${item.title}">${item.iconAbbreviation}</coral-tag>
+    </span>
 </sly>

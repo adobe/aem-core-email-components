@@ -1,0 +1,45 @@
+<!--/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Copyright 2022 Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
+<coral-multifield data-sly-use.segmentEditor="com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.Editor"
+                  data-sly-use.iconTemplate="icon.html"
+                  data-cmp-is="segmentEditor"
+                  class="cmp-segmenteditor"
+                  data-container-path = "${segmentEditor.container.path}">
+    <coral-multifield-item data-sly-repeat.item="${segmentEditor.items}" data-name="${item.name}">
+        <div class="cmp-segmenteditor__item">
+            <sly data-sly-call="${iconTemplate.icon @ item=item}"></sly>
+            <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}" name="./${item.name}/condition">
+                <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
+            </coral-select>
+            <input type="hidden" name="./${item.name}/cq:panelTitle" value="${item.value}" class="cmp-segmenteditor__item-title">
+        </div>
+    </coral-multifield-item>
+    <button data-cmp-hook-segmenteditor="add" type="button" is="coral-button">${'Add Segment' @ i18n}</button>
+    <template coral-multifield-template="">
+        <div class="cmp-segmenteditor__item">
+            <span class="cmp-segmenteditor__item-icon"
+                  data-cmp-hook-segmenteditor="itemIcon"></span>
+            <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}"
+                          data-cmp-hook-segmenteditor="itemCondition" required>
+                <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}">${condition.name}</coral-select-item>
+            </coral-select>
+            </div>
+            <input type="hidden" data-cmp-hook-segmenteditor="itemTitle">
+            <input type="hidden" data-cmp-hook-segmenteditor="itemResourceType">
+            <input type="hidden" data-cmp-hook-segmenteditor="itemTemplatePath">
+        </div>
+    </template>
+</coral-multifield>

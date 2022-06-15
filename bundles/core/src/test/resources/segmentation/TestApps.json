@@ -1,0 +1,75 @@
+{
+    "email": {
+        "jcr:primaryType": "sling:Folder",
+        "components": {
+            "jcr:primaryType": "sling:Folder",
+            "segmentation": {
+                "jcr:primaryType": "sling:Folder",
+                "v1": {
+                    "jcr:primaryType": "nt:unstructured",
+                    "segmentation": {
+                        "componentGroup": "core-email",
+                        "jcr:primaryType": "cq:Component",
+                        "jcr:title": "Segmentation Component",
+                        "sling:resourceSuperType": "core/wcm/components/tabs/v1/tabs"
+                    }
+                }
+            },
+            "title": {
+                "jcr:primaryType": "sling:Folder",
+                "v1": {
+                    "jcr:primaryType": "nt:unstructured",
+                    "title": {
+                        "componentGroup": "core-email",
+                        "jcr:primaryType": "cq:Component",
+                        "jcr:title": "Title",
+                        "sling:resourceSuperType": "core/wcm/components/title/v3/title"
+                    }
+                }
+            }
+        }
+    },
+    "wcm" : {
+        "jcr:primaryType": "sling:Folder",
+        "components": {
+            "jcr:primaryType": "sling:Folder",
+            "tabs": {
+                "jcr:primaryType": "sling:Folder",
+                "v1": {
+                    "jcr:primaryType": "nt:unstructured",
+                    "tabs": {
+                        "componentGroup": "core-wcm",
+                        "cq:icon": "multiple",
+                        "jcr:description": "Displays content as a list of tabs",
+                        "jcr:primaryType": "cq:Component",
+                        "jcr:title": "Tabs (v1)",
+                        "sling:resourceSuperType": "core/wcm/components/panelcontainer/v1/panelcontainer"
+                    }
+                }
+            },
+            "panelcontainer": {
+                "jcr:primaryType": "sling:Folder",
+                "v1": {
+                    "jcr:primaryType": "nt:unstructured",
+                    "panelcontainer": {
+                        "componentGroup": ".hidden",
+                        "cq:isContainer": true,
+                        "jcr:primaryType": "cq:Component",
+                        "jcr:title": "Panel Container (v1)"
+                    }
+                }
+            },
+            "title": {
+                "jcr:primaryType": "sling:Folder",
+                "v3": {
+                    "jcr:primaryType": "nt:unstructured",
+                    "title": {
+                        "componentGroup": "core-wcm",
+                        "jcr:primaryType": "cq:Component",
+                        "jcr:title": "Title"
+                    }
+                }
+            }
+        }
+    }
+}
