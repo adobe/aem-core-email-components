@@ -167,34 +167,13 @@
                                         </rule>
                                     </rules>
                                     <excludes>
+                                        <!-- Constants class -->
                                         <exclude>
                                             com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
                                         </exclude>
+                                        <!-- Model interface -->
                                         <exclude>
-                                            com/adobe/cq/email/core/components/pojo/**
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/exceptions/**
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/internal/services/CoreEmailAuthoringUIModeServiceImpl.class
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/internal/services/CoreEmailOpenCommand.class
-                                        </exclude>
-                                        <!-- package has 90% empty methods and string parsing -->
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/internal/request/**
-                                        </exclude>
-                                        <!-- do not test default values for interfaces -->
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/models/**
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/enumerations/**
-                                        </exclude>
-                                        <exclude>
-                                            com/adobe/cq/email/core/components/filters/**
+                                            com/adobe/cq/email/core/components/models/EmailPage.class
                                         </exclude>
                                     </excludes>
                                 </configuration>
