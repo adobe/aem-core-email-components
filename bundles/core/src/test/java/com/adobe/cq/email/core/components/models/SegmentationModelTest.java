@@ -23,6 +23,7 @@ import com.day.cq.wcm.api.components.ComponentManager;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextBuilder;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,11 +55,12 @@ class SegmentationModelTest {
     @Test
     void testSegmentationModel() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation");
-        ComponentManager componentManager = ctx.request().getResourceResolver().adaptTo(ComponentManager.class);
         underTest = ctx.request().adaptTo(Tabs.class);
         assertEquals("item_1655139752725", underTest.getActiveItem());
         assertNull(underTest.getAccessibilityLabel());
         assertNull(underTest.getAppliedCssClasses());
+        assertNull(underTest.getBackgroundStyle());
+        assertNotNull(underTest.getExportedItems());
         assertEquals("tabs-4adb8faf29", underTest.getId());
         assertEquals("core/wcm/components/tabs/v1/tabs", underTest.getExportedType());
         assertNull(underTest.getData());
@@ -73,6 +75,7 @@ class SegmentationModelTest {
         assertNull(segmentationItem.getData());
         assertNull(segmentationItem.getLastModified());
         assertNull(segmentationItem.getDescription());
+
         assertEquals("tabs-4adb8faf29-item-36bea02a56", segmentationItem.getId());
         assertEquals("core/email/components/title/v1/title", segmentationItem.getExportedType());
         assertNull(segmentationItem.getLink());
@@ -80,5 +83,26 @@ class SegmentationModelTest {
         assertEquals("Children", segmentationItem.getTitle());
         assertNull(segmentationItem.getURL());
         assertNull(segmentationItem.getTeaserResource());
+    }
+
+    @Test
+    void testSingleDefaultSegment() {
+        ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-single-default");
+        underTest = ctx.request().adaptTo(Tabs.class);
+        SegmentationItem segmentationItem = underTest.getItems().stream()
+            .map(SegmentationItem.class::cast)
+            .filter(item -> "item_1655139752725".equals(item.getName())).findFirst().get();
+        assertEquals(StringUtils.EMPTY, segmentationItem.getOpeningACCMarkup());
+        assertEquals(StringUtils.EMPTY, segmentationItem.getClosingACCMarkup());
+    }
+
+    @Test
+    void testReverseSegment() {
+        ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-reverse-order");
+        underTest = ctx.request().adaptTo(Tabs.class);
+        SegmentationItem segmentationItem = underTest.getItems().stream()
+            .map(SegmentationItem.class::cast)
+            .findFirst().get();
+        assertEquals("item_1655205745101", segmentationItem.getName());
     }
 }
