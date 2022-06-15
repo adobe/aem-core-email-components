@@ -52,6 +52,13 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 ### Current release:
 
+#### V0.10 (scheduled 06/15)
+* Container component - column policy https://github.com/adobe/aem-core-email-components/issues/125
+* Teaser Component - Personalization Plugin for Links tab - https://github.com/adobe/aem-core-email-components/issues/135
+* Update Segmentation Component - https://github.com/adobe/aem-core-email-components/issues/89
+
+### Past releases:
+
 #### V0.9 (scheduled 06/01)
 * Title Component - incorrect link when using campaign RTE Plugin https://github.com/adobe/aem-core-email-components/issues/129
 * Button Component - incorrect link when using campaign RTE Plugin https://github.com/adobe/aem-core-email-components/issues/131
@@ -60,8 +67,6 @@ The Email Core Components require the use of [editable templates](https://docs.a
 * Add JavaDocs to all exposed packages, methods and constants https://github.com/adobe/aem-core-email-components/issues/108
 * Container Component - Unable to specify Policy for child components https://github.com/adobe/aem-core-email-components/issues/76
 * Container component - column policy https://github.com/adobe/aem-core-email-components/issues/125
-
-### Past releases:
 
 #### V0.8 (scheduled 05/18)
 * Update and Rename Container Component https://github.com/adobe/aem-core-email-components/issues/90
