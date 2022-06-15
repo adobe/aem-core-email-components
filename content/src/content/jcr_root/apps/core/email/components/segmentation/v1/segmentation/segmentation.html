@@ -36,7 +36,7 @@
             tabindex="${isActive ? '0' : '-1'}"
             data-cmp-hook-tabs="tab">${tab.title}</li>
     </ol>
-    <div data-sly-unwrap="${wcmmode.disabled}" data-sly-repeat.item="${tabs.items}"
+    <div data-sly-repeat.item="${tabs.items}"
          data-sly-call="${itemTemplate.item @ item = item}"
          id="${item.id}-tabpanel"
          role="tabpanel"
