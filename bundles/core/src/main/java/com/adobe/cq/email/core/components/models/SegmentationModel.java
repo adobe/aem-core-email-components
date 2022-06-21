@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.models;
 
+import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.Editor;
 import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.SegmentItem;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.models.ListItem;
@@ -95,6 +96,9 @@ public class SegmentationModel implements Tabs {
                         if (itemResource != null) {
                             ValueMap valueMap = itemResource.getValueMap();
                             String condition = valueMap.get(SegmentItem.PN_CONDITION, String.class);
+                            if(StringUtils.equals(condition, Editor.CUSTOM_VALUE)) {
+                                condition = valueMap.get(SegmentItem.PN_CUSTOM_SEGMENT_CONDITION, String.class);
+                            }
                             if (StringUtils.isNotEmpty(condition)) {
                                 this.items.add(new SegmentationItem(formatTag(condition, pos, items.size(), isDefault), item));
                                 pos++;

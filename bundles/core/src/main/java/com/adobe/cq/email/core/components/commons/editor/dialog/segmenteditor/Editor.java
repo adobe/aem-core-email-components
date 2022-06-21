@@ -38,10 +38,13 @@ import java.util.List;
 @Model(adaptables = {SlingHttpServletRequest.class})
 public class Editor {
 
+    public static final String CUSTOM_VALUE = "custom";
+
     private static final String NN_DEFINED_CONDITIONS = "definedConditions";
     private static final String PN_NAME = "name";
     private static final String PN_CONDITION = "condition";
     private static final String DEFAULT_VALUE = "default";
+    private static final String CUSTOM_NAME = "Custom";
     private static final String DEFAULT_NAME = "Default";
 
     @Self
@@ -107,6 +110,7 @@ public class Editor {
                 }
             }
         }
+        conditions.add(new Condition(i18n.get(CUSTOM_NAME), CUSTOM_VALUE));
     }
 
     /**

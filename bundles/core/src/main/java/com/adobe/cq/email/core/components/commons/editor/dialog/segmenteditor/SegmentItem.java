@@ -22,19 +22,22 @@ import org.apache.sling.api.resource.ValueMap;
 
 public class SegmentItem extends Item {
 
-    protected String condition;
+    private String condition;
+    private String customCondition;
+
 
     /**
      * Name of the resource property that defines a condition
      */
     public static final String PN_CONDITION = "condition";
-
+    public static final String PN_CUSTOM_SEGMENT_CONDITION = "customSegmentCondition";
 
     public SegmentItem(SlingHttpServletRequest request, Resource resource) {
         super(request, resource);
         if (resource != null) {
             ValueMap vm = resource.getValueMap();
             condition = vm.get(PN_CONDITION, String.class);
+            customCondition = vm.get(PN_CUSTOM_SEGMENT_CONDITION, String.class);
         }
     }
 
@@ -45,5 +48,9 @@ public class SegmentItem extends Item {
      */
     public String getCondition() {
         return condition;
+    }
+
+    public String getCustomCondition() {
+        return customCondition;
     }
 }

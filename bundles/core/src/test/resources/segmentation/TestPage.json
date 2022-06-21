@@ -47,6 +47,18 @@
                             "jcr:primaryType": "nt:unstructured",
                             "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
                         },
+                        "segmentation-single-custom": {
+                            "item_1655139752725": {
+                                "condition": "custom",
+                                "cq:panelTitle": "Custom",
+                                "customSegmentCondition": "person.gender = m and person.age == 21",
+                                "jcr:primaryType": "nt:unstructured",
+                                "jcr:title": "Title for Man",
+                                "sling:resourceType": "core/email/components/title/v1/title"
+                            },
+                            "jcr:primaryType": "nt:unstructured",
+                            "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
+                        },
                         "segmentation-reverse-order": {
                             "item_1655205745101": {
                                 "condition": "person.gender = m and person.age > 21",
