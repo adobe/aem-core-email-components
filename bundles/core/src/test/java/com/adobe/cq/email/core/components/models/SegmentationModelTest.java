@@ -97,6 +97,17 @@ class SegmentationModelTest {
     }
 
     @Test
+    void testSingleCustomSegment() {
+        ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-single-custom");
+        underTest = ctx.request().adaptTo(Tabs.class);
+        SegmentationItem segmentationItem = underTest.getItems().stream()
+            .map(SegmentationItem.class::cast)
+            .filter(item -> "item_1655139752725".equals(item.getName())).findFirst().get();
+        assertEquals("<% if (person.gender = m and person.age == 21) { %>", segmentationItem.getOpeningACCMarkup());
+        assertEquals("<% } %>", segmentationItem.getClosingACCMarkup());
+    }
+
+    @Test
     void testReverseSegment() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-reverse-order");
         underTest = ctx.request().adaptTo(Tabs.class);

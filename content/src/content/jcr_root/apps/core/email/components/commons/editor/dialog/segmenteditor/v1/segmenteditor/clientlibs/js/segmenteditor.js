@@ -20,6 +20,7 @@
     var NN_PREFIX = "item_";
     var PN_PANEL_TITLE = "cq:panelTitle";
     var PN_CONDITION = "condition";
+    var PN_CUSTOM_SEGMENT_CONDITION = "customSegmentCondition";
     var PN_RESOURCE_TYPE = "sling:resourceType";
     var PN_COPY_FROM = "./@CopyFrom";
     var POST_SUFFIX = ".container.html";
@@ -29,7 +30,7 @@
         items: {
             self: "coral-multifield-item",
             select: "coral-select.cmp-segmenteditor__item-condition",
-            hiddenInputTitle: "input.cmp-segmenteditor__item-title"
+            hiddenInputTitle: ".cmp-segmenteditor__item-title"
         },
         add: "[data-cmp-hook-segmenteditor='add']",
         insertComponentDialog: {
@@ -38,8 +39,9 @@
         },
         item: {
             icon: "[data-cmp-hook-segmenteditor='itemIcon']",
-            input: "[data-cmp-hook-segmenteditor='itemTitle']",
-            select: "[data-cmp-hook-segmenteditor='itemCondition']",
+            title: "[data-cmp-hook-segmenteditor='itemTitle']",
+            condition: "[data-cmp-hook-segmenteditor='itemCondition']",
+            custom: ".custom-segment",
             hiddenItemResourceType: "[data-cmp-hook-segmenteditor='itemResourceType']",
             hiddenItemTemplatePath: "[data-cmp-hook-segmenteditor='itemTemplatePath']"
         }
@@ -67,7 +69,8 @@
         this._init();
 
         var that = this;
-        $(window).adaptTo("foundation-registry").register("foundation.adapters", {
+        var registry = $(window).adaptTo("foundation-registry");
+        registry.register("foundation.adapters", {
             type: "cmp-segmenteditor",
             selector: selectors.self,
             adapter: function() {
@@ -76,7 +79,7 @@
                         var items = [];
                         that._elements.self.items.getAll().forEach(function(item) {
                             var component = item.querySelector(selectors.item.icon + " [title]").getAttribute("title");
-                            var title = item.querySelector(selectors.item.input);
+                            var title = item.querySelector(selectors.item.title);
                             var name = (title && title.name) ? title.name.match(".?/?(.+)/.*")[1] : "";
                             var description = Granite.I18n.get(component) + ((title && title.value) ? ": " + Granite.I18n.get(title.value) : "");
                             items.push({
@@ -89,6 +92,35 @@
                 };
             }
         });
+
+        registry.register("foundation.adapters", {
+            type: "foundation-toggleable",
+            selector: selectors.item.custom,
+            adapter: function(el) {
+                var section = $(el);
+                var customSegmentName = section.find(selectors.item.title).adaptTo("foundation-field");
+                var customSegmentCondition = section.find(selectors.item.condition).adaptTo("foundation-field");
+
+                return {
+                    isOpen: function() {
+                        return section.classList.contains("custom-segment-active");
+                    },
+                    show: function() {
+                        section.addClass("custom-segment-active");
+                        customSegmentName.setRequired(true);
+                        customSegmentCondition.setRequired(true);
+                        section.trigger("foundation-toggleable-show");
+                    },
+                    hide: function() {
+                        customSegmentName.setRequired(false);
+                        customSegmentCondition.setRequired(false);
+                        section.removeClass("custom-segment-active");
+                        section.trigger("foundation-toggleable-hide");
+                    }
+                };
+            }
+        });
+
     };
 
     SegmentEditor.prototype = (function() {
@@ -182,11 +214,24 @@
                 if (ns) {
                     that._elements.items.forEach(function(item) {
                         Coral.commons.ready(item, function(el) {
+                            var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
+                            var $customSegmentName = $(item).find(selectors.item.title).adaptTo("foundation-field");
+                            var $customSegmentCondition = $(item).find(selectors.item.condition).adaptTo("foundation-field");
                             var select = el.querySelectorAll(selectors.items.select)[0];
-                            var input = el.querySelectorAll(selectors.items.hiddenInputTitle)[0];
+                            var hiddenInput = el.querySelectorAll("input[type='hidden']" + selectors.items.hiddenInputTitle)[0];
+                            var $hiddenInput = $(hiddenInput).adaptTo("foundation-field");
                             Coral.commons.nextFrame(function() {
                                 select.on("change", function(event) {
-                                    input.value = event.target.selectedItem.textContent;
+                                    if (event.target.selectedItem.value === "custom") {
+                                        $customSegmentName.setValue("");
+                                        $customSegmentCondition.setValue("");
+                                        customSegment.show();
+                                        $hiddenInput.setDisabled(true);
+                                    } else {
+                                        customSegment.hide();
+                                        hiddenInput.value = event.target.selectedItem.textContent;
+                                        $hiddenInput.setDisabled(false);
+                                    }
                                 });
                             });
                         });
@@ -222,16 +267,21 @@
                                             var item = that._elements.self.items.add(new Coral.Multifield.Item());
 
                                             // next frame to ensure the item template is rendered in the DOM
-
                                             Coral.commons.nextFrame(function() {
+                                                var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
                                                 var name = NN_PREFIX + Date.now();
                                                 item.dataset["name"] = name;
 
-                                                var selectCondition = item.querySelectorAll(selectors.item.select)[0];
+                                                var selectCondition = item.querySelectorAll("coral-select" + selectors.item.condition)[0];
                                                 selectCondition.name = "./" + name + "/" + PN_CONDITION;
+                                                var inputCondition = item.querySelectorAll("input" + selectors.item.condition)[0];
+                                                inputCondition.name = "./" + name + "/" + PN_CUSTOM_SEGMENT_CONDITION;
 
-                                                var hiddenItemTitle = item.querySelectorAll(selectors.item.input)[0];
+                                                var hiddenItemTitle = item.querySelectorAll("input[type='hidden']" + selectors.item.title)[0];
+                                                var $hiddenItemTitle = $(hiddenItemTitle).adaptTo("foundation-field");
                                                 hiddenItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
+                                                var customItemTitle = item.querySelectorAll("input[is='coral-textfield']" + selectors.item.title)[0];
+                                                customItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
 
                                                 var hiddenItemResourceType = item.querySelectorAll(selectors.item.hiddenItemResourceType)[0];
                                                 hiddenItemResourceType.value = resourceType;
@@ -249,7 +299,14 @@
                                                 that._elements.self.trigger("change");
 
                                                 selectCondition.on("change" + NS, function(event) {
-                                                    hiddenItemTitle.value = event.target.selectedItem.textContent;
+                                                    if (event.target.selectedItem.value === "custom") {
+                                                        customSegment.show();
+                                                        $hiddenItemTitle.setDisabled(true);
+                                                    } else {
+                                                        customSegment.hide();
+                                                        hiddenItemTitle.value = event.target.selectedItem.textContent;
+                                                        $hiddenItemTitle.setDisabled(false);
+                                                    }
                                                 });
                                             });
                                         }

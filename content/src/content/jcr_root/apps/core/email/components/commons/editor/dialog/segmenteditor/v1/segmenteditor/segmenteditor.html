@@ -25,6 +25,17 @@
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
             </coral-select>
             <input type="hidden" name="./${item.name}/cq:panelTitle" value="${item.value}" class="cmp-segmenteditor__item-title">
+            <section class="coral-Form-fieldset custom-segment${item.condition == 'custom' ? ' custom-segment-active': ''}">
+                <div class="coral-Form-fieldwrapper">
+                    <label class="coral-Form-fieldlabel">Name</label>
+                    <input is="coral-textfield" class="coral-Form-field" data-cmp-hook-segmenteditor="itemTitle" placeholder="${'Custom Segment Name' @ i18n}" value="${item.value}" name="./${item.name}/cq:panelTitle">
+                </div>
+                <div class="coral-Form-fieldwrapper">
+                    <label class="coral-Form-fieldlabel">Condition</label>
+                    <input is="coral-textfield" class="coral-Form-field" data-cmp-hook-segmenteditor="itemCondition" placeholder="${'Custom Condition' @ i18n}" value="${item.customCondition}" name="/${item.name}/customSegmentCondition">
+                </div>
+            </section>
+
         </div>
     </coral-multifield-item>
     <button data-cmp-hook-segmenteditor="add" type="button" is="coral-button">${'Add Segment' @ i18n}</button>
@@ -36,10 +47,20 @@
                           data-cmp-hook-segmenteditor="itemCondition" required>
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}">${condition.name}</coral-select-item>
             </coral-select>
-            </div>
-            <input type="hidden" data-cmp-hook-segmenteditor="itemTitle">
-            <input type="hidden" data-cmp-hook-segmenteditor="itemResourceType">
-            <input type="hidden" data-cmp-hook-segmenteditor="itemTemplatePath">
         </div>
+        <input type="hidden" data-cmp-hook-segmenteditor="itemTitle">
+        <input type="hidden" data-cmp-hook-segmenteditor="itemResourceType">
+        <input type="hidden" data-cmp-hook-segmenteditor="itemTemplatePath">
+        <section class="coral-Form-fieldset custom-segment">
+            <div class="coral-Form-fieldwrapper">
+                <label class="coral-Form-fieldlabel">Name</label>
+                <input is="coral-textfield" class="coral-Form-field" placeholder="${'Custom Segment Name' @ i18n}" data-cmp-hook-segmenteditor="itemTitle">
+            </div>
+            <div class="coral-Form-fieldwrapper">
+                <label class="coral-Form-fieldlabel">Condition</label>
+                <input is="coral-textfield" class="coral-Form-field" placeholder="${'Custom Condition' @ i18n}" data-cmp-hook-segmenteditor="itemCondition">
+            </div>
+        </section>
+
     </template>
 </coral-multifield>

@@ -33,6 +33,13 @@
                                 "jcr:primaryType": "nt:unstructured",
                                 "sling:resourceType": "core/email/components/title/v1/title"
                             },
+                            "item_1655205745101": {
+                                "condition": "custom",
+                                "customSegmentCondition": "person.gender = m and person.age == 21",
+                                "cq:panelTitle": "Man",
+                                "jcr:primaryType": "nt:unstructured",
+                                "sling:resourceType": "core/email/components/title/v1/title"
+                            },
                             "jcr:primaryType": "nt:unstructured",
                             "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
                         },

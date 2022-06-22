@@ -49,7 +49,7 @@ class EditorTest {
     void testEditor() {
         ctx.requestPathInfo().setSuffix("/content/test-page/jcr:content/root/container/col-0/segmentation");
         underTest = ctx.request().adaptTo(Editor.class);
-        assertEquals(4, underTest.getConditions().size());
+        assertEquals(5, underTest.getConditions().size());
         assertTrue(underTest.getConditions().stream()
             .anyMatch(condition -> "child".equals(condition.getName())));
         assertTrue(underTest.getConditions().stream()
@@ -59,5 +59,8 @@ class EditorTest {
         assertTrue(underTest.getItems().stream()
             .map(SegmentItem.class::cast)
             .anyMatch(item -> "default".equals(item.getCondition())));
+        assertTrue(underTest.getItems().stream()
+            .map(SegmentItem.class::cast)
+            .anyMatch(item -> "person.gender = m and person.age == 21".equals(item.getCustomCondition())));
     }
 }
