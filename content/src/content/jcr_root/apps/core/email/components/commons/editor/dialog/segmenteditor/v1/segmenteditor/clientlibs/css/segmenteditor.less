@@ -40,11 +40,19 @@
     width: 1.75rem;
     text-align: center;
 }
+
 .coral-Form--vertical .custom-segment .coral-Form-fieldlabel {
     display: inline-block;
     vertical-align: bottom;
+    visibility: hidden;
+    margin-right: @cmp-segmenteditor-item-icon-margin-right;;
     width: @cmp-segmenteditor-item-icon-width;
 }
+
+.coral-Form-fieldset.custom-segment {
+    margin: 0;
+}
+
 .coral-Form--vertical .coral-Form-field.coral3-Select.cmp-segmenteditor__item-condition,
 .coral-Form--vertical .custom-segment .coral-Form-field.coral3-Textfield {
     display: inline-block;
