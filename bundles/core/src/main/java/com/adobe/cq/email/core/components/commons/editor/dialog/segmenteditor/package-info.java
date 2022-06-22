@@ -19,7 +19,7 @@
  * </p>
  *
  */
-@Version("1.0.0")
+@Version("2.0.0")
 package com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor;
 
 import org.osgi.annotation.versioning.Version;
