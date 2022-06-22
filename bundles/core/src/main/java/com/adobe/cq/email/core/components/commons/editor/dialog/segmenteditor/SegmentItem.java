@@ -19,7 +19,9 @@ import com.adobe.cq.wcm.core.components.commons.editor.dialog.childreneditor.Ite
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.osgi.annotation.versioning.ProviderType;
 
+@ProviderType
 public class SegmentItem extends Item {
 
     private String condition;
