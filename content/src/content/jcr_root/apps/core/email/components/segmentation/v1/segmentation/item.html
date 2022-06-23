@@ -14,7 +14,7 @@
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <template data-sly-template.item="${@ item}">
-    <sly data-sly-test="${!wcmmode.edit}">${item.openingACCMarkup @ context='html'}</sly>
+    <sly data-sly-test="${wcmmode.disabled}">${item.openingACCMarkup @ context='html'}</sly>
     <div data-sly-resource="${item.name @ decorationTagName='div'}"></div>
-    <sly data-sly-test="${!wcmmode.edit}">${item.closingACCMarkup @ context='html'}</sly>
+    <sly data-sly-test="${wcmmode.disabled}">${item.closingACCMarkup @ context='html'}</sly>
 </template>
