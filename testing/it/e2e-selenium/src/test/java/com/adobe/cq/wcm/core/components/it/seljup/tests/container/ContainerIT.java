@@ -74,10 +74,11 @@ public class ContainerIT extends AuthorBaseUITest {
         setValueInCombobox(webDriver, act, "3-3");
         viewAsPublished(webDriver);
         List<WebElement> elements = webDriver.findElements(By.cssSelector("[class='layout-column grid-3']"));
-        assertEquals(2, elements.size());
-        WebElement firstColumn = elements.get(0);
+        assertEquals(4, elements.size());
+        // skipping first element (outer layout)
+        WebElement firstColumn = elements.get(1);
         assertTrue(firstColumn.isDisplayed());
-        WebElement secondColumn = elements.get(1);
+        WebElement secondColumn = elements.get(2);
         assertTrue(secondColumn.isDisplayed());
         assertEquals(firstColumn.getSize().getWidth(), secondColumn.getSize().getWidth(), 1);
     }

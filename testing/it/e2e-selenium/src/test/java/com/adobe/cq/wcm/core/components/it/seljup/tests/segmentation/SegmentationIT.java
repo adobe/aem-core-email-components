@@ -16,7 +16,7 @@ package com.adobe.cq.wcm.core.components.it.seljup.tests.segmentation;
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-import java.util.List;
+import java.util.Objects;
 
 import org.apache.http.HttpStatus;
 import org.apache.sling.testing.clients.ClientException;
@@ -36,19 +36,18 @@ import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
 import com.codeborne.selenide.WebDriverRunner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SegmentationIT extends AuthorBaseUITest {
-    public static final String EXPECTED_FIRST_SEGMENTATION_ITEM_CONTENT = "<% if (recipient.age >= 18) { %>\nAdults only\n<% } else if (recipient.age < 18) { %>";
-    public static final String EXPECTED_SECOND_SEGMENTATION_ITEM_CONTENT = "Kids only\n<% } %>";
     private String proxyPath;
     private String testPage;
 
     @BeforeEach
     public void setupBeforeEach() throws ClientException {
         // create the test page, store page path in 'testPagePath'
-        testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
-                "/templates/email-template").getSlingPath();
+        testPage = authorClient.createPage("test", "Test Page Title", rootPage,
+                "/conf/core-email-components-examples/settings/wcm" + "/templates/email-template").getSlingPath();
         // create a proxy component
         String segmentationRT = "core/email/components/segmentation/v1/segmentation";
         proxyPath = Commons.createProxyComponent(adminClient, segmentationRT, Commons.proxyPath, null, null);
@@ -73,49 +72,71 @@ public class SegmentationIT extends AuthorBaseUITest {
     void createSegmentation() throws InterruptedException {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);
-        addSegmentationItem(webDriver, act, "first", "recipient.age >= 18", "Adults only");
-        addSegmentationItem(webDriver, act, "second", "recipient.age < 18", "Kids only");
+        addSegmentationItems(webDriver, act);
         viewAsPublished(webDriver);
-        List<WebElement> elements = webDriver.findElements(By.xpath("//div[@class='segmentation-item']"));
-        assertEquals(2, elements.size());
-        String firstSegmentationContent = elements.get(0).getText();
-        assertEquals(EXPECTED_FIRST_SEGMENTATION_ITEM_CONTENT, firstSegmentationContent);
-        String secondSegmentationContent = elements.get(1).getText();
-        assertEquals(EXPECTED_SECOND_SEGMENTATION_ITEM_CONTENT, secondSegmentationContent);
+        WebElement firstOpeningAccMarkup = webDriver.findElement(By.xpath("//td[.='<% if (recipient.age >= 18) { %>']"));
+        assertNotNull(firstOpeningAccMarkup);
+        assertTrue(firstOpeningAccMarkup.isDisplayed());
+        WebElement firstSegment = webDriver.findElement(By.xpath("//p[.='Adults only']"));
+        assertNotNull(firstSegment);
+        assertTrue(firstSegment.isDisplayed());
+        WebElement firstClosingAccMarkup = webDriver.findElement(By.xpath("//td[.='<% } else { %>']"));
+        assertNotNull(firstClosingAccMarkup);
+        assertTrue(firstClosingAccMarkup.isDisplayed());
+        WebElement secondSegment = webDriver.findElement(By.xpath("//p[.='Kids only']"));
+        assertNotNull(secondSegment);
+        assertTrue(secondSegment.isDisplayed());
+        WebElement secondClosingAccMarkup = webDriver.findElement(By.xpath("//td[.='<% } %>']"));
+        assertNotNull(secondClosingAccMarkup);
+        assertTrue(secondClosingAccMarkup.isDisplayed());
     }
 
-    private void addSegmentationItem(WebDriver webDriver, Actions act, String name, String condition, String text)
-            throws InterruptedException {
+    private void addSegmentationItems(WebDriver webDriver, Actions act) throws InterruptedException {
         openEditDialog(webDriver, act);
-        click(act, webDriver.findElement(By.cssSelector("[data-cmp-hook-childreneditor=\"add\"]")));
-        click(act, webDriver.findElement(By.xpath("//coral-selectlist-item[.='Segmentation Item component']")));
-        List<WebElement> elements = webDriver.findElements(By.xpath("//coral-multifield-item-content/div/input[1]"));
-        WebElement element = elements.get(elements.size() - 1);
-        element.sendKeys(name);
+        click(act, webDriver.findElement(By.cssSelector("[data-cmp-hook-segmenteditor='add']")));
+        click(act, webDriver.findElement(By.xpath("//coral-selectlist-item[.='Rich Text Component']")));
+        click(act, webDriver.findElement(By.xpath("//span[.='Select Condition']")));
+        click(act, webDriver.findElement(By.cssSelector("[value='custom']")));
+        WebElement itemTitle = webDriver.findElements(By.xpath("//input[@data-cmp-hook-segmenteditor='itemTitle']")).stream()
+                .filter(WebElement::isDisplayed).findFirst().orElse(null);
+        assertNotNull(itemTitle);
+        click(act, itemTitle);
+        itemTitle.sendKeys("first");
+        WebElement itemCondition = webDriver.findElements(By.xpath("//input[@data-cmp-hook-segmenteditor='itemCondition']")).stream()
+                .filter(WebElement::isDisplayed).findFirst().orElse(null);
+        assertNotNull(itemCondition);
+        click(act, itemCondition);
+        itemCondition.sendKeys("recipient.age >= 18");
+        click(act, webDriver.findElement(By.cssSelector("[data-cmp-hook-segmenteditor='add']")));
+        click(act, webDriver.findElement(By.xpath("//coral-selectlist-item[.='Rich Text Component']")));
+        click(act, webDriver.findElement(By.xpath("//span[.='Select Condition']")));
+        WebElement defaultElement =
+                webDriver.findElements(By.xpath("//coral-selectlist-item[@value='default']")).stream().filter(WebElement::isDisplayed)
+                        .findFirst().orElse(null);
+        assertNotNull(defaultElement);
+        click(act, defaultElement);
         confirmEditDialog(webDriver, act);
-        refresh(webDriver);
-        openContentTree(webDriver, act);
-        List<WebElement> segmentationItemComponents = webDriver.findElements(By.xpath("//span[@class='editor-ContentTree-itemTitle' and " +
-                ".='Segmentation Item component']"));
-        click(act, segmentationItemComponents.get(segmentationItemComponents.size() - 1));
-        click(act, webDriver.findElement(By.cssSelector("[data-action='CONFIGURE']")));
-        WebElement conditionElement = webDriver.findElement(By.name("./condition"));
-        click(act, conditionElement);
-        conditionElement.sendKeys(condition);
-        confirmEditDialog(webDriver, act);
-        addTextComponent(webDriver, act, text);
+        setValueInTextComponents(webDriver, act);
     }
 
-    private void addTextComponent(WebDriver webDriver, Actions act, String text) throws InterruptedException {
-        List<WebElement> dragComponentElements = webDriver.findElements(By.cssSelector("[data-text=\"Please drag components here\"]"));
-        click(act, dragComponentElements.get(dragComponentElements.size() - 1));
-        click(act, webDriver.findElement(By.cssSelector("[data-action=\"INSERT\"]")));
-        click(act, webDriver.findElement(By.xpath("//coral-selectlist-item[.='Rich Text Component']")));
+    private void setValueInTextComponents(WebDriver webDriver, Actions act) throws InterruptedException {
+        WebElement firstTextComponent =
+                webDriver.findElements(By.xpath("//span[@class='editor-ContentTree-itemTitle' and " + ".='Rich Text Component']")).stream()
+                        .findFirst().orElse(null);
+        assertNotNull(firstTextComponent);
+        setValueInTextComponent(webDriver, act, "Adults only", firstTextComponent);
         refresh(webDriver);
         openContentTree(webDriver, act);
-        List<WebElement> richTextComponents = webDriver.findElements(By.xpath("//span[@class='editor-ContentTree-itemTitle' and " +
-                ".='Rich Text Component']"));
-        click(act, richTextComponents.get(richTextComponents.size() - 1));
+        WebElement secondTextComponent =
+                webDriver.findElements(By.xpath("//span[@class='editor-ContentTree-itemTitle' and " + ".='Rich Text Component']")).stream()
+                        .findFirst().orElse(null);
+        assertNotNull(secondTextComponent);
+        setValueInTextComponent(webDriver, act, "Kids only", secondTextComponent);
+    }
+
+    private void setValueInTextComponent(WebDriver webDriver, Actions act, String text, WebElement richTextComponent)
+            throws InterruptedException {
+        click(act, richTextComponent);
         WebElement configureButton =
                 webDriver.findElement(By.xpath("//button[@is='coral-button' and @title='Configure' and not(@hidden)]"));
         click(act, configureButton);
@@ -128,8 +149,11 @@ public class SegmentationIT extends AuthorBaseUITest {
 
     private void openEditDialog(WebDriver webDriver, Actions act) throws InterruptedException {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
-        click(act, webDriver.findElement(By.id("sidepanel-toggle-button")));
-        click(act, webDriver.findElement(By.cssSelector("[title=\"Content Tree\"]")));
+        WebElement contentTree = webDriver.findElement(By.cssSelector("[title=\"Content Tree\"]"));
+        if (Objects.isNull(contentTree) || !contentTree.isDisplayed()) {
+            click(act, webDriver.findElement(By.id("sidepanel-toggle-button")));
+        }
+        click(act, contentTree);
         click(act, webDriver.findElement(By.xpath("//span[.='segmentation']")));
         click(act, webDriver.findElement(By.cssSelector("[data-action='CONFIGURE']")));
     }
@@ -147,6 +171,7 @@ public class SegmentationIT extends AuthorBaseUITest {
     private void refresh(WebDriver webDriver) throws InterruptedException {
         webDriver.navigate().refresh();
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
+        ;
     }
 
     private void confirmEditDialog(WebDriver webDriver, Actions act) throws InterruptedException {
