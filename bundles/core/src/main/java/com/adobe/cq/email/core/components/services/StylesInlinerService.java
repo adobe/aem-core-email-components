@@ -29,9 +29,9 @@ public interface StylesInlinerService {
      * @param resourceResolver the resource resolver object
      * @param jsonContent      the json string containing HTML
      * @param charset          the request charset
-     * @return jsonContent with inline styles
+     * @return json object that has a "html" property that contains the html with inline styles
      */
-    String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String jsonContent, String charset);
+    String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String jsonContent, String charset);
 
     /**
      * This method accepts the html string as the input, parses it, reads the style rules and adds it to the respective elements in the

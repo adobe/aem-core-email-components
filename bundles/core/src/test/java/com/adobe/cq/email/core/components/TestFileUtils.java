@@ -26,12 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFileUtils {
     public final static String INTERNAL_CSS_HTML_FILE_PATH = "testpage/internal_css.html";
+    public final static String INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH = "testpage/internal_css_with_immediate_children.html";
     public final static String INTERNAL_CSS_JSON_FILE_PATH = "testpage/internal_css.json";
     public final static String EXTERNAL_CSS_FILE_PATH = "testpage/external_css.html";
     public final static String INTERNAL_AND_EXTERNAL_CSS_FILE_PATH = "testpage/internal_and_external_css.html";
     public final static String OUTPUT_FILE_PATH = "testpage/output_without_style.html";
     public final static String STYLE_FILE_PATH = "testpage/style.css";
     public final static String STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/unused_style.css";
+    public final static String STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH = "testpage/unused_style_with_immediate_children.css";
     public final static String TO_BE_SANITIZED_FILE_PATH = "testpage/to_be_sanitized.html";
     public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
     public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";

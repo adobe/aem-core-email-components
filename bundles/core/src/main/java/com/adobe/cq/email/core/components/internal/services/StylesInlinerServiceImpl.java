@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.internal.services;
 import java.io.ByteArrayInputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
     }
 
     @Override
-    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String content, String charset) {
+    public String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String content, String charset) {
         JsonObject jsonObject = parse(content, charset);
         if (Objects.isNull(jsonObject)) {
             return getHtmlWithInlineStyles(resourceResolver, content);
@@ -127,14 +128,16 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                     populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
                 }
             }
+            String stylePlaceholder = "!!!STYLE_PLACEHOLDER_" + new Date().getTime() + "!!!";
             HtmlSanitizer.sanitizeDocument(doc);
             applyStyles(doc, styleTokens);
-            writeStyleTag(doc, styleSb, unInlinableStyleTokens);
+            processStyle(doc, styleSb, stylePlaceholder, unInlinableStyleTokens);
             WrapperDivRemover.removeWrapperDivs(doc, stylesInlinerConfig.wrapperDivClassesToBeRemoved());
             String outerHtml = doc.outerHtml();
             if (StringUtils.isEmpty(outerHtml)) {
                 return outerHtml;
             }
+            outerHtml = outerHtml.replace(stylePlaceholder, styleSb.toString());
             return outerHtml.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "");
         } catch (Throwable e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
@@ -220,7 +223,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         }
     }
 
-    private void writeStyleTag(Document doc, StringBuilder styleSb, List<StyleToken> unusedStyleTokens) {
+    private void processStyle(Document doc, StringBuilder styleSb, String stylePlaceholder, List<StyleToken> unusedStyleTokens) {
         if (Objects.isNull(unusedStyleTokens) || unusedStyleTokens.isEmpty()) {
             return;
         }
@@ -230,7 +233,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         for (StyleToken styleToken : unusedStyleTokens) {
             styleSb.append(StyleTokenFactory.toCss(styleToken)).append("\n\t\t");
         }
-        style.html("\n\t\t" + styleSb);
+        style.text(stylePlaceholder);
     }
 
     void setRequestResponseFactory(RequestResponseFactory requestResponseFactory) {
