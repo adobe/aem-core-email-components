@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2022-06-02T15:52:20.366+02:00"
+        cq:lastModifiedBy="admin"
+        cq:policy="core/email/components/page/v1/page/policy_212634895490169"
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="wcm/core/components/policies/mappings">
+        <root
+            cq:policy="wcm/foundation/components/responsivegrid/policy_email_structure"
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wcm/core/components/policies/mapping">
+            <container
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/core/components/policies/mapping">
+                <core jcr:primaryType="nt:unstructured">
+                    <email jcr:primaryType="nt:unstructured">
+                        <components jcr:primaryType="nt:unstructured">
+                            <segmentation jcr:primaryType="nt:unstructured">
+                                <v1 jcr:primaryType="nt:unstructured">
+                                    <segmentation
+                                        cq:policy="core/email/components/segmentation/v1/segmentation/policy_1647261804902"
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="wcm/core/components/policies/mapping"/>
+                                </v1>
+                            </segmentation>
+                            <segmentation-item jcr:primaryType="nt:unstructured">
+                                <v1 jcr:primaryType="nt:unstructured">
+                                    <segmentation-item
+                                        cq:policy="core/email/components/segmentation-item/v1/segmentation-item/policy_1647261804900"
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="wcm/core/components/policies/mapping"/>
+                                </v1>
+                            </segmentation-item>
+                        </components>
+                    </email>
+                </core>
+                <col-0
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_1654176940328"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping">
+                    <core jcr:primaryType="nt:unstructured">
+                        <email jcr:primaryType="nt:unstructured">
+                            <components jcr:primaryType="nt:unstructured">
+                                <segmentation jcr:primaryType="nt:unstructured">
+                                    <v1 jcr:primaryType="nt:unstructured">
+                                        <segmentation
+                                            cq:policy="core/email/components/segmentation/v1/segmentation/policy_1655225609286"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="wcm/core/components/policies/mapping"/>
+                                    </v1>
+                                </segmentation>
+                            </components>
+                        </email>
+                    </core>
+                </col-0>
+                <col-1
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_1654177172799"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+                <col-2
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_744283699857540"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+            </container>
+        </root>
+    </jcr:content>
+</jcr:root>
