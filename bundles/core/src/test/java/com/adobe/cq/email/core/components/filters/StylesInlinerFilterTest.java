@@ -142,7 +142,7 @@ class StylesInlinerFilterTest {
         when(resource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         when(response.getContentType()).thenReturn("application/json");
         when(request.getResourceResolver()).thenReturn(resourceResolver);
-        when(stylesInlinerService.getHtmlWithInlineStyles(eq(resourceResolver), anyString(), anyString())).thenReturn("RESULT");
+        when(stylesInlinerService.getHtmlWithInlineStylesJson(eq(resourceResolver), anyString(), anyString())).thenReturn("RESULT");
         sut.doFilter(request, response, filterChain);
         verify(printWriter).write(eq("RESULT"));
         verify(request).getRequestPathInfo();

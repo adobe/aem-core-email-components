@@ -94,7 +94,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
     }
 
     @Override
-    public String getHtmlWithInlineStyles(ResourceResolver resourceResolver, String content, String charset) {
+    public String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String content, String charset) {
         JsonObject jsonObject = parse(content, charset);
         if (Objects.isNull(jsonObject)) {
             return getHtmlWithInlineStyles(resourceResolver, content);

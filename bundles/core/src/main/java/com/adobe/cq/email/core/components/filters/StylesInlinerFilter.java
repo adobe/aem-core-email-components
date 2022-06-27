@@ -124,7 +124,7 @@ public class StylesInlinerFilter implements Filter {
             if (resource.isResourceType("core/email/components/page/v1/page")) {
                 String content = wrapper.getResponseAsString();
                 LOG.trace("Original content: {}.", content);
-                String replacedContent = stylesInlinerService.getHtmlWithInlineStyles(slingRequest.getResourceResolver(), content,
+                String replacedContent = stylesInlinerService.getHtmlWithInlineStylesJson(slingRequest.getResourceResolver(), content,
                         wrapper.getCharacterEncoding());
                 LOG.trace("Replaced content. New response: {}.", replacedContent);
                 response.getWriter().write(replacedContent);
