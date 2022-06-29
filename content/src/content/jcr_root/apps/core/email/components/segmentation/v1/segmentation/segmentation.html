@@ -38,7 +38,7 @@
             data-cmp-hook-tabs="tab">${tab.title}
         </li>
     </ol>
-    <div data-sly-test="${wcmmode.edit}" data-sly-repeat.item="${tabs.items}"
+    <div data-sly-test="${wcmmode.edit || wcmmode.preview}" data-sly-repeat.item="${tabs.items}"
          data-sly-call="${itemEditTemplate.item @ item = item}"
          id="${item.id}-tabpanel"
          role="tabpanel"
@@ -47,7 +47,7 @@
          class="${!wcmmode.disabled ? 'cmp-tabs__tabpanel cmp-tabs__tabpanel--active' : ''}"
          data-cmp-hook-tabs="tabpanel"
          data-cmp-data-layer="${item.data.json}"></div>
-    <table data-sly-test="${!wcmmode.edit}">
+    <table data-sly-test="${wcmmode.disabled}">
         <sly data-sly-repeat.item="${tabs.items}"
              data-sly-call="${itemTemplate.item @ item = item}"
              id="${item.id}-tabpanel-noedit"
