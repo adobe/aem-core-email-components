@@ -47,9 +47,11 @@ import org.slf4j.LoggerFactory;
 import com.adobe.cq.email.core.components.configs.StylesInlinerConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.exceptions.StylesInlinerException;
+import com.adobe.cq.email.core.components.pojo.HtmlInlinerConfiguration;
 import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
+import com.adobe.cq.email.core.components.util.HtmlAttributeInliner;
 import com.adobe.cq.email.core.components.util.HtmlSanitizer;
 import com.adobe.cq.email.core.components.util.StyleExtractor;
 import com.adobe.cq.email.core.components.util.StyleMerger;
@@ -130,7 +132,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             }
             String stylePlaceholder = "!!!STYLE_PLACEHOLDER_" + new Date().getTime() + "!!!";
             HtmlSanitizer.sanitizeDocument(doc);
-            applyStyles(doc, styleTokens);
+            applyStyles(doc, styleTokens, stylesInlinerConfig.htmlInlinerConfiguration());
             processStyle(doc, styleSb, stylePlaceholder, unInlinableStyleTokens);
             WrapperDivRemover.removeWrapperDivs(doc, stylesInlinerConfig.wrapperDivClassesToBeRemoved());
             String outerHtml = doc.outerHtml();
@@ -203,7 +205,14 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         return styleToken;
     }
 
-    private void applyStyles(Document document, List<StyleToken> styleTokens) {
+    private void applyStyles(Document document, List<StyleToken> styleTokens, String[] htmlInlinerConfigurations) {
+        List<HtmlInlinerConfiguration> htmlInlinerConfigurationList = new ArrayList<>();
+        for (String htmlInlinerConfiguration : htmlInlinerConfigurations) {
+            HtmlInlinerConfiguration parsed = HtmlInlinerConfiguration.parse(htmlInlinerConfiguration);
+            if (Objects.nonNull(parsed)) {
+                htmlInlinerConfigurationList.add(parsed);
+            }
+        }
         for (StyleToken styleToken : styleTokens) {
             String elementSelector = styleToken.getSelector();
             for (Element elementToApply : document.select(elementSelector)) {
@@ -218,6 +227,9 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 String style = StyleMerger.merge(currentElement, styleToken);
                 if (StringUtils.isNotEmpty(style)) {
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
+                    HtmlAttributeInliner.process(document, styleToken,
+                            htmlInlinerConfigurationList.stream().filter(c -> elementSelector.equals(c.getElementType())).findFirst()
+                                    .orElse(null));
                 }
             }
         }
@@ -255,6 +267,12 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             public String[] wrapperDivClassesToBeRemoved() {
                 return new String[]{"aem-Grid", "aem-GridColumn"};
             }
+
+            @Override
+            public String[] htmlInlinerConfiguration() {
+                return new String[]{HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT};
+            }
+
         };
     }
 }
