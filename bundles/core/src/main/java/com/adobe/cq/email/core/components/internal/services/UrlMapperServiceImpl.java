@@ -42,8 +42,7 @@ import com.day.cq.wcm.api.WCMMode;
            scope = ServiceScope.SINGLETON)
 @ServiceDescription("URL mapper service")
 public class UrlMapperServiceImpl implements UrlMapperService {
-    private static final Logger LOG = LoggerFactory.getLogger(CoreEmailAuthoringUIModeServiceImpl.class.getName());
-
+    private static final Logger LOG = LoggerFactory.getLogger(UrlMapperServiceImpl.class.getName());
     @Reference
     Externalizer externalizer;
 
