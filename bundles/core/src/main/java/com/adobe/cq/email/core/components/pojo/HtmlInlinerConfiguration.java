@@ -26,6 +26,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * POJO that contains the behaviour of the HTML inliner utility class
+ */
 public class HtmlInlinerConfiguration implements Serializable {
     public static final String IMG_WIDTH_DEFAULT =
             "{\"elementType\":\"img\",\"cssPropertyRegEx\":\"width\",\"cssPropertyOutputRegEx\":\"[0-9]+(?=px)|[0-9]+(?=PX)" +
@@ -43,51 +46,114 @@ public class HtmlInlinerConfiguration implements Serializable {
     private String htmlAttributeName;
     private boolean overrideIfAlreadyExisting;
 
+    /**
+     * Getter for the target HTML element type
+     *
+     * @return the target HTML element type
+     */
     public String getElementType() {
         return elementType;
     }
 
+    /**
+     * Setter for the target HTML element type
+     *
+     * @param elementType the target HTML element type
+     */
     public void setElementType(String elementType) {
         this.elementType = elementType;
     }
 
+    /**
+     * Getter for the regular expression to match the specific CSS property
+     *
+     * @return the regular expression to match the specific CSS property
+     */
     public String getCssPropertyRegEx() {
         return cssPropertyRegEx;
     }
 
+    /**
+     * Setter for the regular expression to match the specific CSS property
+     *
+     * @param cssPropertyRegEx the regular expression to match the specific CSS property
+     */
     public void setCssPropertyRegEx(String cssPropertyRegEx) {
         this.cssPropertyRegEx = cssPropertyRegEx;
     }
 
-    public String getHtmlAttributeName() {
-        return htmlAttributeName;
-    }
-
+    /**
+     * Getter for the regular expression to extract the value to be used for htmlAttributeName
+     *
+     * @return the regular expression to extract the value to be used for htmlAttributeName
+     */
     public String getCssPropertyOutputRegEx() {
         return cssPropertyOutputRegEx;
     }
 
+    /**
+     * Setter for the regular expression to extract the value to be used for htmlAttributeName
+     *
+     * @param cssPropertyOutputRegEx the regular expression to extract the value to be used for htmlAttributeName
+     */
     public void setCssPropertyOutputRegEx(String cssPropertyOutputRegEx) {
         this.cssPropertyOutputRegEx = cssPropertyOutputRegEx;
     }
 
+    /**
+     * Getter for the target HTML attribute to be created
+     *
+     * @return the target HTML attribute to be created
+     */
+    public String getHtmlAttributeName() {
+        return htmlAttributeName;
+    }
+
+    /**
+     * Setter for the target HTML attribute to be created
+     *
+     * @param htmlAttributeName the target HTML attribute to be created
+     */
     public void setHtmlAttributeName(String htmlAttributeName) {
         this.htmlAttributeName = htmlAttributeName;
     }
 
+    /**
+     * Getter for overrideIfAlreadyExisting property: returns true if the htmlAttributeName should be overridden if already existing, false
+     * otherwise
+     *
+     * @return true if the htmlAttributeName should be overridden if already existing, false otherwise
+     */
     public boolean isOverrideIfAlreadyExisting() {
         return overrideIfAlreadyExisting;
     }
 
+    /**
+     * Setter for overrideIfAlreadyExisting property: true if the htmlAttributeName should be overridden if already existing, false
+     * otherwise
+     *
+     * @param overrideIfAlreadyExisting true if the htmlAttributeName should be overridden if already existing, false otherwise
+     */
     public void setOverrideIfAlreadyExisting(boolean overrideIfAlreadyExisting) {
         this.overrideIfAlreadyExisting = overrideIfAlreadyExisting;
     }
 
+    /**
+     * Returns true if the current {@link HtmlInlinerConfiguration} is actually valid, false otherwise
+     *
+     * @return true if is valid, false otherwise
+     */
     public boolean isValid() {
         return StringUtils.isNotEmpty(elementType) && StringUtils.isNotEmpty(cssPropertyRegEx) &&
                 StringUtils.isNotEmpty(cssPropertyOutputRegEx) && StringUtils.isNotEmpty(htmlAttributeName);
     }
 
+    /**
+     * Parses a json object to a {@link HtmlInlinerConfiguration}
+     *
+     * @param json the json object
+     * @return the {@link HtmlInlinerConfiguration} if json is in the right format, null otherwise
+     */
     public static HtmlInlinerConfiguration parse(String json) {
         try {
             JsonReader jsonReader = Json.createReader(new StringReader(json));

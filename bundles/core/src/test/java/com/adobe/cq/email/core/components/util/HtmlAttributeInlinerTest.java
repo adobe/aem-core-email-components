@@ -31,7 +31,6 @@ import static com.adobe.cq.email.core.components.TestFileUtils.PAGE_WITH_IMAGE_W
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HtmlAttributeInlinerTest {
@@ -47,9 +46,9 @@ class HtmlAttributeInlinerTest {
     @Test
     void nullStyleToken() throws URISyntaxException, IOException {
         Document document = Jsoup.parse(getFileContent(PAGE_WITH_IMAGE_WIDTH_STYLE_FILE_PATH));
-        HtmlAttributeInliner.process(document, null, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, null, getDefault());
         assertTrue(img.attr("width").isEmpty());
     }
 
@@ -57,9 +56,9 @@ class HtmlAttributeInlinerTest {
     void emptyStyleToken() throws URISyntaxException, IOException {
         Document document = Jsoup.parse(getFileContent(PAGE_WITH_IMAGE_WIDTH_STYLE_FILE_PATH));
         StyleToken styleToken = StyleTokenFactory.create("img");
-        HtmlAttributeInliner.process(document, styleToken, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, getDefault());
         assertTrue(img.attr("width").isEmpty());
     }
 
@@ -69,9 +68,9 @@ class HtmlAttributeInlinerTest {
         StyleToken styleToken = StyleTokenFactory.create("img");
         StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
         StyleTokenFactory.addProperties(styleToken, "width: 500px");
-        HtmlAttributeInliner.process(document, styleToken, null);
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, null);
         assertTrue(img.attr("width").isEmpty());
     }
 
@@ -84,9 +83,9 @@ class HtmlAttributeInlinerTest {
         HtmlInlinerConfiguration htmlInlinerConfiguration = getDefault();
         assertNotNull(htmlInlinerConfiguration);
         htmlInlinerConfiguration.setHtmlAttributeName(null);
-        HtmlAttributeInliner.process(document, styleToken, htmlInlinerConfiguration);
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, htmlInlinerConfiguration);
         assertTrue(img.attr("width").isEmpty());
     }
 
@@ -99,9 +98,9 @@ class HtmlAttributeInlinerTest {
         HtmlInlinerConfiguration htmlInlinerConfiguration = getDefault();
         assertNotNull(htmlInlinerConfiguration);
         htmlInlinerConfiguration.setCssPropertyOutputRegEx("?/|\\");
-        HtmlAttributeInliner.process(document, styleToken, htmlInlinerConfiguration);
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, htmlInlinerConfiguration);
         assertTrue(img.attr("width").isEmpty());
     }
 
@@ -111,9 +110,9 @@ class HtmlAttributeInlinerTest {
         StyleToken styleToken = StyleTokenFactory.create("img");
         StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
         StyleTokenFactory.addProperties(styleToken, "width: 500px");
-        HtmlAttributeInliner.process(document, styleToken, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, getDefault());
         assertEquals("500", img.attr("width"));
     }
 
@@ -123,9 +122,9 @@ class HtmlAttributeInlinerTest {
         StyleToken styleToken = StyleTokenFactory.create("img");
         StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
         StyleTokenFactory.addProperties(styleToken, "width: 500PX");
-        HtmlAttributeInliner.process(document, styleToken, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, getDefault());
         assertEquals("500", img.attr("width"));
     }
 
@@ -135,9 +134,9 @@ class HtmlAttributeInlinerTest {
         StyleToken styleToken = StyleTokenFactory.create("img");
         StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
         StyleTokenFactory.addProperties(styleToken, "width: 75%");
-        HtmlAttributeInliner.process(document, styleToken, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, getDefault());
         assertEquals("75%", img.attr("width"));
     }
 
@@ -147,9 +146,9 @@ class HtmlAttributeInlinerTest {
         StyleToken styleToken = StyleTokenFactory.create("img");
         StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
         StyleTokenFactory.addProperties(styleToken, "width: 500px");
-        HtmlAttributeInliner.process(document, styleToken, getDefault());
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, getDefault());
         assertEquals("500", img.attr("width"));
     }
 
@@ -162,9 +161,9 @@ class HtmlAttributeInlinerTest {
         HtmlInlinerConfiguration htmlInlinerConfiguration = getDefault();
         assertNotNull(htmlInlinerConfiguration);
         htmlInlinerConfiguration.setOverrideIfAlreadyExisting(false);
-        HtmlAttributeInliner.process(document, styleToken, htmlInlinerConfiguration);
         Element img = document.selectFirst("img");
         assertNotNull(img);
+        HtmlAttributeInliner.process(img, styleToken, htmlInlinerConfiguration);
         assertEquals("128", img.attr("width"));
     }
 

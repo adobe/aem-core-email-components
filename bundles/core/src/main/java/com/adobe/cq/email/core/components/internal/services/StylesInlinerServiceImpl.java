@@ -224,10 +224,11 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 StyleToken currentElement = StyleTokenFactory.create(elementSelector);
                 currentElement.setSpecificity(STYLE_SPECIFICITY);
                 StyleTokenFactory.addProperties(currentElement, currentElementStyle);
-                String style = StyleMerger.merge(currentElement, styleToken);
+                StyleToken mergedStyleToken = StyleMerger.merge(currentElement, styleToken);
+                String style = StyleTokenFactory.getInlinablePropertiesIgnoringNesting(mergedStyleToken);
                 if (StringUtils.isNotEmpty(style)) {
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
-                    HtmlAttributeInliner.process(document, styleToken,
+                    HtmlAttributeInliner.process(elementToApply, mergedStyleToken,
                             htmlInlinerConfigurationList.stream().filter(c -> elementSelector.equals(c.getElementType())).findFirst()
                                     .orElse(null));
                 }
