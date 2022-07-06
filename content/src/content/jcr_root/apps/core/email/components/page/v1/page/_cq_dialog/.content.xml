@@ -75,6 +75,22 @@
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/include"
                                         path="/mnt/overlay/wcm/foundation/components/basicpage/v1/basicpage/tabs/advanced/items/column/items/templates"/>
+                                    <configuration
+                                        jcr:primaryType="nt:unstructured"
+                                        jcr:title="Configuration"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <cqConf
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="cq/cloudconfig/components/admin/configpathbrowser"
+                                                emptyText="Select Configuration Path"
+                                                fieldLabel="Cloud Configuration">
+                                                <granite:data
+                                                    jcr:primaryType="nt:unstructured"
+                                                    cq-msm-lockable="cq:conf"/>
+                                            </cqConf>
+                                        </items>
+                                    </configuration>
                                 </items>
                             </column>
                         </items>
