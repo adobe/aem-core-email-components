@@ -52,12 +52,25 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 ### Current release:
 
+#### V0.11 (scheduled 07/6)
+* Disable Layout Mode in Experience fragment page by @noorradi in https://github.com/adobe/aem-core-email-components/pull/163
+* Provide capability to set custom segment by @bpauli in https://github.com/adobe/aem-core-email-components/pull/164
+* Fix for conditions rendered in preview mode  by @noorradi in https://github.com/adobe/aem-core-email-components/pull/167
+* Teaser Component - Personalization Link does not work for CTA links by @bpauli in https://github.com/adobe/aem-core-email-components/pull/169
+* Add missing IT for AuthorUIMode check by @bpauli in https://github.com/adobe/aem-core-email-components/pull/172
+* Style Inliner - Incorrect encoding when adding <style> attribute by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/171
+* Segmentation component HTML template change by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/170
+* Segmentation item HTML template fix by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/174
+* Remove no longer needed service #141 by @noorradi in https://github.com/adobe/aem-core-email-components/pull/176
+* HTML inliner by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/178
+* Remove Client Lib category from page.html and added cq-conf to page p… by @noorradi in https://github.com/adobe/aem-core-email-components/pull/179
+
+### Past releases:
+
 #### V0.10 (scheduled 06/15)
 * Container component - column policy https://github.com/adobe/aem-core-email-components/issues/125
 * Teaser Component - Personalization Plugin for Links tab - https://github.com/adobe/aem-core-email-components/issues/135
 * Update Segmentation Component - https://github.com/adobe/aem-core-email-components/issues/89
-
-### Past releases:
 
 #### V0.9 (scheduled 06/01)
 * Title Component - incorrect link when using campaign RTE Plugin https://github.com/adobe/aem-core-email-components/issues/129
