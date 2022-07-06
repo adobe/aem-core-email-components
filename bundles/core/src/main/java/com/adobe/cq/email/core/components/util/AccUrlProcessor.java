@@ -20,8 +20,16 @@ import java.net.URLEncoder;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Utility class for ACC-syntax checking in URLs
+ */
 public class AccUrlProcessor {
 
+    /**
+     * Processes an URL and, if it contains the ACC opening or closing markup that has been URL-encoded, it decodes it
+     *
+     * @param url the URL
+     */
     public static String process(String url) {
         if (StringUtils.isEmpty(url)) {
             return url;
