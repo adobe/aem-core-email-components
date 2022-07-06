@@ -15,16 +15,20 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class HrefProcessor {
+
+    private static final String BODY_ELEMENT = "body";
+    private static final String LINK_ELEMENT = "a";
+    private static final String HREF_ATTRIBUTE = "href";
+    private static final String X_CQ_LINKCHECKER_ATTRIBUTE = "x-cq-linkchecker";
+    private static final String SKIP_VALUE = "skip";
     private static final String ENCODED_OPENING_ACC_MARKUP = "%3C%";
     private static final String ENCODED_CLOSING_ACC_MARKUP = "%&gt;";
     private static final String ENCODED_SPACE = "%20";
@@ -36,68 +40,29 @@ public class HrefProcessor {
         if (StringUtils.isEmpty(text)) {
             return text;
         }
-        List<Href> encodedHrefs = getEncodedHrefs(text);
-        if (encodedHrefs.isEmpty()) {
+        Document doc = Jsoup.parse(text);
+        Element body = doc.selectFirst(BODY_ELEMENT);
+        if (Objects.isNull(body)) {
             return text;
         }
-        for (Href encodedHref : encodedHrefs) {
-            text = text.replaceAll(encodedHref.getOriginal(), encodedHref.getDecoded());
-        }
-        return text;
+        updateHrefs(doc);
+        return body.html();
     }
 
-    static List<Href> getEncodedHrefs(String text) {
-        if (StringUtils.isEmpty(text)) {
-            return Collections.emptyList();
+    private static void updateHrefs(Element body) {
+        if (Objects.isNull(body)) {
+            return;
         }
-        Pattern pattern = Pattern.compile("href=\"(.*?)\"");
-        Matcher matcher = pattern.matcher(text);
-        List<Href> hrefs = new ArrayList<>();
-        while (matcher.find()) {
-            String original = matcher.group();
+        for (Element element : body.select(LINK_ELEMENT)) {
+            String original = element.attr(HREF_ATTRIBUTE);
             String decoded = original.replaceAll(ENCODED_OPENING_ACC_MARKUP, OPENING_ACC_MARKUP)
                     .replaceAll(ENCODED_CLOSING_ACC_MARKUP, CLOSING_ACC_MARKUP).replaceAll(ENCODED_SPACE, SPACE);
             if (original.equals(decoded)) {
                 continue;
             }
-            hrefs.add(new Href(original, decoded));
+            element.attr(HREF_ATTRIBUTE, decoded);
+            element.attr(X_CQ_LINKCHECKER_ATTRIBUTE, SKIP_VALUE);
         }
-        return hrefs;
     }
 
-    public static class Href {
-        private final String original;
-        private final String decoded;
-
-        public Href(String original, String decoded) {
-            this.original = original;
-            this.decoded = decoded;
-        }
-
-        public String getOriginal() {
-            return original;
-        }
-
-        public String getDecoded() {
-            return decoded;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Href href = (Href) o;
-            return Objects.equals(original, href.original) && Objects.equals(decoded, href.decoded);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(original, decoded);
-        }
-
-    }
 }
