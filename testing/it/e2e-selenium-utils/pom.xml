@@ -23,7 +23,7 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.11.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../../parent/pom.xml</relativePath>
     </parent>
 
@@ -33,7 +33,7 @@
     <!-- ====================================================================== -->
     <groupId>com.adobe.cq</groupId>
     <artifactId>core.email.components.it.e2e-selenium-utils</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>Adobe Experience Manager Core Email Components E2E Testing Utils</name>
     <packaging>jar</packaging>
 

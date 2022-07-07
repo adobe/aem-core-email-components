@@ -25,7 +25,7 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.11.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
@@ -33,7 +33,7 @@
     <!-- P R O J E C T  D E S C R I P T I O N                                   -->
     <!-- ====================================================================== -->
     <artifactId>core.email.components.config</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>content-package</packaging>
 
     <name>Adobe Experience Manager Core Email Components Configurations</name>

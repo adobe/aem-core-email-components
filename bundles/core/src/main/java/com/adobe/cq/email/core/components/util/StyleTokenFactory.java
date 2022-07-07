@@ -21,12 +21,21 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
+/**
+ * {@link StyleToken} factory class
+ */
 public class StyleTokenFactory {
 
     private StyleTokenFactory() {
         // to avoid instantiation
     }
 
+    /**
+     * Creates a {@link StyleToken} from the CSS selector
+     *
+     * @param selector the CSS selector
+     * @return the {@link StyleToken}
+     */
     public static StyleToken create(String selector) {
         StyleToken styleToken = new StyleToken();
         styleToken.setSelector(selector);
@@ -43,6 +52,12 @@ public class StyleTokenFactory {
         return styleToken;
     }
 
+    /**
+     * Extracts all the CSS properties from the {@link StyleToken}
+     *
+     * @param styleToken the {@link StyleToken}
+     * @return the CSS properties
+     */
     public static String getAllProperties(StyleToken styleToken) {
         if (Objects.isNull(styleToken)) {
             return null;
@@ -57,6 +72,12 @@ public class StyleTokenFactory {
         return stringBuilder.toString().trim();
     }
 
+    /**
+     * Extracts the inlinable CSS properties from the {@link StyleToken}
+     *
+     * @param styleToken the {@link StyleToken}
+     * @return the inlinable CSS properties
+     */
     public static String getInlinableProperties(StyleToken styleToken) {
         String allProperties = getAllProperties(styleToken);
         if (StringUtils.isEmpty(allProperties)) {
@@ -65,6 +86,29 @@ public class StyleTokenFactory {
         return allProperties.replaceAll("\"", "'");
     }
 
+    /**
+     * Extracts the inlinable CSS properties from the {@link StyleToken} if there is no nesting: otherwise, it will return null
+     *
+     * @param styleToken the {@link StyleToken}
+     * @return the inlinable CSS properties
+     */
+    public static String getInlinablePropertiesIgnoringNesting(StyleToken styleToken) {
+        String inlinableProperties = getInlinableProperties(styleToken);
+        if (StringUtils.isEmpty(inlinableProperties)) {
+            return null;
+        }
+        if (inlinableProperties.contains("{") || inlinableProperties.contains("}")) {
+            return null;
+        }
+        return inlinableProperties;
+    }
+
+    /**
+     * Add one or more (semi-colon separated) CSS properties to the {@link StyleToken}
+     *
+     * @param styleToken the {@link StyleToken}
+     * @param properties the CSS properties
+     */
     public static void addProperties(StyleToken styleToken, String properties) {
         if (Objects.isNull(styleToken)) {
             return;
@@ -83,6 +127,12 @@ public class StyleTokenFactory {
         }
     }
 
+    /**
+     * Converts the {@link StyleToken} to a CSS valid representation
+     *
+     * @param styleToken the {@link StyleToken}
+     * @return a valid CSS representation
+     */
     public static String toCss(StyleToken styleToken) {
         if (Objects.isNull(styleToken)) {
             return null;

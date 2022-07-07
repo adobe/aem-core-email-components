@@ -75,6 +75,22 @@
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/include"
                                         path="/mnt/overlay/wcm/foundation/components/basicpage/v1/basicpage/tabs/advanced/items/column/items/templates"/>
+                                    <configuration
+                                        jcr:primaryType="nt:unstructured"
+                                        jcr:title="Configuration"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <cqConf
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="cq/cloudconfig/components/admin/configpathbrowser"
+                                                emptyText="Select Configuration Path"
+                                                fieldLabel="Cloud Configuration">
+                                                <granite:data
+                                                    jcr:primaryType="nt:unstructured"
+                                                    cq-msm-lockable="cq:conf"/>
+                                            </cqConf>
+                                        </items>
+                                    </configuration>
                                 </items>
                             </column>
                         </items>
@@ -175,52 +191,6 @@
                                         fieldLabel="Reference Url"
                                         sling:resourceType="granite/ui/components/foundation/form/textfield"
                                         name="./referenceUrl"/>
-                                    <styleMergerMode
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                        composite="{Boolean}false"
-                                        fieldDescription="The way CSS styles are merged to HTML component."
-                                        fieldLabel="Style merger mode"
-                                        value="PROCESS_SPECIFICITY"
-                                        name="./styleMergerMode">
-                                        <items jcr:primaryType="nt:unstructured">
-                                            <noAmp
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Evaluate specificity"
-                                                value="PROCESS_SPECIFICITY"/>
-                                            <pairedAmp
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Ignore specificity"
-                                                value="IGNORE_SPECIFICITY"/>
-                                            <ampOnly
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Always append"
-                                                value="ALWAYS_APPEND"/>
-                                        </items>
-                                    </styleMergerMode>
-                                    <htmlSanitizingMode
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                        composite="{Boolean}false"
-                                        fieldDescription="The way HTML code is sanitized."
-                                        fieldLabel="HTML sanitizing mode"
-                                        value="FULL"
-                                        name="./htmlSanitizingMode">
-                                        <items jcr:primaryType="nt:unstructured">
-                                            <noAmp
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Full sanitizing"
-                                                value="FULL"/>
-                                            <pairedAmp
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Remove script tags only"
-                                                value="REMOVE_SCRIPT_TAGS_ONLY"/>
-                                            <ampOnly
-                                                jcr:primaryType="nt:unstructured"
-                                                text="Do not remove anything"
-                                                value="NONE"/>
-                                        </items>
-                                    </htmlSanitizingMode>
                                 </items>
                             </columns>
                         </items>

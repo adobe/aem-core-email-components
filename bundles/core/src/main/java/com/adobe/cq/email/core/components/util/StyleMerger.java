@@ -41,9 +41,9 @@ public class StyleMerger {
      *
      * @param elementStyleToken the current HTML element style
      * @param styleToken        another {@link StyleToken}
-     * @return the merged CSS style of the HTML element
+     * @return the merged {@link StyleToken} of the HTML element
      */
-    public static String merge(StyleToken elementStyleToken, StyleToken styleToken) {
+    public static StyleToken merge(StyleToken elementStyleToken, StyleToken styleToken) {
         if (Objects.isNull(styleToken)) {
             styleToken = StyleTokenFactory.create(EMPTY_TOKEN_SELECTOR);
         }
@@ -57,7 +57,7 @@ public class StyleMerger {
         for (Map.Entry<String, StyleProperty> entry : stylePropertiesByName.entrySet()) {
             StyleTokenFactory.addProperties(merged, entry.getValue().getFullProperty());
         }
-        return updateElementStyle(StyleTokenFactory.getInlinableProperties(merged));
+        return merged;
     }
 
     private static void processStyleTokens(Map<String, StyleProperty> stylePropertiesByName, StyleToken elementStyleToken,
@@ -71,13 +71,6 @@ public class StyleMerger {
             String property = styleToken.getProperties().get(i);
             StyleProperty styleProperty = parse(property, styleToken.getSpecificity());
             String propertyName = styleProperty.getName();
-            /*
-             not sure if we need this at all.
-            if (StyleMergerMode.ALWAYS_APPEND.equals(styleMergerMode)) {
-                styleProperties.put(propertyName + order + i, styleProperty);
-                continue;
-            }
-             */
             StyleProperty alreadyFoundStyleProperty = styleProperties.get(propertyName);
             if (Objects.isNull(alreadyFoundStyleProperty)) {
                 styleProperties.put(propertyName, styleProperty);
@@ -112,16 +105,6 @@ public class StyleMerger {
         styleProperty.setValue(keyAndValue[1].trim());
         styleProperty.setImportant(styleProperty.getValue().contains(StylesInlinerConstants.IMPORTANT_RULE));
         return styleProperty;
-    }
-
-    private static String updateElementStyle(String style) {
-        if (StringUtils.isEmpty(style)) {
-            return null;
-        }
-        if (style.contains("{") || style.contains("}")) {
-            return null;
-        }
-        return style;
     }
 
 }

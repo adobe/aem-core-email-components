@@ -21,6 +21,7 @@ import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class StyleMergerTest {
 
@@ -29,27 +30,80 @@ class StyleMergerTest {
         StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
         StyleToken styleToken = create("font-size: 20px; color: #004488; Margin: 0px;", false);
         assertEquals("font-size: 20px; color: #004488; Margin: 0px; background-color: #ccc; font-family: " +
-                "'Timmana', 'Gill Sans', sans-serif;", StyleMerger.merge(elementStyle, styleToken));
+                        "'Timmana', 'Gill Sans', sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
     }
 
     @Test
     void nullStyleToken() {
         StyleToken elementStyle = create("font-size: 20px; color: #004488; Margin: 0px;", true);
-        testAllModes(elementStyle, null, "font-size: 20px; color: #004488; Margin: 0px;", "font-size: 20px; color: #004488; Margin: 0px;",
-                "font-size: 20px; color: #004488; Margin: 0px;");
+        assertEquals("font-size: 20px; color: #004488; Margin: 0px;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, null)));
     }
 
     @Test
     void nullElementStyleToken() {
         StyleToken styleToken = create("font-size: 20px; color: #004488; Margin: 0px;", false);
-        testAllModes(null, styleToken, "font-size: 20px; color: #004488; Margin: 0px;", "font-size: 20px; color: #004488; Margin: 0px;",
-                "font-size: 20px; color: #004488; Margin: 0px;");
+        assertEquals("font-size: 20px; color: #004488; Margin: 0px;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(null, styleToken)));
     }
 
     @Test
     void invalidStyleToken() {
         StyleToken styleToken = create("table.layout { width: 100% !important; }", false);
-        testAllModes(null, styleToken, null, null, null);
+        assertEquals(null,
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(null, styleToken)));
+    }
+
+    @Test
+    void allDifferentProperties() {
+        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
+        StyleToken styleToken = create("font-size: 20px; color: #004488; Margin: 0px;", false);
+        assertEquals("font-size: 20px; color: #004488; Margin: 0px; background-color: #ccc; font-family: " +
+                        "'Timmana', 'Gill Sans', sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
+    }
+
+    @Test
+    void conflictingNotImportantProperties() {
+        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;", true);
+        StyleToken styleToken = create("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;", false);
+        assertEquals("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans', " +
+                        "sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
+    }
+
+    @Test
+    void conflictingImportantProperties() {
+        StyleToken elementStyle = create("background-color: #ccc !important; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
+                true);
+        StyleToken styleToken = create("background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;", false);
+        assertEquals(
+                "background-color: #ccc !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
+                        " sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
+    }
+
+    @Test
+    void conflictingImportantPropertyWithHigherSpecificity() {
+        StyleToken elementStyle = create("background-color: #ccc !important; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
+                true);
+        StyleToken styleToken = create("background-color: #aaa; font-size: 20px; color: #004488; Margin: 0px;", false);
+        assertEquals(
+                "background-color: #ccc !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
+                        " sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
+    }
+
+    @Test
+    void conflictingImportantPropertyWithLowerSpecificity() {
+        StyleToken elementStyle = create("background-color: #ccc; font-family: 'Timmana', \"Gill Sans\", sans-serif;",
+                true);
+        StyleToken styleToken = create("background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px;", false);
+        assertEquals(
+                "background-color: #aaa !important; font-size: 20px; color: #004488; Margin: 0px; font-family: 'Timmana', 'Gill Sans'," +
+                        " sans-serif;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
     }
 
     @Test
@@ -57,14 +111,15 @@ class StyleMergerTest {
         StyleToken elementStyle = create("", true);
         StyleToken styleToken = create("td.layout-column { display: block !important; width: 100% !important; }",
                 false);
-        testAllModes(elementStyle, styleToken, null, null, null);
+        assertNull(StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
     }
 
-    private void testAllModes(StyleToken elementStyle, StyleToken styleToken, String processSpecificityExpectedResult,
-                              String ignoreSpecificityExpectedResult, String alwaysAppend) {
-        assertEquals(processSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken));
-        assertEquals(ignoreSpecificityExpectedResult, StyleMerger.merge(elementStyle, styleToken));
-        assertEquals(alwaysAppend, StyleMerger.merge(elementStyle, styleToken));
+    @Test
+    void samePropertyMultipleTimes() {
+        StyleToken elementStyle = create("", true);
+        StyleToken styleToken = create("display: block; display: inline-block", false);
+        assertEquals("display: block;",
+                StyleTokenFactory.getInlinablePropertiesIgnoringNesting(StyleMerger.merge(elementStyle, styleToken)));
     }
 
     private StyleToken create(String properties, boolean styleAttribute) {

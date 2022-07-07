@@ -23,12 +23,12 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.11.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.testing.aem-mock-plugin</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>Adobe Experience Manager Core Email Components AEM Mocks Plugin</name>
 
     <description>Helps setting up mock environment for unit testing custom code based on Core Components.</description>
@@ -66,13 +66,13 @@
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.email.components.core</artifactId>
-            <version>0.11.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.email.components.junit.core</artifactId>
-            <version>0.11.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 

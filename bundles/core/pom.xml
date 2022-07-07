@@ -25,12 +25,12 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>0.11.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.core</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Adobe Experience Manager Core Email Components Core Bundle</name>
