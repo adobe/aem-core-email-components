@@ -34,10 +34,10 @@ import org.slf4j.LoggerFactory;
  * Utility class for HTML pages sanitization
  */
 public class HtmlSanitizer {
+    private static final Logger LOG = LoggerFactory.getLogger(HtmlSanitizer.class.getName());
+    private static final String SCRIPT_TAG = "script";
     private static final String XSS_TAGS_RESOURCE = "sanitizer/xss_tags.txt";
     private static final String XSS_EVENTS_RESOURCE = "sanitizer/xss_events.txt";
-
-    private static final Logger LOG = LoggerFactory.getLogger(HtmlSanitizer.class.getName());
 
     /**
      * Sanitizes the HTML page
@@ -49,7 +49,8 @@ public class HtmlSanitizer {
         if (StringUtils.isEmpty(html)) {
             return html;
         }
-        Document document = sanitizeDocument(Jsoup.parse(html));
+        Document document = Jsoup.parse(html);
+        sanitizeDocument(document);
         if (Objects.isNull(document)) {
             return null;
         }
@@ -59,16 +60,14 @@ public class HtmlSanitizer {
     /**
      * Sanitizes the HTML {@link Document}
      *
-     * @param parsed the HTML {@link Document}
-     * @return the sanitized HTML {@link Document}
+     * @param document the HTML {@link Document}
      */
-    public static Document sanitizeDocument(Document parsed) {
-        if (Objects.isNull(parsed)) {
-            return null;
+    public static void sanitizeDocument(Document document) {
+        if (Objects.isNull(document)) {
+            return;
         }
-        parsed.select("script").remove();
-        removeXssEvents(parsed);
-        return parsed;
+        document.select(SCRIPT_TAG).remove();
+        removeXssEvents(document);
     }
 
     private static void removeXssEvents(Document document) {
@@ -102,6 +101,5 @@ public class HtmlSanitizer {
             return Collections.emptyList();
         }
     }
-
 
 }

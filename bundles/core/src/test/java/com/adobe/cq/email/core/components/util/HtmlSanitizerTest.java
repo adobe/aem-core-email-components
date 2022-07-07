@@ -24,33 +24,31 @@ import static com.adobe.cq.email.core.components.TestFileUtils.SANITIZED_FILE_PA
 import static com.adobe.cq.email.core.components.TestFileUtils.TO_BE_SANITIZED_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HtmlSanitizerTest {
 
     @Test
     void nullHtml() {
-        assertNull(HtmlSanitizer.sanitizeDocument(null));
+        HtmlSanitizer.sanitizeDocument(null);
     }
 
     @Test
     void emptyHtml() {
-        assertTrue(HtmlSanitizer.sanitizeHtml("").isEmpty());
+        String html = HtmlSanitizer.sanitizeHtml("");
+        assertNotNull(html);
+        assertTrue(html.isEmpty());
     }
 
     @Test
     void removeAll() throws URISyntaxException, IOException {
-        compare(getFileContent(SANITIZED_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH))
-        );
+        compare(getFileContent(SANITIZED_FILE_PATH), HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH)));
     }
 
     @Test
     void nullSanitizingMode() throws URISyntaxException, IOException {
-        compare(getFileContent(SANITIZED_FILE_PATH),
-                HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH))
-        );
+        compare(getFileContent(SANITIZED_FILE_PATH), HtmlSanitizer.sanitizeHtml(getFileContent(TO_BE_SANITIZED_FILE_PATH)));
     }
 
 }

@@ -41,11 +41,14 @@ public class HrefProcessor {
             return text;
         }
         Document doc = Jsoup.parse(text);
+        if (Objects.isNull(doc)) {
+            return text;
+        }
         Element body = doc.selectFirst(BODY_ELEMENT);
         if (Objects.isNull(body)) {
             return text;
         }
-        updateHrefs(doc);
+        updateHrefs(body);
         return body.html();
     }
 
