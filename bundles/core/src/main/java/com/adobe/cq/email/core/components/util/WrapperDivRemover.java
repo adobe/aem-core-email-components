@@ -59,13 +59,8 @@ public class WrapperDivRemover {
         }
         for (Element child : children) {
             if (child.tagName().equalsIgnoreCase("div") && containsClassToBeRemoved(child, wrapperDivClassesToBeRemoved)) {
-                Elements removedDivChildren = child.children();
-                int index = child.siblingIndex();
-                if (Objects.nonNull(child.parentNode())) {
-                    child.remove();
-                    parent.insertChildren(index, removedDivChildren);
-                    removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
-                }
+                child.unwrap();
+                removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
             } else {
                 removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
             }

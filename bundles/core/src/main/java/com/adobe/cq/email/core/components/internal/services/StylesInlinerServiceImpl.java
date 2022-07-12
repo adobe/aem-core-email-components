@@ -227,10 +227,10 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 StyleToken mergedStyleToken = StyleMerger.merge(currentElement, styleToken);
                 String style = StyleTokenFactory.getInlinablePropertiesIgnoringNesting(mergedStyleToken);
                 if (StringUtils.isNotEmpty(style)) {
+                    String tagName = elementToApply.tagName();
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
                     HtmlAttributeInliner.process(elementToApply, mergedStyleToken,
-                            htmlInlinerConfigurationList.stream().filter(c -> elementSelector.equals(c.getElementType())).findFirst()
-                                    .orElse(null));
+                            htmlInlinerConfigurationList.stream().filter(c -> tagName.equals(c.getElementType())).findFirst().orElse(null));
                 }
             }
         }
