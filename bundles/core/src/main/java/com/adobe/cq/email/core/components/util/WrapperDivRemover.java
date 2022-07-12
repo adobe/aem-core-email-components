@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.util;
 
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -57,20 +58,26 @@ public class WrapperDivRemover {
             return;
         }
         for (Element child : children) {
-            for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
-                if (child.tagName().equalsIgnoreCase("div") && child.is("." + wrapperDivClassToBeRemoved)) {
-                    Elements removedDivChildren = child.children();
-                    int index = child.siblingIndex();
-                    if (Objects.nonNull(child.parentNode())) {
-                        child.remove();
-                        parent.insertChildren(index, removedDivChildren);
-                        removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
-                    }
-                } else {
-                    removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
-                }
+            if (child.tagName().equalsIgnoreCase("div") && containsClassToBeRemoved(child, wrapperDivClassesToBeRemoved)) {
+                child.unwrap();
+                removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
+            } else {
+                removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
             }
         }
+    }
+
+    private static boolean containsClassToBeRemoved(Element element, String[] wrapperDivClassesToBeRemoved) {
+        String elementClassAttribute = element.attr("class");
+        if (StringUtils.isEmpty(elementClassAttribute)) {
+            return false;
+        }
+        for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
+            if (elementClassAttribute.contains(wrapperDivClassToBeRemoved)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -50,7 +50,7 @@ class WrapperDivRemoverTest {
     void removedDivs() throws URISyntaxException, IOException {
         String html = TestFileUtils.getFileContent(TestFileUtils.WRAPPER_DIV_REMOVAL_INPUT_FILE_PATH);
         Document document = Jsoup.parse(html);
-        WrapperDivRemover.removeWrapperDivs(document, new String[]{"aem-Grid", "aem-GridColumn", "cmp-title__text"});
+        WrapperDivRemover.removeWrapperDivs(document, new String[]{"responsivegrid", "aem-Grid", "aem-GridColumn", "cmp-title__text"});
         compareRemovingNewLinesAndTabs(TestFileUtils.getFileContent(TestFileUtils.WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_REMOVED_FILE_PATH),
                 document.outerHtml());
     }
