@@ -23,8 +23,7 @@
     <tbody>
     <tr>
         <td class="no-background">
-            <p class="cmp-text__paragraph"
-               data-sly-unwrap="${textModel.isRichText}">${text @ context = textModel.isRichText ? 'html' : 'text'}</p>
+            <p class="cmp-text__paragraph">${text @ context = 'unsafe'}</p>
         </td>
     </tr>
     </tbody>
