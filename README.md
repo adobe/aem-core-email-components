@@ -54,7 +54,7 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 #### V0.12 (scheduled 12/7)
 * Text component - ACC markup not supported on Links by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/181
-* Wrapper DIV remover performance fix by @edoardo-goracci in Wrapper DIV remover performance fix
+* Wrapper DIV remover performance fix by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/182
 
 #### V0.11 (scheduled 07/6)
 * Disable Layout Mode in Experience fragment page by @noorradi in https://github.com/adobe/aem-core-email-components/pull/163
