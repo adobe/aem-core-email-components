@@ -42,42 +42,47 @@ public class HtmlAttributeInliner {
      * Processes the {@link Element} and the related {@link StyleToken} and, if there are CSS selectors that are matched by the current
      * {@link HtmlInlinerConfiguration}, it will update the {@link Element} with the specific attribute
      *
-     * @param element                  the {@link Element}
-     * @param styleToken               the related {@link StyleToken}
-     * @param htmlInlinerConfiguration the {@link HtmlInlinerConfiguration}
+     * @param element                   the {@link Element}
+     * @param styleToken                the related {@link StyleToken}
+     * @param htmlInlinerConfigurations the {@link HtmlInlinerConfiguration}s for the current {@link Element}
      */
-    public static void process(Element element, StyleToken styleToken, HtmlInlinerConfiguration htmlInlinerConfiguration) {
+    public static void process(Element element, StyleToken styleToken, List<HtmlInlinerConfiguration> htmlInlinerConfigurations) {
         if (Objects.isNull(element) || Objects.isNull(styleToken) || styleToken.getProperties().isEmpty() ||
-                Objects.isNull(htmlInlinerConfiguration) || !htmlInlinerConfiguration.isValid()) {
+                Objects.isNull(htmlInlinerConfigurations) || htmlInlinerConfigurations.isEmpty()) {
             return;
         }
-        try {
-            Pattern pattern = Pattern.compile(htmlInlinerConfiguration.getCssPropertyOutputRegEx());
-            List<Pair<String, String>> cssProperties =
-                    styleToken.getProperties().stream().map(HtmlAttributeInliner::convert).filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-            Map.Entry<String, String> cssProperty =
-                    cssProperties.stream().filter(p -> Objects.nonNull(p) && Objects.nonNull(p.getKey()) &&
-                                    p.getKey().matches(htmlInlinerConfiguration.getCssPropertyRegEx()))
-                            .findFirst().orElse(null);
-            if (Objects.isNull(cssProperty)) {
-                return;
+        for (HtmlInlinerConfiguration htmlInlinerConfiguration : htmlInlinerConfigurations) {
+            try {
+                if (!htmlInlinerConfiguration.isValid()) {
+                    continue;
+                }
+                Pattern pattern = Pattern.compile(htmlInlinerConfiguration.getCssPropertyOutputRegEx());
+                List<Pair<String, String>> cssProperties =
+                        styleToken.getProperties().stream().map(HtmlAttributeInliner::convert).filter(Objects::nonNull)
+                                .collect(Collectors.toList());
+                Map.Entry<String, String> cssProperty =
+                        cssProperties.stream().filter(p -> Objects.nonNull(p) && Objects.nonNull(p.getKey()) &&
+                                        p.getKey().matches(htmlInlinerConfiguration.getCssPropertyRegEx()))
+                                .findFirst().orElse(null);
+                if (Objects.isNull(cssProperty)) {
+                    return;
+                }
+                Matcher matcher = pattern.matcher(cssProperty.getValue());
+                String value = null;
+                if (matcher.find()) {
+                    value = matcher.group();
+                }
+                if (Objects.isNull(value)) {
+                    return;
+                }
+                String attr = element.attr(htmlInlinerConfiguration.getHtmlAttributeName());
+                if (StringUtils.isEmpty(attr) || htmlInlinerConfiguration.isOverrideIfAlreadyExisting()) {
+                    element.attr(htmlInlinerConfiguration.getHtmlAttributeName(), value);
+                }
+            } catch (Throwable e) {
+                LOG.warn("Error processing HTML element " + element + " for StyleToken " + styleToken + " and HtmlInlinerConfiguration " +
+                        htmlInlinerConfiguration + ": " + e.getMessage(), e);
             }
-            Matcher matcher = pattern.matcher(cssProperty.getValue());
-            String value = null;
-            if (matcher.find()) {
-                value = matcher.group();
-            }
-            if (Objects.isNull(value)) {
-                return;
-            }
-            String attr = element.attr(htmlInlinerConfiguration.getHtmlAttributeName());
-            if (StringUtils.isEmpty(attr) || htmlInlinerConfiguration.isOverrideIfAlreadyExisting()) {
-                element.attr(htmlInlinerConfiguration.getHtmlAttributeName(), value);
-            }
-        } catch (Throwable e) {
-            LOG.warn("Error processing HTML element " + element + " for StyleToken " + styleToken + " and HtmlInlinerConfiguration " +
-                    htmlInlinerConfiguration + ": " + e.getMessage(), e);
         }
     }
 
