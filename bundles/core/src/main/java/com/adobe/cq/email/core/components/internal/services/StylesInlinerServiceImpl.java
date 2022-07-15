@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -230,7 +231,8 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                     String tagName = elementToApply.tagName();
                     elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
                     HtmlAttributeInliner.process(elementToApply, mergedStyleToken,
-                            htmlInlinerConfigurationList.stream().filter(c -> tagName.equals(c.getElementType())).findFirst().orElse(null));
+                            htmlInlinerConfigurationList.stream().filter(c -> tagName.equals(c.getElementType()))
+                                    .collect(Collectors.toList()));
                 }
             }
         }
