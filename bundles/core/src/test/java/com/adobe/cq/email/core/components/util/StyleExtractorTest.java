@@ -41,6 +41,7 @@ import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_AND_EXTE
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.OUTPUT_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -118,6 +119,28 @@ class StyleExtractorTest {
         assertEquals(2, styles.size());
         compare(cssStyle, styles.get(0));
         compare(cssStyle, styles.get(1));
+        compare(getFileContent(OUTPUT_FILE_PATH), document.outerHtml());
+    }
+
+    @Test
+    void extractFromExternalCssFileOnly_WithoutLastCssSelectorSemicolons() throws URISyntaxException, IOException, ServletException {
+        String cssStyle = getFileContent(STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH);
+        when(requestResponseFactory.createRequest(eq("GET"), anyString(), anyMap())).thenReturn(request);
+        AtomicReference<OutputStream> osReference = new AtomicReference<>();
+        doAnswer(i -> {
+            osReference.set(i.getArgument(0));
+            return response;
+        }).when(requestResponseFactory).createResponse(any());
+        doAnswer(i -> {
+            osReference.get().write(cssStyle.getBytes(StandardCharsets.UTF_8));
+            return null;
+        }).when(requestProcessor).processRequest(eq(request), eq(response), any());
+        Document document = Jsoup.parse(getFileContent(EXTERNAL_CSS_FILE_PATH));
+        List<String> styles = StyleExtractor.extract(document,
+                requestResponseFactory, requestProcessor, resourceResolver
+        );
+        assertEquals(1, styles.size());
+        compare(cssStyle, styles.get(0));
         compare(getFileContent(OUTPUT_FILE_PATH), document.outerHtml());
     }
 

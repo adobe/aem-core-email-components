@@ -35,6 +35,8 @@ public class TestFileUtils {
             "testpage/page_with_image_width_style_and_width_on_image_element.html";
     public final static String OUTPUT_FILE_PATH = "testpage/output_without_style.html";
     public final static String STYLE_FILE_PATH = "testpage/style.css";
+    public final static String STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH = "testpage/style_without_last_semicolon.css";
+
     public final static String STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/unused_style.css";
     public final static String STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH =
             "testpage/unused_style_with_immediate_children.css";

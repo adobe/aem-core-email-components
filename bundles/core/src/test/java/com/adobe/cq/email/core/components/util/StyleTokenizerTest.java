@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,6 +44,16 @@ class StyleTokenizerTest {
     @Test
     void success() throws URISyntaxException, IOException {
         List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_FILE_PATH));
+        StringBuilder builder = new StringBuilder();
+        for (StyleToken styleToken : result) {
+            builder.append(StyleTokenFactory.toCss(styleToken)).append("\n");
+        }
+        compare(getFileContent(STYLE_FILE_PATH), builder.toString());
+    }
+
+    @Test
+    void success_StyleWithoutLastSemicolon() throws URISyntaxException, IOException {
+        List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH));
         StringBuilder builder = new StringBuilder();
         for (StyleToken styleToken : result) {
             builder.append(StyleTokenFactory.toCss(styleToken)).append("\n");
