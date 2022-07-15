@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.pojo.StyleToken;
@@ -40,7 +41,7 @@ public class StyleTokenizer {
      * @param css the CSS stylesheet
      * @return a {@link List} of {@link StyleToken}
      */
-    public static List<StyleToken> tokenize(String css) {
+    public static @NotNull List<StyleToken> tokenize(String css) {
         List<StyleToken> result = new ArrayList<>();
         if (StringUtils.isEmpty(css)) {
             return result;
@@ -61,9 +62,13 @@ public class StyleTokenizer {
                 current.setMediaQuery(current.getSelector().contains("@"));
                 current.setPseudoSelector(!current.isMediaQuery() && next.contains(":"));
             } else {
-                if (next.contains(";")) {
+                if (next.contains(";") || next.contains(":")) {
                     if (nestingLevel > 0) {
-                        nestedPropertiesBuilder.append(next).append(" } ");
+                        nestedPropertiesBuilder.append(next);
+                        if (!nestedPropertiesBuilder.toString().endsWith(";")) {
+                            nestedPropertiesBuilder.append(";");
+                        }
+                        nestedPropertiesBuilder.append(" } ");
                         nestingLevel--;
                     } else {
                         StyleTokenFactory.addProperties(current, next);
