@@ -231,6 +231,12 @@ class TeaserModelTest {
     }
 
     @Test
+    void getPreTitleNullDelegate() {
+        TeaserModel sut = new TeaserModel();
+        assertNull(sut.getPretitle());
+    }
+
+    @Test
     void getPreTitle() {
         TeaserModel sut = new TeaserModel();
         sut.delegate = delegate;
