@@ -231,6 +231,15 @@ class TeaserModelTest {
     }
 
     @Test
+    void getPreTitle() {
+        TeaserModel sut = new TeaserModel();
+        sut.delegate = delegate;
+        String pretitle = "PRETITLE";
+        when(delegate.getPretitle()).thenReturn(pretitle);
+        assertEquals(pretitle, sut.getPretitle());
+    }
+
+    @Test
     void isTitleLinkHiddenNullDelegate() {
         TeaserModel sut = new TeaserModel();
         assertFalse(sut.isTitleLinkHidden());

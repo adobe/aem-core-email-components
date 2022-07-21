@@ -16,11 +16,9 @@
 <sly data-sly-template.description="${@ teaser}">
     <table>
         <tbody>
-        <tr>
-            <td class="cmp-teaser__description no-background" data-sly-test.description="${teaser.description}">${description @
-                context="html"}
-            </td>
-        </tr>
+            <tr>
+                <td class="cmp-teaser__description no-background">${teaser.description @ context="html"}</td>
+            </tr>
         </tbody>
     </table>
 </sly>

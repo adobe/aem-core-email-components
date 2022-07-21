@@ -14,13 +14,9 @@
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <sly data-sly-template.image="${@ teaser}">
-    <table>
-        <tbody>
-        <tr>
-            <td class="cmp-teaser__image no-background" data-sly-test="${teaser.imageResource}"
-                data-sly-resource="${teaser.imageResource @ wcmmode=disabled}">
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <tr>
+        <td data-sly-resource="${teaser.imageResource @ wcmmode=disabled}"
+            class="cmp-teaser__image no-background">
+        </td>
+    </tr>
 </sly>

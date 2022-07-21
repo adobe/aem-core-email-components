@@ -25,19 +25,19 @@
        class="cmp-teaser${!wcmmode.disabled && teaser.imageResource ? ' cq-dd-image' : ''}"
        data-cmp-data-layer="${teaser.data.json}">
     <tbody class="cmp-teaser__content">
-    <tr>
-        <td class="no-background" data-sly-call="${pretitleTemplate.pretitle @ teaser=teaser}"></td>
-    </tr>
-    <tr>
-        <td class="no-background" data-sly-call="${titleTemplate.title @ teaser=teaser}"></td>
-    </tr>
-    <tr>
-        <td class="no-background" data-sly-call="${descriptionTemplate.description @ teaser=teaser}"></td>
-    </tr>
-    <tr>
-        <td class="no-background" data-sly-call="${actionsTemplate.actions @ teaser=teaser}"></td>
-    </tr>
+        <tr data-sly-test="${teaser.pretitle}">
+            <td class="no-background" data-sly-call="${pretitleTemplate.pretitle @ teaser=teaser}"></td>
+        </tr>
+        <tr data-sly-test="${teaser.title}">
+            <td class="no-background" data-sly-call="${titleTemplate.title @ teaser=teaser}"></td>
+        </tr>
+        <tr data-sly-test="${teaser.description}">
+            <td class="no-background" data-sly-call="${descriptionTemplate.description @ teaser=teaser}"></td>
+        </tr>
+        <tr data-sly-test="${teaser.actionsEnabled && teaser.actions.size > 0}">
+            <td class="no-background" data-sly-call="${actionsTemplate.actions @ teaser=teaser}"></td>
+        </tr>
+        <sly data-sly-test="${teaser.imageResource}" data-sly-call="${imageTemplate.image @ teaser=teaser}"></sly>
     </tbody>
-    <sly data-sly-call="${imageTemplate.image @ teaser=teaser}"></sly>
 </table>
 <sly data-sly-call="${templates.placeholder @ isEmpty=!hasContent, classAppend='cmp-teaser'}"></sly>
