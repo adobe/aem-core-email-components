@@ -13,9 +13,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<table data-sly-template.actions="${@ teaser}">
-    <tbody class="cmp-teaser__action-container" data-sly-test="${teaser.actionsEnabled}" data-sly-list="${teaser.actions}"
-       data-sly-use.actionTemplate="action.html">
-        <sly data-sly-call="${actionTemplate.action @ action=item}"></sly>
-    </tbody>
-</table>
+<sly data-sly-template.actions="${@ teaser}">
+    <table class="cmp-teaser__action-container" data-sly-use.actionTemplate="action.html">
+        <tbody data-sly-list="${teaser.actions}">
+            <sly data-sly-call="${actionTemplate.action @ action=item}"></sly>
+        </tbody>
+    </table>
+</sly>

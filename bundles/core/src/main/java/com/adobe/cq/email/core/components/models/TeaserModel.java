@@ -148,6 +148,14 @@ public class TeaserModel implements Teaser {
     }
 
     @Override
+    public String getPretitle() {
+        if (Objects.isNull(delegate)) {
+            return null;
+        }
+        return delegate.getPretitle();
+    }
+
+    @Override
     public boolean isTitleLinkHidden() {
         if (Objects.isNull(delegate)) {
             return false;
@@ -170,5 +178,4 @@ public class TeaserModel implements Teaser {
         }
         return delegate.getTitleType();
     }
-
 }
