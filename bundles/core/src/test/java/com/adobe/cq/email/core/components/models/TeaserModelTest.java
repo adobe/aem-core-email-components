@@ -275,6 +275,25 @@ class TeaserModelTest {
     }
 
     @Test
+    void getDescriptionEmptyText() {
+        TeaserModel sut = new TeaserModel();
+        sut.delegate = delegate;
+        String description = "";
+        when(delegate.getDescription()).thenReturn(description);
+        assertEquals(description, sut.getDescription());
+    }
+
+    @Test
+    void getDescriptionWithLink() {
+        TeaserModel sut = new TeaserModel();
+        sut.delegate = delegate;
+        String description = "<p>Some <a href=\"%3C%= targetData.link%20%&gt;\">link</a></p>";
+        String expected = "<p>Some <a href=\"<%= targetData.link %>\" x-cq-linkchecker=\"skip\">link</a></p>";
+        when(delegate.getDescription()).thenReturn(description);
+        assertEquals(expected, sut.getDescription());
+    }
+
+    @Test
     void getTitleTypeNullDelegate() {
         TeaserModel sut = new TeaserModel();
         assertNull(sut.getTitleType());

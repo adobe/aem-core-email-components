@@ -184,6 +184,7 @@
                                                     <description
                                                         jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="cq/gui/components/authoring/dialog/richtext"
+                                                        disableXSSFiltering="{Boolean}true"
                                                         fieldDescription="A description to display as the subheadline for the teaser."
                                                         fieldLabel="Description"
                                                         name="./jcr:description"
