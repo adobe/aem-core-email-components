@@ -52,6 +52,14 @@ The Email Core Components require the use of [editable templates](https://docs.a
 
 ### Current release:
 
+#### V0.13 (scheduled 22/7)
+* Fixed support for links in rich texts for both Text and Teaser description by @buuhuu in https://github.com/adobe/aem-core-email-components/pull/191
+* Fixed teaser markup that broke the editing experience by @buuhuu in https://github.com/adobe/aem-core-email-components/pull/190
+* Improved support for bundler generated css where the last css rule may not end with a semicolon by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/188
+* Style iniliner now allows to uses multiple configurations for a single element type by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/187
+
+### Past releases:
+
 #### V0.12 (scheduled 12/7)
 * Text component - ACC markup not supported on Links by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/181
 * Wrapper DIV remover performance fix by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/182
@@ -68,8 +76,6 @@ The Email Core Components require the use of [editable templates](https://docs.a
 * Remove no longer needed service #141 by @noorradi in https://github.com/adobe/aem-core-email-components/pull/176
 * HTML inliner by @edoardo-goracci in https://github.com/adobe/aem-core-email-components/pull/178
 * Remove Client Lib category from page.html and added cq-conf to page p… by @noorradi in https://github.com/adobe/aem-core-email-components/pull/179
-
-### Past releases:
 
 #### V0.10 (scheduled 06/15)
 * Container component - column policy https://github.com/adobe/aem-core-email-components/issues/125
