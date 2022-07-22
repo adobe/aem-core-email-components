@@ -65,6 +65,14 @@ class TextModelTest {
     }
 
     @Test
+    void getTextWithLinks_Delegate() {
+        String text = "<p>Some <a href=\"%3C%= targetData.link%20%&gt;\">link</a></p>";
+        String expected = "<p>Some <a href=\"<%= targetData.link %>\" x-cq-linkchecker=\"skip\">link</a></p>";
+        when(delegate.getText()).thenReturn(text);
+        assertEquals(expected, sut.getText());
+    }
+
+    @Test
     void getText_NullDelegate() {
         this.sut.delegate = null;
         assertNull(sut.getText());

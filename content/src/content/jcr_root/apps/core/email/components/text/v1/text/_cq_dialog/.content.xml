@@ -51,6 +51,7 @@
                                             <text
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="cq/gui/components/authoring/dialog/richtext"
+                                                disableXSSFiltering="{Boolean}true"
                                                 name="./text"
                                                 useFixedInlineToolbar="{Boolean}true">
                                                 <rtePlugins jcr:primaryType="nt:unstructured">

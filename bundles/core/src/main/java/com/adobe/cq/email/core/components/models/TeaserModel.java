@@ -22,6 +22,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.email.core.components.services.AccLinkService;
 import com.adobe.cq.email.core.components.util.AccUrlProcessor;
+import com.adobe.cq.email.core.components.util.HrefProcessor;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.ListItem;
@@ -168,7 +170,11 @@ public class TeaserModel implements Teaser {
         if (Objects.isNull(delegate)) {
             return null;
         }
-        return delegate.getDescription();
+        String description = delegate.getDescription();
+        if (StringUtils.isEmpty(description)) {
+            return description;
+        }
+        return HrefProcessor.process(description);
     }
 
     @Override

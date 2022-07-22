@@ -6,7 +6,9 @@
         active="{Boolean}true"
         configPath="inplaceEditingConfig"
         editorType="text">
-        <inplaceEditingConfig jcr:primaryType="nt:unstructured">
+        <inplaceEditingConfig
+            jcr:primaryType="nt:unstructured"
+            disableXSSFiltering="{Boolean}true">
             <rtePlugins jcr:primaryType="nt:unstructured">
                 <personalizationplugin
                     jcr:primaryType="nt:unstructured"
