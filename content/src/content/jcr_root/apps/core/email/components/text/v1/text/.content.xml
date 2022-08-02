@@ -3,6 +3,6 @@
     xmlns:cq="http://www.day.com/jcr/cq/1.0"
     xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="cq:Component"
-    jcr:title="Rich Text Component"
+    jcr:title="Text"
     sling:resourceSuperType="core/wcm/components/text/v2/text"
     componentGroup="core-email"/>
