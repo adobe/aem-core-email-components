@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.util;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.email.core.components.pojo.StyleToken;
 
@@ -83,11 +84,17 @@ public class StyleTokenFactory {
         }
     }
 
-    public static String toCss(StyleToken styleToken) {
-        if (Objects.isNull(styleToken)) {
-            return null;
+
+    public static @Nullable String toCss(StyleToken styleToken) {
+        String css = null;
+        if (Objects.nonNull(styleToken)) {
+            if (styleToken.isMediaQuery()) {
+                css = styleToken.getSelector() + " { " + getAllProperties(styleToken) + " }\n";
+            } else {
+                css = styleToken.getSelector() + " {\n" + getAllProperties(styleToken) + "\n}\n";
+            }
         }
-        return styleToken.getSelector() + " {\n" + getAllProperties(styleToken) + "\n}\n";
+        return css;
     }
 
     private static void addSplittedSelector(StyleToken styleToken, String splittedSelector) {
