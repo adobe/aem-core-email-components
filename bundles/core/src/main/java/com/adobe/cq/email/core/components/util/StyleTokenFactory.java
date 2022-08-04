@@ -138,11 +138,7 @@ public class StyleTokenFactory {
     public static String toCss(StyleToken styleToken) {
         String css = null;
         if (Objects.nonNull(styleToken)) {
-            if (styleToken.isMediaQuery()) {
-                css = styleToken.getSelector() + " { " + getAllProperties(styleToken) + " }\n";
-            } else {
-                css = styleToken.getSelector() + " {\n" + getAllProperties(styleToken) + "\n}\n";
-            }
+            css = styleToken.getSelector() + " { " + getAllProperties(styleToken) + " }\n";
         }
         return css;
     }
