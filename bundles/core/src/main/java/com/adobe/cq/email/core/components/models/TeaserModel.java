@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -48,10 +49,10 @@ import com.adobe.cq.wcm.core.components.models.Teaser;
  * Teaser component model class
  */
 
-@Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
-       adapters = {Teaser.class, ComponentExporter.class},
-       resourceType = "core/email/components/teaser/v1/teaser",
-       defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+@Model(adaptables = { Resource.class, SlingHttpServletRequest.class },
+    adapters = { Teaser.class, ComponentExporter.class },
+    resourceType = "core/email/components/teaser/v1/teaser",
+    defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class TeaserModel implements Teaser {
 
     @Self
@@ -103,9 +104,12 @@ public class TeaserModel implements Teaser {
         for (ListItem action : actions) {
             Link actionLink = action.getLink();
             if (actionLink != null) {
-                newActions.add(
-                        TeaserListItem.create(action, Optional.ofNullable(accLinkService.create(resourceResolver, slingHttpServletRequest,
-                                AccUrlProcessor.process(actionLink.getURL()))).map(Link::getURL).orElse(null)));
+                newActions.add(TeaserListItem.create(
+                    action,
+                    Optional.ofNullable(
+                            accLinkService.create(resourceResolver, slingHttpServletRequest, AccUrlProcessor.process(actionLink.getURL())))
+                        .map(Link::getURL)
+                        .orElse(null)));
             } else {
                 newActions.add(TeaserListItem.create(action, null));
             }
@@ -122,7 +126,7 @@ public class TeaserModel implements Teaser {
     @Deprecated
     public String getLinkURL() {
         return java.util.Optional
-                .ofNullable(accLink).map(Link::getURL).orElse(java.util.Optional.ofNullable(delegate).map(Teaser::getLinkURL).orElse(null));
+            .ofNullable(accLink).map(Link::getURL).orElse(java.util.Optional.ofNullable(delegate).map(Teaser::getLinkURL).orElse(null));
     }
 
     @Override

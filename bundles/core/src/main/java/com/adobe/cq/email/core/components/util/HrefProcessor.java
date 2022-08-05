@@ -29,12 +29,6 @@ public class HrefProcessor {
     private static final String HREF_ATTRIBUTE = "href";
     private static final String X_CQ_LINKCHECKER_ATTRIBUTE = "x-cq-linkchecker";
     private static final String SKIP_VALUE = "skip";
-    private static final String ENCODED_OPENING_ACC_MARKUP = "%3C%";
-    private static final String ENCODED_CLOSING_ACC_MARKUP = "%&gt;";
-    private static final String ENCODED_SPACE = "%20";
-    private static final String OPENING_ACC_MARKUP = "<%";
-    private static final String CLOSING_ACC_MARKUP = "%>";
-    private static final String SPACE = " ";
 
     public static String process(String text) {
         if (StringUtils.isEmpty(text)) {
@@ -58,8 +52,7 @@ public class HrefProcessor {
         }
         for (Element element : body.select(LINK_ELEMENT)) {
             String original = element.attr(HREF_ATTRIBUTE);
-            String decoded = original.replaceAll(ENCODED_OPENING_ACC_MARKUP, OPENING_ACC_MARKUP)
-                    .replaceAll(ENCODED_CLOSING_ACC_MARKUP, CLOSING_ACC_MARKUP).replaceAll(ENCODED_SPACE, SPACE);
+            String decoded = AccUrlProcessor.process(original);
             if (original.equals(decoded)) {
                 continue;
             }
