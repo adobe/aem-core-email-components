@@ -322,7 +322,7 @@
                                 <configuration>
                                     <filters>
                                         <filter>
-                                            <root>/libs/core/wcm/components</root>
+                                            <root>/libs/core/email/components</root>
                                         </filter>
                                     </filters>
                                     <classifier>cloud</classifier>
