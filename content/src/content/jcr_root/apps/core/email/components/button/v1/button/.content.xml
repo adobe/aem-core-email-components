@@ -5,4 +5,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Button"
     sling:resourceSuperType="core/wcm/components/button/v2/button"
-    componentGroup="core-email"/>
+    componentGroup=".core-email"/>

@@ -6,4 +6,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Content Fragment"
     sling:resourceSuperType="core/wcm/components/contentfragment/v1/contentfragment"
-    componentGroup="core-email"/>
+    componentGroup=".core-email"/>

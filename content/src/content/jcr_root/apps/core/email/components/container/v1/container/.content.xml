@@ -5,4 +5,4 @@
     jcr:title="Table Layout"
     sling:resourceSuperType="core/wcm/components/container/v1/container"
     cq:isContainer="{Boolean}true"
-    componentGroup="core-email"/>
+    componentGroup=".core-email"/>
