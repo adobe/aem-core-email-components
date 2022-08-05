@@ -26,27 +26,12 @@ The hostname and port of the instance can be changed with the following user def
 
 ### AEM as a Cloud Service SDK
 
-When compiling and deploying to AEM as a Cloud Service SDK, you can use the `cloud` profile (in conjunction with 
-previously documented profiles) to generate `cloud`-ready artifacts (with components located in `/libs` instead 
+When compiling and deploying to AEM as a Cloud Service SDK, you can use the `cloud` profile (in conjunction with
+previously documented profiles) to generate `cloud`-ready artifacts (with components located in `/libs` instead
 of `/apps`). To allow recompilation of the HTL scripts, you should disable `aem-precompiled-scripts` bundle.
 
-Due to [FELIX-6365](https://issues.apache.org/jira/browse/FELIX-6365), please only use `autoInstallPackage` and 
+Due to [FELIX-6365](https://issues.apache.org/jira/browse/FELIX-6365), please only use `autoInstallPackage` and
 `autoInstallPackagePublish` when working with the AEM as a Cloud Service SDK!
-
-## NPM modules
-
-Modules that export Javscript and CSS are usually also configured as NPM modules.
-
-For these, the following scripts are used:
-* `npm run lint` - Runs both JS and CSS linters in parallel.
-* `npm run eslint` - Runs JS linter only.
-* `npm run eslint:fix` - Runs JS linter only and fixes auto-fixable found issues.
-* `npm run stylelint` - Runs CSS linter only.
-* `npm run stylelint:fix` - Runs CSS linter only and fixes auto-fixable found issues.
-* `npm run sync-pom-version` - Syncs the package.json version with the pom.xml version.
-
-For the main content package there's an extra script:
-* `npm run build` - Assembles the clientlibs for embedding the [Adobe Client Data Layer](https://github.com/adobe/adobe-client-data-layer).
 
 ## Branch conventions
 
