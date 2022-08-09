@@ -65,7 +65,7 @@ public class HtmlAttributeInliner {
                                         p.getKey().matches(htmlInlinerConfiguration.getCssPropertyRegEx()))
                                 .findFirst().orElse(null);
                 if (Objects.isNull(cssProperty)) {
-                    return;
+                    continue;
                 }
                 Matcher matcher = pattern.matcher(cssProperty.getValue());
                 String value = null;
@@ -73,7 +73,7 @@ public class HtmlAttributeInliner {
                     value = matcher.group();
                 }
                 if (Objects.isNull(value)) {
-                    return;
+                    continue;
                 }
                 String attr = element.attr(htmlInlinerConfiguration.getHtmlAttributeName());
                 if (StringUtils.isEmpty(attr) || htmlInlinerConfiguration.isOverrideIfAlreadyExisting()) {
