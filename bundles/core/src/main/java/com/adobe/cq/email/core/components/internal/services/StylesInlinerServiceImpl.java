@@ -140,8 +140,8 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             if (StringUtils.isEmpty(outerHtml)) {
                 return outerHtml;
             }
-            outerHtml = outerHtml.replace(stylePlaceholder, styleSb.toString());
-            return outerHtml.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "");
+            outerHtml = outerHtml.replace(stylePlaceholder, styleSb.toString().trim());
+            return outerHtml;
         } catch (Throwable e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
         }
@@ -246,7 +246,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         style.attr("type", "text/css");
         doc.select(HEAD_TAG).get(0).appendChild(style);
         for (StyleToken styleToken : unusedStyleTokens) {
-            styleSb.append(StyleTokenFactory.toCss(styleToken)).append("\n\t\t");
+            styleSb.append(StyleTokenFactory.toCss(styleToken));
         }
         style.text(stylePlaceholder);
     }

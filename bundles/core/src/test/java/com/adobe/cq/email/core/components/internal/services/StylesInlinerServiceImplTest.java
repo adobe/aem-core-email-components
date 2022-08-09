@@ -33,7 +33,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,8 +47,8 @@ import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.compareRemovingNewLinesAndTabs;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class StylesInlinerServiceImplTest {
@@ -76,7 +75,7 @@ class StylesInlinerServiceImplTest {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
+        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
                 document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
@@ -101,8 +100,7 @@ class StylesInlinerServiceImplTest {
         JsonReader reader = Json.createReader(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
         String html = reader.readObject().getString("html");
         Document document = Jsoup.parse(html);
-        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
-                document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH), document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
         checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"), Optional.empty());
@@ -123,8 +121,7 @@ class StylesInlinerServiceImplTest {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        compareRemovingNewLinesAndTabs(getFileContent(STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH),
-                document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH), document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList(""), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
         checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"), Optional.empty());
@@ -155,7 +152,7 @@ class StylesInlinerServiceImplTest {
             String style = element.attr(StylesInlinerConstants.STYLE_ATTRIBUTE);
             List<String> currentStyles =
                     Arrays.stream(style.split(";")).map(String::trim).sorted().collect(Collectors.toList());
-            Assertions.assertEquals(expectedStyles, currentStyles);
+            assertEquals(expectedStyles, currentStyles);
         }
     }
 
