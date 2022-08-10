@@ -118,6 +118,7 @@ public class EmailLinkTransformerFactoryTest {
         }
 
         verify(urlMapperService, externalizationCalled ? times(1) : never()).getMappedUrl(any(), any(), any());
+        verify(contentHandler, times(1)).startElement(any(),any(), any(), any());
     }
 
     @Test
@@ -135,6 +136,10 @@ public class EmailLinkTransformerFactoryTest {
     @Test
     public void testLinkRewriteEmptyHref() throws SAXException {
         testLinkRewrite("", "", false);
+    }
+
+    @Test
+    public void testLinkRewriteNoHref() throws SAXException {
         testLinkRewrite(null, null, false);
     }
 }

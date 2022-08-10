@@ -36,6 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 
 /**
@@ -121,7 +122,7 @@ public class StylesInlinerFilter implements Filter {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
             Resource resource = slingRequest.getResource();
-            if (resource.isResourceType("core/email/components/page/v1/page")) {
+            if (resource.isResourceType(EmailPageImpl.RESOURCE_TYPE)) {
                 String content = wrapper.getResponseAsString();
                 LOG.trace("Original content: {}.", content);
                 String replacedContent = stylesInlinerService.getHtmlWithInlineStylesJson(slingRequest.getResourceResolver(), content,

@@ -120,6 +120,7 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (!enabled) {
                 super.startElement(uri, localName, qName, attributes);
+                return;
             }
 
             AttributesImpl mutableAttributes = attributes instanceof AttributesImpl ? (AttributesImpl) attributes : null;

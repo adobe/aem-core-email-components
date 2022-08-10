@@ -51,7 +51,7 @@ import com.day.cq.wcm.webservicesupport.Configuration;
 @Model(
     adaptables = SlingHttpServletRequest.class,
     adapters = {EmailPage.class},
-    resourceType = "core/email/components/page/v1/page"
+    resourceType = EmailPageImpl.RESOURCE_TYPE
 )
 public class EmailPageImpl implements EmailPage {
 
