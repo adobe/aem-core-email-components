@@ -15,11 +15,12 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor;
 
-import com.adobe.cq.wcm.core.components.commons.editor.dialog.childreneditor.Item;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
+
+import com.adobe.cq.wcm.core.components.commons.editor.dialog.childreneditor.Item;
 
 @ProviderType
 public class SegmentItem extends Item {

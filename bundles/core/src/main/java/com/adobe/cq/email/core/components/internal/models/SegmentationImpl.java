@@ -48,7 +48,6 @@ import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.ListItem;
 import com.adobe.cq.wcm.core.components.models.Tabs;
-import com.adobe.cq.wcm.core.components.models.datalayer.ComponentData;
 import com.adobe.cq.wcm.core.components.util.AbstractComponentImpl;
 import com.adobe.cq.wcm.core.components.util.ComponentUtils;
 import com.day.cq.wcm.api.components.ComponentManager;

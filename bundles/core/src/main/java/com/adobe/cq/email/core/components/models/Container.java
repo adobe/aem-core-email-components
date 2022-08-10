@@ -17,7 +17,6 @@ package com.adobe.cq.email.core.components.models;
 
 import java.util.List;
 
-
 import org.apache.sling.api.resource.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ConsumerType;
