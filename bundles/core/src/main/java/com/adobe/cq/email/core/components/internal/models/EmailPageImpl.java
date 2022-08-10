@@ -1,5 +1,5 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ~ Copyright 2021 Adobe
+ ~ Copyright 2022 Adobe
  ~
  ~ Licensed under the Apache License, Version 2.0 (the "License");
  ~ you may not use this file except in compliance with the License.
@@ -48,8 +48,15 @@ import com.day.cq.wcm.webservicesupport.Configuration;
 /**
  * {@link EmailPage} implementation
  */
-@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = "core/email/components/page/v1/page")
+@Model(
+    adaptables = SlingHttpServletRequest.class,
+    adapters = {EmailPage.class},
+    resourceType = "core/email/components/page/v1/page"
+)
 public class EmailPageImpl implements EmailPage {
+
+    public static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
+
     @ValueMapValue
     @Optional
     @Default(values = "")

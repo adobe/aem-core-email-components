@@ -15,7 +15,6 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor;
 
-import com.adobe.cq.email.core.components.models.SegmentationItem;
 import com.day.cq.wcm.api.policies.ContentPolicyMapping;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit5.AemContext;

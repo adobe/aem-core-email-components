@@ -23,8 +23,7 @@
         <tr>
             <td class="no-background">
                 <h1 class="cmp-title__text" data-sly-element="${title.type}">
-                    <a x-cq-linkchecker="skip"
-                       data-sly-unwrap="${!title.link.valid}"
+                    <a data-sly-unwrap="${!title.link.valid}"
                        class="cmp-title__link"
                        href="${title.link.URL @ context = 'html'}">${text @ context ='html'}</a>
                 </h1>

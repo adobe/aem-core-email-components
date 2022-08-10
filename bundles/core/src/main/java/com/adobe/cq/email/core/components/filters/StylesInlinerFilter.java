@@ -55,7 +55,6 @@ import com.adobe.cq.email.core.components.services.StylesInlinerService;
 )
 public class StylesInlinerFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerFilter.class);
-    static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
 
     private static final List<String> CONTENT_TYPES = new ArrayList<>();
 

@@ -30,27 +30,23 @@ import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.internal.request.EmptyHttpServletRequest;
 import com.adobe.cq.email.core.components.internal.request.ResolverRequestWrapper;
-import com.adobe.cq.email.core.components.services.UrlMapperService;
 import com.day.cq.commons.Externalizer;
 import com.day.cq.wcm.api.WCMMode;
 
 /**
- * {@link UrlMapperService} implementation
+ * @deprecated will be replaced with the LinkManager once publicly available
  */
-@Component(service = UrlMapperService.class,
-           immediate = true,
-           scope = ServiceScope.SINGLETON)
-@ServiceDescription("URL mapper service")
-public class UrlMapperServiceImpl implements UrlMapperService {
+@Deprecated
+@Component(service = UrlMapperServiceImpl.class)
+public class UrlMapperServiceImpl {
     private static final Logger LOG = LoggerFactory.getLogger(UrlMapperServiceImpl.class.getName());
     @Reference
     Externalizer externalizer;
 
-    @Override
     public String getMappedUrl(ResourceResolver resourceResolver, SlingHttpServletRequest request, String contentPath) {
         if (Objects.isNull(resourceResolver) || Objects.isNull(request) || StringUtils.isEmpty(contentPath)) {
             LOG.warn("Invalid parameters: resourceResolver={}, request={}, contentPath={}; returning contentPath", resourceResolver,
-                    request, contentPath);
+                request, contentPath);
             return contentPath;
         }
         String fromResourceResolver = getFromResourceResolver(resourceResolver, request, contentPath);

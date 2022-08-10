@@ -13,7 +13,7 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.services.UrlMapperService;
+import com.adobe.cq.email.core.components.internal.services.UrlMapperServiceImpl;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.Image;
 import com.adobe.cq.wcm.core.components.models.ImageArea;
@@ -51,7 +51,7 @@ class ImageModelTest {
     @Mock
     SlingHttpServletRequest slingHttpServletRequest;
     @Mock
-    UrlMapperService urlMapperService;
+    UrlMapperServiceImpl urlMapperService;
     @Mock
     Style currentStyle;
     @Mock

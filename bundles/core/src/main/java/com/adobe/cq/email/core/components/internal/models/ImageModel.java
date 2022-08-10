@@ -13,10 +13,11 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 import java.util.List;
 import java.util.Objects;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -35,7 +36,7 @@ import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.adobe.cq.email.core.components.services.UrlMapperService;
+import com.adobe.cq.email.core.components.internal.services.UrlMapperServiceImpl;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.Image;
@@ -51,10 +52,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * Image component model class
  */
-@Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
-       adapters = {Image.class, ComponentExporter.class},
-       resourceType = "core/email/components/image/v1/image",
-       defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+@Model(
+    adaptables = { Resource.class, SlingHttpServletRequest.class },
+    adapters = { Image.class, ComponentExporter.class },
+    resourceType = "core/email/components/image/v1/image",
+    defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
+)
 public class ImageModel implements Image {
     static final String DEFAULT_WIDTH_PROPERTY = "defaultWidth";
     static final Long DEFAULT_WIDTH = 1280L;
@@ -67,7 +70,7 @@ public class ImageModel implements Image {
     protected SlingHttpServletRequest slingHttpServletRequest;
 
     @OSGiService
-    protected UrlMapperService urlMapperService;
+    protected UrlMapperServiceImpl urlMapperService;
 
     @ScriptVariable
     protected Style currentStyle;
