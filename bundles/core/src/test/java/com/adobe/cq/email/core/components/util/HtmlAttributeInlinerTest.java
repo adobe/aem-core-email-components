@@ -155,6 +155,23 @@ class HtmlAttributeInlinerTest {
     }
 
     @Test
+    void success_MultipleHtmlInlinerConfigurationsForSameElement_NotAllProvidedAttributes() throws URISyntaxException, IOException {
+        Document document = Jsoup.parse(getFileContent(PAGE_WITH_IMAGE_WIDTH_STYLE_FILE_PATH));
+        StyleToken styleToken = StyleTokenFactory.create("img");
+        StyleTokenFactory.addProperties(styleToken, "font-family: 'Timmana', \"Gill Sans\", sans-serif;");
+        StyleTokenFactory.addProperties(styleToken, "width: 100%");
+        Element img = document.selectFirst("img");
+        assertNotNull(img);
+        List<HtmlInlinerConfiguration> htmlInlinerConfigurations = new ArrayList<>();
+        htmlInlinerConfigurations.add(HtmlInlinerConfiguration.parse("{\"elementType\":\"img\",\"cssPropertyRegEx\":\"height\"," +
+                "\"cssPropertyOutputRegEx\":\"[0-9]+(?=px)|[0-9]+(?=PX)" +
+                "|[0-9]+[%]\",\"htmlAttributeName\":\"height\",\"overrideIfAlreadyExisting\":true}"));
+        htmlInlinerConfigurations.add(HtmlInlinerConfiguration.parse(HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT));
+        HtmlAttributeInliner.process(img, styleToken, htmlInlinerConfigurations);
+        assertEquals("100%", img.attr("width"));
+    }
+
+    @Test
     void success_PercentageWidth_NotExistingAttribute() throws URISyntaxException, IOException {
         Document document = Jsoup.parse(getFileContent(PAGE_WITH_IMAGE_WIDTH_STYLE_FILE_PATH));
         StyleToken styleToken = StyleTokenFactory.create("img");
