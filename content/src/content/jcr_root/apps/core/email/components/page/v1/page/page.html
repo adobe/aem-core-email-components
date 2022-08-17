@@ -25,13 +25,6 @@
 <body class="${page.cssClassNames}"
       id="${page.id}"
       data-cmp-data-layer-enabled="${page.data ? true : false}">
-    <sly data-sly-test="${emailPage.statusMessage}">
-        <div class="coral-Alert coral-Alert--${emailPage.alertType} coral--light" style="margin:0; border-radius:0; -moz-border-radius:0; -webkit-border-radius:0;">
-            <i class="coral-Alert-typeIcon coral-Icon coral-Icon--sizeS coral-Icon--adobeCampaign"></i>
-            <strong class="coral-Alert-title">${emailPage.statusHeader}</strong>
-            <div class="coral-Alert-message">${emailPage.statusMessage}</div>
-        </div>
-    </sly>
     <sly data-sly-include="body.html"></sly>
     <sly data-sly-call="${footer.footer @ page = page, pwa = pwa}"></sly>
 <sly data-sly-test="${wcmmode.edit}" data-sly-call="${clientlib.all @ categories='cq.authoring.editor.plugin.campaign'}"></sly>
