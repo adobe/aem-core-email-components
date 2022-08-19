@@ -21,14 +21,28 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.rewriter.ProcessingContext;
+import org.apache.sling.testing.mock.sling.servlet.MockRequestPathInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
+import com.adobe.cq.wcm.core.components.commons.link.LinkManager;
+import com.adobe.cq.wcm.core.components.testing.MockExternalizerFactory;
+import com.adobe.cq.wcm.core.components.testing.mock.ContextPlugins;
+import com.day.cq.commons.Externalizer;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManagerFactory;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextBuilder;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+
+import static com.adobe.cq.wcm.core.components.testing.mock.ContextPlugins.CORE_COMPONENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -41,62 +55,67 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith({ AemContextExtension.class })
 public class EmailLinkTransformerFactoryTest {
 
-    private final UrlMapperServiceImpl urlMapperService = mock(UrlMapperServiceImpl.class);
-    private final SlingHttpServletRequest request = mock(SlingHttpServletRequest.class);
-    private final RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
     private final ContentHandler contentHandler = mock(ContentHandler.class);
     private final ProcessingContext processingContext = mock(ProcessingContext.class);
-    private final EmailPathProcessor emailPathProcessor = mock(EmailPathProcessor.class);
+    public final AemContext context = new AemContextBuilder()
+        .beforeSetUp(context -> {
+            context.registerService(Externalizer.class, MockExternalizerFactory.getExternalizerService());
+        })
+        .plugin(CORE_COMPONENTS)
+        .build();
     private EmailLinkTransformerFactory.TransformerImpl subject;
+    private Page emailPage;
+    private MockRequestPathInfo requestPathInfo;
 
     @BeforeEach
     void setup() throws IOException {
-        EmailLinkTransformerFactory factory = new EmailLinkTransformerFactory();
-        factory.urlMapperService = urlMapperService;
-        factory.emailPathProcessor = emailPathProcessor;
+        emailPage = context.create().page(
+            "/content/campaigns/email-page",
+            "",
+            "sling:resourceType", EmailPageImpl.RESOURCE_TYPE);
 
-        when(urlMapperService.getMappedUrl(any(), any(), any())).then(returnsArgAt(2));
-        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
-        when(requestPathInfo.getSelectorString()).thenReturn("campaign.content");
-        when(processingContext.getRequest()).thenReturn(request);
-        when(emailPathProcessor.isEmailPageRequest(any())).thenReturn(Boolean.TRUE);
+        context.currentPage(emailPage);
+        context.registerService(PageManagerFactory.class, rr -> context.pageManager());
 
+        requestPathInfo = (MockRequestPathInfo) context.request().getRequestPathInfo();
+        requestPathInfo.setSelectorString("campaign.content");
+
+        when(processingContext.getRequest()).thenReturn(context.request());
+
+        EmailLinkTransformerFactory factory = context.registerInjectActivateService(new EmailLinkTransformerFactory());
         subject = factory.createTransformer();
         subject.setContentHandler(contentHandler);
         subject.init(processingContext, null);
     }
 
     @Test
-    public void testExternalizationEnabled() throws IOException {
-        // init is always called in setup() with the right selector string
+    public void testEnabled() throws IOException {
+        // setup() enables the transformer
         assertTrue(subject.externalizationEnabled);
-
-        when(requestPathInfo.getSelectorString()).thenReturn("");
-        subject.init(processingContext, null);
-        assertFalse(subject.externalizationEnabled);
+        assertTrue(subject.enabled);
     }
 
     @Test
-    public void testEnabled() throws IOException {
-        // init is always called in setup() assuming the request is an email page request
-        assertTrue(subject.enabled);
-
-        when(emailPathProcessor.isEmailPageRequest(any())).thenReturn(Boolean.FALSE);
+    public void testDisabled() throws IOException {
+        context.currentPage(context.create().page("/any/other/page"));
+        requestPathInfo.setSelectorString("");
         subject.init(processingContext, null);
+        assertFalse(subject.externalizationEnabled);
         assertFalse(subject.enabled);
     }
 
     @ParameterizedTest
     @CsvSource({
-        "%3C%= targetData.link%20%>, &lt;%= targetData.link %&gt;, false",
-        "&lt;%@ unsubscribeLink %&gt;, &lt;%@ unsubscribeLink %&gt;, false",
-        "/path/to/page.html?recipient=%3C%= recipient.id%20%>, /path/to/page.html?recipient=&lt;%= recipient.id %&gt;, true",
-        "/path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html, /path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html, true",
-        "/path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;, /path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;, true",
+        "%3C%= targetData.link%20%>, &lt;%= targetData.link %&gt;",
+        "&lt;%@ unsubscribeLink %&gt;, &lt;%@ unsubscribeLink %&gt;",
+        "/path/to/page.html?recipient=%3C%= recipient.id%20%>, https://example.org/path/to/page.html?recipient=&lt;%= recipient.id %&gt;",
+        "/path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html, https://example.org/path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html",
+        "/path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;, https://example.org/path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;",
     })
-    public void testLinkRewrite(String givenHref, String expectedHref, boolean externalizationCalled) throws SAXException {
+    public void testLinkRewriteWithoutLinkManager(String givenHref, String expectedHref) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
 
         if (givenHref != null) {
@@ -117,29 +136,27 @@ public class EmailLinkTransformerFactoryTest {
             assertNull(attributes.getValue(EmailLinkTransformerFactory.LINK_CHECKER_ATTR));
         }
 
-        verify(urlMapperService, externalizationCalled ? times(1) : never()).getMappedUrl(any(), any(), any());
         verify(contentHandler, times(1)).startElement(any(),any(), any(), any());
     }
 
     @Test
-    public void testLinkRewriterWithExternalizationDisabled() throws IOException, SAXException {
+    public void testLinkRewriteWithoutLinkManagerWithExternalizationDisabled() throws IOException, SAXException {
         // test that the decoding/re-encoding works but the externalization is not called
-        when(requestPathInfo.getSelectorString()).thenReturn("");
+        requestPathInfo.setSelectorString("");
         subject.init(processingContext,null);
 
-        testLinkRewrite(
+        testLinkRewriteWithoutLinkManager(
             "/path/to/page.html?recipient=%3C%= recipient.id%20%>",
-            "/path/to/page.html?recipient=&lt;%= recipient.id %&gt;",
-            false);
+            "/path/to/page.html?recipient=&lt;%= recipient.id %&gt;");
     }
 
     @Test
-    public void testLinkRewriteEmptyHref() throws SAXException {
-        testLinkRewrite("", "", false);
+    public void testLinkRewriteWithoutLinkManagerEmptyHref() throws SAXException {
+        testLinkRewriteWithoutLinkManager("", "");
     }
 
     @Test
-    public void testLinkRewriteNoHref() throws SAXException {
-        testLinkRewrite(null, null, false);
+    public void testLinkRewriteWithoutLinkManagerNoHref() throws SAXException {
+        testLinkRewriteWithoutLinkManager(null, null);
     }
 }

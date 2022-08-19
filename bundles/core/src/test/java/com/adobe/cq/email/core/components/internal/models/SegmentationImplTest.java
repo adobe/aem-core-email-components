@@ -78,7 +78,8 @@ class SegmentationImplTest {
 
         assertEquals("segmentation-4adb8faf29-item-36bea02a56", segmentationItem.getId());
         assertEquals("core/email/components/title/v1/title", segmentationItem.getExportedType());
-        assertNull(segmentationItem.getLink());
+        assertNotNull(segmentationItem.getLink());
+        assertFalse(segmentationItem.getLink().isValid());
         assertEquals("/content/test-page/jcr:content/root/container/col-0/segmentation/item_1655139922180", segmentationItem.getPath());
         assertEquals("Children", segmentationItem.getTitle());
         assertNull(segmentationItem.getURL());

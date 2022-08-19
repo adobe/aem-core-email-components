@@ -16,16 +16,17 @@
 package com.adobe.cq.email.core.components.internal.services;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.rewriter.DefaultTransformer;
 import org.apache.sling.rewriter.ProcessingComponentConfiguration;
@@ -40,13 +41,22 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
+import com.adobe.cq.wcm.core.components.commons.link.Link;
+import com.adobe.cq.wcm.core.components.commons.link.LinkManager;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
+import com.day.cq.wcm.api.PageManagerFactory;
+
 /**
  * This TransformerFactory adds a transformer globally that handles links (a:href, img:src, etc.) that contain Adobe Campaign expressions.
- * <p>
- * It will decode and re-encode all a:href, img:src, tb:background and th:background using html entities when they contain Adobe Campaign
- * expressions. If this is the case for links they will be additionally marked to be skipped by the CQ LinkChecker.
- * <p>
- * When used together with the MCM ContentServlet (campaign.content selector) the links also be externalized.
+ * It does that in the following steps:
+ * <ul>
+ * <li>decode Adobe Campaign expressions in the url using different patterns (html entities, percentage encoding, ...)
+ * <li>when the request has the selector campaign.content, externalize the url if it is relative
+ * <li>encode the Adobe Campaign expressions using html entities
+ * <li>when the url is the href of an a tag and it contains Adobe Campaign expressions, set the x-cq-linkchecker to skip
+ * </ul>
  */
 @Component(
     service = TransformerFactory.class,
@@ -59,6 +69,7 @@ import org.xml.sax.helpers.AttributesImpl;
 public class EmailLinkTransformerFactory implements TransformerFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailLinkTransformerFactory.class);
+    private static final Pattern SCRIPTLET_PATTERN = Pattern.compile("<%[=@].*?%>");
     private static final Map<String, List<String>> TAGS;
     private static final String OPENING = "<%";
     private static final String OPENING_ESCAPED = "&lt;%";
@@ -86,10 +97,7 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
     }
 
     @Reference
-    UrlMapperServiceImpl urlMapperService;
-
-    @Reference
-    EmailPathProcessor emailPathProcessor;
+    private PageManagerFactory pageManagerFactory;
 
     @Override
     public TransformerImpl createTransformer() {
@@ -100,6 +108,7 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
 
         private SlingHttpServletRequest request;
         private ResourceResolver resourceResolver;
+        private Optional<LinkManager> linkManager;
         boolean enabled;
         boolean externalizationEnabled;
 
@@ -108,7 +117,10 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
             super.init(context, config);
             request = context.getRequest();
             resourceResolver = request.getResourceResolver();
-            enabled = emailPathProcessor.isEmailPageRequest(request);
+            PageManager pageManager = pageManagerFactory.getPageManager(resourceResolver);
+            Page resourcePage = pageManager.getContainingPage(request.getResource());
+            Resource resourcePageContent = resourcePage != null ? resourcePage.getContentResource() : null;
+            enabled = resourcePageContent != null && resourcePageContent.isResourceType(EmailPageImpl.RESOURCE_TYPE);
             externalizationEnabled = StringUtils.equals(request.getRequestPathInfo().getSelectorString(), "campaign.content");
 
             if (externalizationEnabled && LOG.isDebugEnabled()) {
@@ -140,11 +152,13 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
                     }
 
                     String value = attributes.getValue(index);
-                    String decodedValue = unescapeScriptlets(value);
 
-                    if (!shouldRewriteLink(decodedValue)) {
+                    if (StringUtils.isEmpty(value)) {
                         continue;
                     }
+
+                    String decodedValue = unescapeScriptlets(value);
+                    boolean containsScriptlets = SCRIPTLET_PATTERN.matcher(decodedValue).find();
 
                     if (mutableAttributes == null) {
                         mutableAttributes = new AttributesImpl(attributes);
@@ -155,8 +169,9 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
                     setAttribute(mutableAttributes, index, value);
 
                     // set x-cq-linkchecker skip for all <a> tags that contain Adobe Campaign scriptlets
-                    if (tag.equals("a")) {
-                        setLinkCheckerSkip(mutableAttributes);
+                    // otherwise the CQ LinkChecker will render them as invalid
+                    if (tag.equals("a") && containsScriptlets) {
+                        setAttribute(mutableAttributes, LINK_CHECKER_ATTR, LINK_CHECKER_ATTR_SKIP);
                     }
                 }
             }
@@ -164,13 +179,13 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
             super.startElement(uri, localName, qName, mutableAttributes != null ? mutableAttributes : attributes);
         }
 
-        private void setLinkCheckerSkip(AttributesImpl attributes) {
-            int index = attributes.getIndex(LINK_CHECKER_ATTR);
+        private void setAttribute(AttributesImpl attributes, String name, String value) {
+            int index = attributes.getIndex(name);
 
             if (index >= 0) {
-                setAttribute(attributes, index, LINK_CHECKER_ATTR_SKIP);
+                setAttribute(attributes, index, value);
             } else {
-                attributes.addAttribute("", LINK_CHECKER_ATTR, LINK_CHECKER_ATTR, "CDATA", LINK_CHECKER_ATTR_SKIP);
+                attributes.addAttribute("", name, name, "CDATA", value);
             }
         }
 
@@ -183,58 +198,32 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
             attributes.setAttribute(index, attrUri, attrLocalName, attrQName, attrType, value);
         }
 
-        private String rewriteLink(String originalLink) {
-            String link = originalLink;
-            Map<String, String> placeholders = new LinkedHashMap<>();
+        private String rewriteLink(String originalUrl) {
+            if (this.linkManager == null) {
+                this.linkManager = Optional.ofNullable(request.adaptTo(LinkManager.class));
+            }
+            if (!this.linkManager.isPresent()) {
+                return originalUrl;
+            }
 
-            link = EmailPathProcessor.mask(link, placeholders);
+            String url = originalUrl;
 
-            String path = link;
-            String fragQuery = "";
-            int queryPos = link.indexOf("?");
+            if (externalizationEnabled && url.charAt(0) == '/') {
+                LinkManager linkManager = this.linkManager.get();
+                Link<?> link = linkManager.get(url).build();
 
-            if (queryPos > 0) {
-                path = link.substring(0, queryPos);
-                fragQuery = link.substring(queryPos);
-            } else {
-                int fragPos = link.indexOf("#");
-                if (fragPos > 0) {
-                    path = link.substring(0, fragPos);
-                    fragQuery = link.substring(fragPos);
+                url = link.getMappedURL();
+
+                if (url == null || url.charAt(0) == '/') {
+                    // if the ResourceResolver#map() did not return an absolute url we use the externalizer instead
+                    url = link.getExternalizedURL();
                 }
             }
 
-            try {
-                path = URLDecoder.decode(path, "UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                LOG.debug("Unsupported encoding: {}", ex.getMessage(), ex);
-            }
-
-            if (externalizationEnabled && path.charAt(0) == '/') {
-                path = urlMapperService.getMappedUrl(resourceResolver, request, path);
-            }
-
-            link = path + fragQuery;
-            link = EmailPathProcessor.unmask(link, placeholders);
-
-            LOG.debug("Rewritten link from {} to {}", originalLink, link);
-
-            return link;
-        }
-
-        private boolean shouldRewriteLink(String decodedLink) {
-            if (StringUtils.isEmpty(decodedLink)) {
-                return false;
-            }
-
-            return EmailPathProcessor.PATTERN.matcher(decodedLink).find();
+            return url != null ? url : originalUrl;
         }
 
         private String unescapeScriptlets(String url) {
-            if (StringUtils.isEmpty(url)) {
-                return url;
-            }
-
             String decodedHref = url;
             for (Map.Entry<String, List<String>> entry : ESCAPING.entrySet()) {
                 String decoded = entry.getKey();
