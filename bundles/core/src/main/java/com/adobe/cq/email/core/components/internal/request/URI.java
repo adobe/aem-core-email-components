@@ -853,7 +853,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			if (atat + 2 < length && tmp.charAt(atat + 1) == '/' && !isStartedFromPath) {
 				int next = indexFirstOf(tmp, "/?#", atat + 2);
 				if (next == -1) {
-					next = (tmp.substring(atat + 2).length() == 0) ? atat + 2 : tmp.length();
+					next = (tmp.substring(atat + 2).length() == 0) ? (atat + 2) : tmp.length();
 				}
 				parseAuthority(tmp.substring(atat + 2, next), escaped);
 				from = next;
@@ -870,9 +870,9 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 				next = tmp.length();
 			}
 			if (!isabspath) {
-				if (!escaped && prevalidate(tmp.substring(from, next), DISALLOWED_REL_PATH) || escaped && validate(tmp.substring(from, next).toCharArray(), REL_PATH)) {
+				if ((!escaped && prevalidate(tmp.substring(from, next), DISALLOWED_REL_PATH)) || (escaped && validate(tmp.substring(from, next).toCharArray(), REL_PATH))) {
 					isrelpath = true;
-				} else if (!escaped && prevalidate(tmp.substring(from, next), DISALLOWED_OPAQUE_PART) || escaped && validate(tmp.substring(from, next).toCharArray(), OPAQUE_PART)) {
+				} else if ((!escaped && prevalidate(tmp.substring(from, next), DISALLOWED_OPAQUE_PART)) || (escaped && validate(tmp.substring(from, next).toCharArray(), OPAQUE_PART))) {
 					isopaquepart = true;
 				} else {
 					aPath = null;
@@ -1217,7 +1217,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			if (at == 0) {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "incorrect path");
 			}
-			if (at > 0 && !validate(escapedPath, 0, at - 1, REL_SEGMENT) && !validate(escapedPath, at, -1, ABS_PATH) || at < 0 && !validate(escapedPath, 0, -1, REL_SEGMENT)) {
+			if ((at > 0 && !validate(escapedPath, 0, at - 1, REL_SEGMENT) && !validate(escapedPath, at, -1, ABS_PATH)) || (at < 0 && !validate(escapedPath, 0, -1, REL_SEGMENT))) {
 
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.ESCAPING, "escaped relative path not valid");
 			}

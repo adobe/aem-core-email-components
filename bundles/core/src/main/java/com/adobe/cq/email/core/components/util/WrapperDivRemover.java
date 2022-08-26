@@ -48,7 +48,7 @@ public class WrapperDivRemover {
             Element parent = doc.parent();
             Elements children = doc.children();
             removeWrapperDivs(parent, children, wrapperDivClassesToBeRemoved);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.warn("Error removing wrapper DIVs: " + e.getMessage(), e);
         }
     }

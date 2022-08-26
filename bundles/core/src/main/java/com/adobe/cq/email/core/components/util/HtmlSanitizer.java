@@ -15,6 +15,8 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.util;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -96,8 +98,8 @@ public class HtmlSanitizer {
                 result.add(line);
             }
             return result;
-        } catch (Throwable e) {
-            LOG.warn("Resource " + resourceName + " not found");
+        } catch (URISyntaxException | IOException e) {
+            LOG.warn("Resource " + resourceName + " not found", e);
             return Collections.emptyList();
         }
     }

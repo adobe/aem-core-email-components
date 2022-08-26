@@ -79,7 +79,7 @@ public class HtmlAttributeInliner {
                 if (StringUtils.isEmpty(attr) || htmlInlinerConfiguration.isOverrideIfAlreadyExisting()) {
                     element.attr(htmlInlinerConfiguration.getHtmlAttributeName(), value);
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOG.warn("Error processing HTML element " + element + " for StyleToken " + styleToken + " and HtmlInlinerConfiguration " +
                         htmlInlinerConfiguration + ": " + e.getMessage(), e);
             }

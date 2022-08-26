@@ -73,7 +73,7 @@ public class AccLinkServiceImpl implements AccLinkService {
                 mappedUrl = mappedUrl + ".html";
             }
             return new AccLink<>(mappedUrl);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.warn("Error trying to create ACC link: " + e.getMessage(), e);
             return null;
         }

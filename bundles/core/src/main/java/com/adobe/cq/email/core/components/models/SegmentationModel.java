@@ -81,8 +81,8 @@ public class SegmentationModel implements Tabs {
 
     @Override
     public @NotNull List<ListItem> getItems() {
-        if (items == null) {
-            items = new ArrayList<>();
+        if (this.items == null) {
+            this.items = new ArrayList<>();
             ResourceResolver resourceResolver = request.getResourceResolver();
             List<ListItem> items = tabs.getItems();
             items.sort(new DefaultComparator(getActiveItem()));
@@ -108,7 +108,7 @@ public class SegmentationModel implements Tabs {
                 }
             }
         }
-        return items;
+        return this.items;
     }
 
     private Pair<String, String> formatTag(String condition, int pos, int total, boolean isDefault) {

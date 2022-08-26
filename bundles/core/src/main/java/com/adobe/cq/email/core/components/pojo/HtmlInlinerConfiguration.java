@@ -155,10 +155,10 @@ public class HtmlInlinerConfiguration implements Serializable {
      * @return the {@link HtmlInlinerConfiguration} if json is in the right format, null otherwise
      */
     public static HtmlInlinerConfiguration parse(String json) {
+        JsonReader jsonReader = null;
         try {
-            JsonReader jsonReader = Json.createReader(new StringReader(json));
+            jsonReader = Json.createReader(new StringReader(json));
             JsonObject jsonObject = jsonReader.readObject();
-            jsonReader.close();
             HtmlInlinerConfiguration htmlInlinerConfiguration = new HtmlInlinerConfiguration();
             htmlInlinerConfiguration.setElementType(jsonObject.getString(ELEMENT_TYPE));
             htmlInlinerConfiguration.setCssPropertyRegEx(jsonObject.getString(CSS_PROPERTY_REG_EX));
@@ -166,9 +166,13 @@ public class HtmlInlinerConfiguration implements Serializable {
             htmlInlinerConfiguration.setHtmlAttributeName(jsonObject.getString(HTML_ATTRIBUTE_NAME));
             htmlInlinerConfiguration.setOverrideIfAlreadyExisting(jsonObject.getBoolean(OVERRIDE_IF_ALREADY_EXISTING));
             return htmlInlinerConfiguration;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.warn("Error processing JSON " + json + ": " + e.getMessage(), e);
             return null;
+        } finally {
+            if (jsonReader != null) {
+                jsonReader.close();
+            }
         }
     }
 

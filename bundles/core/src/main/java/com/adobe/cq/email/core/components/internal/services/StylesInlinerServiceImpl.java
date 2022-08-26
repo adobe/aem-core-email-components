@@ -109,7 +109,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             jsonObject.forEach(jsonObjectBuilder::add);
             jsonObjectBuilder.add("html", htmlWithInlineStyles);
             return jsonObjectBuilder.build().toString();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
         }
     }
@@ -142,17 +142,22 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             }
             outerHtml = outerHtml.replace(stylePlaceholder, styleSb.toString().trim());
             return outerHtml;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
         }
     }
 
     private JsonObject parse(String content, String charset) {
+        JsonReader reader = null;
         try {
-            JsonReader reader = Json.createReader(new ByteArrayInputStream(content.getBytes(charset)));
+            reader = Json.createReader(new ByteArrayInputStream(content.getBytes(charset)));
             return reader.readObject();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return null;
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 

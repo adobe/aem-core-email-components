@@ -75,7 +75,7 @@ public class UrlMapperServiceImpl implements UrlMapperService {
             if (StringUtils.isNotEmpty(mappedUrl) && !mappedUrl.equals(contentPath)) {
                 return mappedUrl;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.warn("Error retrieving absolute URL from resource resolver: {} ", e.getMessage(), e);
         }
         return null;
@@ -89,7 +89,7 @@ public class UrlMapperServiceImpl implements UrlMapperService {
             if (StringUtils.isNotEmpty(externalLink)) {
                 return externalLink;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.warn("Error retrieving absolute URL from externalizer: {}", e.getMessage(), e);
         }
         return null;

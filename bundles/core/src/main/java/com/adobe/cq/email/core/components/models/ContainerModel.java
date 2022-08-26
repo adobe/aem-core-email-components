@@ -16,6 +16,7 @@
 package com.adobe.cq.email.core.components.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 
