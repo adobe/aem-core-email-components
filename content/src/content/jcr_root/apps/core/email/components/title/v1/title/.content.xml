@@ -19,4 +19,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Title"
     sling:resourceSuperType="core/wcm/components/title/v3/title"
-    componentGroup="core-email"/>
+    componentGroup=".core-email"/>
