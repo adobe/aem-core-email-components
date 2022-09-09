@@ -22,6 +22,7 @@
     var PN_CONDITION = "condition";
     var PN_CUSTOM_SEGMENT_CONDITION = "customSegmentCondition";
     var PN_RESOURCE_TYPE = "sling:resourceType";
+    var RESOURCE_TYPE = "core/email/components/commons/editor/dialog/segmenteditor/v1/segmenteditor";
     var PN_COPY_FROM = "./@CopyFrom";
     var POST_SUFFIX = ".container.html";
 
@@ -53,7 +54,7 @@
      */
 
     /**
-     * Children Editor
+     * Segment Editor
      *
      * @class SegmentEditor
      * @classdesc A Segment Editor is a dialog component based on a multifield that allows editing (adding, removing, renaming, re-ordering)
@@ -65,7 +66,6 @@
         this._elements = {};
         this._path = "";
         this._orderedChildren = [];
-        this._deletedChildren = [];
         this._init();
 
         var that = this;
@@ -144,7 +144,6 @@
                     url: url,
                     async: false,
                     data: {
-                        "delete": this._deletedChildren,
                         "order": this._orderedChildren
                     }
                 });
@@ -325,17 +324,49 @@
                 }
 
                 Coral.commons.ready(that._elements.self, function() {
+                    // As a reordering of the multifield also triggers the coral-collection:remove event we have to add
+                    // a check for moved items so the prompt get only shown on a real remove action.
+                    var movedItem;
+
+                    that._elements.self.on("coral-multifield:itemorder", function(event) {
+                        movedItem = event.detail.item.dataset["name"];
+                    });
+
                     that._elements.self.on("coral-collection:remove", function(event) {
                         var name = event.detail.item.dataset["name"];
-                        that._deletedChildren.push(name);
+                        if (movedItem !== name) {
+                            ns.ui.helpers.prompt({
+                                title: Granite.I18n.get("Delete"),
+                                message: Granite.I18n.get("You are going to delete the selected component(s)."),
+                                type: ns.ui.helpers.PROMPT_TYPES.WARNING,
+                                actions: [
+                                    {
+                                        id: "CANCEL",
+                                        text: Granite.I18n.get("Cancel", "Label for Cancel button")
+                                    },
+                                    {
+                                        id: "DELETE",
+                                        text: Granite.I18n.get("Delete", "Label for Confirm button"),
+                                        warning: true
+                                    }
+                                ],
+                                callback: function(actionId) {
+                                    if (actionId === "CANCEL") {
+                                        that._update(that._path + POST_SUFFIX);
+                                    } else {
+                                        that._sendDeleteParagraph(that._path + "/" + name)
+                                            .then(function(data) {
+                                                that._update(that._path + POST_SUFFIX);
+                                            });
+                                    }
+                                }
+                            });
+                        }
                     });
 
                     that._elements.self.on("coral-collection:add", function(event) {
-                        var name = event.detail.item.dataset["name"];
-                        var index = that._deletedChildren.indexOf(name);
-
-                        if (index > -1) {
-                            that._deletedChildren.splice(index, 1);
+                        if (movedItem !== event.detail.item.dataset["name"]) {
+                            movedItem = undefined;
                         }
                     });
                 });
@@ -354,6 +385,35 @@
                     var name = items[i].dataset["name"];
                     this._orderedChildren.push(name);
                 }
+            },
+
+            _sendDeleteParagraph: function(path) {
+                return (new ns.persistence.PostRequest()
+                        .prepareDeleteParagraph({
+                            path: path
+                        })
+                        .send()
+                );
+            },
+
+            _update: function(url) {
+                var that = this;
+                return $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: {
+                      "resourceType": RESOURCE_TYPE
+                    },
+                    dataType: "html",
+                    async: false,
+                    success: function(data) {
+                        var tmp = document.createElement("div");
+                        tmp.innerHTML = data;
+                        var multifield = tmp.firstElementChild;
+                        that._elements.self.replaceWith(multifield);
+                        channel.trigger("foundation-contentloaded");
+                    }
+                });
             }
         };
     })();
@@ -363,9 +423,12 @@
      */
     channel.on("foundation-contentloaded", function(event) {
         $(event.target).find(selectors.self).each(function() {
-            new SegmentEditor({
-                el: this
-            });
+            // prevent multiple initialization
+            if ($(this).data("SegmentEditor") === undefined) {
+                new SegmentEditor({
+                    el: this
+                });
+            }
         });
     });
 
