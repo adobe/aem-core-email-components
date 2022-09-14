@@ -15,6 +15,7 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import java.net.URI;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -84,6 +85,9 @@ public class UrlMapperServiceImpl implements UrlMapperService {
     @Nullable
     private String getFromExternalizer(ResourceResolver resourceResolver, String contentPath, SlingHttpServletRequest request) {
         try {
+            if (isAbsolute(contentPath) || contentPath.startsWith("#")) {
+                return contentPath;
+            }
             String externalizerMode = WCMMode.DISABLED.equals(WCMMode.fromRequest(request)) ? Externalizer.PUBLISH : Externalizer.LOCAL;
             String externalLink = externalizer.externalLink(resourceResolver, externalizerMode, contentPath);
             if (StringUtils.isNotEmpty(externalLink)) {
@@ -93,5 +97,14 @@ public class UrlMapperServiceImpl implements UrlMapperService {
             LOG.warn("Error retrieving absolute URL from externalizer: {}", e.getMessage(), e);
         }
         return null;
+    }
+
+    private boolean isAbsolute(String contentPath) {
+        try {
+            URI uri = new URI(contentPath);
+            return uri.isAbsolute();
+        } catch (Throwable e) {
+            return false;
+        }
     }
 }
