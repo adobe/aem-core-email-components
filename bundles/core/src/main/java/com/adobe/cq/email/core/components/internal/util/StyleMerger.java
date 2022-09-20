@@ -21,12 +21,14 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
-
 /**
  * Utility class that merges the current style of an HTML element with the one that came from the style tag
  */
 public class StyleMerger {
+    /**
+     * "!important" selector used to identify if a CSS rule is important
+     */
+    public static final String IMPORTANT_RULE = "!important";
     private static final String EMPTY_TOKEN_SELECTOR = "";
 
     private StyleMerger() {
@@ -100,7 +102,7 @@ public class StyleMerger {
         }
         styleProperty.setName(keyAndValue[0].trim());
         styleProperty.setValue(keyAndValue[1].trim());
-        styleProperty.setImportant(styleProperty.getValue().contains(StylesInlinerConstants.IMPORTANT_RULE));
+        styleProperty.setImportant(styleProperty.getValue().contains(IMPORTANT_RULE));
         return styleProperty;
     }
 

@@ -23,12 +23,15 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
-
 /**
  * Utility class that tokenize a CSS stylesheet
  */
 public class StyleTokenizer {
+
+    /**
+     * Style delimiters used when parsing HTML page
+     */
+    public static final String STYLE_DELIMS = "{}";
 
     private StyleTokenizer() {
         // To avoid instantiation
@@ -47,7 +50,7 @@ public class StyleTokenizer {
         }
         StringTokenizer tokenizer =
                 new StringTokenizer(css.replaceAll("\\s+", " ").replaceAll("/\\*[^*]*\\*+([^/*][^*]*\\*+)*/", "").trim(),
-                        StylesInlinerConstants.STYLE_DELIMS);
+                        STYLE_DELIMS);
         StyleToken current = null;
         int nestingLevel = 0;
         StringBuilder nestedPropertiesBuilder = new StringBuilder();

@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -31,19 +32,22 @@ import org.apache.sling.engine.SlingRequestProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.internal.filters.InlinerResponseWrapper;
-import com.adobe.cq.email.core.components.internal.filters.StylesInlinerFilter;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.drew.lang.Charsets;
 
+import static org.mockito.AdditionalAnswers.returnsSecondArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -132,8 +136,14 @@ class StylesInlinerFilterTest {
         verifyNoMoreInteractions(filterChain, request, response);
     }
 
-    @Test
-    void success() throws IOException, ServletException {
+    @ParameterizedTest
+    @ValueSource(strings = {
+        // valid html
+        "<html><head><title>test</title></head><body></body></html>",
+        // valid json
+        "{\"html\":\"<html><head><title>test</title></head><body></body></html>\",\"subject\":\"foo\"}",
+    })
+    void success(String content) throws IOException, ServletException {
         injectReferences();
         RequestPathInfo requestPathInfo = mock(RequestPathInfo.class);
         when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
@@ -144,14 +154,24 @@ class StylesInlinerFilterTest {
         when(resource.isResourceType(eq("core/email/components/page/v1/page"))).thenReturn(true);
         when(response.getContentType()).thenReturn("application/json");
         when(request.getResourceResolver()).thenReturn(resourceResolver);
-        when(stylesInlinerService.getHtmlWithInlineStylesJson(eq(resourceResolver), anyString(), anyString())).thenReturn("RESULT");
+        mockRendering(filterChain, content);
+        when(stylesInlinerService.getHtmlWithInlineStyles(any(), anyString())).then(returnsSecondArg());
         sut.doFilter(request, response, filterChain);
-        verify(printWriter).write(eq("RESULT"));
+        verify(printWriter).write(eq(content));
         verify(request).getRequestPathInfo();
         verify(filterChain).doFilter(eq(request), isA(InlinerResponseWrapper.class));
         verify(response, atLeast(1)).getContentType();
         verify(response).getBufferSize();
         verifyNoMoreInteractions(filterChain, request, response);
+    }
+
+    private void mockRendering(FilterChain filterChain, String content) throws ServletException, IOException {
+        doAnswer(invocationOnMock -> {
+            ServletResponse response = invocationOnMock.getArgument(1);
+            response.getWriter().write(content);
+            response.getWriter().flush();
+            return null;
+        }).when(filterChain).doFilter(any(), any());
     }
 
     private void injectReferences() {

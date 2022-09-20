@@ -47,7 +47,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.services.StylesInlinerConfig;
-import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.services.StylesInlinerException;
 import com.adobe.cq.email.core.components.internal.util.StyleSpecificity;
 import com.adobe.cq.email.core.components.internal.util.StyleToken;
@@ -62,12 +61,6 @@ import com.adobe.cq.email.core.components.internal.util.StyleTokenizer;
 import com.adobe.cq.email.core.components.internal.util.WrapperDivRemover;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.COMMENTS_REGEX;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.HEAD_TAG;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.NEW_LINE;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.STYLE_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.STYLE_TAG;
-
 /**
  * This is a service which converts html with css classes into html with inline styles.
  */
@@ -75,6 +68,26 @@ import static com.adobe.cq.email.core.components.services.StylesInlinerConstants
 @ServiceDescription("Styles Inliner Service")
 @Designate(ocd = StylesInlinerConfig.class)
 public class StylesInlinerServiceImpl implements StylesInlinerService {
+    /**
+     * "style" tag used when parsing HTML page
+     */
+    public static final String STYLE_TAG = "style";
+    /**
+     * "style" attribute used when parsing HTML page
+     */
+    public static final String STYLE_ATTRIBUTE = "style";
+    /**
+     * New line character used when parsing HTML page
+     */
+    public static final String NEW_LINE = "\n";
+    /**
+     * Comments regex used when parsing HTML page
+     */
+    public static final String COMMENTS_REGEX = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
+    /**
+     * "head" tag used when parsing HTML page
+     */
+    public static final String HEAD_TAG = "head";
     private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerServiceImpl.class.getName());
     private static final StyleSpecificity STYLE_SPECIFICITY = new StyleSpecificity(1, 0, 0, 0);
     @Reference
@@ -94,24 +107,6 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
     public void activate(final StylesInlinerConfig stylesInlinerConfig) {
         this.stylesInlinerConfig = Optional.ofNullable(stylesInlinerConfig).orElse(defaultStylesInlinerConfig());
 
-    }
-
-    @Override
-    public String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String content, String charset) {
-        JsonObject jsonObject = parse(content, charset);
-        if (Objects.isNull(jsonObject)) {
-            return getHtmlWithInlineStyles(resourceResolver, content);
-        }
-        try {
-            String html = jsonObject.getString("html");
-            String htmlWithInlineStyles = getHtmlWithInlineStyles(resourceResolver, html);
-            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-            jsonObject.forEach(jsonObjectBuilder::add);
-            jsonObjectBuilder.add("html", htmlWithInlineStyles);
-            return jsonObjectBuilder.build().toString();
-        } catch (Throwable e) {
-            throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
-        }
     }
 
     @Override
@@ -144,15 +139,6 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             return outerHtml;
         } catch (Throwable e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
-        }
-    }
-
-    private JsonObject parse(String content, String charset) {
-        try {
-            JsonReader reader = Json.createReader(new ByteArrayInputStream(content.getBytes(charset)));
-            return reader.readObject();
-        } catch (Throwable e) {
-            return null;
         }
     }
 
@@ -229,7 +215,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
                 String style = StyleTokenFactory.getInlinablePropertiesIgnoringNesting(mergedStyleToken);
                 if (StringUtils.isNotEmpty(style)) {
                     String tagName = elementToApply.tagName();
-                    elementToApply.attr(StylesInlinerConstants.STYLE_ATTRIBUTE, style);
+                    elementToApply.attr(STYLE_ATTRIBUTE, style);
                     HtmlAttributeInliner.process(elementToApply, mergedStyleToken,
                             htmlInlinerConfigurationList.stream().filter(c -> tagName.equals(c.getElementType()))
                                     .collect(Collectors.toList()));

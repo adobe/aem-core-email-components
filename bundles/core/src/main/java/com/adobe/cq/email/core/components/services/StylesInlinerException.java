@@ -15,9 +15,12 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.services;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
- * {@link RuntimeException} thrown if some errors occurs during style inlining
+ * A {@link RuntimeException} thrown if some errors occurs during style inlining.
  */
+@ProviderType
 public class StylesInlinerException extends RuntimeException {
 
     public StylesInlinerException(String message, Throwable cause) {

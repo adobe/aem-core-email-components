@@ -39,15 +39,27 @@ import org.slf4j.LoggerFactory;
 
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.HREF_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.LINK_TAG;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.REL_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.STYLESHEET_ATTRIBUTE;
-
 /**
  * Utility that extracts CSS from a HTML page
  */
 public class StyleExtractor {
+
+    /**
+     * "link" tag used when parsing HTML page
+     */
+    public static final String LINK_TAG = "link";
+    /**
+     * "stylesheet" attribute used when parsing HTML page
+     */
+    public static final String STYLESHEET_ATTRIBUTE = "stylesheet";
+    /**
+     * "rel" attribute used when parsing HTML page
+     */
+    public static final String REL_ATTRIBUTE = "rel";
+    /**
+     * "href" attribute used when parsing HTML page
+     */
+    public static final String HREF_ATTRIBUTE = "href";
 
     private StyleExtractor() {
         // to avoid instantiation

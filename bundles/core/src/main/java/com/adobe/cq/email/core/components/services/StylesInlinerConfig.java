@@ -22,9 +22,8 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import com.adobe.cq.email.core.components.internal.services.HtmlInlinerConfiguration;
 
 /**
- * OSGI configuration class for {@link com.adobe.cq.email.core.components.services.StylesInlinerService}
- */
-@ObjectClassDefinition(name = "Styles inliner configuration")
+ * OSGI configuration class for the {@link com.adobe.cq.email.core.components.services.StylesInlinerService}.
+ */@ObjectClassDefinition(name = "Styles inliner configuration")
 public @interface StylesInlinerConfig {
 
     /**

@@ -15,10 +15,17 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.filters;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -31,12 +38,14 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
+import com.adobe.cq.email.core.components.services.StylesInlinerException;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 
 /**
@@ -124,9 +133,9 @@ public class StylesInlinerFilter implements Filter {
             Resource resource = slingRequest.getResource();
             if (resource.isResourceType(EmailPageImpl.RESOURCE_TYPE)) {
                 String content = wrapper.getResponseAsString();
+                String encoding = wrapper.getCharacterEncoding();
                 LOG.trace("Original content: {}.", content);
-                String replacedContent = stylesInlinerService.getHtmlWithInlineStylesJson(slingRequest.getResourceResolver(), content,
-                        wrapper.getCharacterEncoding());
+                String replacedContent = getHtmlWithInlineStylesJson(slingRequest.getResourceResolver(), content, encoding);
                 LOG.trace("Replaced content. New response: {}.", replacedContent);
                 response.getWriter().write(replacedContent);
                 response.getWriter().close();
@@ -139,6 +148,34 @@ public class StylesInlinerFilter implements Filter {
             LOG.debug("Request is not a SlingHttpServletRequest or content type {} is not valid.", response.getContentType());
         }
         return touched;
+    }
+
+    private String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String content, String charset) {
+        if (content.length() > 0 && content.charAt(0) == '{') {
+            // parse as json
+            JsonReader reader = null;
+            try {
+                reader = Json.createReader(new ByteArrayInputStream(content.getBytes(charset)));
+
+                JsonObject jsonObject = reader.readObject();
+                String html = jsonObject.getString("html");
+                String htmlWithInlineStyles = stylesInlinerService.getHtmlWithInlineStyles(resourceResolver, html);
+                JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+                jsonObject.forEach(jsonObjectBuilder::add);
+                jsonObjectBuilder.add("html", htmlWithInlineStyles);
+
+                return jsonObjectBuilder.build().toString();
+            }  catch (IOException | JsonParsingException ex) {
+                throw new StylesInlinerException("Failed to parse content: {}", ex);
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
+        } else {
+            // handle as html
+            return stylesInlinerService.getHtmlWithInlineStyles(resourceResolver, content);
+        }
     }
 
     /**

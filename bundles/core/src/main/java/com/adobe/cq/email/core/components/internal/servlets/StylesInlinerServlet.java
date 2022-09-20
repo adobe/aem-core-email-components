@@ -37,7 +37,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
-import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.day.cq.wcm.api.WCMMode;
@@ -50,10 +49,14 @@ import com.day.cq.wcm.api.WCMMode;
            immediate = true)
 @SlingServletResourceTypes(
         resourceTypes = EmailPageImpl.RESOURCE_TYPE,
-        selectors = StylesInlinerConstants.INLINE_STYLES_SELECTOR,
+        selectors = StylesInlinerServlet.INLINE_STYLES_SELECTOR,
         extensions = "html")
 public class StylesInlinerServlet extends SlingSafeMethodsServlet {
 
+    /**
+     * Selector for style inliner servlet
+     */
+    public static final String INLINE_STYLES_SELECTOR = "inline-styles";
     @Reference
     private transient RequestResponseFactory requestResponseFactory;
 
