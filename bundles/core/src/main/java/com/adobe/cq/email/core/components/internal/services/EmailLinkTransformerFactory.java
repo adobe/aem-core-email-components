@@ -32,7 +32,6 @@ import org.apache.sling.rewriter.DefaultTransformer;
 import org.apache.sling.rewriter.ProcessingComponentConfiguration;
 import org.apache.sling.rewriter.ProcessingContext;
 import org.apache.sling.rewriter.TransformerFactory;
-import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -61,13 +60,12 @@ import com.day.cq.wcm.api.PageManagerFactory;
 @Component(
     service = TransformerFactory.class,
     property = {
-        "pipeline.mode=global",
-        "pipeline.type=email-link-transformer",
-        Constants.SERVICE_RANKING + ":Integer=-1000"
+        "pipeline.type=" + EmailLinkTransformerFactory.TYPE,
     }
 )
 public class EmailLinkTransformerFactory implements TransformerFactory {
 
+    public static final String TYPE = "email-link-rewrite";
     private static final Logger LOG = LoggerFactory.getLogger(EmailLinkTransformerFactory.class);
     private static final Pattern SCRIPTLET_PATTERN = Pattern.compile("<%[=@].*?%>");
     private static final Map<String, List<String>> TAGS;
