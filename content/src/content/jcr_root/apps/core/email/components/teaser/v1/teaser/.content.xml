@@ -5,4 +5,4 @@
     jcr:title="Teaser"
     sling:resourceSuperType="core/wcm/components/teaser/v2/teaser"
     imageDelegate="core/email/components/image/v1/image"
-    componentGroup="core-email"/>
+    componentGroup=".core-email"/>

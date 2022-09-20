@@ -3,5 +3,5 @@
           jcr:primaryType="cq:Page">
     <jcr:content
         jcr:primaryType="cq:PageContent"
-        sling:resourceType="core/email/components/page/v1/page"/>
+        sling:resourceType="core-email-components-examples/components/page"/>
 </jcr:root>
