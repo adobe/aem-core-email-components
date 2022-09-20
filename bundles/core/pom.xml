@@ -169,11 +169,10 @@
                                     <excludes>
                                         <!-- Constants class -->
                                         <exclude>
-                                            com/adobe/cq/email/core/components/constants/StylesInlinerConstants.class
+                                            com/adobe/cq/email/core/components/services/StylesInlinerConstants.class
                                         </exclude>
-                                        <!-- Model interface -->
                                         <exclude>
-                                            com/adobe/cq/email/core/components/models/EmailPage.class
+                                            com/adobe/cq/email/core/components/internal/models/EmailPageImpl.class
                                         </exclude>
                                     </excludes>
                                 </configuration>

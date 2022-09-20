@@ -39,7 +39,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;

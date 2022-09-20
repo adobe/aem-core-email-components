@@ -13,9 +13,4 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.internal.models;
-
-public class EmailPageImpl {
-    public static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
-
-}
+package com.adobe.cq.email.core.components.internal.filters;

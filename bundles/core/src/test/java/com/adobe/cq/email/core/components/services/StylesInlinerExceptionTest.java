@@ -13,9 +13,22 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.internal.models;
+package com.adobe.cq.email.core.components.services;
 
-public class EmailPageImpl {
-    public static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
+import org.junit.jupiter.api.Test;
 
+import com.adobe.cq.email.core.components.services.StylesInlinerException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class StylesInlinerExceptionTest {
+
+    @Test
+    void test() {
+        String message = "MESSAGE";
+        RuntimeException cause = new RuntimeException();
+        StylesInlinerException sut = new StylesInlinerException(message, cause);
+        assertEquals(message, sut.getMessage());
+        assertEquals(cause, sut.getCause());
+    }
 }

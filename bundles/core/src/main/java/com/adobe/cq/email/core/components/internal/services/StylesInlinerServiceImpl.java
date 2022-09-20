@@ -46,28 +46,27 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.configs.StylesInlinerConfig;
-import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
-import com.adobe.cq.email.core.components.exceptions.StylesInlinerException;
-import com.adobe.cq.email.core.components.pojo.HtmlInlinerConfiguration;
-import com.adobe.cq.email.core.components.pojo.StyleSpecificity;
-import com.adobe.cq.email.core.components.pojo.StyleToken;
+import com.adobe.cq.email.core.components.services.StylesInlinerConfig;
+import com.adobe.cq.email.core.components.services.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.services.StylesInlinerException;
+import com.adobe.cq.email.core.components.internal.util.StyleSpecificity;
+import com.adobe.cq.email.core.components.internal.util.StyleToken;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.adobe.cq.email.core.components.util.HtmlAttributeInliner;
-import com.adobe.cq.email.core.components.util.HtmlSanitizer;
-import com.adobe.cq.email.core.components.util.StyleExtractor;
-import com.adobe.cq.email.core.components.util.StyleMerger;
-import com.adobe.cq.email.core.components.util.StyleSpecificityFactory;
-import com.adobe.cq.email.core.components.util.StyleTokenFactory;
-import com.adobe.cq.email.core.components.util.StyleTokenizer;
-import com.adobe.cq.email.core.components.util.WrapperDivRemover;
+import com.adobe.cq.email.core.components.internal.util.HtmlAttributeInliner;
+import com.adobe.cq.email.core.components.internal.util.HtmlSanitizer;
+import com.adobe.cq.email.core.components.internal.util.StyleExtractor;
+import com.adobe.cq.email.core.components.internal.util.StyleMerger;
+import com.adobe.cq.email.core.components.internal.util.StyleSpecificityFactory;
+import com.adobe.cq.email.core.components.internal.util.StyleTokenFactory;
+import com.adobe.cq.email.core.components.internal.util.StyleTokenizer;
+import com.adobe.cq.email.core.components.internal.util.WrapperDivRemover;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.COMMENTS_REGEX;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.HEAD_TAG;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.NEW_LINE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLE_ATTRIBUTE;
-import static com.adobe.cq.email.core.components.constants.StylesInlinerConstants.STYLE_TAG;
+import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.COMMENTS_REGEX;
+import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.HEAD_TAG;
+import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.NEW_LINE;
+import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.STYLE_ATTRIBUTE;
+import static com.adobe.cq.email.core.components.services.StylesInlinerConstants.STYLE_TAG;
 
 /**
  * This is a service which converts html with css classes into html with inline styles.

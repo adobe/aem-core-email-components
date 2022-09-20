@@ -13,9 +13,23 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.internal.models;
+package com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor;
 
-public class EmailPageImpl {
-    public static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
+public class Condition {
 
+    private final String name;
+    private final String value;
+
+    public Condition(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

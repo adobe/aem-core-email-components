@@ -34,7 +34,7 @@
  *      version, is bound to this proxy component resource type.
  * </p>
  */
-@Version("1.0.0")
-package com.adobe.cq.email.core.components.models;
+@Version("1.4.1")
+package com.adobe.cq.email.core.components.internal.servlets;
 
 import org.osgi.annotation.versioning.Version;
