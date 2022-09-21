@@ -16,6 +16,7 @@
 package com.adobe.cq.email.core.components.pojo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +56,16 @@ public class StyleToken {
      * @return the list of CSS selectors (split if more than one)
      */
     public List<String> getSplitSelectors() {
-        return splitSelectors;
+        return Collections.unmodifiableList(splitSelectors);
+    }
+
+    /**
+     * Adds a new css selector to the style token.
+     *
+     * @param splitSelector
+     */
+    public void addSplitSelector(String splitSelector) {
+        splitSelectors.add(splitSelector);
     }
 
     /**
@@ -64,7 +74,24 @@ public class StyleToken {
      * @return the CSS properties
      */
     public List<String> getProperties() {
-        return properties;
+        return Collections.unmodifiableList(properties);
+    }
+
+    /**
+     * Checks if the current {@link StyleToken} contains the given property
+     *
+     * @param property the property to check for
+     * @return true when the {@link StyleToken} contains the property, false otherwise
+     */
+    public boolean containsProperty(String property) {
+        return properties.contains(property);
+    }
+
+    /**
+     * Add a CSS properties
+     */
+    public void addProperty(String property) {
+        properties.add(property);
     }
 
     /**
@@ -149,8 +176,8 @@ public class StyleToken {
         }
         StyleToken that = (StyleToken) o;
         return mediaQuery == that.mediaQuery && pseudoSelector == that.pseudoSelector && nested == that.nested &&
-                Objects.equals(selector, that.selector) && Objects.equals(splitSelectors, that.splitSelectors) &&
-                Objects.equals(properties, that.properties) && Objects.equals(specificity, that.specificity);
+            Objects.equals(selector, that.selector) && Objects.equals(splitSelectors, that.splitSelectors) &&
+            Objects.equals(properties, that.properties) && Objects.equals(specificity, that.specificity);
     }
 
     @Override

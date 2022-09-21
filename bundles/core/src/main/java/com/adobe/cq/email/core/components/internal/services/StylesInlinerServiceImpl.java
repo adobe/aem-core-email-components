@@ -175,8 +175,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             unInlinableStyleTokens.add(styleToken);
             return;
         }
-        List<String> cssSelectors = styleToken.getSplitSelectors();
-        for (String cssSelector : cssSelectors) {
+        for (String cssSelector : styleToken.getSplitSelectors()) {
             try {
                 Elements selectedElements = doc.select(cssSelector);
                 if (selectedElements.isEmpty()) {

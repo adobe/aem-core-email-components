@@ -108,7 +108,7 @@ public class SegmentationModel implements Tabs {
                 }
             }
         }
-        return this.items;
+        return Collections.unmodifiableList(this.items);
     }
 
     private Pair<String, String> formatTag(String condition, int pos, int total, boolean isDefault) {

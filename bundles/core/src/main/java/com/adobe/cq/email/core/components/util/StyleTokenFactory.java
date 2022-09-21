@@ -122,8 +122,8 @@ public class StyleTokenFactory {
             if (formatted.isEmpty()) {
                 continue;
             }
-            if (!styleToken.getProperties().contains(formatted)) {
-                styleToken.getProperties().add(formatted);
+            if (!styleToken.containsProperty(formatted)) {
+                styleToken.addProperty(formatted);
             }
         }
     }
@@ -150,6 +150,6 @@ public class StyleTokenFactory {
         if (StringUtils.isEmpty(splittedSelector)) {
             return;
         }
-        styleToken.getSplitSelectors().add(splittedSelector.trim());
+        styleToken.addSplitSelector(splittedSelector.trim());
     }
 }

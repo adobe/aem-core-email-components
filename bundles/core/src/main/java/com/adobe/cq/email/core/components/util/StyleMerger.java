@@ -62,13 +62,12 @@ public class StyleMerger {
 
     private static void processStyleTokens(Map<String, StyleProperty> stylePropertiesByName, StyleToken elementStyleToken,
                                            StyleToken styleToken) {
-        processStyleToken(stylePropertiesByName, styleToken, 0);
-        processStyleToken(stylePropertiesByName, elementStyleToken, 0);
+        processStyleToken(stylePropertiesByName, styleToken);
+        processStyleToken(stylePropertiesByName, elementStyleToken);
     }
 
-    private static void processStyleToken(Map<String, StyleProperty> styleProperties, StyleToken styleToken, int order) {
-        for (int i = 0; i < styleToken.getProperties().size(); i++) {
-            String property = styleToken.getProperties().get(i);
+    private static void processStyleToken(Map<String, StyleProperty> styleProperties, StyleToken styleToken) {
+        for (String property : styleToken.getProperties()) {
             StyleProperty styleProperty = parse(property, styleToken.getSpecificity());
             String propertyName = styleProperty.getName();
             StyleProperty alreadyFoundStyleProperty = styleProperties.get(propertyName);

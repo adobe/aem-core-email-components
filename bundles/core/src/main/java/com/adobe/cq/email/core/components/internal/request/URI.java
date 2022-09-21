@@ -880,7 +880,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 			}
 			String sss = tmp.substring(from, next);
 			if (escaped) {
-				setRawPath(sss.toCharArray());
+				setRawPath(sss);
 			} else {
 				setPath(sss);
 			}
@@ -1184,10 +1184,6 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 		return (protocolCharset != null) ? protocolCharset : defaultProtocolCharset;
 	}
 
-	private char[] getRawAuthority() {
-		return aAuthority;
-	}
-
 	/**
 	 * bla
 	 *
@@ -1196,37 +1192,38 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	 * @throws com.adobe.cq.email.core.components.internal.request.URIException
 	 *             bla
 	 */
-	private void setRawPath(char[] escapedPath) throws com.adobe.cq.email.core.components.internal.request.URIException {
-		if (escapedPath == null || escapedPath.length == 0) {
-			aPath = escapedPath;
-			aOpaque = escapedPath;
+	private void setRawPath(String escapedPath) throws com.adobe.cq.email.core.components.internal.request.URIException {
+        char[] escapedPathChars = escapedPath.toCharArray();
+		if (escapedPathChars.length == 0) {
+			aPath = escapedPathChars;
+			aOpaque = escapedPathChars;
 			setURI();
 			return;
 		}
-		escapedPath = removeFragmentIdentifier(escapedPath);
+        escapedPathChars = removeFragmentIdentifier(escapedPathChars);
 		if (isnetpath || isabspath) {
-			if (escapedPath[0] != '/') {
+			if (escapedPathChars[0] != '/') {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "not absolute path");
 			}
-			if (!validate(escapedPath, ABS_PATH)) {
+			if (!validate(escapedPathChars, ABS_PATH)) {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.ESCAPING, "escaped absolute path not valid");
 			}
-			aPath = escapedPath;
+			aPath = escapedPathChars;
 		} else if (isrelpath) {
-			int at = indexFirstOf(escapedPath, '/');
+			int at = indexFirstOf(escapedPathChars, '/');
 			if (at == 0) {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "incorrect path");
 			}
-			if ((at > 0 && !validate(escapedPath, 0, at - 1, REL_SEGMENT) && !validate(escapedPath, at, -1, ABS_PATH)) || (at < 0 && !validate(escapedPath, 0, -1, REL_SEGMENT))) {
+			if ((at > 0 && !validate(escapedPathChars, 0, at - 1, REL_SEGMENT) && !validate(escapedPathChars, at, -1, ABS_PATH)) || (at < 0 && !validate(escapedPathChars, 0, -1, REL_SEGMENT))) {
 
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.ESCAPING, "escaped relative path not valid");
 			}
-			aPath = escapedPath;
+			aPath = escapedPathChars;
 		} else if (isopaquepart) {
-			if (!URIC_NO_SLASH.get(escapedPath[0]) && !validate(escapedPath, 1, -1, URIC)) {
+			if (!URIC_NO_SLASH.get(escapedPathChars[0]) && !validate(escapedPathChars, 1, -1, URIC)) {
 				throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.ESCAPING, "escaped opaque part not valid");
 			}
-			aOpaque = escapedPath;
+			aOpaque = escapedPathChars;
 		} else {
 			throw new com.adobe.cq.email.core.components.internal.request.URIException(com.adobe.cq.email.core.components.internal.request.URIException.PARSING, "incorrect path");
 		}
@@ -1432,7 +1429,7 @@ public class URI implements Cloneable, Comparable<URI>, Serializable {
 	@Override
 	public int compareTo(URI another) {
 
-		if (!equals(aAuthority, another.getRawAuthority())) {
+		if (!equals(aAuthority, another.aAuthority)) {
 			return -1;
 		}
 		return toString().compareTo(another.toString());

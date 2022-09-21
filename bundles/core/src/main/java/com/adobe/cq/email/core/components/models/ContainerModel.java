@@ -56,7 +56,7 @@ public class ContainerModel {
      * @return the list column resources
      */
     public List<? extends ContainerColumn> getColumns() {
-        return resources;
+        return Collections.unmodifiableList(resources);
     }
 
     /**

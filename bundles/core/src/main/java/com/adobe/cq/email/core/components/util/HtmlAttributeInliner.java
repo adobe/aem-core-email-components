@@ -57,13 +57,15 @@ public class HtmlAttributeInliner {
                     continue;
                 }
                 Pattern pattern = Pattern.compile(htmlInlinerConfiguration.getCssPropertyOutputRegEx());
-                List<Pair<String, String>> cssProperties =
-                        styleToken.getProperties().stream().map(HtmlAttributeInliner::convert).filter(Objects::nonNull)
-                                .collect(Collectors.toList());
-                Map.Entry<String, String> cssProperty =
-                        cssProperties.stream().filter(p -> Objects.nonNull(p) && Objects.nonNull(p.getKey()) &&
-                                        p.getKey().matches(htmlInlinerConfiguration.getCssPropertyRegEx()))
-                                .findFirst().orElse(null);
+                List<Pair<String, String>> cssProperties = styleToken.getProperties().stream()
+                        .map(HtmlAttributeInliner::convert)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                Map.Entry<String, String> cssProperty = cssProperties.stream()
+                        .filter(Objects::nonNull)
+                        .filter(p -> Objects.nonNull(p.getKey()) && p.getKey().matches(htmlInlinerConfiguration.getCssPropertyRegEx()))
+                        .findFirst()
+                        .orElse(null);
                 if (Objects.isNull(cssProperty)) {
                     continue;
                 }
