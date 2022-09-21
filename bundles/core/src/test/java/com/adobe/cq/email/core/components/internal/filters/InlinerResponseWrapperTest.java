@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.internal.filters.InlinerResponseWrapper;
+import com.adobe.cq.email.core.components.internal.util.InlinerResponseWrapper;
 import com.adobe.cq.mcm.campaign.NewsletterException;
 import com.day.cq.mcm.campaign.ACConnectorException;
 import io.wcm.testing.mock.aem.junit5.AemContext;

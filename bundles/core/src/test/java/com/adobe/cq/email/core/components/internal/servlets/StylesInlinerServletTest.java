@@ -16,30 +16,30 @@
 package com.adobe.cq.email.core.components.internal.servlets;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.engine.SlingRequestProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.internal.servlets.StylesInlinerServlet;
+import com.adobe.cq.email.core.components.internal.util.InlinerResponseWrapper;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.day.cq.contentsync.handler.util.RequestResponseFactory;
-import com.drew.lang.Charsets;
+import com.day.cq.wcm.api.WCMMode;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -52,15 +52,12 @@ class StylesInlinerServletTest {
     private static final String OUTPUT = "TEST_PAGE_WITH_INLINED_CSS";
 
     @Mock
-    RequestResponseFactory requestResponseFactory;
-    @Mock
-    SlingRequestProcessor requestProcessor;
-    @Mock
     StylesInlinerService stylesInlinerService;
     @Mock
     Resource resource;
     @Mock
     SlingHttpServletRequest request;
+    @Mock RequestPathInfo requestPathInfo;
     @Mock
     SlingHttpServletResponse resp;
     @Mock
@@ -73,27 +70,32 @@ class StylesInlinerServletTest {
     @BeforeEach
     void setUp() throws IOException {
         this.sut = new StylesInlinerServlet();
-        this.sut.setRequestResponseFactory(requestResponseFactory);
-        this.sut.setRequestProcessor(requestProcessor);
-        this.sut.setStylesInlinerService(
-                stylesInlinerService
-        );
+        this.sut.stylesInlinerService = stylesInlinerService;
+
         when(request.getResource()).thenReturn(resource);
-        when(resource.getPath()).thenReturn("TEST_PATH");
-        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-        when(requestResponseFactory.createRequest(eq("GET"), eq("TEST_PATH.html"), anyMap())).thenReturn(httpServletRequest);
-        doAnswer(i -> {
-            OutputStream outputStream = (OutputStream) i.getArguments()[0];
-            IOUtils.write(INPUT, outputStream, Charsets.UTF_8);
-            return mock(HttpServletResponse.class);
-        }).when(requestResponseFactory).createResponse(any());
         when(request.getResourceResolver()).thenReturn(resourceResolver);
+        when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
+        when(requestPathInfo.getSelectors()).thenReturn(new String[] { StylesInlinerServlet.INLINE_STYLES_SELECTOR });
         when(resp.getWriter()).thenReturn(printWriter);
         when(stylesInlinerService.getHtmlWithInlineStyles(eq(resourceResolver), eq(INPUT))).thenReturn(OUTPUT);
+        when(resp.getCharacterEncoding()).thenReturn("utf-8");
     }
 
     @Test
     void success() throws Exception {
+        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        when(request.getRequestDispatcher(any(Resource.class), any(RequestDispatcherOptions.class))).thenReturn(dispatcher);
+        doAnswer(inv -> {
+            SlingHttpServletRequest dispatchedRequest = inv.getArgument(0);
+            HttpServletResponse dispatchedResponse = inv.getArgument(1);
+
+            assertEquals(WCMMode.DISABLED, WCMMode.fromRequest(dispatchedRequest));
+            assertTrue(dispatchedResponse instanceof InlinerResponseWrapper);
+
+            dispatchedResponse.getWriter().write(INPUT);
+            return null;
+        }).when(dispatcher).forward(any(), any());
+
         sut.doGet(request, resp);
         verify(printWriter).write(eq(OUTPUT));
     }

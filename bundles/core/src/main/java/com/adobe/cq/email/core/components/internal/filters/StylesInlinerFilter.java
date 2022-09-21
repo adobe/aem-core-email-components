@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -45,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
+import com.adobe.cq.email.core.components.internal.util.InlinerResponseWrapper;
 import com.adobe.cq.email.core.components.services.StylesInlinerException;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 

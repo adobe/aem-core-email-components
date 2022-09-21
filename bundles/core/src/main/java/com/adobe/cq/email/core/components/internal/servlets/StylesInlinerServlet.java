@@ -15,30 +15,26 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.servlets;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.apache.sling.engine.SlingRequestProcessor;
 import org.apache.sling.servlets.annotations.SlingServletResourceTypes;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
+import com.adobe.cq.email.core.components.internal.util.InlinerResponseWrapper;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
-import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.day.cq.wcm.api.WCMMode;
 
 /**
@@ -57,14 +53,9 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
      * Selector for style inliner servlet
      */
     public static final String INLINE_STYLES_SELECTOR = "inline-styles";
-    @Reference
-    private transient RequestResponseFactory requestResponseFactory;
 
     @Reference
-    private transient SlingRequestProcessor requestProcessor;
-
-    @Reference
-    private transient StylesInlinerService stylesInlinerService;
+    StylesInlinerService stylesInlinerService;
 
     /**
      * This method gets the AEM page, uses the Styles Inliner Service to convert the AEM page html with css classes
@@ -76,34 +67,27 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
     @Override
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Object> params = new HashMap<>();
-        Resource resource = request.getResource();
-        String pagePath = resource.getPath();
-        HttpServletRequest req = requestResponseFactory.createRequest("GET", pagePath + ".html",
-                params);
-        WCMMode.DISABLED.toRequest(req);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        HttpServletResponse response = requestResponseFactory.createResponse(out);
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        requestProcessor.processRequest(req, response, request.getResourceResolver());
-        String htmlWithInlineStyles =
-                stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), out.toString(StandardCharsets.UTF_8.name()));
-        resp.setContentType("text/html");
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        // prepare forward request and response
+        String selectors = Arrays.stream(request.getRequestPathInfo().getSelectors())
+            .filter(selector -> !INLINE_STYLES_SELECTOR.equals(INLINE_STYLES_SELECTOR))
+            .collect(Collectors.joining("."));
+        InlinerResponseWrapper responseWrapper = new InlinerResponseWrapper(resp);
+        RequestDispatcherOptions options = new RequestDispatcherOptions();
+        options.setReplaceSelectors(selectors);
+        WCMMode.DISABLED.toRequest(request);
+
+        // forward request
+        RequestDispatcher dispatcher = request.getRequestDispatcher(request.getResource(), options);
+        if (dispatcher == null) {
+            throw new ServletException("Cannot forward request, dispatcher null");
+        }
+        dispatcher.forward(request, responseWrapper);
+
+        // inline styles
+        String content = responseWrapper.getResponseAsString();
+        content = stylesInlinerService.getHtmlWithInlineStyles(request.getResourceResolver(), content);
         PrintWriter pw = resp.getWriter();
-        pw.write(htmlWithInlineStyles);
-    }
-
-    void setRequestResponseFactory(RequestResponseFactory requestResponseFactory) {
-        this.requestResponseFactory = requestResponseFactory;
-    }
-
-    void setRequestProcessor(SlingRequestProcessor requestProcessor) {
-        this.requestProcessor = requestProcessor;
-    }
-
-    void setStylesInlinerService(StylesInlinerService stylesInlinerService) {
-        this.stylesInlinerService = stylesInlinerService;
+        pw.write(content);
     }
 
 }
