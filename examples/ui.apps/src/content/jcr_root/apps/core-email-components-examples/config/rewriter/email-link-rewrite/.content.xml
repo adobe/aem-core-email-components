@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="nt:unstructured"
     contentTypes="[text/html]"
     enabled="{Boolean}true"
@@ -10,7 +10,8 @@
     transformerTypes="[email-link-rewrite,campaign-link-rewrite]">
     <transformer-email-link-rewrite
         jcr:primaryType="nt:unstructured"
-        component-optional="{Boolean}true"/>
+        component-optional="{Boolean}true"
+        cq:contentType="campaignContent"/>
     <transformer-campaign-link-rewrite
         jcr:primaryType="nt:unstructured"
         component-optional="{Boolean}true"/>
