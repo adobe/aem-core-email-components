@@ -15,7 +15,9 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.models;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
@@ -35,9 +37,9 @@ import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.adobe.cq.email.core.components.models.Image;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
-import com.adobe.cq.wcm.core.components.models.Image;
 import com.adobe.cq.wcm.core.components.models.ImageArea;
 import com.adobe.cq.wcm.core.components.models.datalayer.ComponentData;
 import com.adobe.cq.wcm.core.components.models.datalayer.ImageData;
@@ -56,13 +58,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
     resourceType = "core/email/components/image/v1/image",
     defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
-public class ImageModel implements Image {
+public class ImageImpl implements Image {
     static final String DEFAULT_WIDTH_PROPERTY = "defaultWidth";
     static final Long DEFAULT_WIDTH = 1280L;
 
     @Self
     @Via(type = ResourceSuperType.class)
-    protected Image delegate;
+    protected com.adobe.cq.wcm.core.components.models.Image delegate;
 
     @Self
     protected SlingHttpServletRequest slingHttpServletRequest;
@@ -115,49 +117,31 @@ public class ImageModel implements Image {
     }
 
     /**
-     * Getter for fixed width
-     *
-     * @return the fixed width
-     */
-    public Long getFixedWidth() {
-        return fixedWidth;
-    }
-
-    /**
-     * Getter for scale to full width boolean
-     *
-     * @return the scale to full width boolean
-     */
-    public boolean isScaleToFullWidth() {
-        return scaleToFullWidth;
-    }
-
-    /**
-     * Getter for role
-     *
-     * @return the role
-     */
-    public String getRole() {
-        if (isDecorative()) {
-            return "presentation";
-        }
-        return null;
-    }
-
-    /**
      * Getter for full width style
      *
      * @return the full width style
      */
-    public String getFullWidthStyle() {
+    public String getInlineStyle() {
+        Map<String, String> styles = new LinkedHashMap<>();
+
         if (scaleToFullWidth) {
-            return "100%";
+            styles.put("width", "100%");
+        } else {
+            String width = getWidth();
+            if (StringUtils.isNotEmpty(width)) {
+                styles.put("width", width + "px");
+            }
         }
-        String width = getWidth();
-        if (StringUtils.isEmpty(width)) {
-            return width;
+
+        if (styles.isEmpty()) {
+            return null;
         }
-        return width + "px";
+
+        StringBuilder style = new StringBuilder();
+        for (Map.Entry<String, String> entry : styles.entrySet()) {
+            style.append(entry.getKey()).append(':').append(entry.getValue()).append(';');
+        }
+        return style.toString();
     }
 
     @Override

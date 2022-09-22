@@ -42,7 +42,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ImageModelTest {
+class ImageImplTest {
 
     @Mock
     Image delegate;
@@ -53,11 +53,11 @@ class ImageModelTest {
     @Mock
     ResourceResolver resourceResolver;
 
-    private ImageModel sut;
+    private ImageImpl sut;
 
     @BeforeEach
     void setUp() {
-        this.sut = new ImageModel();
+        this.sut = new ImageImpl();
         this.sut.delegate = delegate;
         this.sut.slingHttpServletRequest = slingHttpServletRequest;
         this.sut.currentStyle = currentStyle;
@@ -67,9 +67,9 @@ class ImageModelTest {
     @Test
     void initModel() {
         Long fixedWidth = 1400L;
-        when(currentStyle.get(eq(ImageModel.DEFAULT_WIDTH_PROPERTY), eq(ImageModel.DEFAULT_WIDTH))).thenReturn(fixedWidth);
+        when(currentStyle.get(eq(ImageImpl.DEFAULT_WIDTH_PROPERTY), eq(ImageImpl.DEFAULT_WIDTH))).thenReturn(fixedWidth);
         this.sut.initModel();
-        assertEquals(fixedWidth, sut.getFixedWidth());
+        assertEquals(fixedWidth, sut.fixedWidth);
     }
 
     @Test
@@ -121,35 +121,23 @@ class ImageModelTest {
     }
 
     @Test
-    void getRole_Decorative() {
-        when(delegate.isDecorative()).thenReturn(true);
-        assertEquals("presentation", sut.getRole());
-    }
-
-    @Test
-    void getRole_NotDecorative() {
-        when(delegate.isDecorative()).thenReturn(false);
-        assertNull(sut.getRole());
-    }
-
-    @Test
     void getFullWidthStyle_ScaleToFullWidth() {
         this.sut.scaleToFullWidth = true;
-        assertEquals("100%", sut.getFullWidthStyle());
+        assertEquals("width:100%;", sut.getInlineStyle());
     }
 
     @Test
     void getFullWidthStyle_NoScaleToFullWidth() {
         this.sut.scaleToFullWidth = false;
         this.sut.fixedWidth = 500L;
-        assertEquals("500px", sut.getFullWidthStyle());
+        assertEquals("width:500px;", sut.getInlineStyle());
     }
 
     @Test
     void getFullWidthStyle_NullDelegate() {
         this.sut.delegate = null;
         this.sut.scaleToFullWidth = false;
-        assertNull(sut.getFullWidthStyle());
+        assertNull(sut.getInlineStyle());
     }
 
     @Test
@@ -169,13 +157,13 @@ class ImageModelTest {
     void getFixedWidth() {
         Long fixedWidth = 1500L;
         this.sut.fixedWidth = fixedWidth;
-        assertEquals(fixedWidth, sut.getFixedWidth());
+        assertEquals(fixedWidth, sut.fixedWidth);
     }
 
     @Test
     void isScaleToFullWidth() {
         this.sut.scaleToFullWidth = true;
-        assertTrue(sut.isScaleToFullWidth());
+        assertTrue(sut.scaleToFullWidth);
     }
 
     @Test
