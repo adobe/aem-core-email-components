@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.filters;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -35,6 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 
 /**
@@ -55,7 +57,6 @@ import com.adobe.cq.email.core.components.services.StylesInlinerService;
 )
 public class StylesInlinerFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(StylesInlinerFilter.class);
-    static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
 
     private static final List<String> CONTENT_TYPES = new ArrayList<>();
 
@@ -121,7 +122,7 @@ public class StylesInlinerFilter implements Filter {
             long startTime = System.currentTimeMillis();
             SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
             Resource resource = slingRequest.getResource();
-            if (resource.isResourceType("core/email/components/page/v1/page")) {
+            if (resource.isResourceType(EmailPageImpl.RESOURCE_TYPE)) {
                 String content = wrapper.getResponseAsString();
                 LOG.trace("Original content: {}.", content);
                 String replacedContent = stylesInlinerService.getHtmlWithInlineStylesJson(slingRequest.getResourceResolver(), content,

@@ -13,13 +13,13 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
+import com.adobe.cq.email.core.components.models.Segmentation;
 import com.adobe.cq.export.json.SlingModelFilter;
 import com.adobe.cq.wcm.core.components.models.Tabs;
 import com.adobe.cq.wcm.core.components.testing.MockExternalizerFactory;
 import com.day.cq.commons.Externalizer;
-import com.day.cq.wcm.api.components.ComponentManager;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextBuilder;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
@@ -33,7 +33,7 @@ import static com.adobe.cq.wcm.core.components.testing.mock.ContextPlugins.CORE_
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(AemContextExtension.class)
-class SegmentationModelTest {
+class SegmentationImplTest {
 
     private final AemContext ctx = new AemContextBuilder()
         .beforeSetUp(context -> {
@@ -44,7 +44,7 @@ class SegmentationModelTest {
         .plugin(CORE_COMPONENTS)
         .build();
 
-    private Tabs underTest;
+    private Segmentation underTest;
 
     @BeforeEach
     void setUp() {
@@ -55,30 +55,31 @@ class SegmentationModelTest {
     @Test
     void testSegmentationModel() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation");
-        underTest = ctx.request().adaptTo(Tabs.class);
+        underTest = ctx.request().adaptTo(Segmentation.class);
         assertEquals("item_1655139752725", underTest.getActiveItem());
         assertNull(underTest.getAccessibilityLabel());
         assertNull(underTest.getAppliedCssClasses());
         assertNull(underTest.getBackgroundStyle());
         assertNotNull(underTest.getExportedItems());
-        assertEquals("tabs-4adb8faf29", underTest.getId());
-        assertEquals("core/wcm/components/tabs/v1/tabs", underTest.getExportedType());
+        assertEquals("segmentation-4adb8faf29", underTest.getId());
+        assertEquals("core/email/components/segmentation/v1/segmentation", underTest.getExportedType());
         assertNull(underTest.getData());
         assertNotNull(underTest.getExportedItemsOrder());
-        SegmentationItem segmentationItem = underTest.getItems().stream()
-            .map(SegmentationItem.class::cast)
+        SegmentationImpl.SegmentationItemImpl segmentationItem = underTest.getItems().stream()
+            .map(SegmentationImpl.SegmentationItemImpl.class::cast)
             .filter(item -> "item_1655139922180".equals(item.getName())).findFirst().get();
         assertNotNull(segmentationItem);
-        assertEquals("", segmentationItem.getClosingACCMarkup());
-        assertEquals("<% if (person.age <= 21) { %>", segmentationItem.getOpeningACCMarkup());
+        assertEquals("", segmentationItem.getEpilogue());
+        assertEquals("<% if (person.age <= 21) { %>", segmentationItem.getProlog());
         assertNull(segmentationItem.getAppliedCssClasses());
         assertNull(segmentationItem.getData());
         assertNull(segmentationItem.getLastModified());
         assertNull(segmentationItem.getDescription());
 
-        assertEquals("tabs-4adb8faf29-item-36bea02a56", segmentationItem.getId());
+        assertEquals("segmentation-4adb8faf29-item-36bea02a56", segmentationItem.getId());
         assertEquals("core/email/components/title/v1/title", segmentationItem.getExportedType());
-        assertNull(segmentationItem.getLink());
+        assertNotNull(segmentationItem.getLink());
+        assertFalse(segmentationItem.getLink().isValid());
         assertEquals("/content/test-page/jcr:content/root/container/col-0/segmentation/item_1655139922180", segmentationItem.getPath());
         assertEquals("Children", segmentationItem.getTitle());
         assertNull(segmentationItem.getURL());
@@ -88,31 +89,31 @@ class SegmentationModelTest {
     @Test
     void testSingleDefaultSegment() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-single-default");
-        underTest = ctx.request().adaptTo(Tabs.class);
-        SegmentationItem segmentationItem = underTest.getItems().stream()
-            .map(SegmentationItem.class::cast)
+        underTest = ctx.request().adaptTo(Segmentation.class);
+        SegmentationImpl.SegmentationItemImpl segmentationItem = underTest.getSegmentationItems().stream()
+            .map(SegmentationImpl.SegmentationItemImpl.class::cast)
             .filter(item -> "item_1655139752725".equals(item.getName())).findFirst().get();
-        assertEquals(StringUtils.EMPTY, segmentationItem.getOpeningACCMarkup());
-        assertEquals(StringUtils.EMPTY, segmentationItem.getClosingACCMarkup());
+        assertEquals(StringUtils.EMPTY, segmentationItem.getProlog());
+        assertEquals(StringUtils.EMPTY, segmentationItem.getEpilogue());
     }
 
     @Test
     void testSingleCustomSegment() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-single-custom");
-        underTest = ctx.request().adaptTo(Tabs.class);
-        SegmentationItem segmentationItem = underTest.getItems().stream()
-            .map(SegmentationItem.class::cast)
+        underTest = ctx.request().adaptTo(Segmentation.class);
+        SegmentationImpl.SegmentationItemImpl segmentationItem = underTest.getSegmentationItems().stream()
+            .map(SegmentationImpl.SegmentationItemImpl.class::cast)
             .filter(item -> "item_1655139752725".equals(item.getName())).findFirst().get();
-        assertEquals("<% if (person.gender = m and person.age == 21) { %>", segmentationItem.getOpeningACCMarkup());
-        assertEquals("<% } %>", segmentationItem.getClosingACCMarkup());
+        assertEquals("<% if (person.gender = m and person.age == 21) { %>", segmentationItem.getProlog());
+        assertEquals("<% } %>", segmentationItem.getEpilogue());
     }
 
     @Test
     void testReverseSegment() {
         ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-reverse-order");
-        underTest = ctx.request().adaptTo(Tabs.class);
-        SegmentationItem segmentationItem = underTest.getItems().stream()
-            .map(SegmentationItem.class::cast)
+        underTest = ctx.request().adaptTo(Segmentation.class);
+        SegmentationImpl.SegmentationItemImpl segmentationItem = underTest.getSegmentationItems().stream()
+            .map(SegmentationImpl.SegmentationItemImpl.class::cast)
             .findFirst().get();
         assertEquals("item_1655205745101", segmentationItem.getName());
     }

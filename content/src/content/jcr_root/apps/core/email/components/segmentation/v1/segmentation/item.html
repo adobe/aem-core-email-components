@@ -15,12 +15,12 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <template data-sly-template.item="${@ item}">
     <tr>
-        <td class="no-background">${item.openingACCMarkup @ context='html'}</td>
+        <td class="no-background">${item.prolog @ context='html'}</td>
     </tr>
     <tr>
         <sly data-sly-resource="${item.name @ decorationTagName= 'td', cssClassName='no-background'}"></sly>
     </tr>
     <tr>
-        <td class="no-background">${item.closingACCMarkup @ context='html'}</td>
+        <td class="no-background">${item.epilogue @ context='html'}</td>
     </tr>
 </template>

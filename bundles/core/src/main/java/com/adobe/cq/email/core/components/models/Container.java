@@ -13,22 +13,27 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.services;
+package com.adobe.cq.email.core.components.models;
 
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ResourceResolver;
+import java.util.List;
 
-/**
- * Service for retrieving the absolute URL of resources
- */
-public interface UrlMapperService {
+import org.apache.sling.api.resource.Resource;
+import org.jetbrains.annotations.NotNull;
+import org.osgi.annotation.versioning.ConsumerType;
 
-    /**
-     * Retrieves the absolute url of a resource
-     *
-     * @param resourceResolver the {@link ResourceResolver}
-     * @param request          the {@link SlingHttpServletRequest}
-     * @param contentPath      the resource content path
-     */
-    String getMappedUrl(ResourceResolver resourceResolver, SlingHttpServletRequest request, String contentPath);
+@ConsumerType
+public interface Container {
+
+    @NotNull
+    List<? extends Column> getColumns();
+
+    @ConsumerType
+    interface Column {
+
+        @NotNull
+        Resource getResource();
+
+        String getClassName();
+
+    }
 }

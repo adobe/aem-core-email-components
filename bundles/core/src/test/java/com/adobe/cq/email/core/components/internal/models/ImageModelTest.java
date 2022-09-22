@@ -13,7 +13,7 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.adobe.cq.email.core.components.services.UrlMapperService;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.Image;
 import com.adobe.cq.wcm.core.components.models.ImageArea;
@@ -39,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -50,8 +48,6 @@ class ImageModelTest {
     Image delegate;
     @Mock
     SlingHttpServletRequest slingHttpServletRequest;
-    @Mock
-    UrlMapperService urlMapperService;
     @Mock
     Style currentStyle;
     @Mock
@@ -64,7 +60,6 @@ class ImageModelTest {
         this.sut = new ImageModel();
         this.sut.delegate = delegate;
         this.sut.slingHttpServletRequest = slingHttpServletRequest;
-        this.sut.urlMapperService = urlMapperService;
         this.sut.currentStyle = currentStyle;
         this.sut.resourceResolver = resourceResolver;
     }
@@ -160,21 +155,13 @@ class ImageModelTest {
     @Test
     void getSrc() {
         String src = "/content/path/image.jpg";
-        String imageAbsoluteUrl = "https://domain.com" + src;
         when(delegate.getSrc()).thenReturn(src);
-        when(urlMapperService.getMappedUrl(any(), any(), eq(src))).thenReturn(imageAbsoluteUrl);
-        assertEquals(imageAbsoluteUrl, sut.getSrc());
+        assertEquals(src, sut.getSrc());
     }
 
     @Test
     void getSrc_NullDelegate() {
         this.sut.delegate = null;
-        assertNull(sut.getSrc());
-    }
-
-    @Test
-    void getSrc_NullUrlMapperService() {
-        this.sut.urlMapperService = null;
         assertNull(sut.getSrc());
     }
 

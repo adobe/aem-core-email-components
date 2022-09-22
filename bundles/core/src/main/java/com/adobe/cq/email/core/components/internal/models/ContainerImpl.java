@@ -13,10 +13,11 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -28,14 +29,22 @@ import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.jetbrains.annotations.NotNull;
 
+import com.adobe.cq.email.core.components.models.Container;
 import com.day.cq.wcm.api.TemplatedResource;
 
 /**
  * Container ob
  */
-@Model(adaptables = SlingHttpServletRequest.class)
-public class ContainerModel {
+@Model(
+    adaptables = SlingHttpServletRequest.class,
+    adapters = { Container.class, ContainerImpl.class },
+    resourceType = ContainerImpl.RESOURCE_TYPE
+)
+public class ContainerImpl implements Container {
+
+    public static final String RESOURCE_TYPE = "core/email/components/container/v1/container";
 
     @ValueMapValue(injectionStrategy = InjectionStrategy.OPTIONAL)
     @Default(values = "6")
@@ -54,7 +63,7 @@ public class ContainerModel {
      *
      * @return the list column resources
      */
-    public List<? extends ContainerColumn> getColumns() {
+    public List<ContainerColumn> getColumns() {
         return resources;
     }
 
@@ -134,5 +143,25 @@ public class ContainerModel {
         }
 
     }
+    static class ContainerColumn implements Column {
 
+        private final String className;
+        private final Resource wrappedResource;
+
+        public ContainerColumn(String className, Resource wrappedResource) {
+            this.className = className;
+            this.wrappedResource = wrappedResource;
+        }
+
+        @NotNull
+        @Override
+        public Resource getResource() {
+            return wrappedResource;
+        }
+
+        @Override
+        public String getClassName() {
+            return className;
+        }
+    }
 }

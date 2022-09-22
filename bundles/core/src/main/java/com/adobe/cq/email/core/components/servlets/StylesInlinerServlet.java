@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.internal.models.EmailPageImpl;
 import com.adobe.cq.email.core.components.services.StylesInlinerService;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import com.day.cq.wcm.api.WCMMode;
@@ -47,7 +49,7 @@ import com.day.cq.wcm.api.WCMMode;
 @Component(service = {Servlet.class},
            immediate = true)
 @SlingServletResourceTypes(
-        resourceTypes = "core/email/components/page/v1/page",
+        resourceTypes = EmailPageImpl.RESOURCE_TYPE,
         selectors = StylesInlinerConstants.INLINE_STYLES_SELECTOR,
         extensions = "html")
 public class StylesInlinerServlet extends SlingSafeMethodsServlet {

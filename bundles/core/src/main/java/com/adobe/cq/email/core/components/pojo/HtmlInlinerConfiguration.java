@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.pojo;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.Objects;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;

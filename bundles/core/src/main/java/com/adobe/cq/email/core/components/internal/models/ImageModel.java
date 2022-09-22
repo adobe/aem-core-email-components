@@ -13,10 +13,11 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.models;
+package com.adobe.cq.email.core.components.internal.models;
 
 import java.util.List;
 import java.util.Objects;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -27,7 +28,6 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Via;
-import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
@@ -35,7 +35,6 @@ import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.adobe.cq.email.core.components.services.UrlMapperService;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.Image;
@@ -51,10 +50,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * Image component model class
  */
-@Model(adaptables = {Resource.class, SlingHttpServletRequest.class},
-       adapters = {Image.class, ComponentExporter.class},
-       resourceType = "core/email/components/image/v1/image",
-       defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+@Model(
+    adaptables = { Resource.class, SlingHttpServletRequest.class },
+    adapters = { Image.class, ComponentExporter.class },
+    resourceType = "core/email/components/image/v1/image",
+    defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
+)
 public class ImageModel implements Image {
     static final String DEFAULT_WIDTH_PROPERTY = "defaultWidth";
     static final Long DEFAULT_WIDTH = 1280L;
@@ -65,9 +66,6 @@ public class ImageModel implements Image {
 
     @Self
     protected SlingHttpServletRequest slingHttpServletRequest;
-
-    @OSGiService
-    protected UrlMapperService urlMapperService;
 
     @ScriptVariable
     protected Style currentStyle;
@@ -164,10 +162,10 @@ public class ImageModel implements Image {
 
     @Override
     public String getSrc() {
-        if (Objects.isNull(delegate) || Objects.isNull(urlMapperService)) {
+        if (Objects.isNull(delegate)) {
             return null;
         }
-        return urlMapperService.getMappedUrl(resourceResolver, slingHttpServletRequest, delegate.getSrc());
+        return delegate.getSrc();
     }
 
     @Override

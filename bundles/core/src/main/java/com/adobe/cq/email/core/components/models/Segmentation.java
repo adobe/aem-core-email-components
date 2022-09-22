@@ -13,27 +13,29 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.services;
+package com.adobe.cq.email.core.components.models;
 
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ResourceResolver;
+import java.util.List;
 
-import com.adobe.cq.wcm.core.components.commons.link.Link;
+import org.jetbrains.annotations.NotNull;
+import org.osgi.annotation.versioning.ConsumerType;
 
-/**
- * Service that can create a {@link Link} to an Adobe Campaign Classic instance
- */
-public interface AccLinkService {
+import com.adobe.cq.wcm.core.components.models.ListItem;
+import com.adobe.cq.wcm.core.components.models.Tabs;
 
-    /**
-     * Creates a {@link Link}
-     *
-     * @param resourceResolver the {@link ResourceResolver}
-     * @param request          the {@link SlingHttpServletRequest}
-     * @param url              the current URL
-     * @return the {@link Link} to ACC instance
-     */
-    Link create(ResourceResolver resourceResolver, SlingHttpServletRequest request, String url);
+@ConsumerType
+public interface Segmentation extends Tabs {
 
+    @NotNull
+    List<? extends SegmentationItem> getSegmentationItems();
+
+    @ConsumerType
+    interface SegmentationItem extends ListItem {
+
+        String getProlog();
+
+        String getEpilogue();
+
+    }
 
 }

@@ -65,7 +65,7 @@
         <mockitio.version>2.24.5</mockitio.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <core.components.version>2.18.0</core.components.version>
+        <core.components.version>2.21.0</core.components.version>
     </properties>
 
     <!-- ======================================================================= -->
@@ -317,6 +317,7 @@
                     <executions>
                         <execution>
                             <id>baseline</id>
+                            <phase>none</phase>
                             <goals>
                                 <goal>baseline</goal>
                             </goals>
