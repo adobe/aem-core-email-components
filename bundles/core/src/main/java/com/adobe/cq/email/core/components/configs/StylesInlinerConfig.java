@@ -34,7 +34,8 @@ public @interface StylesInlinerConfig {
      */
     @AttributeDefinition(name = "Wrapper DIV classes to be removed",
                          description = "List of classes of the DIVs to be removed from inlined style output HTML.",
-                         type = AttributeType.STRING) String[] wrapperDivClassesToBeRemoved() default {"aem-Grid", "aem-GridColumn"};
+                         type = AttributeType.STRING)
+    String[] wrapperDivClassesToBeRemoved() default {"aem-Grid", "aem-GridColumn"};
 
     @AttributeDefinition(name = "HTML inliner configuration",
                          description =
@@ -49,7 +50,13 @@ public @interface StylesInlinerConfig {
                                          HtmlInlinerConfiguration.OVERRIDE_IF_ALREADY_EXISTING +
                                          ": true/false, allows to select to override the HTML attribute if it is " +
                                          "already existing (otherwise it is ignored).",
-                         type = AttributeType.STRING) String[] htmlInlinerConfiguration() default {
+                         type = AttributeType.STRING)
+    String[] htmlInlinerConfiguration() default {
             HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT};
 
+    @AttributeDefinition(name = "Skip usage check",
+                         description = "List of CSS selectors which should be kept in the inline CSS output, without checking usage in " +
+                                 "current Page",
+                         type = AttributeType.STRING)
+    String[] skipUsageSelectors();
 }

@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.util;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.email.core.components.pojo.StyleToken;
@@ -38,17 +39,24 @@ public class StyleTokenFactory {
      * @return the {@link StyleToken}
      */
     public static StyleToken create(String selector) {
+        return create(selector, false);
+    }
+
+    public static StyleToken create(String selector, boolean forceUsage) {
         StyleToken styleToken = new StyleToken();
         styleToken.setSelector(selector);
+        styleToken.setForceUsage(forceUsage);
         if (StringUtils.isNotEmpty(selector) && selector.contains(",")) {
             for (String splitted : selector.split(",")) {
+                splitted = StringUtils.substringBefore(splitted, ":");
                 if (StringUtils.isEmpty(splitted)) {
                     continue;
                 }
-                addSplittedSelector(styleToken, splitted);
+                addJsoupSelector(styleToken, splitted);
             }
         } else {
-            addSplittedSelector(styleToken, selector);
+            selector = StringUtils.substringBefore(selector, ":");
+            addJsoupSelector(styleToken, selector);
         }
         return styleToken;
     }
@@ -137,19 +145,35 @@ public class StyleTokenFactory {
     @Nullable
     public static String toCss(StyleToken styleToken) {
         String css = null;
-        if (Objects.nonNull(styleToken)) {
-            css = styleToken.getSelector() + " { " + getAllProperties(styleToken) + " }\n";
+        StringBuilder cssBuilder = toCss(styleToken, new StringBuilder());
+        if (StringUtils.isNotEmpty(cssBuilder.toString())) {
+            css = cssBuilder.toString().trim() + "\n";
         }
         return css;
     }
 
-    private static void addSplittedSelector(StyleToken styleToken, String splittedSelector) {
+    private static StringBuilder toCss(StyleToken styleToken, @NotNull StringBuilder builder) {
+        if (Objects.nonNull(styleToken)) {
+            builder.append(styleToken.getSelector()).append(" {");
+            for (StyleToken childToken: styleToken.getChildTokens()) {
+                toCss(childToken, builder.append(" "));
+            }
+            String properties = getAllProperties(styleToken);
+            if (StringUtils.isNotEmpty(properties)) {
+                builder.append(" ").append(properties);
+            }
+            builder.append(" }");
+        }
+        return builder;
+    }
+
+    private static void addJsoupSelector(StyleToken styleToken, String splittedSelector) {
         if (Objects.isNull(styleToken)) {
             return;
         }
         if (StringUtils.isEmpty(splittedSelector)) {
             return;
         }
-        styleToken.getSplitSelectors().add(splittedSelector.trim());
+        styleToken.getJsoupSelectors().add(splittedSelector.trim());
     }
 }

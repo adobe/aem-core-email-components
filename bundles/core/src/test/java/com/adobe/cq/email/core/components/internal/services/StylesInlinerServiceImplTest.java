@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.internal.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -39,14 +40,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.adobe.cq.email.core.components.configs.StylesInlinerConfig;
 import com.adobe.cq.email.core.components.constants.StylesInlinerConstants;
+import com.adobe.cq.email.core.components.pojo.HtmlInlinerConfiguration;
 import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_FILE_PATH;
-import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.OTHER_STYLE_AFTER_PROCESSING_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.MEDIA_STYLE_AFTER_PROCESSING_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.MEDIA_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.OTHER_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -67,7 +72,27 @@ class StylesInlinerServiceImplTest {
         this.sut = new StylesInlinerServiceImpl();
         this.sut.setRequestResponseFactory(requestResponseFactory);
         this.sut.setRequestProcessor(requestProcessor);
-        this.sut.activate(null);
+        this.sut.activate(new StylesInlinerConfig() {
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return StylesInlinerConfig.class;
+            }
+
+            @Override
+            public String[] wrapperDivClassesToBeRemoved() {
+                return new String[]{"aem-Grid", "aem-GridColumn"};
+            }
+
+            @Override
+            public String[] htmlInlinerConfiguration() {
+                return new String[]{HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT};
+            }
+
+            @Override
+            public String[] skipUsageSelectors() {
+                return new String[]{"table.nonExisting", ".ExternalClass"};
+            }
+        });
     }
 
     @Test
@@ -75,8 +100,9 @@ class StylesInlinerServiceImplTest {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH),
-                document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        Elements elements = document.select(StylesInlinerConstants.STYLE_TAG);
+        assertEquals(getFileContent(MEDIA_STYLE_AFTER_PROCESSING_FILE_PATH), elements.get(0).getAllElements().get(0).data());
+        assertEquals(getFileContent(OTHER_STYLE_AFTER_PROCESSING_FILE_PATH), elements.get(1).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
         checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"), Optional.empty());
@@ -100,7 +126,7 @@ class StylesInlinerServiceImplTest {
         JsonReader reader = Json.createReader(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
         String html = reader.readObject().getString("html");
         Document document = Jsoup.parse(html);
-        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_FILE_PATH), document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        assertEquals(getFileContent(MEDIA_STYLE_AFTER_PROCESSING_FILE_PATH), document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList("font-family: 'Timmana', 'Gill Sans', sans-serif"), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
         checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"), Optional.empty());
@@ -121,7 +147,11 @@ class StylesInlinerServiceImplTest {
         String result =
                 sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH));
         Document document = Jsoup.parse(result);
-        assertEquals(getFileContent(STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH), document.selectFirst(StylesInlinerConstants.STYLE_TAG).getAllElements().get(0).data());
+        Elements elements = document.select(StylesInlinerConstants.STYLE_TAG);
+        assertEquals(getFileContent(MEDIA_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH),
+                elements.get(0).getAllElements().get(0).data());
+        assertEquals(getFileContent(OTHER_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH),
+                elements.get(1).getAllElements().get(0).data());
         checkElements(document, "body", Collections.singletonList(""), Optional.empty());
         checkElements(document, "h1", Arrays.asList("Margin: 0px", "color: #004488", "font-size: 20px"), Optional.empty());
         checkElements(document, "p", Arrays.asList("Margin: 0px", "color: #004488"), Optional.empty());

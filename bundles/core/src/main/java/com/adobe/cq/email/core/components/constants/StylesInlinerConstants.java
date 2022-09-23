@@ -56,7 +56,7 @@ public class StylesInlinerConstants {
     /**
      * Comments regex used when parsing HTML page
      */
-    public static final String COMMENTS_REGEX = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
+    public static final String COMMENTS_REGEX = "(?!\\/\\*\\signore_style_usage\\s\\*\\/)\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
     /**
      * "head" tag used when parsing HTML page
      */

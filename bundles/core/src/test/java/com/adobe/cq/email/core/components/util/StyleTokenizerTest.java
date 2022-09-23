@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.util;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -33,17 +34,17 @@ class StyleTokenizerTest {
 
     @Test
     void nullCss() {
-        assertTrue(StyleTokenizer.tokenize(null).isEmpty());
+        assertTrue(StyleTokenizer.tokenize(null, new HashSet<>()).isEmpty());
     }
 
     @Test
     void emptyCss() {
-        assertTrue(StyleTokenizer.tokenize("").isEmpty());
+        assertTrue(StyleTokenizer.tokenize("", new HashSet<>()).isEmpty());
     }
 
     @Test
     void success() throws URISyntaxException, IOException {
-        List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_FILE_PATH));
+        List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_FILE_PATH), new HashSet<>());
         StringBuilder builder = new StringBuilder();
         for (StyleToken styleToken : result) {
             builder.append(StyleTokenFactory.toCss(styleToken)).append("\n");
@@ -53,7 +54,7 @@ class StyleTokenizerTest {
 
     @Test
     void success_StyleWithoutLastSemicolon() throws URISyntaxException, IOException {
-        List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH));
+        List<StyleToken> result = StyleTokenizer.tokenize(getFileContent(STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH), new HashSet<>());
         StringBuilder builder = new StringBuilder();
         for (StyleToken styleToken : result) {
             builder.append(StyleTokenFactory.toCss(styleToken)).append("\n");
