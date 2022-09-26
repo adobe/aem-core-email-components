@@ -37,9 +37,12 @@ public class TestFileUtils {
     public final static String STYLE_FILE_PATH = "testpage/style.css";
     public final static String STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH = "testpage/style_without_last_semicolon.css";
 
-    public final static String STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/unused_style.css";
-    public final static String STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH =
-            "testpage/unused_style_with_immediate_children.css";
+    public final static String MEDIA_STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/media_unused_style.css";
+    public final static String OTHER_STYLE_AFTER_PROCESSING_FILE_PATH = "testpage/other_unused_style.css";
+    public final static String MEDIA_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH =
+            "testpage/media_style_with_immediate_children.css";
+    public final static String OTHER_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH =
+            "testpage/other_style_with_immediate_children.css";
     public final static String TO_BE_SANITIZED_FILE_PATH = "testpage/to_be_sanitized.html";
     public final static String WITHOUT_SCRIPTS_FILE_PATH = "testpage/without_scripts.html";
     public final static String SANITIZED_FILE_PATH = "testpage/sanitized.html";

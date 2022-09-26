@@ -18,6 +18,7 @@ package com.adobe.cq.email.core.components.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,8 @@ import com.adobe.cq.email.core.components.pojo.StyleToken;
  */
 public class StyleTokenizer {
 
+    private static final String REGEX = "((?<=[{}])|(?=[{}]))";
+
     private StyleTokenizer() {
         // To avoid instantiation
     }
@@ -41,55 +44,64 @@ public class StyleTokenizer {
      * @param css the CSS stylesheet
      * @return a {@link List} of {@link StyleToken}
      */
-    public static @NotNull List<StyleToken> tokenize(String css) {
+    public static @NotNull List<StyleToken> tokenize(String css, Set<String> skipCheck) {
         List<StyleToken> result = new ArrayList<>();
         if (StringUtils.isEmpty(css)) {
             return result;
         }
-        StringTokenizer tokenizer =
-                new StringTokenizer(css.replaceAll("\\s+", " ").replaceAll("/\\*[^*]*\\*+([^/*][^*]*\\*+)*/", "").trim(),
-                        StylesInlinerConstants.STYLE_DELIMS);
+        String[] strings = css.replaceAll("\\s+", " ").replaceAll("/\\*[^*]*\\*+([^/*][^*]*\\*+)*/", "").trim().split(REGEX);
         StyleToken current = null;
+        StyleToken parent = null;
         int nestingLevel = 0;
-        StringBuilder nestedPropertiesBuilder = new StringBuilder();
-        while (tokenizer.hasMoreTokens()) {
-            String next = tokenizer.nextToken().trim();
+        for (String string : strings) {
+            String next = string.trim();
+
             if (StringUtils.isEmpty(next)) {
                 continue;
             }
-            if (Objects.isNull(current)) {
+
+            if (StringUtils.equals(next, "{")) {
+                nestingLevel++;
+                continue;
+            } else if (StringUtils.equals(next, "}")) {
+                nestingLevel--;
+                if (nestingLevel == 0 && Objects.nonNull(current)) {
+                    current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
+                    if (Objects.nonNull(parent)) {
+                        current = parent;
+                        parent = null;
+                    }
+                    result.add(current);
+                } else if (nestingLevel > 0 && Objects.nonNull(parent)) {
+                    parent.getChildTokens().add(current);
+                }
+                continue;
+            }
+
+            if (nestingLevel == 0) {
                 current = StyleTokenFactory.create(next);
+                if (skipCheck.contains(current.getSelector())) {
+                    current.setForceUsage(true);
+                }
                 current.setMediaQuery(current.getSelector().contains("@"));
                 current.setPseudoSelector(!current.isMediaQuery() && next.contains(":"));
-            } else {
+                continue;
+            }
+
+            if (nestingLevel > 0) {
                 if (next.contains(";") || next.contains(":")) {
-                    if (nestingLevel > 0) {
-                        nestedPropertiesBuilder.append(next);
-                        if (!nestedPropertiesBuilder.toString().endsWith(";")) {
-                            nestedPropertiesBuilder.append(";");
-                        }
-                        nestedPropertiesBuilder.append(" } ");
-                        nestingLevel--;
-                    } else {
-                        StyleTokenFactory.addProperties(current, next);
-                    }
-                    if (nestingLevel == 0) {
-                        if (nestedPropertiesBuilder.length() > 0) {
-                            StyleTokenFactory.addProperties(current, nestedPropertiesBuilder.toString());
-                        }
-                        current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
-                        result.add(current);
-                        current = null;
-                        nestedPropertiesBuilder = new StringBuilder();
-                    }
+                    StyleTokenFactory.addProperties(current, next);
                 } else {
-                    nestedPropertiesBuilder.append(next).append(" { ");
-                    current.setNested(true);
-                    nestingLevel++;
+                    if (Objects.isNull(parent)) {
+                        parent = current;
+                    }
+                    current = StyleTokenFactory.create(next);
+                    if (skipCheck.contains(current.getSelector())) {
+                        current.setForceUsage(true);
+                    }
                 }
             }
         }
         return result;
     }
-
 }
