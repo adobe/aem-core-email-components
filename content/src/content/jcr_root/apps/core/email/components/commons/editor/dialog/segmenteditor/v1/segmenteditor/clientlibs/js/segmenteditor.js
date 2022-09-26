@@ -36,7 +36,7 @@
         add: "[data-cmp-hook-segmenteditor='add']",
         insertComponentDialog: {
             self: "coral-dialog.InsertComponentDialog",
-            selectList: "coral-selectlist"
+            selectList: ".InsertComponentDialog-list"
         },
         item: {
             icon: "[data-cmp-hook-segmenteditor='itemIcon']",
@@ -240,6 +240,19 @@
                             var editable = ns.editables.find(that._path)[0];
                             var children = editable.getChildren();
 
+                            function getSelectListChangeEvent(onCloud) {
+                                return (onCloud ? "click" : "coral-selectlist:change");
+                            }
+
+                            function getSelectListSelector(onCloud) {
+                                return (onCloud ? "coral-list-item" : null);
+                            }
+
+                            function getSelectListItems(event, onCloud) {
+                                return (onCloud ? ns.components.find(event.target.closest("coral-list-item").value)
+                                    : ns.components.find(event.detail.selection.value));
+                            }
+
                             // create the insert component dialog relative to a child item
                             // - against which allowed components are calculated.
                             if (children.length > 0) {
@@ -248,17 +261,19 @@
 
                                 var insertComponentDialog = $(document).find(selectors.insertComponentDialog.self)[0];
                                 var selectList = insertComponentDialog.querySelectorAll(selectors.insertComponentDialog.selectList)[0];
+                                var onCloud = selectList.toString() === "Coral.List";
 
                                 // next frame to ensure we remove the default event handler
                                 Coral.commons.nextFrame(function() {
-                                    selectList.off("coral-selectlist:change");
-                                    selectList.on("coral-selectlist:change" + NS, function(event) {
+                                    selectList.off(getSelectListChangeEvent(onCloud));
+                                    selectList.on(getSelectListChangeEvent(onCloud) + NS, getSelectListSelector(onCloud), function(event) {
                                         var resourceType = "";
                                         var templatePath = "";
+                                        var components = "";
 
                                         insertComponentDialog.hide();
 
-                                        var components = ns.components.find(event.detail.selection.value);
+                                        components = getSelectListItems(event, onCloud);
                                         if (components.length > 0) {
                                             resourceType = components[0].getResourceType();
                                             templatePath = components[0].getTemplatePath();
@@ -313,7 +328,7 @@
                                 });
                                 // unbind events on dialog close
                                 channel.one("coral-overlay:beforeclose", function() {
-                                    selectList.off("coral-selectlist:change" + NS);
+                                    selectList.off(getSelectListChangeEvent(onCloud) + NS);
                                 });
                             }
                         });
