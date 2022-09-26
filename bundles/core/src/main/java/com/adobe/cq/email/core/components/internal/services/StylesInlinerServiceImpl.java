@@ -18,10 +18,14 @@ package com.adobe.cq.email.core.components.internal.services;
 import java.io.ByteArrayInputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -92,7 +96,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
      */
     @Activate
     public void activate(final StylesInlinerConfig stylesInlinerConfig) {
-        this.stylesInlinerConfig = Optional.ofNullable(stylesInlinerConfig).orElse(defaultStylesInlinerConfig());
+        this.stylesInlinerConfig = stylesInlinerConfig;
 
     }
 
@@ -122,25 +126,32 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             List<String> styles = StyleExtractor.extract(doc, requestResponseFactory, requestProcessor, resourceResolver);
             List<StyleToken> styleTokens = new ArrayList<>();
             List<StyleToken> unInlinableStyleTokens = new ArrayList<>();
-            StringBuilder styleSb = new StringBuilder();
+            List<StyleToken> mediaStyleTokens = new ArrayList<>();
+            Set<String> skipUsageCheck = new HashSet<>(Arrays.asList(stylesInlinerConfig.skipUsageSelectors()));
+
             for (String allRules : styles) {
                 String rules = allRules.replaceAll(NEW_LINE, "") // remove newlines
                         .replaceAll(COMMENTS_REGEX, "") // remove comments
                         .trim();
-                for (StyleToken styleToken : StyleTokenizer.tokenize(rules)) {
-                    populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens);
+                for (StyleToken styleToken : StyleTokenizer.tokenize(rules, skipUsageCheck)) {
+                    populateStylesToBeApplied(styleToken, doc, styleTokens, unInlinableStyleTokens, mediaStyleTokens);
                 }
             }
-            String stylePlaceholder = "!!!STYLE_PLACEHOLDER_" + new Date().getTime() + "!!!";
+            String mediaStylePlaceholder = "!!!MEDIA_STYLE_PLACEHOLDER_" + new Date().getTime() + "!!!";
+            String otherStylePlaceholder = "!!!OTHER_STYLE_PLACEHOLDER_" + new Date().getTime() + "!!!";
             HtmlSanitizer.sanitizeDocument(doc);
             applyStyles(doc, styleTokens, stylesInlinerConfig.htmlInlinerConfiguration());
-            processStyle(doc, styleSb, stylePlaceholder, unInlinableStyleTokens);
+            StringBuilder mediaStyleSb = new StringBuilder();
+            processStyle(doc, mediaStyleSb, mediaStylePlaceholder, mediaStyleTokens);
+            StringBuilder otherStyleSb = new StringBuilder();
+            processStyle(doc, otherStyleSb, otherStylePlaceholder, unInlinableStyleTokens);
             WrapperDivRemover.removeWrapperDivs(doc, stylesInlinerConfig.wrapperDivClassesToBeRemoved());
             String outerHtml = doc.outerHtml();
             if (StringUtils.isEmpty(outerHtml)) {
                 return outerHtml;
             }
-            outerHtml = outerHtml.replace(stylePlaceholder, styleSb.toString().trim());
+            outerHtml = outerHtml.replace(mediaStylePlaceholder, mediaStyleSb.toString().trim());
+            outerHtml = outerHtml.replace(otherStylePlaceholder, otherStyleSb.toString().trim());
             return outerHtml;
         } catch (Throwable e) {
             throw new StylesInlinerException("An error occurred during execution: " + e.getMessage(), e);
@@ -165,17 +176,46 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
      * @param unInlinableStyleTokens the un-inlinable style tokens
      */
     private void populateStylesToBeApplied(StyleToken styleToken, Document doc, List<StyleToken> styleTokens,
-                                           List<StyleToken> unInlinableStyleTokens) {
-        if (styleToken.isMediaQuery() || styleToken.isPseudoSelector()) {
-            unInlinableStyleTokens.add(styleToken);
-            return;
+                                           List<StyleToken> unInlinableStyleTokens, List<StyleToken> mediaStyleTokens) {
+        if (styleToken.isMediaQuery() && !styleToken.getChildTokens().isEmpty()) {
+            for (Iterator<StyleToken> iterator = styleToken.getChildTokens().iterator(); iterator.hasNext();) {
+                StyleToken childToken = iterator.next();
+                if (childToken.isForceUsage()) {
+                    continue;
+                }
+                List<String> childCssSelectors = childToken.getJsoupSelectors();
+                for (String childCssSelector : childCssSelectors) {
+                    Elements selectedElements = doc.select(childCssSelector);
+                    if (selectedElements.isEmpty()) {
+                        iterator.remove();
+                    }
+                }
+
+            }
+            if (!styleToken.getChildTokens().isEmpty()) {
+                mediaStyleTokens.add(styleToken);
+                return;
+            }
         }
-        List<String> cssSelectors = styleToken.getSplitSelectors();
+
+        List<String> cssSelectors = styleToken.getJsoupSelectors();
+        if (styleToken.isPseudoSelector()) {
+            for (String cssSelector : cssSelectors) {
+                Elements selectedElements = doc.select(cssSelector);
+                if (!selectedElements.isEmpty() || styleToken.isForceUsage()) {
+                    unInlinableStyleTokens.add(styleToken);
+                    return;
+                }
+            }
+        }
+
         for (String cssSelector : cssSelectors) {
             try {
                 Elements selectedElements = doc.select(cssSelector);
                 if (selectedElements.isEmpty()) {
-                    unInlinableStyleTokens.add(create(cssSelector, styleToken));
+                    if (styleToken.isForceUsage()) {
+                        unInlinableStyleTokens.add(styleToken);
+                    }
                     continue;
                 }
                 boolean updated = false;
@@ -238,14 +278,14 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         }
     }
 
-    private void processStyle(Document doc, StringBuilder styleSb, String stylePlaceholder, List<StyleToken> unusedStyleTokens) {
-        if (Objects.isNull(unusedStyleTokens) || unusedStyleTokens.isEmpty()) {
+    private void processStyle(Document doc, StringBuilder styleSb, String stylePlaceholder, List<StyleToken> styleTokens) {
+        if (Objects.isNull(styleTokens) || styleTokens.isEmpty()) {
             return;
         }
         Element style = new Element(STYLE_TAG);
         style.attr("type", "text/css");
         doc.select(HEAD_TAG).get(0).appendChild(style);
-        for (StyleToken styleToken : unusedStyleTokens) {
+        for (StyleToken styleToken : styleTokens) {
             styleSb.append(StyleTokenFactory.toCss(styleToken));
         }
         style.text(stylePlaceholder);
@@ -257,25 +297,5 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
 
     void setRequestProcessor(SlingRequestProcessor requestProcessor) {
         this.requestProcessor = requestProcessor;
-    }
-
-    private StylesInlinerConfig defaultStylesInlinerConfig() {
-        return new StylesInlinerConfig() {
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return StylesInlinerConfig.class;
-            }
-
-            @Override
-            public String[] wrapperDivClassesToBeRemoved() {
-                return new String[]{"aem-Grid", "aem-GridColumn"};
-            }
-
-            @Override
-            public String[] htmlInlinerConfiguration() {
-                return new String[]{HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT};
-            }
-
-        };
     }
 }
