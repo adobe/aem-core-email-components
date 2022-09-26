@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Hello</title>
+    <style type="text/css">
+        p {
+            color: red
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        a:hover {
+            color: green;
+        }
+
+
+        @media screen and (max-width: 600px) {
+            a:hover {
+                color: yellow;
+            }
+
+            p {
+                color: blue;
+            }
+        }
+
+    </style>
+    <!--[if mso]>
+    <style>.hide-mso {
+        display: none;
+    }
+    </style><![endif]-->
+</head>
+<body>
+<a href="#">Hello</a>
+<p>World</p>
+</body>
+</html>

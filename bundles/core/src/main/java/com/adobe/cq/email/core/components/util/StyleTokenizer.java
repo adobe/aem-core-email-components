@@ -53,17 +53,19 @@ public class StyleTokenizer {
         StyleToken current = null;
         StyleToken parent = null;
         int nestingLevel = 0;
+        int index = 0;
         for (String string : strings) {
-            String next = string.trim();
+            index++;
+            String item = string.trim();
 
-            if (StringUtils.isEmpty(next)) {
+            if (StringUtils.isEmpty(item)) {
                 continue;
             }
 
-            if (StringUtils.equals(next, "{")) {
+            if (StringUtils.equals(item, "{")) {
                 nestingLevel++;
                 continue;
-            } else if (StringUtils.equals(next, "}")) {
+            } else if (StringUtils.equals(item, "}")) {
                 nestingLevel--;
                 if (nestingLevel == 0 && Objects.nonNull(current)) {
                     current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
@@ -79,23 +81,29 @@ public class StyleTokenizer {
             }
 
             if (nestingLevel == 0) {
-                current = StyleTokenFactory.create(next);
+                current = StyleTokenFactory.create(item);
                 if (skipCheck.contains(current.getSelector())) {
                     current.setForceUsage(true);
                 }
                 current.setMediaQuery(current.getSelector().contains("@"));
-                current.setPseudoSelector(!current.isMediaQuery() && next.contains(":"));
+                current.setPseudoSelector(!current.isMediaQuery() && item.contains(":"));
                 continue;
             }
 
             if (nestingLevel > 0) {
-                if (next.contains(";") || next.contains(":")) {
-                    StyleTokenFactory.addProperties(current, next);
+                boolean isInnerPseudo = false;
+                String next = strings[index].trim();
+                if (current.isMediaQuery() && item.contains(":") && StringUtils.equals(next, "{")) {
+                    isInnerPseudo = true;
+                }
+                if ((item.contains(";") || item.contains(":")) && !isInnerPseudo) {
+                    StyleTokenFactory.addProperties(current, item);
                 } else {
                     if (Objects.isNull(parent)) {
                         parent = current;
                     }
-                    current = StyleTokenFactory.create(next);
+                    current = StyleTokenFactory.create(item);
+                    current.setPseudoSelector(isInnerPseudo);
                     if (skipCheck.contains(current.getSelector())) {
                         current.setForceUsage(true);
                     }
