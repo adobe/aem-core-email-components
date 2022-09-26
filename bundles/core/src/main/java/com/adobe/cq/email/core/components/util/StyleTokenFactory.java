@@ -145,9 +145,9 @@ public class StyleTokenFactory {
     @Nullable
     public static String toCss(StyleToken styleToken) {
         String css = null;
-        StringBuilder cssBuilder = toCss(styleToken, new StringBuilder());
-        if (StringUtils.isNotEmpty(cssBuilder.toString())) {
-            css = cssBuilder.toString().trim() + "\n";
+        String styleTokenCss  = toCss(styleToken, new StringBuilder()).toString();
+        if (StringUtils.isNotEmpty(styleTokenCss)) {
+            css = styleTokenCss.trim() + "\n";
         }
         return css;
     }
