@@ -48,10 +48,13 @@ import com.day.cq.contentsync.handler.util.RequestResponseFactory;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_HTML_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_JSON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_WITH_IMMEDIATE_CHILDREN_HTML_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.INTERNAL_CSS_WITH_INNER_PSEUDO_HTML_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.MEDIA_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.OTHER_STYLE_AFTER_PROCESSING_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.MEDIA_STYLE_AFTER_PROCESSING_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.MEDIA_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.OTHER_STYLE_AFTER_PROCESSING_WITH_IMMEDIATE_CHILDREN_FILE_PATH;
+import static com.adobe.cq.email.core.components.TestFileUtils.OTHER_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -170,6 +173,19 @@ class StylesInlinerServiceImplTest {
                 Optional.empty());
         checkElements(document, "h3.example2", Arrays.asList("border-bottom-width: 12px", "border: 3px solid green", "color: darkgrey"),
                 Optional.empty());
+    }
+
+    @Test
+    void success_CssWithInnerPseudo() throws URISyntaxException, IOException {
+        String result =
+                sut.getHtmlWithInlineStyles(resourceResolver, getFileContent(INTERNAL_CSS_WITH_INNER_PSEUDO_HTML_FILE_PATH));
+        Document document = Jsoup.parse(result);
+        Elements elements = document.select(StylesInlinerConstants.STYLE_TAG);
+        assertEquals(getFileContent(MEDIA_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH),
+                elements.get(0).getAllElements().get(0).data());
+        assertEquals(getFileContent(OTHER_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH),
+                elements.get(1).getAllElements().get(0).data());
+        checkElements(document, "p", Arrays.asList("color: red"), Optional.empty());
     }
 
     private void checkElements(Document document, String cssQuery, List<String> expectedStyles, Optional<Integer> index) {

@@ -49,6 +49,11 @@ public class TestFileUtils {
     public final static String WRAPPER_DIV_REMOVAL_INPUT_FILE_PATH = "wrapper-div-removal/input.html";
     public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_removed.html";
     public final static String WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_NOT_REMOVED_FILE_PATH = "wrapper-div-removal/output_divs_not_removed.html";
+    public static final String INTERNAL_CSS_WITH_INNER_PSEUDO_HTML_FILE_PATH = "testpage/internal_css_with_inner_pseudo.html";
+    public final static String MEDIA_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH =
+            "testpage/media_style_with_inner_pseudo.css";
+    public final static String OTHER_STYLE_AFTER_PROCESSING_WITH_INNER_PSEUDO_FILE_PATH =
+            "testpage/other_style_with_inner_pseudo.css";
 
 
     public static String getFileContent(String path) throws URISyntaxException, IOException {

@@ -53,23 +53,27 @@ public class StyleTokenizer {
         StyleToken current = null;
         StyleToken parent = null;
         int nestingLevel = 0;
-        for (String string : strings) {
-            String next = string.trim();
+        for (int i = 0; i < strings.length; i++) {
+            String item = strings[i].trim();
 
-            if (StringUtils.isEmpty(next)) {
+            if (StringUtils.isEmpty(item)) {
                 continue;
             }
 
-            if (StringUtils.equals(next, "{")) {
+            if (StringUtils.equals(item, "{")) {
                 nestingLevel++;
                 continue;
-            } else if (StringUtils.equals(next, "}")) {
+            }
+
+            if (StringUtils.equals(item, "}")) {
                 nestingLevel--;
                 if (nestingLevel == 0 && Objects.nonNull(current)) {
-                    current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
                     if (Objects.nonNull(parent)) {
                         current = parent;
                         parent = null;
+                    }
+                    if(!current.isMediaQuery() && !current.isPseudoSelector()) {
+                        current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
                     }
                     result.add(current);
                 } else if (nestingLevel > 0 && Objects.nonNull(parent)) {
@@ -78,28 +82,26 @@ public class StyleTokenizer {
                 continue;
             }
 
-            if (nestingLevel == 0) {
-                current = StyleTokenFactory.create(next);
+            String next = strings[i+1].trim();
+            if (StringUtils.isEmpty(next)) {
+                continue;
+            }
+
+            if (StringUtils.equals(next, "{")) {
+                if (nestingLevel > 0 && Objects.isNull(parent)) {
+                    parent = current;
+                }
+                current = StyleTokenFactory.create(item);
                 if (skipCheck.contains(current.getSelector())) {
                     current.setForceUsage(true);
                 }
                 current.setMediaQuery(current.getSelector().contains("@"));
-                current.setPseudoSelector(!current.isMediaQuery() && next.contains(":"));
+                current.setPseudoSelector(!current.isMediaQuery() && item.contains(":"));
                 continue;
             }
 
-            if (nestingLevel > 0) {
-                if (next.contains(";") || next.contains(":")) {
-                    StyleTokenFactory.addProperties(current, next);
-                } else {
-                    if (Objects.isNull(parent)) {
-                        parent = current;
-                    }
-                    current = StyleTokenFactory.create(next);
-                    if (skipCheck.contains(current.getSelector())) {
-                        current.setForceUsage(true);
-                    }
-                }
+            if ((item.contains(";") || item.contains(":")) && Objects.nonNull(current)) {
+                StyleTokenFactory.addProperties(current, item);
             }
         }
         return result;
