@@ -53,10 +53,8 @@ public class StyleTokenizer {
         StyleToken current = null;
         StyleToken parent = null;
         int nestingLevel = 0;
-        int index = 0;
-        for (String string : strings) {
-            index++;
-            String item = string.trim();
+        for (int i = 0; i < strings.length; i++) {
+            String item = strings[i].trim();
 
             if (StringUtils.isEmpty(item)) {
                 continue;
@@ -65,13 +63,17 @@ public class StyleTokenizer {
             if (StringUtils.equals(item, "{")) {
                 nestingLevel++;
                 continue;
-            } else if (StringUtils.equals(item, "}")) {
+            }
+
+            if (StringUtils.equals(item, "}")) {
                 nestingLevel--;
                 if (nestingLevel == 0 && Objects.nonNull(current)) {
-                    current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
                     if (Objects.nonNull(parent)) {
                         current = parent;
                         parent = null;
+                    }
+                    if(!current.isMediaQuery() && !current.isPseudoSelector()) {
+                        current.setSpecificity(StyleSpecificityFactory.getSpecificity(current.getSelector()));
                     }
                     result.add(current);
                 } else if (nestingLevel > 0 && Objects.nonNull(parent)) {
@@ -80,7 +82,15 @@ public class StyleTokenizer {
                 continue;
             }
 
-            if (nestingLevel == 0) {
+            String next = strings[i+1].trim();
+            if (StringUtils.isEmpty(next)) {
+                continue;
+            }
+
+            if (StringUtils.equals(next, "{")) {
+                if (nestingLevel > 0 && Objects.isNull(parent)) {
+                    parent = current;
+                }
                 current = StyleTokenFactory.create(item);
                 if (skipCheck.contains(current.getSelector())) {
                     current.setForceUsage(true);
@@ -90,24 +100,8 @@ public class StyleTokenizer {
                 continue;
             }
 
-            if (nestingLevel > 0) {
-                boolean isInnerPseudo = false;
-                String next = strings[index].trim();
-                if (current.isMediaQuery() && item.contains(":") && StringUtils.equals(next, "{")) {
-                    isInnerPseudo = true;
-                }
-                if ((item.contains(";") || item.contains(":")) && !isInnerPseudo) {
-                    StyleTokenFactory.addProperties(current, item);
-                } else {
-                    if (Objects.isNull(parent)) {
-                        parent = current;
-                    }
-                    current = StyleTokenFactory.create(item);
-                    current.setPseudoSelector(isInnerPseudo);
-                    if (skipCheck.contains(current.getSelector())) {
-                        current.setForceUsage(true);
-                    }
-                }
+            if ((item.contains(";") || item.contains(":")) && Objects.nonNull(current)) {
+                StyleTokenFactory.addProperties(current, item);
             }
         }
         return result;

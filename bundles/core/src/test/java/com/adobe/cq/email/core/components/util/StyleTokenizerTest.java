@@ -28,6 +28,7 @@ import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.STYLE_WITHOUT_LAST_SEMICOLON_FILE_PATH;
 import static com.adobe.cq.email.core.components.TestFileUtils.compare;
 import static com.adobe.cq.email.core.components.TestFileUtils.getFileContent;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StyleTokenizerTest {
@@ -50,6 +51,18 @@ class StyleTokenizerTest {
             builder.append(StyleTokenFactory.toCss(styleToken)).append("\n");
         }
         compare(getFileContent(STYLE_FILE_PATH), builder.toString());
+    }
+
+    @Test
+    void innerPseudoSelector() {
+        String css = "@media screen and (max-width: 600px) { p { color: red; } a:hover { color: yellow; } }";
+        List<StyleToken> result = StyleTokenizer.tokenize(css, new HashSet<>());
+        assertEquals(1, result.size());
+        StringBuilder builder = new StringBuilder();
+        for (StyleToken styleToken : result) {
+            builder.append(StyleTokenFactory.toCss(styleToken));
+        }
+        compare(css, builder.toString());
     }
 
     @Test
