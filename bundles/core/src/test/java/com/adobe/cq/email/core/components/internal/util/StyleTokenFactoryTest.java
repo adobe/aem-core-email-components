@@ -37,8 +37,8 @@ class StyleTokenFactoryTest {
     void createMultipleSelectors() {
         StyleToken expected = new StyleToken();
         expected.setSelector("h1, h2");
-        expected.getSplitSelectors().add("h1");
-        expected.getSplitSelectors().add("h2");
+        expected.getJsoupSelectors().add("h1");
+        expected.getJsoupSelectors().add("h2");
         assertEquals(expected, StyleTokenFactory.create("h1, h2"));
     }
 

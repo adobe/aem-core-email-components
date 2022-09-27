@@ -42,7 +42,7 @@ class StyleTokenTest {
 
     @Test
     public void getSplitSelectors() {
-        assertTrue(sut.getSplitSelectors().isEmpty());
+        assertTrue(sut.getJsoupSelectors().isEmpty());
     }
 
     @Test

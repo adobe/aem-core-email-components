@@ -24,12 +24,14 @@ import java.util.Objects;
  */
 public class StyleToken {
     private String selector;
-    private final List<String> splitSelectors = new ArrayList<>();
+    private final List<String> jsoupSelectors = new ArrayList<>();
     private final List<String> properties = new ArrayList<>();
+    private final List<StyleToken> childTokens = new ArrayList<>();
     private StyleSpecificity specificity;
     private boolean mediaQuery;
     private boolean pseudoSelector;
     private boolean nested;
+    private boolean forceUsage = false;
 
     /**
      * Getter for the actual CSS selector
@@ -54,8 +56,17 @@ public class StyleToken {
      *
      * @return the list of CSS selectors (split if more than one)
      */
-    public List<String> getSplitSelectors() {
-        return splitSelectors;
+    public List<String> getJsoupSelectors() {
+        return jsoupSelectors;
+    }
+
+    /**
+     * Getter for child style tokens
+     *
+     * @return
+     */
+    public List<StyleToken> getChildTokens() {
+        return childTokens;
     }
 
     /**
@@ -149,12 +160,20 @@ public class StyleToken {
         }
         StyleToken that = (StyleToken) o;
         return mediaQuery == that.mediaQuery && pseudoSelector == that.pseudoSelector && nested == that.nested &&
-                Objects.equals(selector, that.selector) && Objects.equals(splitSelectors, that.splitSelectors) &&
+                Objects.equals(selector, that.selector) && Objects.equals(jsoupSelectors, that.jsoupSelectors) &&
                 Objects.equals(properties, that.properties) && Objects.equals(specificity, that.specificity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selector, splitSelectors, properties, specificity, mediaQuery, pseudoSelector, nested);
+        return Objects.hash(selector, jsoupSelectors, properties, specificity, mediaQuery, pseudoSelector, nested);
+    }
+
+    public void setForceUsage(boolean forceUsage) {
+        this.forceUsage = forceUsage;
+    }
+
+    public boolean isForceUsage() {
+        return this.forceUsage;
     }
 }
