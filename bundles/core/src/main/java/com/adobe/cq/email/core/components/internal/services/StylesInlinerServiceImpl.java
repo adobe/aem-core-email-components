@@ -178,7 +178,7 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
      */
     private void populateStylesToBeApplied(StyleToken styleToken, Document doc, List<StyleToken> styleTokens,
                                            List<StyleToken> unInlinableStyleTokens, List<StyleToken> mediaStyleTokens) {
-        if (styleToken.isMediaQuery() && !styleToken.getChildTokens().isEmpty()) {
+        if (styleToken.isMediaQuery()) {
             for (Iterator<StyleToken> iterator = styleToken.getChildTokens().iterator(); iterator.hasNext();) {
                 StyleToken childToken = iterator.next();
                 if (childToken.isForceUsage()) {
@@ -195,8 +195,8 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
             }
             if (!styleToken.getChildTokens().isEmpty()) {
                 mediaStyleTokens.add(styleToken);
-                return;
             }
+            return;
         }
 
         List<String> cssSelectors = styleToken.getJsoupSelectors();
