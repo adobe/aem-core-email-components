@@ -25,7 +25,7 @@
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
             </coral-select>
             <input type="hidden" name="./${item.name}/cq:panelTitle" value="${item.value}" class="cmp-segmenteditor__item-title"
-                   data-sly-unwrap="${item.condition == 'custom'}">
+                   data-sly-test="${item.condition != 'custom'}">
             <section class="coral-Form-fieldset custom-segment${item.condition == 'custom' ? ' custom-segment-active': ''}">
                 <div class="coral-Form-fieldwrapper">
                     <label class="coral-Form-fieldlabel">Name</label>
