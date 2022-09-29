@@ -74,7 +74,7 @@ public class StyleTokenFactory {
 
     private static boolean forceUsage (Set<String> skipCheck, StyleToken styleToken) {
         return skipCheck.stream().anyMatch(w -> {
-            Pattern pattern = Pattern.compile("(?<!\\w)" + w + "(?!\\w)");
+            Pattern pattern = Pattern.compile(w);
             return pattern.matcher(styleToken.getSelector()).find();
         });
     }

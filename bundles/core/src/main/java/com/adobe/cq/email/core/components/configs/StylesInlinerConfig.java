@@ -55,8 +55,8 @@ public @interface StylesInlinerConfig {
             HtmlInlinerConfiguration.IMG_WIDTH_DEFAULT};
 
     @AttributeDefinition(name = "Skip usage check",
-                         description = "List of CSS selectors which should be kept in the inline CSS output, without checking usage in " +
-                                 "current Page",
+                         description = "List of CSS selectors: If the provided property is found with RegEx the CSS rule is kept in the " +
+                                 "output without checking usage on the current Page",
                          type = AttributeType.STRING)
     String[] skipUsageSelectors();
 }
