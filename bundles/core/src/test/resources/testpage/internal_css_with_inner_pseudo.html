@@ -22,11 +22,35 @@
             p {
                 color: blue;
             }
+            .foo, .bar {
+                color: red;
+            }
         }
 
         @media screen and (max-width: 800px) {
 
         }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+        .ExternalClass > center > table {
+            width: 640px;
+        }
+
+        td.ExternalClass {
+            width: 640px;
+        }
+
+        .ExternalClass.OtherExternalClass {
+            width: 640px;
+        }
+
+        td.ExternalClassSpecial {
+            width: 640px;
+        }
+
 
     </style>
     <!--[if mso]>
