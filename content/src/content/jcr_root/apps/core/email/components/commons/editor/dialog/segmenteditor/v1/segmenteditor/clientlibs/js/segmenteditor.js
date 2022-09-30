@@ -403,12 +403,9 @@
             },
 
             _sendDeleteParagraph: function(path) {
-                return (new ns.persistence.PostRequest()
-                        .prepareDeleteParagraph({
-                            path: path
-                        })
-                        .send()
-                );
+                return new ns.persistence.PostRequest()
+                    .prepareDeleteParagraph({ path: path })
+                    .send();
             },
 
             _update: function(url) {
@@ -416,9 +413,7 @@
                 return $.ajax({
                     type: "GET",
                     url: url,
-                    data: {
-                      "resourceType": RESOURCE_TYPE
-                    },
+                    data: { "resourceType": RESOURCE_TYPE },
                     dataType: "html",
                     async: false,
                     success: function(data) {
