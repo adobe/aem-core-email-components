@@ -19,7 +19,7 @@
     var DEFAULT_VALUE = "default";
     var SELECTORS = {
         conditions: ".cmp-segmenteditor__item-condition"
-    }
+    };
 
     /* Adapting window object to foundation-registry */
     var registry = $(window).adaptTo("foundation-registry");
@@ -49,8 +49,8 @@
         var $form = $el.closest("form");
         var $conditionsEl = $(SELECTORS.conditions, $form);
         $conditionsEl.each(function(i, item) {
-            if($(item).val() === DEFAULT_VALUE) {
-              defaultConditions.push(item);
+            if ($(item).val() === DEFAULT_VALUE) {
+                defaultConditions.push(item);
             }
         });
         return defaultConditions;
