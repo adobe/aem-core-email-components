@@ -21,7 +21,8 @@
     <coral-multifield-item data-sly-repeat.item="${segmentEditor.items}" data-name="${item.name}">
         <div class="cmp-segmenteditor__item">
             <sly data-sly-call="${iconTemplate.icon @ item=item}"></sly>
-            <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}" name="./${item.name}/condition">
+            <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}"
+                          name="./${item.name}/condition" data-validation="default-condition">
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
             </coral-select>
             <input type="hidden" name="./${item.name}/cq:panelTitle" value="${item.value}" class="cmp-segmenteditor__item-title"
@@ -45,7 +46,7 @@
             <span class="cmp-segmenteditor__item-icon"
                   data-cmp-hook-segmenteditor="itemIcon"></span>
             <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}"
-                          data-cmp-hook-segmenteditor="itemCondition" required>
+                          data-cmp-hook-segmenteditor="itemCondition" required data-validation="default-condition">
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}">${condition.name}</coral-select-item>
             </coral-select>
         </div>
