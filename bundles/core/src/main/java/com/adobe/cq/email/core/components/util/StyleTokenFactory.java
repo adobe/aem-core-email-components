@@ -17,6 +17,7 @@ package com.adobe.cq.email.core.components.util;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -73,10 +74,7 @@ public class StyleTokenFactory {
     }
 
     private static boolean forceUsage (Set<String> skipCheck, StyleToken styleToken) {
-        return skipCheck.stream().anyMatch(w -> {
-            Pattern pattern = Pattern.compile(w);
-            return pattern.matcher(styleToken.getSelector()).find();
-        });
+        return skipCheck.stream().anyMatch(w -> Optional.ofNullable(styleToken.getSelector()).orElse("").matches(w));
     }
 
     /**
