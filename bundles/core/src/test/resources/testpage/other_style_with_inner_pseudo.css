@@ -1,1 +1,5 @@
 a:hover { color: green; }
+.ExternalClass { width: 100%; }
+.ExternalClass > center > table { width: 640px; }
+td.ExternalClass { width: 640px; }
+.ExternalClass.OtherExternalClass { width: 640px; }
