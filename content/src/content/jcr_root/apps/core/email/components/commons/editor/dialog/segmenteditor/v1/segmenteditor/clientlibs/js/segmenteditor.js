@@ -112,7 +112,7 @@
                     show: function() {
                         section.addClass("custom-segment-active");
                         customSegmentName.setRequired(true);
-                        customSegmentName.setDisabled(false)
+                        customSegmentName.setDisabled(false);
                         customSegmentCondition.setRequired(true);
                         customSegmentCondition.setDisabled(false);
                         section.trigger("foundation-toggleable-show");
@@ -397,7 +397,7 @@
                 var clonedIcon = clonedItem.querySelectorAll(selectors.item.icon)[0].firstElementChild.cloneNode(true);
                 var clonedItemName = clonedItem.querySelectorAll(selectors.item.title)[0];
                 clonedItemName = $(clonedItemName).adaptTo("foundation-field").getName();
-                clonedItemName = clonedItemName.substring(2, clonedItemName.lastIndexOf("/"))
+                clonedItemName = clonedItemName.substring(2, clonedItemName.lastIndexOf("/"));
 
                 var name = NN_PREFIX + Date.now();
                 item.dataset["name"] = name;
@@ -424,7 +424,7 @@
              */
             _processChildren: function() {
                 this._orderedChildren = [];
-                this._copiedChildren = []
+                this._copiedChildren = [];
                 var items = this._elements.self.items.getAll();
 
                 for (var i = 0; i < items.length; i++) {
