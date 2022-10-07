@@ -14,20 +14,25 @@
  *  limitations under the License.
  */
 
-@cmp-segmenteditor-item-icon-width: 55px;
+@cmp-segmenteditor-item-icon-width: 38px;
 @cmp-segmenteditor-item-icon-height: 38px;
 @cmp-segmenteditor-item-icon-margin-right: 8px;
-@cmp-segmenteditor-item-title-buffer: 10px;
 
 .cmp-segmenteditor {
     width: 100%;
 }
 
 .cmp-segmenteditor__item-icon {
+    margin-right: @cmp-segmenteditor-item-icon-margin-right;
+}
+.cmp-segmenteditor__item-icon, button.cmp-segmenteditor__item-clone {
     display: inline-block;
+    box-sizing: border-box;
     width: @cmp-segmenteditor-item-icon-width;
     height: @cmp-segmenteditor-item-icon-height;
-    margin-right: @cmp-segmenteditor-item-icon-margin-right;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
     line-height: @cmp-segmenteditor-item-icon-height;
     text-align: center;
     color: #707070;
@@ -44,7 +49,6 @@
     display: inline-block;
     vertical-align: bottom;
     visibility: hidden;
-    margin-right: @cmp-segmenteditor-item-icon-margin-right;
     width: @cmp-segmenteditor-item-icon-width;
 }
 
@@ -57,7 +61,7 @@
 .coral-Form-field._coral-Dropdown.cmp-segmenteditor__item-condition,
 .coral-Form--vertical .custom-segment .coral-Form-field._coral-Textfield {
     display: inline-block;
-    width: ~"calc(100% - (@{cmp-segmenteditor-item-icon-width} + @{cmp-segmenteditor-item-icon-margin-right} + @{cmp-segmenteditor-item-title-buffer}))";
+    width: ~"calc(100% - 2 * (@{cmp-segmenteditor-item-icon-width} + @{cmp-segmenteditor-item-icon-margin-right}))";
     margin-bottom: 3px;
 }
 
