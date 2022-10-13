@@ -378,7 +378,7 @@
                 var $cloneButton = $(item).find(selectors.item.clone);
                 $cloneButton.off("click");
                 $cloneButton.on("click", function(event) {
-                    var clonedItem = event.target.parentNode.parentNode.parentNode.parentNode;
+                    var clonedItem = event.target.closest("coral-multifield-item");
                     var setsize = items.indexOf(clonedItem);
                     var insertBefore;
                     if (items.length >= setsize + 1) {
