@@ -41,8 +41,8 @@ import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.Editor;
-import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.SegmentItem;
+import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.Editor;
+import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.SegmentItem;
 import com.adobe.cq.email.core.components.models.Segmentation;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;

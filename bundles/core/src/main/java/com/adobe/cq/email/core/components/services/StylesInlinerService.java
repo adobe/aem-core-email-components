@@ -16,26 +16,18 @@
 package com.adobe.cq.email.core.components.services;
 
 import org.apache.sling.api.resource.ResourceResolver;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * Service that processes HTML pages and inlines CSS style
+ * A service that processes HTML and inlines CSS styles.
  */
+@ProviderType
 public interface StylesInlinerService {
 
     /**
      * This method accepts the html string as the input, parses it, reads the style rules and adds it to the respective elements in the
-     * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the <style> tag.
-     *
-     * @param resourceResolver the resource resolver object
-     * @param jsonContent      the json string containing HTML
-     * @param charset          the request charset
-     * @return json object that has a "html" property that contains the html with inline styles
-     */
-    String getHtmlWithInlineStylesJson(ResourceResolver resourceResolver, String jsonContent, String charset);
-
-    /**
-     * This method accepts the html string as the input, parses it, reads the style rules and adds it to the respective elements in the
-     * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the <style> tag.
+     * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the a <style> tag in the head of the
+     * returned html.
      *
      * @param resourceResolver the resource resolver object
      * @param html             the html string
