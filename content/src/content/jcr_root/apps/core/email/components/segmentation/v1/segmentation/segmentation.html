@@ -58,6 +58,7 @@
              data-cmp-hook-tabs="tabpanel"
              data-cmp-data-layer="${item.data.json}"></sly>
     </table>
-    <sly data-sly-resource="${resource.path @ resourceType='wcm/foundation/components/parsys/newpar', appendPath='/*', decorationTagName='div', cssClassName='new section aem-Grid-newComponent'}"
+    <sly data-sly-resource="${resource.path @ resourceType='wcm/foundation/components/parsys/newpar', appendPath='/*', decorationTagName='div', cssClassName='new section aem-Grid-newComponent cmp-segmentation'}"
          data-sly-test="${(wcmmode.edit || wcmmode.preview) && tabs.items.size < 1}"></sly>
 </div>
+<sly data-sly-call="${templates.placeholder @ isEmpty = tabs.items.size < 1, classAppend='cmp-text'}"></sly>

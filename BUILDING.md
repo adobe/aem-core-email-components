@@ -33,6 +33,18 @@ of `/apps`). To allow recompilation of the HTL scripts, you should disable `aem-
 Due to [FELIX-6365](https://issues.apache.org/jira/browse/FELIX-6365), please only use `autoInstallPackage` and
 `autoInstallPackagePublish` when working with the AEM as a Cloud Service SDK!
 
+## NPM modules
+
+Modules that export Javscript and CSS are usually also configured as NPM modules.
+
+For these, the following scripts are used:
+* `npm run lint` - Runs both JS and CSS linters in parallel.
+* `npm run eslint` - Runs JS linter only.
+* `npm run eslint:fix` - Runs JS linter only and fixes auto-fixable found issues.
+* `npm run stylelint` - Runs CSS linter only.
+* `npm run stylelint:fix` - Runs CSS linter only and fixes auto-fixable found issues.
+* `npm run sync-pom-version` - Syncs the package.json version with the pom.xml version.
+
 ## Branch conventions
 
 ### `master` branch

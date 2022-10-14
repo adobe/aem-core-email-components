@@ -89,12 +89,7 @@ public class StyleTokenizer {
                 if (nestingLevel > 0 && Objects.isNull(parent)) {
                     parent = current;
                 }
-                current = StyleTokenFactory.create(item);
-                if (skipCheck.contains(current.getSelector())) {
-                    current.setForceUsage(true);
-                }
-                current.setMediaQuery(current.getSelector().contains("@"));
-                current.setPseudoSelector(!current.isMediaQuery() && item.contains(":"));
+                current = StyleTokenFactory.create(item, skipCheck);
                 continue;
             }
 

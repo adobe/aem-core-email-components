@@ -91,7 +91,7 @@ class StylesInlinerServiceImplTest {
 
             @Override
             public String[] skipUsageSelectors() {
-                return new String[]{"table.nonExisting", ".ExternalClass"};
+                return new String[]{"table.nonExisting", "\\w*?(\\.ExternalClass(?!\\w))(.*)?"};
             }
         });
     }

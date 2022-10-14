@@ -15,7 +15,11 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.util;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -37,26 +41,38 @@ public class StyleTokenFactory {
      * @return the {@link StyleToken}
      */
     public static StyleToken create(String selector) {
-        return create(selector, false);
+        return create(selector, Collections.emptySet());
     }
 
-    public static StyleToken create(String selector, boolean forceUsage) {
+    public static StyleToken create(String selector, Set<String> skipCheck) {
         StyleToken styleToken = new StyleToken();
         styleToken.setSelector(selector);
-        styleToken.setForceUsage(forceUsage);
-        if (StringUtils.isNotEmpty(selector) && selector.contains(",")) {
-            for (String splitted : selector.split(",")) {
-                splitted = StringUtils.substringBefore(splitted, ":");
-                if (StringUtils.isEmpty(splitted)) {
-                    continue;
+        styleToken.setForceUsage(forceUsage(skipCheck, styleToken));
+        styleToken.setMediaQuery(selector.contains("@"));
+        styleToken.setPseudoSelector(!styleToken.isMediaQuery() && selector.contains(":"));
+        if (StringUtils.isNotEmpty(selector)) {
+            if (selector.contains(",")) {
+                for (String splitted : selector.split(",")) {
+                    if (styleToken.isPseudoSelector()) {
+                        splitted = StringUtils.substringBefore(splitted, ":");
+                    }
+                    if (StringUtils.isEmpty(splitted)) {
+                        continue;
+                    }
+                    addJsoupSelector(styleToken, splitted);
                 }
-                addJsoupSelector(styleToken, splitted);
+            } else {
+                if (styleToken.isPseudoSelector()) {
+                    selector = StringUtils.substringBefore(selector, ":");
+                }
+                addJsoupSelector(styleToken, selector);
             }
-        } else {
-            selector = StringUtils.substringBefore(selector, ":");
-            addJsoupSelector(styleToken, selector);
         }
         return styleToken;
+    }
+
+    private static boolean forceUsage (Set<String> skipCheck, StyleToken styleToken) {
+        return skipCheck.stream().anyMatch(w -> Optional.ofNullable(styleToken.getSelector()).orElse("").matches(w));
     }
 
     /**

@@ -16,7 +16,6 @@
 package com.adobe.cq.email.core.components.internal.services;
 
 import java.io.ByteArrayInputStream;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,10 +23,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -163,25 +160,28 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
      */
     private void populateStylesToBeApplied(StyleToken styleToken, Document doc, List<StyleToken> styleTokens,
                                            List<StyleToken> unInlinableStyleTokens, List<StyleToken> mediaStyleTokens) {
-        if (styleToken.isMediaQuery() && !styleToken.getChildTokens().isEmpty()) {
+        if (styleToken.isMediaQuery()) {
             for (Iterator<StyleToken> iterator = styleToken.getChildTokens().iterator(); iterator.hasNext();) {
                 StyleToken childToken = iterator.next();
                 if (childToken.isForceUsage()) {
                     continue;
                 }
-                List<String> childCssSelectors = childToken.getJsoupSelectors();
-                for (String childCssSelector : childCssSelectors) {
-                    Elements selectedElements = doc.select(childCssSelector);
+                for (Iterator<String> childCssSelectorIterator = childToken.getJsoupSelectors().iterator(); childCssSelectorIterator.hasNext();) {
+                    Elements selectedElements = doc.select(childCssSelectorIterator.next());
                     if (selectedElements.isEmpty()) {
-                        iterator.remove();
+                        childCssSelectorIterator.remove();
                     }
+                }
+                if (childToken.getJsoupSelectors().isEmpty()) {
+                    iterator.remove();
                 }
 
             }
             if (!styleToken.getChildTokens().isEmpty()) {
                 mediaStyleTokens.add(styleToken);
-                return;
+
             }
+            return;
         }
 
         List<String> cssSelectors = styleToken.getJsoupSelectors();
