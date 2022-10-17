@@ -1,5 +1,5 @@
 <!--/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ~ Copyright 2021 Adobe
+  ~ Copyright 2022 Adobe
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -13,14 +13,4 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<button data-sly-use.button="com.adobe.cq.wcm.core.components.models.Button"
-        data-sly-use.iconTemplate="icon.html"
-        data-sly-element="${button.buttonLink.valid ? 'a' : 'button'}"
-        type="${button.buttonLink.valid ? '' : 'button'}"
-        id="${button.id}"
-        class="cmp-button"
-        href="${button.buttonLink.URL  @ context ='html'}"
-        aria-label="${button.accessibilityLabel}">
-    <sly data-sly-call="${iconTemplate.icon @ icon=button.icon}"></sly>
-    <span data-sly-test="${properties.title}" class="cmp-button__text">${properties.title @ context ='html'}</span>
-</button>
+<!--/* Do not render any SEO links in E-Mails. */-->
