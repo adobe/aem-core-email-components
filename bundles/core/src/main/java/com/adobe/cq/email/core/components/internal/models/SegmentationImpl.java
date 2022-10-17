@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -50,6 +51,7 @@ import com.adobe.cq.wcm.core.components.models.ListItem;
 import com.adobe.cq.wcm.core.components.models.Tabs;
 import com.adobe.cq.wcm.core.components.util.AbstractComponentImpl;
 import com.adobe.cq.wcm.core.components.util.ComponentUtils;
+import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.api.components.ComponentManager;
 
 @Model(
@@ -131,10 +133,14 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
                 if (StringUtils.equals(condition, Editor.CUSTOM_VALUE)) {
                     condition = itemProperties.get(SegmentItem.PN_CUSTOM_SEGMENT_CONDITION, String.class);
                 }
-
-                if (StringUtils.isNotEmpty(condition)) {
-                    this.items.add(new SegmentationItemImpl(formatTag(condition, pos, total, isDefault), item, itemResource));
-                    pos++;
+                WCMMode mode = WCMMode.fromRequest(request);
+                if (mode.equals(WCMMode.DISABLED)) {
+                    if (StringUtils.isNotEmpty(condition)) {
+                        this.items.add(new SegmentationItemImpl(formatTag(condition, pos, total, isDefault), item, itemResource));
+                        pos++;
+                    }
+                } else {
+                    this.items.add(new SegmentationItemImpl(new ImmutablePair<>(StringUtils.EMPTY, StringUtils.EMPTY), item, itemResource));
                 }
             }
         }
@@ -229,7 +235,7 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
 
         @Override
         public @Nullable String getTitle() {
-            return listItem.getTitle();
+            return Optional.ofNullable(listItem.getTitle()).filter(StringUtils::isNotEmpty).orElse(listItem.getName());
         }
 
         @Override

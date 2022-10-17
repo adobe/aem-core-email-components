@@ -16,6 +16,7 @@
 package com.adobe.cq.email.core.components.internal.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import java.util.stream.StreamSupport;
 import javax.jcr.RepositoryException;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.servlets.post.Modification;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,23 +47,12 @@ import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class SegmentationPostProcessorTest {
 
-    @Mock
-    LiveRelationshipManager liveRelationshipManager;
-
-    @Mock
-    LiveRelationship liveRelationship;
-
-    @Mock
-    LiveStatus liveStatus;
-
-    @InjectMocks
     SegmentationPostProcessor segmentationPostProcessor = new SegmentationPostProcessor();
 
     private final AemContext context = new AemContext(ResourceResolverType.JCR_MOCK);
@@ -99,7 +90,7 @@ class SegmentationPostProcessorTest {
         String copiedChildren = "child2:child1";
         context.currentResource(container);
         context.request().setParameterMap(ImmutableMap.of(PARAM_COPIED_CHILDREN, copiedChildren));
-        segmentationPostProcessor.handleCopies(container, context.request(), context.resourceResolver());
+        segmentationPostProcessor.handleCopies(container, context.request(), context.resourceResolver(), new ArrayList<>());
         Iterable<Resource> childrenIterator = context.currentResource().getChildren();
         List<Resource> childList     = StreamSupport
                 .stream(childrenIterator.spliterator(), false)
@@ -116,18 +107,15 @@ class SegmentationPostProcessorTest {
         Resource container = context.create().resource("/test/dummy/container");
         context.create().resource("/test/dummy/container/child1");
         context.create().resource("/test/dummy/container/child2");
-        when(liveStatus.isSourceExisting()).thenReturn(true);
-        when(liveRelationship.getStatus()).thenReturn(liveStatus);
-        when(liveRelationshipManager.getLiveRelationship(any(Resource.class), anyBoolean())).thenReturn(liveRelationship);
         context.currentResource(container);
         String deletedChildren = "child2";
         context.request().setParameterMap(ImmutableMap.of(PARAM_DELETED_CHILDREN, deletedChildren));
-        segmentationPostProcessor.handleDelete(container, context.request(), context.resourceResolver());
+        segmentationPostProcessor.handleDelete(container, context.request(), context.resourceResolver(), new ArrayList<>());
         Iterable<Resource> childrenIterator = context.currentResource().getChildren();
         List<Resource> childList     = StreamSupport
                 .stream(childrenIterator.spliterator(), false)
                 .collect(Collectors.toList());
-        assertEquals(2, childList.size());
+        assertEquals(1, childList.size());
     }
 
     @Test
@@ -135,12 +123,11 @@ class SegmentationPostProcessorTest {
         Resource container = context.create().resource("/test/dummy/container", ImmutableMap.of(
                 "sling:resourceType", SegmentationImpl.RESOURCE_TYPE
         ));
-        when(liveRelationshipManager.getLiveRelationship(any(Resource.class), anyBoolean())).thenReturn(null);
         context.create().resource("/test/dummy/container/child1");
         String deletedChildren = "child1";
         context.request().setParameterMap(ImmutableMap.of(PARAM_DELETED_CHILDREN, deletedChildren));
         context.currentResource(container);
-        segmentationPostProcessor.process(context.request(), Collections.emptyList());
+        segmentationPostProcessor.process(context.request(), new ArrayList<>());
         Iterable<Resource> childrenIterator = context.currentResource().getChildren();
         List<Resource> childList     = StreamSupport
                 .stream(childrenIterator.spliterator(), false)

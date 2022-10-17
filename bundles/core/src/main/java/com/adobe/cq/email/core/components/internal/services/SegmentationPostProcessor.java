@@ -15,9 +15,9 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,49 +31,45 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.jcr.resource.api.JcrResourceConstants;
 import org.apache.sling.servlets.post.Modification;
 import org.apache.sling.servlets.post.SlingPostProcessor;
-import org.jetbrains.annotations.NotNull;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.internal.models.SegmentationImpl;
-import com.day.cq.wcm.api.WCMException;
-import com.day.cq.wcm.msm.api.LiveRelationship;
-import com.day.cq.wcm.msm.api.LiveRelationshipManager;
-import com.day.crx.JcrConstants;
 
-@Component(service = SlingPostProcessor.class)
+@Component(service = SlingPostProcessor.class,
+           property = {
+                   Constants.SERVICE_RANKING + ":Integer=" + Integer.MAX_VALUE
+           })
 public class SegmentationPostProcessor implements SlingPostProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SegmentationPostProcessor.class);
-    private static final String RT_GHOST = "wcm/msm/components/ghost";
     private static final String PARAM_ORDERED_CHILDREN = "itemOrder";
     private static final String PARAM_COPIED_CHILDREN = "copiedItems";
     private static final String PARAM_DELETED_CHILDREN = "deletedItems";
 
-    @Reference
-    private transient LiveRelationshipManager liveRelationshipManager;
-
     @Override
-    public void process(SlingHttpServletRequest request, List<Modification> list) throws Exception {
+    public void process(SlingHttpServletRequest request, List<Modification> modifications) throws Exception {
         ResourceResolver resourceResolver = request.getResource().getResourceResolver();
+        ArrayList<Modification> addedModifications = new ArrayList<Modification>();
         if (accepts(request, resourceResolver)) {
             Resource container = request.getResource();
             try {
-                handleCopies(container, request, resourceResolver);
+                handleCopies(container, request, resourceResolver, addedModifications);
                 handleOrder(container, request);
-                handleDelete(container, request, resourceResolver);
+                handleDelete(container, request, resourceResolver, addedModifications);
             } catch (RepositoryException e) {
                 LOGGER.error("Could not order items of the container at {}", container.getPath(), e);
             }
         }
+        modifications.addAll(addedModifications);
     }
 
-    protected void handleCopies(Resource container, SlingHttpServletRequest request, ResourceResolver resourceResolver)
+    protected void handleCopies(Resource container, SlingHttpServletRequest request, ResourceResolver resourceResolver,
+                                List<Modification> addedModifications)
             throws PersistenceException {
         String[] childCopies = StringUtils.split(request.getParameter(PARAM_COPIED_CHILDREN), ",");
         if (childCopies != null && childCopies.length > 0) {
@@ -85,6 +81,7 @@ public class SegmentationPostProcessor implements SlingPostProcessor {
                     Resource copyToChild = container.getChild(to);
                     if (copyFromChild != null && copyToChild != null) {
                         copyResource(copyFromChild, container, copyToChild.getName(), copyToChild.getValueMap(), resourceResolver);
+                        addedModifications.add(Modification.onCopied(copyFromChild.getPath(), copyToChild.getPath()));
                     }
                 }
             }
@@ -107,37 +104,20 @@ public class SegmentationPostProcessor implements SlingPostProcessor {
         }
     }
 
-    protected void handleDelete(Resource container, SlingHttpServletRequest request, ResourceResolver resolver)
-            throws PersistenceException, WCMException, RepositoryException {
+    protected void handleDelete(Resource container, SlingHttpServletRequest request, ResourceResolver resolver,
+                                List<Modification> addedModifications)
+            throws PersistenceException, RepositoryException {
         String[] deletedChildrenNames = StringUtils.split(request.getParameter(PARAM_DELETED_CHILDREN), ",");
         if (deletedChildrenNames != null && deletedChildrenNames.length > 0) {
             for (String childName : deletedChildrenNames) {
                 Resource child = container.getChild(childName);
                 if (child != null) {
-                    // For deleted items that have a live relationship, ensure a ghost is created
-                    LiveRelationship liveRelationship = liveRelationshipManager.getLiveRelationship(child, false);
-                    if (liveRelationship != null && liveRelationship.getStatus().isSourceExisting()) {
-                        liveRelationshipManager.cancelRelationship(resolver, liveRelationship, true, false);
-                        Resource parent = child.getParent();
-                        String name = child.getName();
-                        resolver.delete(child);
-                        if (parent != null) {
-                            createGhost(parent, name, resolver);
-                        }
-                    } else {
-                        resolver.delete(child);
-                    }
+                    String deletedPath = child.getPath();
+                    resolver.delete(child);
+                    addedModifications.add(Modification.onDeleted(deletedPath));
                 }
             }
         }
-    }
-
-    private void createGhost(@NotNull Resource parent, String name, ResourceResolver resolver)
-            throws PersistenceException, RepositoryException, WCMException {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED);
-        properties.put(JcrResourceConstants.SLING_RESOURCE_TYPE_PROPERTY, RT_GHOST);
-        resolver.create(parent, name, properties);
     }
 
     private Resource copyResource(Resource src, Resource destParent, String name, Map<String, Object> properties, ResourceResolver resolver)
