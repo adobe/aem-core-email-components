@@ -55,9 +55,6 @@
                                                 name="./text"
                                                 useFixedInlineToolbar="{Boolean}true">
                                                 <rtePlugins jcr:primaryType="nt:unstructured">
-                                                    <personalizationplugin
-                                                        jcr:primaryType="nt:unstructured"
-                                                        features="*"/>
                                                     <format
                                                         jcr:primaryType="nt:unstructured"
                                                         features="bold,italic"/>
