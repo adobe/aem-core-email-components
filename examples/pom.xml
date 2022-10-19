@@ -36,7 +36,6 @@
     <modules>
         <module>all</module>
         <module>ui.apps</module>
-        <module>ui.config</module>
         <module>ui.content</module>
     </modules>
 </project>

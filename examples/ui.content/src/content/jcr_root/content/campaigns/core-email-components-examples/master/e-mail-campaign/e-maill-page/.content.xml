@@ -6,7 +6,7 @@
         cq:lastModifiedBy="admin"
         cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
         jcr:primaryType="cq:PageContent"
-        jcr:title="E-Mail Test Page"
+        jcr:title="E-Mail Page"
         sling:resourceType="core-email-components-examples/components/page"
         acMapping="mapRecipient"
         acTemplateId="mailAEMContent"
