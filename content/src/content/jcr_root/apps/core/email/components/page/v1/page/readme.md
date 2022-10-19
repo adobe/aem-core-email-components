@@ -15,7 +15,7 @@ limitations under the License.
 -->
 Page
 ====
-Extensible page component for composing Campaign content written in HTL and based on the [Page Core Component](https://github.com/adobe/aem-core-wcm-components/blob/main/content/src/content/jcr_root/apps/core/wcm/components/page/v3/page/README.md)
+Extensible page component written in HTL for composing campaign content and based on the [Page Core Component](https://github.com/adobe/aem-core-wcm-components/blob/main/content/src/content/jcr_root/apps/core/wcm/components/page/v3/page/README.md)
 
 ## Features
 * Supports editable templates
