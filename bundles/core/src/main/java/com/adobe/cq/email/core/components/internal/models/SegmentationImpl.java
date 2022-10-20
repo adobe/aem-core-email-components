@@ -134,7 +134,13 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
                 .collect(Collectors.toList());
 
             int pos = 1;
-            int total = items.size();
+            int total =
+                    (int) items.stream()
+                            .filter(itemResourcePair -> {
+                                Resource itemResource = itemResourcePair.getRight();
+                                String condition = itemResource.getValueMap().get(SegmentItem.PN_CONDITION, String.class);
+                                return !itemResource.isResourceType(SegmentItem.RT_GHOST) || StringUtils.isNotEmpty(condition);
+                            }).count();
 
             for (Pair<ListItem, Resource> itemPair : items) {
                 ListItem item = itemPair.getLeft();
@@ -148,7 +154,7 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
                 }
                 WCMMode mode = WCMMode.fromRequest(request);
                 if (mode.equals(WCMMode.DISABLED)) {
-                    if (StringUtils.isNotEmpty(condition)) {
+                    if (StringUtils.isNotEmpty(condition) && !itemResource.isResourceType(SegmentItem.RT_GHOST)) {
                         this.items.add(new SegmentationItemImpl(formatTag(condition, pos, total, isDefault), item, itemResource, item.getTitle()));
                         pos++;
                     }

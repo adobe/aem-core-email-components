@@ -22,12 +22,13 @@
         <div class="cmp-segmenteditor__item">
             <sly data-sly-call="${iconTemplate.icon @ item=item}"></sly>
             <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}"
-                          name="./${item.name}/condition" data-validation="default-condition" data-cmp-hook-segmenteditor="itemCondition">
+                          name="./${item.name}/condition" data-validation="default-condition" data-cmp-hook-segmenteditor="itemCondition"
+                          disabled="${item.disabled}">
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
             </coral-select>
             <button is="coral-button" class="cmp-segmenteditor__item-clone" size="M" variant="quiet"
                     type="button" data-cmp-hook-segmenteditor="itemClone" icon="copy" iconsize="S" aria-label="${'Clone' @ i18n}"
-                    title="${'Clone' @ i18n}">
+                    title="${'Clone' @ i18n}" data-sly-test="${!item.disabled}">
                 <coral-icon class="coral3-Icon coral3-Icon--sizeS coral3-Icon--copy" icon="copy" size="S" autoarialabel="on" role="img"
                             aria-label="clone" aria-hidden="true"></coral-icon>
                 <coral-button-label></coral-button-label>

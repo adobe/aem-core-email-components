@@ -61,5 +61,8 @@ class EditorTest {
         assertTrue(underTest.getItems().stream()
             .map(SegmentItem.class::cast)
             .anyMatch(item -> "person.gender = m and person.age == 21".equals(item.getCustomCondition())));
+        assertTrue(underTest.getItems().stream()
+            .map(SegmentItem.class::cast)
+            .anyMatch(item -> !item.isDisabled()));
     }
 }

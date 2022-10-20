@@ -27,6 +27,7 @@ public class SegmentItem extends Item {
 
     private String condition;
     private String customCondition;
+    private boolean disabled;
 
 
     /**
@@ -34,6 +35,7 @@ public class SegmentItem extends Item {
      */
     public static final String PN_CONDITION = "condition";
     public static final String PN_CUSTOM_SEGMENT_CONDITION = "customSegmentCondition";
+    public static final String RT_GHOST = "wcm/msm/components/ghost";
 
     public SegmentItem(SlingHttpServletRequest request, Resource resource) {
         super(request, resource);
@@ -41,6 +43,7 @@ public class SegmentItem extends Item {
             ValueMap vm = resource.getValueMap();
             condition = vm.get(PN_CONDITION, String.class);
             customCondition = vm.get(PN_CUSTOM_SEGMENT_CONDITION, String.class);
+            disabled = resource.isResourceType(RT_GHOST);
         }
     }
 
@@ -55,5 +58,9 @@ public class SegmentItem extends Item {
 
     public String getCustomCondition() {
         return customCondition;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
     }
 }
