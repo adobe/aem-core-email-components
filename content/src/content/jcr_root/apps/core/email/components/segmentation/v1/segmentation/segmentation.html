@@ -47,7 +47,7 @@
          class="${!wcmmode.disabled ? 'cmp-tabs__tabpanel cmp-tabs__tabpanel--active' : ''}"
          data-cmp-hook-tabs="tabpanel"
          data-cmp-data-layer="${item.data.json}"></div>
-    <table data-sly-test="${wcmmode.disabled}">
+    <table data-sly-test="${wcmmode.disabled}" role="presentation">
         <sly data-sly-repeat.item="${tabs.items}"
              data-sly-call="${itemTemplate.item @ item = item}"
              id="${item.id}-tabpanel-noedit"

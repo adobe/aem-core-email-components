@@ -45,8 +45,8 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.Editor;
-import com.adobe.cq.email.core.components.commons.editor.dialog.segmenteditor.SegmentItem;
+import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.Editor;
+import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.SegmentItem;
 import com.adobe.cq.email.core.components.models.Segmentation;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;

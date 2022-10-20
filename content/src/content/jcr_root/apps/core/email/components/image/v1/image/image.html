@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
-<table data-sly-use.image="com.adobe.cq.wcm.core.components.models.Image"
+<table data-sly-use.image="com.adobe.cq.email.core.components.models.Image"
        data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
        data-sly-test="${image.src}"
        data-cmp-dmimage="${image.dmImage}"
@@ -21,7 +21,8 @@
        id="${image.id}"
        data-cmp-data-layer="${image.data.json}"
        class="cmp-image${!wcmmode.disabled ? ' cq-dd-image' : ''}"
-       itemscope itemtype="http://schema.org/ImageObject">
+       itemscope itemtype="http://schema.org/ImageObject"
+       role="presentation">
     <tbody>
     <tr>
         <td class="no-background">
@@ -35,8 +36,8 @@
                      itemprop="contentUrl"
                      width="${image.width}" height="${image.height}"
                      alt="${image.alt || true}" title="${image.displayPopupTitle && image.title}"
-                     role="${image.role}"
-                     style="width: ${image.fullWidthStyle @ context='styleToken'};"/>
+                     role="${image.isDecorative && 'presentation'}"
+                     style="${image.inlineStyle @ context='unsafe'}"/>
             </a>
             <span class="cmp-image__title" itemprop="caption"
                   data-sly-test="${!image.displayPopupTitle && image.title}">${image.title}</span>
