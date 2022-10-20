@@ -15,7 +15,10 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.util;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -45,39 +48,29 @@ public class WrapperDivRemover {
             return;
         }
         try {
-            Element parent = doc.parent();
-            Elements children = doc.children();
-            removeWrapperDivs(parent, children, wrapperDivClassesToBeRemoved);
+            removeWrapperDivs(doc.children(), Arrays.stream(wrapperDivClassesToBeRemoved).collect(Collectors.toSet()));
         } catch (Throwable e) {
             LOG.warn("Error removing wrapper DIVs: " + e.getMessage(), e);
         }
     }
 
-    private static void removeWrapperDivs(Element parent, Elements children, String[] wrapperDivClassesToBeRemoved) {
+    private static void removeWrapperDivs(Elements children, Set<String> wrapperDivClassesToBeRemoved) {
         if (Objects.isNull(children) || children.isEmpty()) {
             return;
         }
         for (Element child : children) {
+            removeWrapperDivs(child.children(), wrapperDivClassesToBeRemoved);
+
             if (child.tagName().equalsIgnoreCase("div") && containsClassToBeRemoved(child, wrapperDivClassesToBeRemoved)) {
                 child.unwrap();
-                removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
-            } else {
-                removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
             }
         }
     }
 
-    private static boolean containsClassToBeRemoved(Element element, String[] wrapperDivClassesToBeRemoved) {
+    private static boolean containsClassToBeRemoved(Element element, Set<String> wrapperDivClassesToBeRemoved) {
         String elementClassAttribute = element.attr("class");
-        if (StringUtils.isEmpty(elementClassAttribute)) {
-            return false;
-        }
-        for (String wrapperDivClassToBeRemoved : wrapperDivClassesToBeRemoved) {
-            if (elementClassAttribute.contains(wrapperDivClassToBeRemoved)) {
-                return true;
-            }
-        }
-        return false;
+        return !StringUtils.isEmpty(elementClassAttribute)
+            && Arrays.stream(elementClassAttribute.split(" ")).anyMatch(wrapperDivClassesToBeRemoved::contains);
     }
 
 }
