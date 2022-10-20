@@ -45,20 +45,18 @@ public class WrapperDivRemover {
             return;
         }
         try {
-            Element parent = doc.parent();
-            Elements children = doc.children();
-            removeWrapperDivs(parent, children, wrapperDivClassesToBeRemoved);
+            removeWrapperDivs(doc.children(), wrapperDivClassesToBeRemoved);
         } catch (Throwable e) {
             LOG.warn("Error removing wrapper DIVs: " + e.getMessage(), e);
         }
     }
 
-    private static void removeWrapperDivs(Element parent, Elements children, String[] wrapperDivClassesToBeRemoved) {
+    private static void removeWrapperDivs(Elements children, String[] wrapperDivClassesToBeRemoved) {
         if (Objects.isNull(children) || children.isEmpty()) {
             return;
         }
         for (Element child : children) {
-            removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
+            removeWrapperDivs(child.children(), wrapperDivClassesToBeRemoved);
 
             if (child.tagName().equalsIgnoreCase("div") && containsClassToBeRemoved(child, wrapperDivClassesToBeRemoved)) {
                 child.unwrap();
