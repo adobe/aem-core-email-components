@@ -28,7 +28,7 @@
             </coral-select>
             <button is="coral-button" class="cmp-segmenteditor__item-clone" size="M" variant="quiet"
                     type="button" data-cmp-hook-segmenteditor="itemClone" icon="copy" iconsize="S" aria-label="${'Clone' @ i18n}"
-                    title="${'Clone' @ i18n}" data-sly-test="${!item.disabled}">
+                    title="${'Clone' @ i18n}" disabled="${item.disabled}">
                 <coral-icon class="coral3-Icon coral3-Icon--sizeS coral3-Icon--copy" icon="copy" size="S" autoarialabel="on" role="img"
                             aria-label="clone" aria-hidden="true"></coral-icon>
                 <coral-button-label></coral-button-label>
