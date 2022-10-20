@@ -18,6 +18,9 @@ package com.adobe.cq.email.core.components.models;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
 import com.adobe.cq.wcm.core.components.models.ListItem;
 import com.adobe.cq.wcm.core.components.models.datalayer.ComponentData;
+import com.adobe.cq.wcm.core.components.util.ComponentUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.sling.api.resource.Resource;
 import org.jetbrains.annotations.NotNull;
@@ -30,14 +33,20 @@ import java.util.Calendar;
  */
 public class SegmentationItem implements ListItem {
 
+    private final String parentId;
     private final String openingACCMarkup;
     private final String closingACCMarkup;
+    private final String title;
     private final ListItem listItem;
+    private final Resource itemResource;
 
-    public SegmentationItem(Pair<String, String> markup, ListItem listItem) {
+    public SegmentationItem(String parentId, Pair<String, String> markup, ListItem listItem, Resource itemResource, String title) {
+        this.parentId = parentId;
         this.openingACCMarkup = markup.getLeft();
         this.closingACCMarkup = markup.getRight();
         this.listItem = listItem;
+        this.itemResource = itemResource;
+        this.title = title;
     }
 
     @Override
@@ -52,7 +61,7 @@ public class SegmentationItem implements ListItem {
 
     @Override
     public @Nullable String getTitle() {
-        return listItem.getTitle();
+        return title;
     }
 
     @Override
@@ -82,7 +91,9 @@ public class SegmentationItem implements ListItem {
 
     @Override
     public @Nullable String getId() {
-        return listItem.getId();
+        return ComponentUtils.generateId(
+            StringUtils.join(parentId, "-", "item"),
+            this.itemResource.getPath());
     }
 
     @Override

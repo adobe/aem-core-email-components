@@ -47,6 +47,14 @@
                             "jcr:primaryType": "nt:unstructured",
                             "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
                         },
+                        "segmentation-single-ghost": {
+                            "item_1655139752725": {
+                                "jcr:primaryType": "nt:unstructured",
+                                "sling:resourceType": "core/email/components/title/v1/title"
+                            },
+                            "jcr:primaryType": "nt:unstructured",
+                            "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
+                        },
                         "segmentation-single-custom": {
                             "item_1655139752725": {
                                 "condition": "custom",

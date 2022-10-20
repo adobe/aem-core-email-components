@@ -14,23 +14,37 @@
  *  limitations under the License.
  */
 
-@cmp-segmenteditor-item-icon-width: 55px;
+@cmp-segmenteditor-item-icon-width: 38px;
 @cmp-segmenteditor-item-icon-height: 38px;
 @cmp-segmenteditor-item-icon-margin-right: 8px;
-@cmp-segmenteditor-item-title-buffer: 10px;
 
 .cmp-segmenteditor {
     width: 100%;
 }
 
 .cmp-segmenteditor__item-icon {
-    display: inline-block;
-    width: @cmp-segmenteditor-item-icon-width;
-    height: @cmp-segmenteditor-item-icon-height;
     margin-right: @cmp-segmenteditor-item-icon-margin-right;
+}
+
+.cmp-segmenteditor__item-icon,
+.cmp-segmenteditor__item-clone {
+    display: inline-block;
+    box-sizing: border-box;
+    width: @cmp-segmenteditor-item-icon-width;
+    min-width: @cmp-segmenteditor-item-icon-width;
+    height: @cmp-segmenteditor-item-icon-height;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
     line-height: @cmp-segmenteditor-item-icon-height;
     text-align: center;
     color: #707070;
+}
+
+.coral--light .cmp-segmenteditor__item-clone._coral-Button--primary._coral-Button--quiet:hover {
+    color: #2c2c2c;
+    background-color: transparent;
+    border-color: transparent;
 }
 
 .cmp-segmenteditor__item-tag {
@@ -44,7 +58,6 @@
     display: inline-block;
     vertical-align: bottom;
     visibility: hidden;
-    margin-right: @cmp-segmenteditor-item-icon-margin-right;
     width: @cmp-segmenteditor-item-icon-width;
 }
 
@@ -54,7 +67,7 @@
 
 .coral-Form--vertical .coral-Form-field.coral3-Select.cmp-segmenteditor__item-condition, .coral-Form--vertical .custom-segment .coral-Form-field.coral3-Textfield {
     display: inline-block;
-    width: ~"calc(100% - (@{cmp-segmenteditor-item-icon-width} + @{cmp-segmenteditor-item-icon-margin-right} + @{cmp-segmenteditor-item-title-buffer}))";
+    width: ~"calc(100% - 2 * (@{cmp-segmenteditor-item-icon-width} + @{cmp-segmenteditor-item-icon-margin-right}))";
     margin-bottom: 3px;
 }
 

@@ -19,21 +19,42 @@ import com.adobe.cq.export.json.SlingModelFilter;
 import com.adobe.cq.wcm.core.components.models.Tabs;
 import com.adobe.cq.wcm.core.components.testing.MockExternalizerFactory;
 import com.day.cq.commons.Externalizer;
+import com.day.cq.wcm.api.WCMException;
+import com.day.cq.wcm.api.WCMMode;
+import com.day.cq.wcm.msm.api.LiveRelationship;
+import com.day.cq.wcm.msm.api.LiveRelationshipManager;
+import com.day.cq.wcm.msm.api.LiveStatus;
 import com.day.cq.wcm.api.components.ComponentManager;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextBuilder;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 import org.apache.commons.lang.StringUtils;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.adobe.cq.wcm.core.components.testing.mock.ContextPlugins.CORE_COMPONENTS;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(AemContextExtension.class)
+@ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class SegmentationModelTest {
+
+    @Mock
+    LiveRelationshipManager liveRelationshipManager;
+
+    @Mock
+    LiveRelationship liveRelationship;
+
+    @Mock
+    LiveStatus liveStatus;
 
     private final AemContext ctx = new AemContextBuilder()
         .beforeSetUp(context -> {
@@ -50,6 +71,7 @@ class SegmentationModelTest {
     void setUp() {
         ctx.load().json("/segmentation/TestPage.json", "/content");
         ctx.load().json("/segmentation/TestApps.json", "/apps/core");
+        ctx.registerService(LiveRelationshipManager.class, liveRelationshipManager);
     }
 
     @Test
@@ -95,6 +117,25 @@ class SegmentationModelTest {
         assertEquals(StringUtils.EMPTY, segmentationItem.getOpeningACCMarkup());
         assertEquals(StringUtils.EMPTY, segmentationItem.getClosingACCMarkup());
     }
+
+    @Test
+    void testSingleGhostSegment() throws WCMException {
+        Resource resource = ctx.currentResource("/content/test-page/jcr:content/root/container/col-0/segmentation-single-ghost");
+        MockSlingHttpServletRequest request = ctx.request();
+        request.setAttribute(WCMMode.REQUEST_ATTRIBUTE_NAME, WCMMode.EDIT);
+        when(liveRelationshipManager.getLiveRelationship(any(Resource.class), anyBoolean())).thenReturn(liveRelationship);
+        when(liveRelationship.getStatus()).thenReturn(liveStatus);
+        when(liveStatus.isCancelled()).thenReturn(true);
+        when(liveRelationship.getSourcePath()).thenReturn("/content/test-page/jcr:content/root/container/col-0/segmentation-single" +
+                "-default/item_1655139752725");
+        SegmentationModel underTest = request.adaptTo(SegmentationModel.class);
+        SegmentationItem segmentationItem = underTest.getSegmentationItems().stream()
+            .map(SegmentationItem.class::cast)
+            .filter(item -> "item_1655139752725".equals(item.getName())).findFirst().get();
+        assertEquals("Default", segmentationItem.getTitle());
+    }
+
+
 
     @Test
     void testSingleCustomSegment() {
