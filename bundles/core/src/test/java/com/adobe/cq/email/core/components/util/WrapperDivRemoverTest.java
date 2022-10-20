@@ -54,4 +54,22 @@ class WrapperDivRemoverTest {
         compareRemovingNewLinesAndTabs(TestFileUtils.getFileContent(TestFileUtils.WRAPPER_DIV_REMOVAL_OUTPUT_DIVS_REMOVED_FILE_PATH),
                 document.outerHtml());
     }
+
+    @Test
+    void removeDivsSiblings() throws URISyntaxException, IOException {
+        String html = TestFileUtils.getFileContent("wrapper-div-removal/input_remove_siblings_issue.html");
+        Document document = Jsoup.parse(html);
+        WrapperDivRemover.removeWrapperDivs(document, new String[]{"remove"});
+        compareRemovingNewLinesAndTabs(TestFileUtils.getFileContent("wrapper-div-removal/output_remove_siblings_issue.html"),
+            document.outerHtml());
+    }
+
+    @Test
+    void removeDivsClassMatching() throws URISyntaxException, IOException {
+        String html = TestFileUtils.getFileContent("wrapper-div-removal/input_class_matching.html");
+        Document document = Jsoup.parse(html);
+        WrapperDivRemover.removeWrapperDivs(document, new String[]{"classA"});
+        compareRemovingNewLinesAndTabs(TestFileUtils.getFileContent("wrapper-div-removal/output_class_matching.html"),
+            document.outerHtml());
+    }
 }

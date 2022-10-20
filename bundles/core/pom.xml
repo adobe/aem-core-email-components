@@ -389,7 +389,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
+            <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -461,7 +461,6 @@
             <version>2.22.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- for testing we need the new ResourceTypeBasedResourcePicker -->
         <dependency>
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.models.impl</artifactId>
