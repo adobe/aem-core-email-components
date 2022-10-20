@@ -22,9 +22,7 @@
     var PN_CONDITION = "condition";
     var PN_CUSTOM_SEGMENT_CONDITION = "customSegmentCondition";
     var PN_RESOURCE_TYPE = "sling:resourceType";
-    var RESOURCE_TYPE = "core/email/components/commons/editor/dialog/segmenteditor/v1/segmenteditor";
     var PN_COPY_FROM = "./@CopyFrom";
-    var POST_SUFFIX = ".container.html";
 
     var selectors = {
         self: "[data-cmp-is='segmentEditor']",
@@ -33,6 +31,9 @@
             select: "coral-select.cmp-segmenteditor__item-condition",
             hiddenInputTitle: ".cmp-segmenteditor__item-title"
         },
+        order: "[data-cmp-hook-segmenteditor='order']",
+        delete: "[data-cmp-hook-segmenteditor='delete']",
+        copy: "[data-cmp-hook-segmenteditor='copy']",
         add: "[data-cmp-hook-segmenteditor='add']",
         insertComponentDialog: {
             self: "coral-dialog.InsertComponentDialog",
@@ -40,6 +41,7 @@
         },
         item: {
             icon: "[data-cmp-hook-segmenteditor='itemIcon']",
+            clone: "[data-cmp-hook-segmenteditor='itemClone']",
             title: "[data-cmp-hook-segmenteditor='itemTitle']",
             condition: "[data-cmp-hook-segmenteditor='itemCondition']",
             custom: ".custom-segment",
@@ -66,6 +68,8 @@
         this._elements = {};
         this._path = "";
         this._orderedChildren = [];
+        this._deletedChildren = [];
+        this._copiedChildren = [];
         this._init();
 
         var that = this;
@@ -108,12 +112,16 @@
                     show: function() {
                         section.addClass("custom-segment-active");
                         customSegmentName.setRequired(true);
+                        customSegmentName.setDisabled(false);
                         customSegmentCondition.setRequired(true);
+                        customSegmentCondition.setDisabled(false);
                         section.trigger("foundation-toggleable-show");
                     },
                     hide: function() {
                         customSegmentName.setRequired(false);
+                        customSegmentName.setDisabled(true);
                         customSegmentCondition.setRequired(false);
+                        customSegmentCondition.setDisabled(true);
                         section.removeClass("custom-segment-active");
                         section.trigger("foundation-toggleable-hide");
                     }
@@ -135,18 +143,8 @@
              * @returns {Promise} The promise for completion handling
              */
             update: function() {
-                var url = this._path + POST_SUFFIX;
-
                 this._processChildren();
-
-                return $.ajax({
-                    type: "POST",
-                    url: url,
-                    async: false,
-                    data: {
-                        "order": this._orderedChildren
-                    }
-                });
+                return $.Deferred().resolve();
             },
 
             /**
@@ -157,6 +155,9 @@
             _init: function() {
                 this._elements.self = this._config.el;
                 this._elements.add = this._elements.self.querySelectorAll(selectors.add)[0];
+                this._elements.order = this._elements.self.querySelectorAll(selectors.order)[0];
+                this._elements.delete = this._elements.self.querySelectorAll(selectors.delete)[0];
+                this._elements.copy = this._elements.self.querySelectorAll(selectors.copy)[0];
                 this._elements.items = this._elements.self.querySelectorAll(selectors.items.self);
                 this._path = this._elements.self.dataset["containerPath"];
 
@@ -212,6 +213,7 @@
 
                 if (ns) {
                     that._elements.items.forEach(function(item) {
+                        that._bindCloneAction(item);
                         Coral.commons.ready(item, function(el) {
                             var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
                             var $customSegmentName = $(item).find(selectors.item.title).adaptTo("foundation-field");
@@ -282,7 +284,6 @@
 
                                             // next frame to ensure the item template is rendered in the DOM
                                             Coral.commons.nextFrame(function() {
-                                                var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
                                                 var name = NN_PREFIX + Date.now();
                                                 item.dataset["name"] = name;
 
@@ -292,7 +293,6 @@
                                                 inputCondition.name = "./" + name + "/" + PN_CUSTOM_SEGMENT_CONDITION;
 
                                                 var hiddenItemTitle = item.querySelectorAll("input[type='hidden']" + selectors.item.title)[0];
-                                                var $hiddenItemTitle = $(hiddenItemTitle).adaptTo("foundation-field");
                                                 hiddenItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
                                                 var customItemTitle = item.querySelectorAll("input[is='coral-textfield']" + selectors.item.title)[0];
                                                 customItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
@@ -311,17 +311,7 @@
                                                 itemIcon.appendChild(icon);
 
                                                 that._elements.self.trigger("change");
-
-                                                selectCondition.on("change" + NS, function(event) {
-                                                    if (event.target.selectedItem.value === "custom") {
-                                                        customSegment.show();
-                                                        $hiddenItemTitle.setDisabled(true);
-                                                    } else {
-                                                        customSegment.hide();
-                                                        hiddenItemTitle.value = event.target.selectedItem.textContent;
-                                                        $hiddenItemTitle.setDisabled(false);
-                                                    }
-                                                });
+                                                that._bindSelectChange(item);
                                             });
                                         }
                                     });
@@ -350,41 +340,81 @@
                     that._elements.self.on("coral-collection:remove", function(event) {
                         var name = event.detail.item.dataset["name"];
                         if (movedItem !== name) {
-                            ns.ui.helpers.prompt({
-                                title: Granite.I18n.get("Delete"),
-                                message: Granite.I18n.get("You are going to delete the selected component(s)."),
-                                type: ns.ui.helpers.PROMPT_TYPES.WARNING,
-                                actions: [
-                                    {
-                                        id: "CANCEL",
-                                        text: Granite.I18n.get("Cancel", "Label for Cancel button")
-                                    },
-                                    {
-                                        id: "DELETE",
-                                        text: Granite.I18n.get("Delete", "Label for Confirm button"),
-                                        warning: true
-                                    }
-                                ],
-                                callback: function(actionId) {
-                                    if (actionId === "CANCEL") {
-                                        that._update(that._path + POST_SUFFIX);
-                                    } else {
-                                        that._sendDeleteParagraph(that._path + "/" + name)
-                                            .then(function(data) {
-                                                that._update(that._path + POST_SUFFIX);
-                                            });
-                                    }
-                                }
-                            });
+                            that._deletedChildren.push(name);
                         }
                     });
 
                     that._elements.self.on("coral-collection:add", function(event) {
-                        if (movedItem !== event.detail.item.dataset["name"]) {
+                        var item = event.detail.item;
+                        if (movedItem !== item.dataset["name"]) {
                             movedItem = undefined;
                         }
+                        that._bindCloneAction(item);
+                        that._bindSelectChange(item);
                     });
                 });
+            },
+
+            _bindSelectChange: function(item) {
+                var selectCondition = item.querySelectorAll("coral-select" + selectors.item.condition)[0];
+                selectCondition.on("change" + NS, function(event) {
+                    var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
+                    var hiddenItemTitle = item.querySelectorAll("input[type='hidden']" + selectors.item.title)[0];
+                    var $hiddenItemTitle = $(hiddenItemTitle).adaptTo("foundation-field");
+                    if (event.target.selectedItem.value === "custom") {
+                        customSegment.show();
+                        $hiddenItemTitle.setDisabled(true);
+                    } else {
+                        customSegment.hide();
+                        hiddenItemTitle.value = event.target.selectedItem.textContent;
+                        $hiddenItemTitle.setDisabled(false);
+                    }
+                });
+            },
+
+            _bindCloneAction: function(item) {
+                var that = this;
+                var items = that._elements.self.items.getAll();
+                var $cloneButton = $(item).find(selectors.item.clone);
+                $cloneButton.off("click");
+                $cloneButton.on("click", function(event) {
+                    var clonedItem = event.target.closest("coral-multifield-item");
+                    var setsize = items.indexOf(clonedItem);
+                    var insertBefore;
+                    if (items.length >= setsize + 1) {
+                        insertBefore = items[setsize + 1];
+                    } else {
+                        insertBefore = null;
+                    }
+                    var item = that._elements.self.items.add(new Coral.Multifield.Item(), insertBefore);
+                    Coral.commons.nextFrame(function() {
+                        that._setClonedItemProperties(item, clonedItem);
+                    });
+                });
+            },
+
+            _setClonedItemProperties: function(item, clonedItem) {
+                var clonedIcon = clonedItem.querySelectorAll(selectors.item.icon)[0].firstElementChild.cloneNode(true);
+                var clonedItemName = clonedItem.querySelectorAll(selectors.item.title)[0];
+                clonedItemName = $(clonedItemName).adaptTo("foundation-field").getName();
+                clonedItemName = clonedItemName.substring(2, clonedItemName.lastIndexOf("/"));
+
+                var name = NN_PREFIX + Date.now();
+                item.dataset["name"] = name;
+                item.dataset["copy"] = clonedItemName;
+
+                var selectCondition = item.querySelectorAll("coral-select" + selectors.item.condition)[0];
+                selectCondition.name = "./" + name + "/" + PN_CONDITION;
+                var inputCondition = item.querySelectorAll("input" + selectors.item.condition)[0];
+                inputCondition.name = "./" + name + "/" + PN_CUSTOM_SEGMENT_CONDITION;
+
+                var hiddenItemTitle = item.querySelectorAll("input[type='hidden']" + selectors.item.title)[0];
+                hiddenItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
+                var customItemTitle = item.querySelectorAll("input[is='coral-textfield']" + selectors.item.title)[0];
+                customItemTitle.name = "./" + name + "/" + PN_PANEL_TITLE;
+
+                var itemIcon = item.querySelectorAll(selectors.item.icon)[0];
+                itemIcon.append(clonedIcon);
             },
 
             /**
@@ -394,36 +424,20 @@
              */
             _processChildren: function() {
                 this._orderedChildren = [];
+                this._copiedChildren = [];
                 var items = this._elements.self.items.getAll();
 
                 for (var i = 0; i < items.length; i++) {
                     var name = items[i].dataset["name"];
+                    var copy = items[i].dataset["copy"];
                     this._orderedChildren.push(name);
-                }
-            },
-
-            _sendDeleteParagraph: function(path) {
-                return new ns.persistence.PostRequest()
-                    .prepareDeleteParagraph({ path: path })
-                    .send();
-            },
-
-            _update: function(url) {
-                var that = this;
-                return $.ajax({
-                    type: "GET",
-                    url: url,
-                    data: { "resourceType": RESOURCE_TYPE },
-                    dataType: "html",
-                    async: false,
-                    success: function(data) {
-                        var tmp = document.createElement("div");
-                        tmp.innerHTML = data;
-                        var multifield = tmp.firstElementChild;
-                        that._elements.self.replaceWith(multifield);
-                        channel.trigger("foundation-contentloaded");
+                    if (copy) {
+                        this._copiedChildren.push(name + ":" + copy);
                     }
-                });
+                }
+                this._elements.order.value = this._orderedChildren.join();
+                this._elements.delete.value = this._deletedChildren.join();
+                this._elements.copy.value = this._copiedChildren.join();
             }
         };
     })();
@@ -452,13 +466,9 @@
             var el = form.querySelectorAll(selectors.self)[0];
             var segmentEditor = $(el).data("segmentEditor");
             if (segmentEditor) {
-                return {
-                    post: function() {
-                        return segmentEditor.update();
-                    }
-                };
+                return segmentEditor.update();
             } else {
-                return {};
+                return $.Deferred().resolve();
             }
         }
     });
