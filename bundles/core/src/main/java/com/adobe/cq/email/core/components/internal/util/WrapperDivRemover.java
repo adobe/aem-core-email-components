@@ -59,11 +59,10 @@ public class WrapperDivRemover {
             return;
         }
         for (Element child : children) {
+            removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
+
             if (child.tagName().equalsIgnoreCase("div") && containsClassToBeRemoved(child, wrapperDivClassesToBeRemoved)) {
                 child.unwrap();
-                removeWrapperDivs(parent, parent.children(), wrapperDivClassesToBeRemoved);
-            } else {
-                removeWrapperDivs(child, child.children(), wrapperDivClassesToBeRemoved);
             }
         }
     }
