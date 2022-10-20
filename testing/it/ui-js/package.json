@@ -1,6 +1,6 @@
 {
     "name": "com.adobe.cq.core.email.components.it.ui-js",
-    "version": "0.18.0",
+    "version": "0.19.0-SNAPSHOT",
     "description": "Adobe Experience Manager Core Email Components UI End-to-End Tests",
     "license": "Apache-2.0",
     "private": false,
