@@ -7,7 +7,6 @@
             "cq:template": "/conf/core-email-components-examples/settings/wcm/templates/email-template",
             "jcr:primaryType": "cq:PageContent",
             "jcr:title": "E-Mail Test Page",
-            "referenceUrl": "https://adobe-publish.dev",
             "root": {
                 "container": {
                     "col-0": {
@@ -42,6 +41,14 @@
                                 "cq:panelTitle": "Default",
                                 "jcr:primaryType": "nt:unstructured",
                                 "jcr:title": "Title for Man",
+                                "sling:resourceType": "core/email/components/title/v1/title"
+                            },
+                            "jcr:primaryType": "nt:unstructured",
+                            "sling:resourceType": "core/email/components/segmentation/v1/segmentation"
+                        },
+                        "segmentation-single-ghost": {
+                            "item_1655139752725": {
+                                "jcr:primaryType": "nt:unstructured",
                                 "sling:resourceType": "core/email/components/title/v1/title"
                             },
                             "jcr:primaryType": "nt:unstructured",

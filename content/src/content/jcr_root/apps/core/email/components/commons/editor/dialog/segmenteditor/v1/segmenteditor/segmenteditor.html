@@ -22,9 +22,17 @@
         <div class="cmp-segmenteditor__item">
             <sly data-sly-call="${iconTemplate.icon @ item=item}"></sly>
             <coral-select class="coral-Form-field cmp-segmenteditor__item-condition" placeholder="${'Select Condition' @ i18n}"
-                          name="./${item.name}/condition" data-validation="default-condition">
+                          name="./${item.name}/condition" data-validation="default-condition" data-cmp-hook-segmenteditor="itemCondition"
+                          disabled="${item.disabled}">
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}" selected="${condition.value == item.condition}">${condition.name}</coral-select-item>
             </coral-select>
+            <button is="coral-button" class="cmp-segmenteditor__item-clone" size="M" variant="quiet"
+                    type="button" data-cmp-hook-segmenteditor="itemClone" icon="copy" iconsize="S" aria-label="${'Clone' @ i18n}"
+                    title="${'Clone' @ i18n}" disabled="${item.disabled}">
+                <coral-icon class="coral3-Icon coral3-Icon--sizeS coral3-Icon--copy" icon="copy" size="S" autoarialabel="on" role="img"
+                            aria-label="clone" aria-hidden="true"></coral-icon>
+                <coral-button-label></coral-button-label>
+            </button>
             <input type="hidden" name="./${item.name}/cq:panelTitle" value="${item.value}" class="cmp-segmenteditor__item-title"
                    data-sly-test="${item.condition != 'custom'}">
             <section class="coral-Form-fieldset custom-segment${item.condition == 'custom' ? ' custom-segment-active': ''}">
@@ -37,9 +45,11 @@
                     <input is="coral-textfield" class="coral-Form-field" data-cmp-hook-segmenteditor="itemCondition" placeholder="${'Custom Condition' @ i18n}" value="${item.customCondition}" name="./${item.name}/customSegmentCondition">
                 </div>
             </section>
-
         </div>
     </coral-multifield-item>
+    <input type="hidden" name="itemOrder" data-cmp-hook-segmenteditor="order">
+    <input type="hidden" name="deletedItems" data-cmp-hook-segmenteditor="delete">
+    <input type="hidden" name="copiedItems" data-cmp-hook-segmenteditor="copy">
     <button data-cmp-hook-segmenteditor="add" type="button" is="coral-button">${'Add Segment' @ i18n}</button>
     <template coral-multifield-template="">
         <div class="cmp-segmenteditor__item">
@@ -49,6 +59,13 @@
                           data-cmp-hook-segmenteditor="itemCondition" required data-validation="default-condition">
                 <coral-select-item data-sly-repeat.condition="${segmentEditor.conditions}" value="${condition.value}">${condition.name}</coral-select-item>
             </coral-select>
+            <button is="coral-button" class="cmp-segmenteditor__item-clone" size="M" variant="quiet"
+                    type="button" data-cmp-hook-segmenteditor="itemClone" icon="copy" iconsize="S" aria-label="${'Clone' @ i18n}"
+                    title="${'Clone' @ i18n}">
+                <coral-icon class="coral3-Icon coral3-Icon--sizeS coral3-Icon--copy" icon="copy" size="S" autoarialabel="on" role="img"
+                            aria-label="clone" aria-hidden="true"></coral-icon>
+                <coral-button-label></coral-button-label>
+            </button>
         </div>
         <input type="hidden" data-cmp-hook-segmenteditor="itemTitle">
         <input type="hidden" data-cmp-hook-segmenteditor="itemResourceType">

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,11 +36,14 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Via;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.via.ResourceSuperType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.Editor;
 import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.SegmentItem;
@@ -50,16 +54,24 @@ import com.adobe.cq.wcm.core.components.models.ListItem;
 import com.adobe.cq.wcm.core.components.models.Tabs;
 import com.adobe.cq.wcm.core.components.util.AbstractComponentImpl;
 import com.adobe.cq.wcm.core.components.util.ComponentUtils;
+import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.WCMException;
+import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.api.components.ComponentManager;
+import com.day.cq.wcm.msm.api.LiveRelationship;
+import com.day.cq.wcm.msm.api.LiveRelationshipManager;
+import com.day.cq.wcm.msm.api.LiveStatus;
 
 @Model(
-    adaptables = SlingHttpServletRequest.class,
-    adapters = { SegmentationImpl.class, Segmentation.class },
-    resourceType = SegmentationImpl.RESOURCE_TYPE
+        adaptables = SlingHttpServletRequest.class,
+        adapters = {SegmentationImpl.class, Segmentation.class},
+        resourceType = SegmentationImpl.RESOURCE_TYPE
 )
 public class SegmentationImpl extends AbstractComponentImpl implements Segmentation {
 
     public static final String RESOURCE_TYPE = "core/email/components/segmentation/v1/segmentation";
+    private static final Logger LOG = LoggerFactory.getLogger(SegmentationImpl.class);
+    private static final String PN_PANEL_TITLE = "cq:panelTitle";
 
     private List<SegmentationItem> items;
     private String activeItemName;
@@ -70,6 +82,9 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
     @SlingObject
     private Resource resource;
 
+    @OSGiService
+    private LiveRelationshipManager liveRelationshipManager;
+
     @Self
     @Via(type = ResourceSuperType.class)
     private Tabs tabs;
@@ -78,13 +93,13 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
     public String getActiveItem() {
         if (activeItemName == null) {
             this.activeItemName = Optional.ofNullable(request.getResourceResolver().adaptTo(ComponentManager.class))
-                .flatMap(componentManager -> StreamSupport.stream(resource.getChildren().spliterator(), false)
-                    .filter(Objects::nonNull)
-                    .filter(res -> "default".equals(res.getValueMap().get(SegmentItem.PN_CONDITION)))
-                    .filter(res -> Objects.nonNull(componentManager.getComponentOfResource(res)))
-                    .findFirst()
-                    .map(Resource::getName))
-                .orElse(null);
+                    .flatMap(componentManager -> StreamSupport.stream(resource.getChildren().spliterator(), false)
+                            .filter(Objects::nonNull)
+                            .filter(res -> "default".equals(res.getValueMap().get(SegmentItem.PN_CONDITION)))
+                            .filter(res -> Objects.nonNull(componentManager.getComponentOfResource(res)))
+                            .findFirst()
+                            .map(Resource::getName))
+                    .orElse(null);
         }
         return activeItemName;
     }
@@ -119,7 +134,13 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
                 .collect(Collectors.toList());
 
             int pos = 1;
-            int total = items.size();
+            int total =
+                    (int) items.stream()
+                            .filter(itemResourcePair -> {
+                                Resource itemResource = itemResourcePair.getRight();
+                                String condition = itemResource.getValueMap().get(SegmentItem.PN_CONDITION, String.class);
+                                return !itemResource.isResourceType(SegmentItem.RT_GHOST) || StringUtils.isNotEmpty(condition);
+                            }).count();
 
             for (Pair<ListItem, Resource> itemPair : items) {
                 ListItem item = itemPair.getLeft();
@@ -131,10 +152,30 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
                 if (StringUtils.equals(condition, Editor.CUSTOM_VALUE)) {
                     condition = itemProperties.get(SegmentItem.PN_CUSTOM_SEGMENT_CONDITION, String.class);
                 }
-
-                if (StringUtils.isNotEmpty(condition)) {
-                    this.items.add(new SegmentationItemImpl(formatTag(condition, pos, total, isDefault), item, itemResource));
-                    pos++;
+                WCMMode mode = WCMMode.fromRequest(request);
+                if (mode.equals(WCMMode.DISABLED)) {
+                    if (StringUtils.isNotEmpty(condition) && !itemResource.isResourceType(SegmentItem.RT_GHOST)) {
+                        this.items.add(new SegmentationItemImpl(formatTag(condition, pos, total, isDefault), item, itemResource, item.getTitle()));
+                        pos++;
+                    }
+                } else {
+                    try {
+                        Resource sourceResource = Optional.ofNullable(liveRelationshipManager.getLiveRelationship(itemResource, false))
+                                .filter(liveRelationship -> liveRelationship.getStatus().isCancelled())
+                                .flatMap(liveRelationship -> Optional.ofNullable(
+                                        resourceResolver.getResource(liveRelationship.getSourcePath())))
+                                .orElse(null);
+                        if (sourceResource != null) {
+                            String title = Optional.ofNullable(sourceResource.getValueMap().get(PN_PANEL_TITLE, String.class))
+                                    .orElseGet(() -> this.resource.getValueMap().get(JcrConstants.JCR_TITLE, String.class));
+                            this.items.add(new SegmentationItemImpl(new ImmutablePair<>(StringUtils.EMPTY, StringUtils.EMPTY), item,
+                                    itemResource, title));
+                            continue;
+                        }
+                    } catch (WCMException e) {
+                        LOG.error(e.getMessage());
+                    }
+                    this.items.add(new SegmentationItemImpl(new ImmutablePair<>(StringUtils.EMPTY, StringUtils.EMPTY), item, itemResource, item.getTitle()));
                 }
             }
         }
@@ -207,14 +248,16 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
 
         private final String openingACCMarkup;
         private final String closingACCMarkup;
+        private final String title;
         private final ListItem listItem;
         private final Resource itemResource;
 
-        public SegmentationItemImpl(Pair<String, String> markup, ListItem listItem, Resource itemResource) {
+        public SegmentationItemImpl(Pair<String, String> markup, ListItem listItem, Resource itemResource, String title) {
             this.openingACCMarkup = markup.getLeft();
             this.closingACCMarkup = markup.getRight();
             this.listItem = listItem;
             this.itemResource = itemResource;
+            this.title = title;
         }
 
         @Override
@@ -229,7 +272,7 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
 
         @Override
         public @Nullable String getTitle() {
-            return listItem.getTitle();
+            return title;
         }
 
         @Override
@@ -261,8 +304,8 @@ public class SegmentationImpl extends AbstractComponentImpl implements Segmentat
         @Override
         public String getId() {
             return ComponentUtils.generateId(
-                StringUtils.join(SegmentationImpl.this.getId(), "-", "item"),
-                this.itemResource.getPath());
+                    StringUtils.join(SegmentationImpl.this.getId(), "-", "item"),
+                    this.itemResource.getPath());
         }
 
         @Override

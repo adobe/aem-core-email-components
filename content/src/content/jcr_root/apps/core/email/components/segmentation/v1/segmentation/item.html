@@ -14,13 +14,13 @@
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <template data-sly-template.item="${@ item}">
-    <tr>
+    <tr data-sly-test="${item.prolog}">
         <td class="no-background">${item.prolog @ context='html'}</td>
     </tr>
     <tr>
         <sly data-sly-resource="${item.name @ decorationTagName= 'td', cssClassName='no-background'}"></sly>
     </tr>
-    <tr>
+    <tr data-sly-test="${item.epilogue}">
         <td class="no-background">${item.epilogue @ context='html'}</td>
     </tr>
 </template>
