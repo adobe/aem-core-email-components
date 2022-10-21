@@ -13,23 +13,7 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor;
+@Version("1.0.0")
+package com.adobe.cq.email.core.commons.editor.dialog.segmenteditor;
 
-public class Condition {
-
-    private final String name;
-    private final String value;
-
-    public Condition(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-}
+import org.osgi.annotation.versioning.Version;
