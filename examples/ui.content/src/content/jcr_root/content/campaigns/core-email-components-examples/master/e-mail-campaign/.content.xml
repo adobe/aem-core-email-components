@@ -2,16 +2,18 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:cloudserviceconfigs="[/etc/cloudservices/campaign/ac-dev]"
-        cq:lastModified="{Date}2022-03-07T14:00:00.308Z"
-        cq:lastModifiedBy="stein"
-        cq:template="/libs/cq/personalization/templates/ambit"
+        cq:lastModified="{Date}2016-05-16T19:18:14.325+02:00"
+        cq:lastModifiedBy="admin"
+        cq:targetEngine="cq_contexthub"
+        cq:template="/libs/cq/personalization/templates/campaign"
         jcr:primaryType="cq:PageContent"
-        jcr:title="Master Area"
-        sling:resourceType="cq/personalization/components/ambitpage">
+        jcr:title="Core E-Mail Campaign"
+        sling:resourceType="cq/personalization/components/campaignpage"
+        priority="1">
         <par
             jcr:primaryType="nt:unstructured"
             sling:resourceType="foundation/components/parsys"/>
+        <cq:ActivitySettings jcr:primaryType="nt:unstructured"/>
     </jcr:content>
-    <core-email-spender/>
+    <e-mail-page/>
 </jcr:root>

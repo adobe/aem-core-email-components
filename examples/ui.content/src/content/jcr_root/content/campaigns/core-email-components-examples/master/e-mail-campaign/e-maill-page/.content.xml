@@ -6,7 +6,7 @@
         cq:lastModifiedBy="admin"
         cq:template="/conf/core-email-components-examples/settings/wcm/templates/email-template"
         jcr:primaryType="cq:PageContent"
-        jcr:title="E-Mail Test Page"
+        jcr:title="E-Mail Page"
         sling:resourceType="core-email-components-examples/components/page"
         acMapping="mapRecipient"
         acTemplateId="mailAEMContent"
@@ -16,15 +16,21 @@
             sling:resourceType="wcm/foundation/components/responsivegrid">
             <experiencefragment_header
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="core-email-components-examples/components/experiencefragment"
-                position="header"/>
-            <responsivegrid
+                sling:resourceType="core-email-components-examples/components/experiencefragment"/>
+            <container
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="core-email-components-examples/components/container"/>
+                sling:resourceType="core-email-components-examples/components/container"
+                layout="3-3">
+                <col-0
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid"/>
+                <col-1
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid"/>
+            </container>
             <experiencefragment_footer
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="core-email-components-examples/components/experiencefragment"
-                position="footer"/>
+                sling:resourceType="core-email-components-examples/components/experiencefragment"/>
         </root>
     </jcr:content>
 </jcr:root>

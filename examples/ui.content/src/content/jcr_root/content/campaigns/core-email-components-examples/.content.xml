@@ -2,7 +2,7 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:allowedTemplates="[/libs/cq/personalization/templates/.*,/libs/mcm/templates/brand,/apps/.*/templates/newsletter.*,.*/designimporter/templates/.*,/libs/commerce/templates/promotion,/libs/commerce/templates/voucher,/apps/.*/templates/.*newsletter.*,/libs/mcm/campaign/templates/ac-email.*,/conf/core-email-components-examples/settings/wcm/templates/email-template]"
+        cq:allowedTemplates="[/conf/core-email-components-examples/settings/wcm/templates/email-template,/libs/cq/personalization/templates/.*,/libs/mcm/templates/brand]"
         cq:lastModified="{Date}2022-03-09T08:32:21.308Z"
         cq:lastModifiedBy="noor"
         cq:template="/libs/mcm/templates/brand"
