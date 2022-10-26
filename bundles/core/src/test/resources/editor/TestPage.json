@@ -7,7 +7,6 @@
             "cq:template": "/conf/core-email-components-examples/settings/wcm/templates/email-template",
             "jcr:primaryType": "cq:PageContent",
             "jcr:title": "E-Mail Test Page",
-            "referenceUrl": "https://adobe-publish.dev",
             "root": {
                 "container": {
                     "col-0": {

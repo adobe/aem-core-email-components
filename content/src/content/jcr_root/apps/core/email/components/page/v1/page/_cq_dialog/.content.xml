@@ -34,7 +34,7 @@
                 size="L">
                 <items
                     jcr:primaryType="nt:unstructured"
-                    sling:hideChildren="[advanced,basic,socialmedia,personalization]">
+                    sling:hideChildren="[advanced,basic,socialmedia,personalization,pwa]">
                     <main
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Main"
@@ -186,11 +186,6 @@
                                                 targetinput="textarea[name='./plaintext']"/>
                                         </items>
                                     </plaintextButtons>
-                                    <referenceUrl
-                                        jcr:primaryType="nt:unstructured"
-                                        fieldLabel="Reference Url"
-                                        sling:resourceType="granite/ui/components/foundation/form/textfield"
-                                        name="./referenceUrl"/>
                                 </items>
                             </columns>
                         </items>

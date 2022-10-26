@@ -19,9 +19,7 @@
             <a class="cmp-teaser__action-link"
                href="${action.link.URL  @ context = 'html'}"
                data-sly-unwrap="${!action.link.valid}"
-               id="${action.id}"
-               data-cmp-data-layer="${action.data.json}"
-               data-cmp-clickable="${action.data ? true : false}">${action.title}</a>
+               id="${action.id}">${action.title}</a>
         </td>
     </tr>
 </sly>

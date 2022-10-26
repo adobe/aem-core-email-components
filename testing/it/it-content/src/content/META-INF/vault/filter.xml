@@ -15,7 +15,6 @@
   ~ limitations under the License.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <workspaceFilter version="1.0">
-    <!-- Sample content -->
     <filter root="/conf/core-email-components"/>
     <filter root="/content/core-email-components"/>
     <filter root="/content/campaigns/core_email_component_brand"/>

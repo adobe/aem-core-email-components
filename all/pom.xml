@@ -78,11 +78,6 @@
                                     <classifier>~cloud</classifier>
                                     <filter>true</filter>
                                 </subPackage>
-                                <subPackage>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>core.email.components.config</artifactId>
-                                    <filter>true</filter>
-                                </subPackage>
                             </subPackages>
                             <packageType>container</packageType>
                         </configuration>
@@ -269,13 +264,6 @@
             <artifactId>core.email.components.content</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core.email.components.config</artifactId>
-            <type>zip</type>
-            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
