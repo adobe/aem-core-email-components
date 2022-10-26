@@ -13,7 +13,7 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-package com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor;
+package com.adobe.cq.email.core.commons.editor.dialog.segmenteditor;
 
 import com.day.cq.wcm.api.policies.ContentPolicyMapping;
 import com.google.common.collect.ImmutableMap;

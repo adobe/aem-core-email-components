@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -45,8 +44,8 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.Editor;
-import com.adobe.cq.email.core.components.internal.commons.editor.dialog.segmenteditor.SegmentItem;
+import com.adobe.cq.email.core.commons.editor.dialog.segmenteditor.Editor;
+import com.adobe.cq.email.core.commons.editor.dialog.segmenteditor.SegmentItem;
 import com.adobe.cq.email.core.components.models.Segmentation;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.wcm.core.components.commons.link.Link;
@@ -58,9 +57,7 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.WCMException;
 import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.api.components.ComponentManager;
-import com.day.cq.wcm.msm.api.LiveRelationship;
 import com.day.cq.wcm.msm.api.LiveRelationshipManager;
-import com.day.cq.wcm.msm.api.LiveStatus;
 
 @Model(
         adaptables = SlingHttpServletRequest.class,
