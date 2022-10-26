@@ -109,7 +109,7 @@ public class EmailLinkTransformerFactoryTest {
         "/path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html, https://example.org/path/to/&lt;%=recipient.country%&gt;/&lt;%=recipient.language%&gt;/page.html",
         "/path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;, https://example.org/path/to/page.html#&lt;%=recipient.country%&gt;-&lt;%=recipient.language%&gt;",
     })
-    public void testLinkRewriteWithoutLinkManager(String givenHref, String expectedHref) throws SAXException {
+    public void testLinkRewrite(String givenHref, String expectedHref) throws SAXException {
         AttributesImpl attributes = new AttributesImpl();
 
         if (givenHref != null) {
@@ -133,24 +133,41 @@ public class EmailLinkTransformerFactoryTest {
         verify(contentHandler, times(1)).startElement(any(),any(), any(), any());
     }
 
+    @ParameterizedTest
+    @CsvSource(value = {
+        "src; /path/to/image.png; https://example.org/path/to/image.png",
+        "srcset; /path/to/image-480.png 480px, /path/to/image.png 640px; https://example.org/path/to/image-480.png 480px, https://example.org/path/to/image.png 640px",
+        "srcset; /path/to/image.png, /path/to/image-2x.png 2x; https://example.org/path/to/image.png, https://example.org/path/to/image-2x.png 2x",
+    }, delimiter = ';')
+    public void testImageRewrite(String attr, String given, String expected) throws IOException, SAXException {
+        AttributesImpl attributes = new AttributesImpl();
+        attributes.addAttribute("", attr, attr, "CDATA", given);
+
+        subject.startElement("", "img", "img", attributes);
+
+        assertEquals(expected, attributes.getValue(attr));
+
+        verify(contentHandler, times(1)).startElement(any(),any(), any(), any());
+    }
+
     @Test
-    public void testLinkRewriteWithoutLinkManagerWithExternalizationDisabled() throws IOException, SAXException {
+    public void testLinkRewriteWithExternalizationDisabled() throws IOException, SAXException {
         // test that the decoding/re-encoding works but the externalization is not called
         requestPathInfo.setSelectorString("");
         subject.init(processingContext,null);
 
-        testLinkRewriteWithoutLinkManager(
+        testLinkRewrite(
             "/path/to/page.html?recipient=%3C%= recipient.id%20%>",
             "/path/to/page.html?recipient=&lt;%= recipient.id %&gt;");
     }
 
     @Test
-    public void testLinkRewriteWithoutLinkManagerEmptyHref() throws SAXException {
-        testLinkRewriteWithoutLinkManager("", "");
+    public void testLinkRewriteEmptyHref() throws SAXException {
+        testLinkRewrite("", "");
     }
 
     @Test
-    public void testLinkRewriteWithoutLinkManagerNoHref() throws SAXException {
-        testLinkRewriteWithoutLinkManager(null, null);
+    public void testLinkRewriteNoHref() throws SAXException {
+        testLinkRewrite(null, null);
     }
 }
