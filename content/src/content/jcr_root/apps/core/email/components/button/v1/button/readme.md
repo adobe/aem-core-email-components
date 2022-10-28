@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-Page
+Button
 ====
-Extensible page component written in HTL for composing campaign content and based on the [Page Core Component](https://github.com/adobe/aem-core-wcm-components/blob/main/content/src/content/jcr_root/apps/core/wcm/components/page/v3/page/README.md)
+Extensible button component written in HTL for composing campaign content and based on the [Button Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button)
 
 ## Features
 * Supports editable templates
@@ -28,9 +28,6 @@ Extensible page component written in HTL for composing campaign content and base
 ## Use Object
 The Page component uses the following use objects:
 
-* `com.adobe.cq.wcm.core.components.models.Page`
-* `com.day.cq.wcm.foundation.TemplatedContainer`
-
 ## Component Policy Configuration Properties
 The following configuration properties are used:
 
@@ -40,7 +37,7 @@ The following properties are written to JCR for this Page component and are expe
 ## Information
 * **Vendor**: Adobe
 * **Version**: v1
-* **Compatibility**: AEM 6.5
+* **Compatibility**: AEM 6.5, AEM as a Cloud Service
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_page_v1](https://www.adobe.com/go/aem_cmp_email_page_v1)
 * **Authors**: 

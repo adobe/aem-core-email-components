@@ -18,52 +18,40 @@ Image
 Image component written in HTL for rendering an adaptive image within campaign content based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
 ## Features
-* Native loading of optimal rendition
-* Scale image to to available width
-* Decorative-only images
-* Alternate text with option to get it from DAM
-* Image linking
+* Linkable to content pages, external URLs or page anchors
+* Allows an icon identifier to be configured for rendering an icon
+* Personalization fields from Adobe Campaign
 
 ## Use Object
-The Page component uses the following use objects:
-
-## Component Policy Configuration Properties
-The following configuration properties are used:
+The Button component uses the `com.adobe.cq.wcm.core.components.models.Button` Sling model as its Use-object.
 
 ## Edit Dialog Properties
-The following properties are written to JCR for this Page component and are expected to be available as `Resource` properties:
+The following properties are written to JCR for the Button component and are expected to be available as `Resource` properties:
 
-## Extending From This Component
-
-## URL Formats
-
-Images are loaded through the `com.adobe.cq.wcm.core.components.internal.servlets.AdaptiveImageServlet`, and therefore their URLs have the following patterns:
-
-```text
-Author:
-/content/<project_path>/<page_path>/<component_path>/<component_name>.coreimg.<quality>.<width>.<extension>/<timestamp>/<filename>.<extension>
-
-Publish:
-/content/<project_path>/<page_path>/<component_path>/<component_name>.coreimg.<quality>.<width>.<extension>/<timestamp>/<filename>.<extension>
-```
+`./jcr:title` - defines the button text
+`./link` - defines the button link
+`./linkTarget` - defines if the link should be opened in a new browser tab
+`./icon` - defines an icon identifier for rendering an icon
+`./accessibilityLabel` - defines an accessibility label for the button
+`./id` - defines the component HTML ID attribute
 
 ## BEM Description
 
 ```text
-BLOCK cmp-image
-    ELEMENT cmp-image__link
-    ELEMENT cmp-image__image
-    ELEMENT cmp-image__title
+BLOCK cmp-button
+    ELEMENT cmp-button__text
+    ELEMENT cmp-button__icon
+        MOD cmp-button__icon--<icon>
 ```
 
-## SVG
+## Icon Styling
 
-SVG MIME-types are supported, but have some specific handling. Alternative smart image widths defined at the component policy dialog are ignored for SVG images, with `Image#getWidths` returning an empty array.
+Icon styling must be done by users of the Email Core Components. Here's an example from the [Core Components Library.](https://github.com/adobe/aem-core-wcm-components/blob/72e2be7b9599aec7526be1adf3e4b3eaf3cf6f02/examples/ui.apps/src/content/jcr_root/apps/core-components-examples/clientlibs/clientlib-themes/core-components-clean/styles/components/carousel/base.less#L145)
 
 ## Information
 * **Vendor**: Adobe
 * **Version**: v1
-* **Compatibility**: AEM 6.5, AEM as a Cloud Service
+* **Compatibility**: AEM 6.5
 * **Status**: production-ready
-* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_image_v1](https://www.adobe.com/go/aem_cmp_email_image_v1)
+* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_button_v1](https://www.adobe.com/go/aem_cmp_email_button_v1)
 * **Authors**: 
