@@ -13,9 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-Image
-====
-Image component written in HTL for rendering an adaptive image within campaign content based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
+# Image
+Extensible image component for the Core Email Components for composing campaign content written in HTL and based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
 ## Features
 * Linkable to content pages, external URLs or page anchors

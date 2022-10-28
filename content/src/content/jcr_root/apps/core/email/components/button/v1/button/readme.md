@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-Button
-====
-Extensible button component written in HTL for composing campaign content and based on the [Button Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button)
+# Button Component
+
+Extensible button component for the Core Email Components for composing campaign content written in HTL and based on the [Button Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button)
 
 ## Features
 * Supports editable templates
@@ -37,7 +37,7 @@ The following properties are written to JCR for this Page component and are expe
 ## Information
 * **Vendor**: Adobe
 * **Version**: v1
-* **Compatibility**: AEM 6.5, AEM as a Cloud Service
+* **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_page_v1](https://www.adobe.com/go/aem_cmp_email_page_v1)
 * **Authors**: 
