@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -80,7 +81,7 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
 
     static {
         TAGS = new LinkedHashMap<>(4);
-        TAGS.put("img", Collections.singletonList("src"));
+        TAGS.put("img", Arrays.asList("src", "srcset"));
         TAGS.put("a", Collections.singletonList("href"));
         TAGS.put("td", Collections.singletonList("background"));
         TAGS.put("th", Collections.singletonList("background"));
@@ -162,7 +163,21 @@ public class EmailLinkTransformerFactory implements TransformerFactory {
                         mutableAttributes = new AttributesImpl(attributes);
                     }
 
-                    value = rewriteLink(decodedValue);
+                    if (StringUtils.equals(attr, "srcset")) {
+                        // special handling for srcset
+                        value = Arrays.stream(StringUtils.split(decodedValue, ','))
+                            .filter(StringUtils::isNotEmpty)
+                            .map(StringUtils::trim)
+                            .map(entry -> StringUtils.split(entry, ' '))
+                            .map(parts -> {
+                                parts[0] = rewriteLink(parts[0]);
+                                return StringUtils.join(parts, ' ');
+                            })
+                            .collect(Collectors.joining(", "));
+                    } else {
+                        value = rewriteLink(decodedValue);
+                    }
+
                     value = escapeScriptlets(value);
                     setAttribute(mutableAttributes, index, value);
 
