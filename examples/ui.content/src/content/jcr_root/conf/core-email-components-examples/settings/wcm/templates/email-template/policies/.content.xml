@@ -49,6 +49,23 @@
                         </components>
                     </core-email-components-examples>
                 </col-1>
+                <col-2
+                    cq:policy="wcm/foundation/components/responsivegrid/default"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping">
+                    <core-email-components-examples jcr:primaryType="nt:unstructured">
+                        <components jcr:primaryType="nt:unstructured">
+                            <segmentation
+                                cq:policy="core-email-components-examples/components/segmentation/default"
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="wcm/core/components/policies/mapping"/>
+                            <image
+                                cq:policy="core-email-components-examples/components/image/default"
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="wcm/core/components/policies/mapping"/>
+                        </components>
+                    </core-email-components-examples>
+                </col-2>
             </container>
         </root>
     </jcr:content>
