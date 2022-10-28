@@ -26,7 +26,7 @@ The Container Component provides a simplified responsive grid consisting of six 
 
 ## Use Object
 
-The Container component uses the `com.adobe.cq.wcm.core.components.models.ContainerModel` Sling model as its Use-object.
+The Container component uses the `com.adobe.cq.email.core.components.models.Container` Sling model as its Use-object.
 
 ## Edit Dialog Properties
 
@@ -55,4 +55,4 @@ When using a proxy component of the container, the `cq:template` folder from the
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_container_v1](https://www.adobe.com/go/aem_cmp_email_container_v1)
-* **Authors**: 
+* **Authors**:
