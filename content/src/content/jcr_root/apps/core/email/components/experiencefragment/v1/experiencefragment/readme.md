@@ -17,6 +17,8 @@ limitations under the License.
 
 Extensible Experience Fragment component for the Core Email Components for composing campaign content written in HTL and based on the [Experience Fragment Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/experiencefragment/v2/experiencefragment)
 
+The Experience Fragment Component allows embedding an Experience Fragment in campaign content.
+
 ## Features
 
 * Can be used on both templates and pages

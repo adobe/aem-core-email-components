@@ -17,9 +17,11 @@ limitations under the License.
 
 Extensible container component for the Core Email Components for composing campaign content written in HTL and based on the [Container Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/container/v1/container)
 
+The Container Component provides a simplified responsive grid consisting of six columns.
+
 ## Features
 
-* Configurable layout with dropdown of different column split up options.
+* Configurable layout with dropdown of different column split up options
 * Extends the core container component
 
 ## Use Object

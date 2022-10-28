@@ -17,6 +17,8 @@ limitations under the License.
 
 Extensible teaser component for the Core Email Components for composing campaign content written in HTL and based on the [Teaser Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/teaser/v2/teaser)
 
+The Teaser Component serves as a combination of title, text, image, and call-to-action.
+
 ## Features
 
 * Allows the creation of different containers for each segment and its content

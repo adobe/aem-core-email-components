@@ -17,6 +17,8 @@ limitations under the License.
 
 Extensible image component for the Core Email Components for composing campaign content written in HTL and based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
+The Image Component allows embedding images in campaign content.
+
 ## Features
 
 * Linkable to content pages, external URLs or page anchors

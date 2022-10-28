@@ -17,6 +17,8 @@ limitations under the License.
 
 Extensible segmentation component for the Core Email Components for composing campaign content written in HTL and based on the [Tabs Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/tabs/v1/tabs)
 
+The Segmentation Component presents content wrapped with a conditional statement which renders only when the condition is true.
+
 ## Features
 
 * Allows the creation of different containers for each segment and its content

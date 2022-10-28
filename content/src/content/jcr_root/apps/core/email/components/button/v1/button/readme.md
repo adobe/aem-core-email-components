@@ -17,6 +17,8 @@ limitations under the License.
 
 Extensible button component for the Core Email Components for composing campaign content written in HTL and based on the [Button Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button)
 
+The Button Component serves as a call-to-action link.
+
 ## Features
 
 * Supports editable templates
