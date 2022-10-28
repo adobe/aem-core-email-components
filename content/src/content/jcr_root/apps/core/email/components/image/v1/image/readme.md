@@ -13,39 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-# Image
+# Image Component
 Extensible image component for the Core Email Components for composing campaign content written in HTL and based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
 ## Features
 * Linkable to content pages, external URLs or page anchors
 * Allows an icon identifier to be configured for rendering an icon
 * Personalization fields from Adobe Campaign
+* Ability to define image width
 
-## Use Object
-The Button component uses the `com.adobe.cq.wcm.core.components.models.Button` Sling model as its Use-object.
+## Technical Details
 
-## Edit Dialog Properties
-The following properties are written to JCR for the Button component and are expected to be available as `Resource` properties:
+This component inherits its structure and behavior from the [Image (v3) component of the `core.wcm.component` package.](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
-`./jcr:title` - defines the button text
-`./link` - defines the button link
-`./linkTarget` - defines if the link should be opened in a new browser tab
-`./icon` - defines an icon identifier for rendering an icon
-`./accessibilityLabel` - defines an accessibility label for the button
-`./id` - defines the component HTML ID attribute
+The changes are:
 
-## BEM Description
+* Addition of the numeric field **Fixed width (px)** on the **Metadata** tab of the edit dialog, which defines the width (in pixels) of the image
+* Addition of the checkbox **Scale image to available width** on the **Metadata** tab of the edit dialog, which forces the image to be displayed in full screen mode
+* Addition of the numeric field **Default width (px)** in the edit template dialog, which defines the default value for **Fixed width (px)** field when no value is present
+* The image URL in the `src` HTML attribute is now absolute (see [UrlMapperService](https://github.com/adobe/aem-core-email-components/wiki/UrlMapperService:-Technical-documentation) for details)
 
-```text
-BLOCK cmp-button
-    ELEMENT cmp-button__text
-    ELEMENT cmp-button__icon
-        MOD cmp-button__icon--<icon>
-```
+## Best Practices for Email Image Sizes
 
-## Icon Styling
+According to [statcounter,](https://gs.statcounter.com/screen-resolution-stats#monthly-202201-202203) the most common resolutions (across all platforms) between January and March 2022 are 1920x1080 (9.04% to 9.43%) and 1366x768 (7.35% to 7.57%). Therefore the default width of the Image component is 1280.
 
-Icon styling must be done by users of the Email Core Components. Here's an example from the [Core Components Library.](https://github.com/adobe/aem-core-wcm-components/blob/72e2be7b9599aec7526be1adf3e4b3eaf3cf6f02/examples/ui.apps/src/content/jcr_root/apps/core-components-examples/clientlibs/clientlib-themes/core-components-clean/styles/components/carousel/base.less#L145)
+## Tests and Coverage
+
+The `ImageIT` class is the Selenium test class. It verifies that the image renders correctly when a fixed width is selected and when the scale is set to full size. In both cases, it checks that the `src` HTML attribute of the image contains an absolute URL.
 
 ## Information
 * **Vendor**: Adobe

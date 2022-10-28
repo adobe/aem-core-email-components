@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-# Page
+# Page Component
 Extensible page component for the Core Email Components for composing campaign content written in HTL and based on the [Page Core Component](https://github.com/adobe/aem-core-wcm-components/blob/main/content/src/content/jcr_root/apps/core/wcm/components/page/v3/page/README.md)
 
 ## Features
@@ -23,18 +23,6 @@ Extensible page component for the Core Email Components for composing campaign c
 * Cloud service configuration
 * Email subject, pre-header, plain text, and reference URL
 * Campaign variable access for many text fields
-
-## Use Object
-The Page component uses the following use objects:
-
-* `com.adobe.cq.wcm.core.components.models.Page`
-* `com.day.cq.wcm.foundation.TemplatedContainer`
-
-## Component Policy Configuration Properties
-The following configuration properties are used:
-
-## Edit Dialog Properties
-The following properties are written to JCR for this Page component and are expected to be available as `Resource` properties:
 
 ## Information
 * **Vendor**: Adobe

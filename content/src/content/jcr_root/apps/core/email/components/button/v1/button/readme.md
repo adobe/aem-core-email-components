@@ -25,14 +25,16 @@ Extensible button component for the Core Email Components for composing campaign
 * Email subject, pre-header, plain text, and reference URL
 * Campaign variable access for many text fields
 
-## Use Object
-The Page component uses the following use objects:
+## Technical Details
 
-## Component Policy Configuration Properties
-The following configuration properties are used:
+This component inherit its structure and behavior from the [Button component (v2) of the `core.wcm.component`](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button) package. The only change is the integration of the personalization plugin, which results in the addition of a button to insert personalization fields from Adobe Campaign in the **Text** and **Link** fields in the following locations:
 
-## Edit Dialog Properties
-The following properties are written to JCR for this Page component and are expected to be available as `Resource` properties:
+* Configuration dialog toolbar
+* Full screen configuration dialog toolbar
+
+## Tests and Coverage
+
+The class `ButtonIT` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
 
 ## Information
 * **Vendor**: Adobe
