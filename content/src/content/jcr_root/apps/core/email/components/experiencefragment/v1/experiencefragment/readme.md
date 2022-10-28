@@ -30,6 +30,7 @@ The following property is written to JCR for the experience fragment component a
 `./id` - defines the component HTML ID attribute
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

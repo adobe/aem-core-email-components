@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # Page Component
+
 Extensible page component for the Core Email Components for composing campaign content written in HTL and based on the [Page Core Component](https://github.com/adobe/aem-core-wcm-components/blob/main/content/src/content/jcr_root/apps/core/wcm/components/page/v3/page/README.md)
 
 ## Features
+
 * Supports editable templates
 * Title, description, tagging, and language definition
 * HTML ID
@@ -25,6 +27,7 @@ Extensible page component for the Core Email Components for composing campaign c
 * Campaign variable access for many text fields
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

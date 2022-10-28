@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # Image Component
+
 Extensible image component for the Core Email Components for composing campaign content written in HTL and based on the [Image Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/image/v3/image)
 
 ## Features
+
 * Linkable to content pages, external URLs or page anchors
 * Allows an icon identifier to be configured for rendering an icon
 * Personalization fields from Adobe Campaign
@@ -42,6 +44,7 @@ According to [statcounter,](https://gs.statcounter.com/screen-resolution-stats#m
 The `ImageIT` class is the Selenium test class. It verifies that the image renders correctly when a fixed width is selected and when the scale is set to full size. In both cases, it checks that the `src` HTML attribute of the image contains an absolute URL.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

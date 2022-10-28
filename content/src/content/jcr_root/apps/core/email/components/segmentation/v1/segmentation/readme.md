@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # Segmentation Component
+
 Extensible segmentation component for the Core Email Components for composing campaign content written in HTL and based on the [Tabs Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/tabs/v1/tabs)
 
 ## Features
@@ -38,6 +39,7 @@ The following properties are written to JCR for this Segmentation component and 
 The component provides a `core.wcm.components.tabs.v1 client` library category that contains a recommended base CSS styling. It should be added to a relevant site client library using the embed property.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

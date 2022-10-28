@@ -26,6 +26,7 @@ Extensible Content Fragment component for the Core Email Components for composin
 * Option to embed the CF as single element
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

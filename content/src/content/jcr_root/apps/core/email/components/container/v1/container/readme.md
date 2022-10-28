@@ -47,6 +47,7 @@ The component provides a `core.email.components.container` client library catego
 When using a proxy component of the container, the `cq:template` folder from the container superType has to be copied.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

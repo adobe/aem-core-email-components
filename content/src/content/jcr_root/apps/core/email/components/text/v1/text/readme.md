@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # Text Component
+
 Extensible text component for the Core Email Components for composing campaign content written in HTL and based on the [Text Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/text/v2/text)
 
 ## Features
@@ -38,6 +39,7 @@ There is some custom logic on the Java model class `com.adobe.cq.email.core.comp
 The class `EmailTextIt` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

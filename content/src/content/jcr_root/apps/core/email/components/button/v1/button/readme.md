@@ -18,6 +18,7 @@ limitations under the License.
 Extensible button component for the Core Email Components for composing campaign content written in HTL and based on the [Button Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button)
 
 ## Features
+
 * Supports editable templates
 * Title, description, tagging, and language definition
 * HTML ID
@@ -37,6 +38,7 @@ This component inherit its structure and behavior from the [Button component (v2
 The class `ButtonIT` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5

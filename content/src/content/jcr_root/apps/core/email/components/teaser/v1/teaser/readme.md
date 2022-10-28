@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # Teaser Component
+
 Extensible teaser component for the Core Email Components for composing campaign content written in HTL and based on the [Teaser Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/teaser/v2/teaser)
 
 ## Features
@@ -36,6 +37,7 @@ The Teaser also offers the capability to display the image as a background image
 The class `TeaserIT` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
 
 ## Information
+
 * **Vendor**: Adobe
 * **Version**: v1
 * **Compatibility**: AEM 6.5
