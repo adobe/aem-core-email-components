@@ -40,5 +40,5 @@ The class `TeaserIT` is the Selenium test class. It checks for the existence of 
 * **Version**: v1
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
-* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_segmentation_v1](https://www.adobe.com/go/aem_cmp_email_segmentation_v1)
+* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_teaser_v1](https://www.adobe.com/go/aem_cmp_email_teaser_v1)
 * **Authors**: 
