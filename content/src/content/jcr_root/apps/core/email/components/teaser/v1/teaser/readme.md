@@ -27,7 +27,7 @@ The Teaser Component serves as a combination of title, text, image, and call-to-
 
 ## Technical Details
 
-This component inherit its structure and behavior from the [Teaser component (v2) of the core.wcm.component package.](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/teaser/v2/teaser) The changes are the integration of the personalization plugin, which adds a button to insert Adobe Campaign personalization fields in the following locations:
+This component inherit its structure and behavior from the [Teaser component (v2)](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/teaser/v2/teaser) of the core.wcm.component package. The changes are the integration of the personalization plugin, which adds a button to insert Adobe Campaign personalization fields in the following locations:
 
 * Configuration dialog toolbar
 * Full screen configuration dialog toolbar
@@ -45,4 +45,4 @@ The class `TeaserIT` is the Selenium test class. It checks for the existence of 
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_teaser_v1](https://www.adobe.com/go/aem_cmp_email_teaser_v1)
-* **Authors**: 
+* **Authors**:

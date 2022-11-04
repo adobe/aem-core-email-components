@@ -38,8 +38,6 @@ Defines the layout type with the column split up of either full-width, half; hal
 
 ### Common Properties
 
-* `./backgroundImageReference` - defines the container background image
-* `./backgroundColor` - defines the container background color
 * `./id` - defines the component HTML ID attribute
 
 ## Client Libraries

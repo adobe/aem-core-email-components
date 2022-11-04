@@ -25,14 +25,12 @@ Extensible text component for the Core Email Components for composing campaign c
 
 ## Technical Details
 
-This component inherit its structure and behavior from the [Text component (v2) of the core.wcm.component package.](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/text/v2/text) The only change is the integration of the personalization plugin, which adds buttons to insert Adobe Campaign personalization fields in the following locations:
+This component inherit its structure and behavior from the [Text component (v2)](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/text/v2/text) of the core.wcm.component package. The only change is the integration of the personalization plugin, which adds buttons to insert Adobe Campaign personalization fields in the following locations:
 
 * Inline editor toolbar
 * Full screen editor toolbar
 * Configuration dialog toolbar
 * Full screen configuration dialog toolbar
-
-There is some custom logic on the Java model class `com.adobe.cq.email.core.components.models.TextModel` related to link handling. Specifically, the `getText` method calls the `com.adobe.cq.email.core.components.util.HrefProcessor` utility class, which processes the actual content of Rich Text Component and looks for link elements. If they are present, it checks to see if the `href` attribute contains some URL-encoded Adobe Campaign markup. If so, it decodes it and adds the `x-cq-linkchecker="skip"` attribute to skip AEM link checker execution on that link.
 
 ## Tests and Coverage
 
@@ -45,4 +43,4 @@ The class `EmailTextIt` is the Selenium test class. It checks for the existence 
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_text_v1](https://www.adobe.com/go/aem_cmp_email_text_v1)
-* **Authors**: 
+* **Authors**:

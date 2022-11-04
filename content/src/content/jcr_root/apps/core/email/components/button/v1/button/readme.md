@@ -30,7 +30,7 @@ The Button Component serves as a call-to-action link.
 
 ## Technical Details
 
-This component inherit its structure and behavior from the [Button component (v2) of the `core.wcm.component`](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button) package. The only change is the integration of the personalization plugin, which results in the addition of a button to insert personalization fields from Adobe Campaign in the **Text** and **Link** fields in the following locations:
+This component inherit its structure and behavior from the [Button component (v2)](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/button/v2/button) of the `core.wcm.component` package. The only change is the integration of the personalization plugin, which results in the addition of a button to insert personalization fields from Adobe Campaign in the **Text** and **Link** fields in the following locations:
 
 * Configuration dialog toolbar
 * Full screen configuration dialog toolbar
@@ -46,4 +46,4 @@ The class `ButtonIT` is the Selenium test class. It checks for the existence of 
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_page_v1](https://www.adobe.com/go/aem_cmp_email_page_v1)
-* **Authors**: 
+* **Authors**:

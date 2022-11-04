@@ -33,12 +33,11 @@ The component policy dialog allows definition of allowed components for the Segm
 
 The following properties are written to JCR for this Segmentation component and are expected to be available as `Resource` properties:
 
-* `./activeItem` - Defines the name of the item that is active by default
 * `./id` - Defines the component HTML ID attribute
 
 ## Client Libraries
 
-The component provides a `core.wcm.components.tabs.v1 client` library category that contains a recommended base CSS styling. It should be added to a relevant site client library using the embed property.
+The component provides a `core.email.components.segmentation.v1.segmentation` library category that contains a recommended base CSS styling. It should be added to a relevant site client library using the embed property.
 
 ## Information
 
@@ -47,4 +46,4 @@ The component provides a `core.wcm.components.tabs.v1 client` library category t
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_segmentation_v1](https://www.adobe.com/go/aem_cmp_email_segmentation_v1)
-* **Authors**: 
+* **Authors**:

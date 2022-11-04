@@ -13,7 +13,7 @@
             <tabs
                 jcr:primaryType="nt:unstructured">
                 <items jcr:primaryType="nt:unstructured"
-                       sling:hideChildren="[tabitems]">
+                       sling:hideChildren="[tabitems,accessibility]">
                     <containerItems
                         jcr:primaryType="nt:unstructured"
                         sling:orderBefore="properties"

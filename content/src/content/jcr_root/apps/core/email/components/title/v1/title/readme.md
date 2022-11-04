@@ -25,7 +25,7 @@ Extensible title component for the Core Email Components for composing campaign 
 
 ## Technical Details
 
-This component inherit its structure and behavior from the [Title component (v3) of the `core.wcm.component` package.](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/title/v3/title) The only change is the integration of the personalization plugin, which adds buttons to insert personalization fields from Adobe Campaign in the following locations:
+This component inherit its structure and behavior from the [Title component (v3)](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/title/v3/title) of the `core.wcm.component` package. The only change is the integration of the personalization plugin, which adds buttons to insert personalization fields from Adobe Campaign in the following locations:
 
 * Configuration dialog toolbar
 * Full screen configuration dialog toolbar
@@ -41,4 +41,4 @@ The class `TitleIT` is the Selenium test class. It checks for the existence of t
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
 * **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_title_v1](https://www.adobe.com/go/aem_cmp_email_title_v1)
-* **Authors**: 
+* **Authors**:
