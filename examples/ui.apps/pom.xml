@@ -64,10 +64,6 @@
                             <artifactId>core.email.components.content</artifactId>
                             <version>${project.version}</version>
                         </dependency>
-                        <dependency>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.email.components.examples.ui.config</artifactId>
-                        </dependency>
                     </dependencies>
                 </configuration>
             </plugin>
@@ -211,14 +207,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>core.email.components.content</artifactId>
-            <type>zip</type>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--Examples ui.config -->
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.email.components.examples.ui.config</artifactId>
             <type>zip</type>
             <version>${project.version}</version>
             <scope>provided</scope>
