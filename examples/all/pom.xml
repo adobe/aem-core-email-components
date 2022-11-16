@@ -65,11 +65,6 @@
                         </subPackage>
                         <subPackage>
                             <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.email.components.examples.ui.config</artifactId>
-                            <filter>true</filter>
-                        </subPackage>
-                        <subPackage>
-                            <groupId>com.adobe.cq</groupId>
                             <artifactId>core.email.components.examples.ui.content</artifactId>
                             <filter>true</filter>
                         </subPackage>
@@ -147,13 +142,6 @@
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.email.components.examples.ui.apps</artifactId>
-            <type>zip</type>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.email.components.examples.ui.config</artifactId>
             <type>zip</type>
             <version>${project.version}</version>
             <scope>provided</scope>
