@@ -3,8 +3,6 @@
     jcr:primaryType="cq:Page">
     <jcr:content
         cq:allowedTemplates="[/conf/core-email-components-examples/settings/wcm/templates/email-template,/libs/cq/personalization/templates/.*,/libs/mcm/templates/brand]"
-        cq:lastModified="{Date}2022-03-09T08:32:21.308Z"
-        cq:lastModifiedBy="noor"
         cq:template="/libs/mcm/templates/brand"
         jcr:primaryType="cq:PageContent"
         jcr:title="Core Email Components Examples"
