@@ -17,7 +17,7 @@ limitations under the License.
 
 Extensible Content Fragment component for the Core Email Components for composing campaign content written in HTL and based on the [Content Fragment Core Component](https://github.com/adobe/aem-core-wcm-components/tree/main/content/src/content/jcr_root/apps/core/wcm/components/contentfragment/v1/contentfragment)
 
-The Content Fragment Component allows embedding a Content Fragment in structured or text format in campaign content.
+The Content Fragment Component allows embedding a Content Fragment in campaign content.
 
 ## Features
 
@@ -26,6 +26,7 @@ The Content Fragment Component allows embedding a Content Fragment in structured
 * Alternative Content Fragment variations are configurable.
 * Capability to use the Campaign personalization fields in the RTE of the Content Fragment editor
 * Option to embed the CF as single element
+* HTML ID
 
 ## Information
 

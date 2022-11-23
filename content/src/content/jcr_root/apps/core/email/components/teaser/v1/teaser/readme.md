@@ -21,9 +21,9 @@ The Teaser Component serves as a combination of title, text, image, and call-to-
 
 ## Features
 
-* Allows the creation of different containers for each segment and its content
-* Allowed components can be configured through policy configuration.
-* Navigation between container panels via the toolbar
+* Display an image as a background image or as a regular image
+* Use Campaign personalization fields in the RTE for the description
+* HTML ID
 
 ## Technical Details
 

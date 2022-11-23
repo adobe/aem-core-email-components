@@ -19,9 +19,10 @@ Extensible title component for the Core Email Components for composing campaign 
 
 ## Features
 
-* Allows the creation of different containers for each segment and its content
-* Allowed components can be configured through policy configuration.
-* Navigation between container panels via the toolbar
+* Create titles for content
+* Define title size
+* Insert Campaign variables into title content
+* HTML ID
 
 ## Technical Details
 

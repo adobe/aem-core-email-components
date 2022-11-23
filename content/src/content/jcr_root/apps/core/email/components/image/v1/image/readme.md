@@ -25,6 +25,7 @@ The Image Component allows embedding images in campaign content.
 * Allows an icon identifier to be configured for rendering an icon
 * Personalization fields from Adobe Campaign
 * Ability to define image width
+* HTML ID
 
 ## Technical Details
 
@@ -51,5 +52,5 @@ The `ImageIT` class is the Selenium test class. It verifies that the image rende
 * **Version**: v1
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
-* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_button_v1](https://www.adobe.com/go/aem_cmp_email_button_v1)
+* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_image_v1](https://www.adobe.com/go/aem_cmp_email_image_v1)
 * **Authors**: 

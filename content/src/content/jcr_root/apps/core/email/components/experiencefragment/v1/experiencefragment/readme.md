@@ -23,6 +23,7 @@ The Experience Fragment Component allows embedding an Experience Fragment in cam
 
 * Can be used on both templates and pages
 * Defines a configurable Experience Fragment variation to be displayed
+* HTML ID
 
 ## Edit Dialog Properties
 

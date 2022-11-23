@@ -19,9 +19,10 @@ Extensible text component for the Core Email Components for composing campaign c
 
 ## Features
 
-* Allows the creation of different containers for each segment and its content
-* Allowed components can be configured through policy configuration.
-* Navigation between container panels via the toolbar
+* A fully-featured rich text editor for composing text content
+* Full screen and inline modes
+* Ability to insert Campaign content in the editors and configuration dialogs
+* HTML ID
 
 ## Technical Details
 

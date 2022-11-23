@@ -21,12 +21,11 @@ The Button Component serves as a call-to-action link.
 
 ## Features
 
-* Supports editable templates
-* Title, description, tagging, and language definition
+* Define text of button
+* Define link for when button is clicked
+* Define icon for the button
+* Insert Campaign variables into text fields
 * HTML ID
-* Cloud service configuration
-* Email subject, pre-header, plain text, and reference URL
-* Campaign variable access for many text fields
 
 ## Technical Details
 
@@ -45,5 +44,5 @@ The class `ButtonIT` is the Selenium test class. It checks for the existence of 
 * **Version**: v1
 * **Compatibility**: AEM 6.5
 * **Status**: production-ready
-* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_page_v1](https://www.adobe.com/go/aem_cmp_email_page_v1)
+* **User Documentation**: [https://www.adobe.com/go/aem_cmp_email_button_v1](https://www.adobe.com/go/aem_cmp_email_button_v1)
 * **Authors**:

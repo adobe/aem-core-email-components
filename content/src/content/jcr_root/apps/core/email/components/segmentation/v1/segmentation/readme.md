@@ -24,6 +24,7 @@ The Segmentation Component presents content wrapped with a conditional statement
 * Allows the creation of different containers for each segment and its content
 * Allowed components can be configured through policy configuration.
 * Navigation between container panels via the toolbar
+* HTML ID
 
 ## Component Policy Configuration Properties
 
