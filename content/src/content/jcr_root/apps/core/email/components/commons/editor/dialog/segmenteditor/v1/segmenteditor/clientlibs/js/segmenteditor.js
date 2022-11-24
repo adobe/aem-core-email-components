@@ -214,28 +214,7 @@
                 if (ns) {
                     that._elements.items.forEach(function(item) {
                         that._bindCloneAction(item);
-                        Coral.commons.ready(item, function(el) {
-                            var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
-                            var $customSegmentName = $(item).find(selectors.item.title).adaptTo("foundation-field");
-                            var $customSegmentCondition = $(item).find(selectors.item.condition).adaptTo("foundation-field");
-                            var select = el.querySelectorAll(selectors.items.select)[0];
-                            var hiddenInput = el.querySelectorAll("input[type='hidden']" + selectors.items.hiddenInputTitle)[0];
-                            var $hiddenInput = $(hiddenInput).adaptTo("foundation-field");
-                            Coral.commons.nextFrame(function() {
-                                select.on("change", function(event) {
-                                    if (event.target.selectedItem.value === "custom") {
-                                        $customSegmentName.setValue("");
-                                        $customSegmentCondition.setValue("");
-                                        customSegment.show();
-                                        $hiddenInput.setDisabled(true);
-                                    } else {
-                                        customSegment.hide();
-                                        hiddenInput.value = event.target.selectedItem.textContent;
-                                        $hiddenInput.setDisabled(false);
-                                    }
-                                });
-                            });
-                        });
+                        that._bindSelectChange(item);
                     });
                     Coral.commons.ready(that._elements.add, function() {
                         that._elements.add.on("click", function() {
@@ -359,9 +338,13 @@
                 var selectCondition = item.querySelectorAll("coral-select" + selectors.item.condition)[0];
                 selectCondition.on("change" + NS, function(event) {
                     var customSegment = $(item).find(selectors.item.custom).adaptTo("foundation-toggleable");
+                    var $customSegmentName = $(item).find("input[type='text']" + selectors.item.title).adaptTo("foundation-field");
+                    var $customSegmentCondition = $(item).find("input[type='text']" + selectors.item.condition).adaptTo("foundation-field");
                     var hiddenItemTitle = item.querySelectorAll("input[type='hidden']" + selectors.item.title)[0];
                     var $hiddenItemTitle = $(hiddenItemTitle).adaptTo("foundation-field");
                     if (event.target.selectedItem.value === "custom") {
+                        $customSegmentName.setValue("");
+                        $customSegmentCondition.setValue("");
                         customSegment.show();
                         $hiddenItemTitle.setDisabled(true);
                     } else {
