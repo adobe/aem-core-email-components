@@ -22,7 +22,9 @@
     <tbody>
     <tr>
         <td class="no-background">
-            <p class="cmp-text__paragraph" data-sly-unwrap="${textModel.isRichText}">${text @ context = 'unsafe'}</p>
+            <div data-sly-unwrap="${!wcmmode.edit}">
+                <p class="cmp-text__paragraph" data-sly-unwrap="${textModel.isRichText}">${text @ context = 'unsafe'}</p>
+            </div>
         </td>
     </tr>
     </tbody>
