@@ -47,3 +47,7 @@ Core Components | AEM as a Cloud Service | AEM 6.5 SP13 | Java SE | Maven
 The Email Core Components require the use of [editable templates](https://docs.adobe.com/content/help/en/experience-manager-learn/sites/page-authoring/template-editor-feature-video-use.html) and do not support Classic UI nor static templates. If needed, check out the [AEM Modernization Tools](https://opensource.adobe.com/aem-modernize-tools/pages/tools.html).
 
 ### Known Issues
+
+#### Anchor links get externalised
+
+For older versions of AEM 6.5 and AEM as a Cloud Service the `campaign-link-rewrite` transformer was required for a Apache Sling Rewrite pipeline to be picked up by the Adobe Campaign ContentServlet. This transformer is causing anchor links to be exteranlised. In newer verions of AEM it will be possible to configure the rewriter pipeline used by the ContentServlet without having to use the `campaign-link-rewrite` transformer. See the [E-Mail Link Transformer Documentation](https://github.com/adobe/aem-core-email-components/wiki/E-Mail-Link-Transfomer#anchor-links-a-hrefanchor-get-externalised) for more details.
