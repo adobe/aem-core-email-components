@@ -8,7 +8,8 @@
         editorType="text">
         <inplaceEditingConfig
             jcr:primaryType="nt:unstructured"
-            disableXSSFiltering="{Boolean}true">
+            disableXSSFiltering="{Boolean}true"
+            editElementQuery="table.cmp-text > tbody > tr > td > div">
             <rtePlugins jcr:primaryType="nt:unstructured">
                 <personalizationplugin
                     jcr:primaryType="nt:unstructured"

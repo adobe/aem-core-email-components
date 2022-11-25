@@ -17,6 +17,10 @@
 /* stylelint-disable */
 
 td.no-background {
-          background-color: transparent;
-        }
+    background-color: transparent;
+}
+
+.cmp-text p {
+    text-align: left;
+}
 /* stylelint-enable */
