@@ -32,9 +32,7 @@ The Container component uses the `com.adobe.cq.email.core.components.models.Cont
 
 The following properties are written to JCR for this Container component and are expected to be available as Resource properties:
 
-### Container Properties
-
-Defines the layout type with the column split up of either full-width, half; half, one-third; two-third, two-third; one-third and third; third; or third
+* `./layout` - defines the layout type with the column split up of either full-width, half; half, one-third; two-third, two-third; one-third and third; third; or third
 
 ### Common Properties
 
