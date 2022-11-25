@@ -32,6 +32,10 @@ The following property is written to JCR for the experience fragment component a
 `./fragmentVariationPath` - defines the path to the experience fragment variation to be rendered.
 `./id` - defines the component HTML ID attribute
 
+## Tests and Coverage
+
+The class `ExperienceFragmentIT` is the Selenium test class. It checks for the existence of the dialog in fullscreen enabled/disabled.
+
 ## Information
 
 * **Vendor**: Adobe
