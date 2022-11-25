@@ -22,7 +22,6 @@ The Image Component allows embedding images in campaign content.
 ## Features
 
 * Linkable to content pages, external URLs or page anchors
-* Allows an icon identifier to be configured for rendering an icon
 * Personalization fields from Adobe Campaign
 * Ability to define image width
 * HTML ID
@@ -35,8 +34,7 @@ The changes are:
 
 * Addition of the numeric field **Fixed width (px)** on the **Metadata** tab of the edit dialog, which defines the width (in pixels) of the image
 * Addition of the checkbox **Scale image to available width** on the **Metadata** tab of the edit dialog, which forces the image to be displayed in full screen mode
-* Addition of the numeric field **Default width (px)** in the edit template dialog, which defines the default value for **Fixed width (px)** field when no value is present
-* The image URL in the `src` HTML attribute is now absolute (see [UrlMapperService](https://github.com/adobe/aem-core-email-components/wiki/UrlMapperService:-Technical-documentation) for details)
+* Addition of the numeric field **Default width (px)** in the policy dialog, which defines the default value for **Fixed width (px)** field when no value is present
 
 ## Best Practices for Email Image Sizes
 

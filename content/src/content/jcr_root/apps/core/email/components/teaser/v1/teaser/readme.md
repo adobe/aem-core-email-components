@@ -21,7 +21,6 @@ The Teaser Component serves as a combination of title, text, image, and call-to-
 
 ## Features
 
-* Display an image as a background image or as a regular image
 * Use Campaign personalization fields in the RTE for the description
 * HTML ID
 
