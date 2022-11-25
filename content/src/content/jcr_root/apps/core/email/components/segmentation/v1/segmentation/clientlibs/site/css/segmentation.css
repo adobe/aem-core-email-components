@@ -16,8 +16,8 @@
 
 /* stylelint-disable */
 td.no-background {
-          background-color: transparent;
-        }
+    background-color: transparent;
+}
 .new.cmp-segmentation {
     display: none;
 }
