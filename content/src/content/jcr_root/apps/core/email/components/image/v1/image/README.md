@@ -22,7 +22,6 @@ The Image Component allows embedding images in campaign content.
 ## Features
 
 * Linkable to content pages, external URLs or page anchors
-* Personalization fields from Adobe Campaign
 * Ability to define image width
 * HTML ID
 
