@@ -35,7 +35,7 @@ This component inherit its structure and behavior from the [Text component (v2)]
 
 ## Tests and Coverage
 
-The class `EmailTextIt` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
+The class `TextIt` is the Selenium test class. It checks for the existence of the personalization buttons in each of the previously mentioned windows.
 
 ## Information
 
