@@ -40,8 +40,9 @@ Set of standardized Email components for [Adobe Experience Manager (AEM)](https:
 
 ### System Requirements
 
-Core Components | AEM as a Cloud Service | AEM 6.5 SP13 | Java SE | Maven
-----------------|------------------------|--------------|---------|---------|
+Core Components | AEM as a Cloud Service | AEM 6.5   | Java SE | Maven 
+----------------|------------------------|-----------|-------|--------
+[2.21.2](https://github.com/adobe/aem-core-wcm-components/releases/tag/core.wcm.components.reactor-2.21.2)  | Continual | 6.5.14.0+ | 8, 11 | 3.3.9+
 
 
 The Email Core Components require the use of [editable templates](https://docs.adobe.com/content/help/en/experience-manager-learn/sites/page-authoring/template-editor-feature-video-use.html) and do not support Classic UI nor static templates. If needed, check out the [AEM Modernization Tools](https://opensource.adobe.com/aem-modernize-tools/pages/tools.html).
