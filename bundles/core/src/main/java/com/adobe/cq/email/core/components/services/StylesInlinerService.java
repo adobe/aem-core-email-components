@@ -26,8 +26,8 @@ public interface StylesInlinerService {
 
     /**
      * This method accepts the html string as the input, parses it, reads the style rules and adds it to the respective elements in the
-     * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the a <style> tag in the head of the
-     * returned html.
+     * html. Unused style rules, along with media query styles and pseudo classes, are inserted in the a {@code <style>} tag in the head of
+     * the returned html.
      *
      * @param resourceResolver the resource resolver object
      * @param html             the html string
