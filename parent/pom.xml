@@ -317,7 +317,6 @@
                     <executions>
                         <execution>
                             <id>baseline</id>
-                            <phase>none</phase>
                             <goals>
                                 <goal>baseline</goal>
                             </goals>
