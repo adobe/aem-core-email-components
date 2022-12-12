@@ -29,9 +29,13 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.adobe.cq.testing.selenium.pageobject.EditorPage;
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
+import com.adobe.cq.testing.selenium.pagewidgets.cq.AutoCompleteField;
 import com.adobe.cq.wcm.core.components.it.seljup.AuthorBaseUITest;
 import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
+import com.adobe.cq.wcm.core.components.it.seljup.util.components.image.BaseImage;
+import com.adobe.cq.wcm.core.components.it.seljup.util.components.image.v1.Image;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
+import com.codeborne.selenide.DragAndDropOptions;
 import com.codeborne.selenide.WebDriverRunner;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -40,6 +44,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImageIT extends AuthorBaseUITest {
+    private static String fileUpload = "coral-fileupload[name='./file']";
+    private static String imageInSidePanel = "coral-card.cq-draggable[data-path=\"%s\"]";
+    private static String assetFilter = "[name='assetfilter_image_path']";
+
     private String proxyPath;
     private String testPage;
 
@@ -118,11 +126,18 @@ public class ImageIT extends AuthorBaseUITest {
         loadImage(webDriver, act);
     }
 
+    private void setAssetFilter(String filter) {
+        AutoCompleteField autoCompleteField = new AutoCompleteField("css:" + assetFilter);
+        autoCompleteField.sendKeys(filter);
+        autoCompleteField.suggestions().selectByValue(filter);
+    }
+
     private void loadImage(WebDriver webDriver, Actions act) throws InterruptedException {
         click(act, webDriver.findElement(By.cssSelector("[title=\"Assets\"]")));
         click(act, webDriver.findElement(By.cssSelector("[name=\"./imageFromPageImage\"]")));
-        $("coral-card.cq-draggable[data-path=\"/content/dam/core-components-examples/library/sample-assets/mountain-range.jpg\"]").dragAndDropTo(
-                "coral-fileupload[name='./file']");
+        setAssetFilter("/content/dam/core-email-components/sample-assets");
+        $(String.format(imageInSidePanel,"/content/dam/core-email-components/sample-assets/mountain-range.jpg")).dragAndDropTo(fileUpload
+                , DragAndDropOptions.usingActions());
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
     }
 
