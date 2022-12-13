@@ -30,10 +30,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.adobe.cq.email.core.components.it.seljup.AuthorBaseUITest;
+import com.adobe.cq.email.core.components.it.seljup.util.components.image.ImageEditDialog;
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
 import com.adobe.cq.testing.selenium.pagewidgets.cq.AutoCompleteField;
 import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
-import com.adobe.cq.email.core.components.it.seljup.util.components.image.ImageEditDialog;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
 import com.codeborne.selenide.WebDriverRunner;
 
@@ -84,6 +84,7 @@ public class ImageIT extends AuthorBaseUITest {
         Actions act = new Actions(webDriver);
         com.adobe.cq.email.core.components.it.seljup.util.Commons.openEditDialog(editorPage, cmpPath);
         loadImage();
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         openMetadataTab(webDriver, act);
         WebElement element = webDriver.findElement(By.cssSelector("[name='./fixedWidth']"));
         assertTrue(element.isDisplayed());
@@ -110,6 +111,7 @@ public class ImageIT extends AuthorBaseUITest {
         Actions act = new Actions(webDriver);
         com.adobe.cq.email.core.components.it.seljup.util.Commons.openEditDialog(editorPage, cmpPath);
         loadImage();
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         openMetadataTab(webDriver, act);
         WebElement element = webDriver.findElement(By.cssSelector("[name='./scaleToFullWidth']"));
         assertTrue(element.isDisplayed());
