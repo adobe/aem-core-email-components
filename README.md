@@ -1,7 +1,7 @@
 # AEM Email Core Components
-
+[![CircleCI](https://circleci.com/gh/adobe/aem-core-email-components.svg?style=svg)](https://circleci.com/gh/adobe/aem-core-email-components)
 [![Test](https://github.com/adobe/aem-core-email-components/workflows/Test/badge.svg)](https://github.com/adobe/aem-core-email-components/actions?query=workflow%3ATest)
-[![Code Coverage](https://codecov.io/gh/adobe/aem-core-email-components/branch/master/graph/badge.svg)](https://codecov.io/gh/adobe/aem-core-email-components)
+[![Code Coverage](https://codecov.io/gh/adobe/aem-core-email-components/branch/main/graph/badge.svg)](https://codecov.io/gh/adobe/aem-core-email-components)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.all/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.cq/core.email.components.all)
 [![javadoc](https://javadoc.io/badge2/com.adobe.cq/core.email.components.core/javadoc.svg)](https://javadoc.io/doc/com.adobe.cq/core.email.components.core)
 

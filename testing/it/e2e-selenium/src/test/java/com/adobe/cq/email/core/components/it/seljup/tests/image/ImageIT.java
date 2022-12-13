@@ -34,6 +34,8 @@ import com.adobe.cq.email.core.components.it.seljup.util.components.image.ImageE
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
 import com.adobe.cq.testing.selenium.pagewidgets.cq.AutoCompleteField;
 import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
+import com.adobe.cq.wcm.core.components.it.seljup.util.components.image.BaseImage;
+import com.adobe.cq.wcm.core.components.it.seljup.util.components.image.v1.Image;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
 import com.codeborne.selenide.WebDriverRunner;
 
@@ -51,9 +53,11 @@ public class ImageIT extends AuthorBaseUITest {
     private String testPage;
     private String cmpPath;
     private PageEditorPage editorPage;
+    private BaseImage image;
 
     @BeforeEach
     public void setupBeforeEach() throws ClientException {
+        image = new Image();
         // create the test page, store page path in 'testPagePath'
         testPage = authorClient.createPage("test", "Test Page Title", rootPage, "/conf/core-email-components-examples/settings/wcm" +
                 "/templates/email-template").getSlingPath();
@@ -82,7 +86,6 @@ public class ImageIT extends AuthorBaseUITest {
         Commons.openSidePanel();
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);
-        com.adobe.cq.email.core.components.it.seljup.util.Commons.openEditDialog(editorPage, cmpPath);
         loadImage();
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         openMetadataTab(webDriver, act);
@@ -96,7 +99,9 @@ public class ImageIT extends AuthorBaseUITest {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         Commons.saveConfigureDialog();
         Commons.closeSidePanel();
-        viewAsPublished(webDriver);
+        editorPage.enterPreviewMode();
+        Commons.switchContext("ContentFrame");
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         WebElement img = webDriver.findElement(By.tagName("img"));
         assertNotNull(img.getAttribute("width"));
         assertTrue(isAbsolute(img.getAttribute("src")));
@@ -109,7 +114,6 @@ public class ImageIT extends AuthorBaseUITest {
         Commons.openSidePanel();
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions act = new Actions(webDriver);
-        com.adobe.cq.email.core.components.it.seljup.util.Commons.openEditDialog(editorPage, cmpPath);
         loadImage();
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         openMetadataTab(webDriver, act);
@@ -120,19 +124,20 @@ public class ImageIT extends AuthorBaseUITest {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         Commons.saveConfigureDialog();
         Commons.closeSidePanel();
-        viewAsPublished(webDriver);
+        editorPage.enterPreviewMode();
+        Commons.switchContext("ContentFrame");
+        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         WebElement img = webDriver.findElement(By.tagName("img"));
         assertTrue(isAbsolute(img.getAttribute("src")));
         assertEquals("width: 100%;", img.getAttribute("style"));
     }
 
-    private void loadImage() {
-        ImageEditDialog imageEditDialog = new ImageEditDialog();
-        imageEditDialog.checkImageFromPageImage();
-        setAssetFilter();
-        imageEditDialog.uploadImageFromSidePanel(assetPath);
-        imageEditDialog.checkAltValueFromDAM();
-        imageEditDialog.setAltText(altText);
+    private void loadImage() throws InterruptedException, TimeoutException {
+        com.adobe.cq.wcm.core.components.it.seljup.util.components.image.ImageEditDialog editDialog = image.getEditDialog();
+        editDialog.setAssetFilter(assetDirectory);
+        com.adobe.cq.email.core.components.it.seljup.util.Commons.openEditDialog(editorPage, cmpPath);
+        editDialog.checkImageFromPageImage();
+        editDialog.uploadImageFromSidePanel(assetPath);
     }
 
     private void setAssetFilter() {
@@ -144,11 +149,6 @@ public class ImageIT extends AuthorBaseUITest {
     private void openMetadataTab(WebDriver webDriver, Actions act) throws InterruptedException {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         click(act, webDriver.findElement(By.xpath("//coral-tab-label[.='Metadata']")));
-    }
-
-    private void viewAsPublished(WebDriver webDriver) throws InterruptedException {
-        webDriver.get(webDriver.getCurrentUrl().replace("/editor.html", "") + "?wcmmode=disabled");
-        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
     }
 
     private void click(Actions act, WebElement element) throws InterruptedException {
