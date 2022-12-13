@@ -65,7 +65,7 @@
         <mockitio.version>2.24.5</mockitio.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <core.components.version>2.21.0</core.components.version>
+        <core.wcm.components.version>2.21.0</core.wcm.components.version>
     </properties>
 
     <!-- ======================================================================= -->
@@ -180,7 +180,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>3.0.0-M5</version>
                     <configuration>
                         <argLine>-Xmx1024m</argLine>
                         <useSystemClassLoader>false</useSystemClassLoader>
@@ -189,7 +189,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>3.0.0-M5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.sling</groupId>
@@ -413,6 +413,7 @@
                             <!-- .rej files from svn/patch -->
                             <exclude>**/*.rej</exclude>
                             <!-- Jenkins build pipeline configuration file -->
+                            <exclude>.circleci/*</exclude>
                             <exclude>Jenkinsfile</exclude>
                             <exclude>jenkinsfiles/**/*</exclude>
                             <!-- Ignore IDEA files -->
@@ -816,12 +817,12 @@
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.core</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.it.e2e-selenium-utils</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
             </dependency>
 
             <!--
@@ -936,13 +937,13 @@
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.testing.aem-mock-plugin</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.junit.core</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

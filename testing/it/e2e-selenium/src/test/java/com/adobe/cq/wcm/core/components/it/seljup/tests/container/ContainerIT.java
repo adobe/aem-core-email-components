@@ -34,6 +34,8 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.adobe.cq.testing.selenium.pageobject.EditorPage;
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
+import com.adobe.cq.testing.selenium.pagewidgets.coral.CoralSelect;
+import com.adobe.cq.testing.selenium.pagewidgets.cq.InsertComponentDialog;
 import com.adobe.cq.wcm.core.components.it.seljup.AuthorBaseUITest;
 import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
@@ -44,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerIT extends AuthorBaseUITest {
 
+    private static String PN_LAYOUT_NAME = "./layout";
     private String testPage;
 
     @BeforeEach
@@ -156,21 +159,21 @@ public class ContainerIT extends AuthorBaseUITest {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         click(act, webDriver.findElement(By.cssSelector("[data-text=\"Drag components here\"]")));
         click(act, webDriver.findElement(By.xpath("//*[@id=\"EditableToolbar\"]/button[1]/coral-icon")));
-        click(act, webDriver.findElement(By.xpath("//coral-selectlist-item[.='Email Container Component']")));
+        InsertComponentDialog insertComponentDialog = new InsertComponentDialog();
+        insertComponentDialog.selectComponent("/apps/core-email-components-examples/components/container");
     }
 
     private void openEditDialog(WebDriver webDriver, Actions act) throws InterruptedException {
         Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
         click(act, webDriver.findElement(By.id("sidepanel-toggle-button")));
         click(act, webDriver.findElement(By.cssSelector("[title=\"Content Tree\"]")));
-        click(act, webDriver.findElement(By.xpath("//span[.='Email Container Component']")));
+        click(act, webDriver.findElement(By.xpath("//span[.='Table Layout']")));
         click(act, webDriver.findElement(By.cssSelector("[data-action='CONFIGURE']")));
 
     }
 
     private void setValueInCombobox(WebDriver webDriver, Actions act, String value) throws InterruptedException {
-        click(act, webDriver.findElement(By.name("./layout")));
-        click(act, webDriver.findElement(By.cssSelector("[value='" + value + "']")));
+        Commons.useDialogSelect(PN_LAYOUT_NAME, value);
         click(act, webDriver.findElement(By.cssSelector("[title='Done']")));
     }
 

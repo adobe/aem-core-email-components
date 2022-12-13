@@ -152,24 +152,6 @@
     </properties>
 
     <profiles>
-        <profile>
-            <id>category-cluster-aware</id>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-failsafe-plugin</artifactId>
-                            <configuration>
-                                <parallel>all</parallel>
-                                <threadCount>${test.thread.count}</threadCount>
-                                <groups>org.apache.sling.testing.junit.rules.category.ClusterAwareTest</groups>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
         <!-- Run every available integration test. -->
         <profile>
             <id>test-all</id>
@@ -201,8 +183,8 @@
                                 <configuration>
                                     <includes>
                                         <include>**/*IT.java</include>
-                                        <include>**/*SST.java</include>
                                     </includes>
+                                    <excludedGroups>${exclude.category}</excludedGroups>
                                 </configuration>
                             </execution>
                             <execution>

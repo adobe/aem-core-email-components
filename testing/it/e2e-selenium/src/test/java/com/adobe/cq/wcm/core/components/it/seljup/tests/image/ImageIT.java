@@ -29,17 +29,23 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.adobe.cq.testing.selenium.pageobject.EditorPage;
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
+import com.adobe.cq.testing.selenium.pagewidgets.cq.AutoCompleteField;
 import com.adobe.cq.wcm.core.components.it.seljup.AuthorBaseUITest;
 import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
+import com.adobe.cq.wcm.core.components.it.seljup.util.components.image.ImageEditDialog;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 
-import static com.codeborne.selenide.Selenide.$;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImageIT extends AuthorBaseUITest {
+    private static String assetFilter = "[name='assetfilter_image_path']";
+    private static String assetDirectory = "/content/dam/core-email-components/sample-assets";
+    private static String assetPath = assetDirectory + "/mountain-range.jpg";
+
     private String proxyPath;
     private String testPage;
 
@@ -115,15 +121,21 @@ public class ImageIT extends AuthorBaseUITest {
         click(act, webDriver.findElement(By.cssSelector("[title=\"Content Tree\"]")));
         click(act, webDriver.findElement(By.xpath("//span[.='image']")));
         click(act, webDriver.findElement(By.cssSelector("[data-action='CONFIGURE']")));
-        loadImage(webDriver, act);
+        loadImage();
     }
 
-    private void loadImage(WebDriver webDriver, Actions act) throws InterruptedException {
-        click(act, webDriver.findElement(By.cssSelector("[title=\"Assets\"]")));
-        click(act, webDriver.findElement(By.cssSelector("[name=\"./imageFromPageImage\"]")));
-        $("coral-card.cq-draggable[data-path=\"/content/dam/core-components-examples/library/sample-assets/mountain-range.jpg\"]").dragAndDropTo(
-                "coral-fileupload[name='./file']");
-        Commons.webDriverWait(RequestConstants.WEBDRIVER_WAIT_TIME_MS);
+    private void loadImage() {
+        ImageEditDialog imageEditDialog = new ImageEditDialog();
+        imageEditDialog.checkImageFromPageImage();
+        Selenide.$("#SidePanel coral-tab[data-foundation-tracking-event*='assets']").click();
+        setAssetFilter();
+        imageEditDialog.uploadImageFromSidePanel(assetPath);
+    }
+
+    private void setAssetFilter() {
+        AutoCompleteField autoCompleteField = new AutoCompleteField("css:" + assetFilter);
+        autoCompleteField.sendKeys(assetDirectory);
+        autoCompleteField.suggestions().selectByValue(assetDirectory);
     }
 
     private void openMetadataTab(WebDriver webDriver, Actions act) throws InterruptedException {

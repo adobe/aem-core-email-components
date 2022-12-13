@@ -31,7 +31,7 @@ import com.adobe.cq.testing.selenium.pageobject.EditorPage;
 import com.adobe.cq.testing.selenium.pageobject.PageEditorPage;
 import com.adobe.cq.testing.selenium.pagewidgets.cq.InsertComponentDialog;
 import com.adobe.cq.wcm.core.components.it.seljup.AuthorBaseUITest;
-import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
+import com.adobe.cq.wcm.core.components.it.seljup.util.commons.Commons;
 import com.adobe.cq.wcm.core.components.it.seljup.util.commons.SegmentationEditor;
 import com.adobe.cq.wcm.core.components.it.seljup.util.components.commons.PanelSelector;
 import com.adobe.cq.wcm.core.components.it.seljup.util.components.segmentation.SegmentationEditDialog;
@@ -99,7 +99,7 @@ public class SegmentationIT extends AuthorBaseUITest {
         String secondItemPath = panelSelector.getItems().last().getAttribute("data-id");
         Commons.openEditDialog(editorPage, firstItemPath);
         TextEditDialog textEditDialog = new TextEditDialog();
-        textEditDialog.setText("Adults only");
+        textEditDialog.setText("<p>Adults only</p>");
         Commons.saveConfigureDialog();
         editorPage.enterPreviewMode();
         Commons.switchContext("ContentFrame");
@@ -108,7 +108,7 @@ public class SegmentationIT extends AuthorBaseUITest {
         editorPage.enterEditMode();
         Commons.openEditDialog(editorPage, secondItemPath);
         textEditDialog = new TextEditDialog();
-        textEditDialog.setText("Kids only");
+        textEditDialog.setText("<p>Kids only</p>");
         Commons.saveConfigureDialog();
     }
 

@@ -31,7 +31,7 @@ import com.adobe.cq.testing.selenium.pagewidgets.cq.InlineEditor;
 import com.adobe.cq.testing.selenium.pagewidgets.cq.RichTextToolbar;
 import com.adobe.cq.testing.selenium.utils.ElementUtils;
 import com.adobe.cq.wcm.core.components.it.seljup.AuthorBaseUITest;
-import com.adobe.cq.wcm.core.components.it.seljup.util.Commons;
+import com.adobe.cq.wcm.core.components.it.seljup.util.commons.Commons;
 import com.adobe.cq.wcm.core.components.it.seljup.util.components.text.TextEditDialog;
 import com.adobe.cq.wcm.core.components.it.seljup.util.constant.RequestConstants;
 import com.codeborne.selenide.Selenide;
