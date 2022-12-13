@@ -147,7 +147,7 @@ jobs:
   selenium-chrome-cloudready:
     executor: test_executor_cloudready
     environment:
-      AEM: classic
+      AEM: classic # @todo should be removed once core components 2.21.x is part of cloud release
       TYPE: selenium
       BROWSER: chrome
     resource_class: large
