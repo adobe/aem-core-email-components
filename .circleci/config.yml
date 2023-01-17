@@ -1,0 +1,199 @@
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.1.1
+  browser-tools: circleci/browser-tools@1.2.4
+
+common:
+  restore_cache: &restore_cache
+    restore_cache:
+      keys:
+        - maven-repo-{{ .Environment.CACHE_VERSION }}-{{ arch }}-{{ .Branch }}-{{ checksum "pom.xml" }}
+        - maven-repo-{{ .Environment.CACHE_VERSION }}-{{ arch }}-{{ .Branch }}
+        - maven-repo-{{ .Environment.CACHE_VERSION }}-
+  docker_auth: &docker_auth
+    auth:
+      username: $ARTIFACTORY_CLOUD_USER
+      password: $ARTIFACTORY_CLOUD_PASS
+  integration_test_steps: &integration_test_steps
+    steps:
+      - checkout
+      - *restore_cache
+      - attach_workspace:
+          at: /home/circleci/build
+      - run:
+          name: Integration tests
+          command: node .circleci/ci/it-tests.js
+      - store_test_results:
+          path: testing/it/http/target/failsafe-reports
+      # Save test results as artifacts
+      - store_artifacts:
+          path: testing/it/http/target/failsafe-reports
+      # Save AEM logs as artifacts
+      - store_artifacts:
+          path: logs
+      # Save Jacoco coverage report as artifact
+      - store_artifacts:
+          path: bundles/core/target/site/jacoco
+      - store_artifacts:
+          path: extensions/product-recs/bundle/target/site/jacoco
+      - store_artifacts:
+          path: examples/bundle/target/site/jacoco
+  selenium_test_steps: &selenium_test_steps
+    steps:
+      - checkout
+      - browser-tools/install-browser-tools
+      - *restore_cache
+      - attach_workspace:
+          at: /home/circleci/build
+      - run:
+          name: UI tests
+          command: node .circleci/ci/it-tests.js
+      - store_test_results:
+          path: testing/it/e2e-selenium/build/reports
+      # Save test results as artifacts
+      - store_artifacts:
+          path: testing/it/e2e-selenium/build/reports
+      # Save AEM logs as artifacts
+      - store_artifacts:
+          path: logs
+
+executors:
+  java_11:
+    docker:
+      - image: cimg/openjdk:11.0-browsers
+  java_8:
+    docker:
+      - image: cimg/openjdk:8.0-browsers
+  test_executor_6514:
+    docker:
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.6-openjdk11
+        <<: *docker_auth
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem:6.5.14-openjdk11
+        <<: *docker_auth
+  test_executor_cloudready:
+    docker:
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.6-openjdk11
+        <<: *docker_auth
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem-cloudready:9850-openjdk11
+        <<: *docker_auth
+
+jobs:
+  build-java-11:
+    executor: java_11
+    working_directory: /home/circleci/build
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Update permissions
+          command: sudo chown -R circleci /usr/local/lib/node_modules
+      - run:
+          name: Build
+          command: node .circleci/ci/build.js
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-repo-{{ .Environment.CACHE_VERSION }}-{{ arch }}-{{ .Branch }}-{{ checksum "pom.xml" }}
+      - persist_to_workspace:
+          root: /home/circleci/build
+          paths:
+            - configuration.json
+            - bundles/core/target
+            - content/target/*.zip
+            - examples/ui.apps/target/*.zip
+            - examples/ui.content/target/*.zip
+            - testing/it/e2e-selenium/target
+            - testing/it/e2e-selenium-utils/target
+            - testing/it/http/target
+            - testing/it/it-content/target/*.zip
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results/junit
+      - codecov/upload:
+          flags: unittests
+  build-java-8:
+    executor: java_8
+    working_directory: /home/circleci/build
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Update permissions
+          command: sudo chown -R circleci /usr/local/lib/node_modules
+      - run:
+          name: Build
+          command: node .circleci/ci/build.js
+      - store_artifacts:
+          path: test-results/junit
+  integration-test-6514:
+    executor: test_executor_6514
+    environment:
+      AEM: classic
+      TYPE: integration
+    resource_class: large
+    working_directory: /home/circleci/build
+    <<: *integration_test_steps
+  selenium-chrome-6514:
+    executor: test_executor_6514
+    environment:
+      AEM: classic
+      TYPE: selenium
+      BROWSER: chrome
+    resource_class: large
+    working_directory: /home/circleci/build
+    <<: *selenium_test_steps
+  selenium-chrome-cloudready:
+    executor: test_executor_cloudready
+    environment:
+      AEM: classic # @todo should be removed once core components 2.21.x is part of cloud release
+      TYPE: selenium
+      BROWSER: chrome
+    resource_class: large
+    working_directory: /home/circleci/build
+    <<: *selenium_test_steps
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-java-11:
+          context:
+            - CIF Artifactory Cloud
+          filters:
+            tags:
+              only: /.*/
+      - build-java-8:
+          context:
+            - CIF Artifactory Cloud
+          filters:
+            tags:
+              only: /.*/
+      - integration-test-6514:
+          context:
+            - CIF Artifactory Cloud
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - build-java-11
+            - build-java-8
+      - selenium-chrome-6514:
+          context:
+            - CIF Artifactory Cloud
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - build-java-11
+            - build-java-8
+      - selenium-chrome-cloudready:
+          context:
+            - CIF Artifactory Cloud
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - build-java-11
+            - build-java-8

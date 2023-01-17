@@ -19,15 +19,15 @@
     <groupId>com.adobe.cq</groupId>
     <artifactId>core.email.components.parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>Adobe Experience Manager Core Email Components Parent</name>
     <description>A set of standardized Email components for AEM 6.3+ that can be used to speed up development of websites.</description>
     <url>https://github.com/adobe/aem-core-wcm-components</url>
     <scm>
-        <connection>scm:git:https://github.com/adobe/aem-core-wcm-components.git</connection>
-        <developerConnection>scm:git:git@github.com:adobe/aem-core-wcm-components.git</developerConnection>
-        <url>https://github.com/adobe/aem-core-wcm-components</url>
+        <connection>scm:git:https://github.com/adobe/aem-core-email-components.git</connection>
+        <developerConnection>scm:git:git@github.com:adobe/aem-core-email-components.git</developerConnection>
+        <url>https://github.com/adobe/aem-core-email-components</url>
         <tag>HEAD</tag>
     </scm>
     <licenses>
@@ -65,7 +65,7 @@
         <mockitio.version>2.24.5</mockitio.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <core.components.version>2.21.0</core.components.version>
+        <core.wcm.components.version>2.21.0</core.wcm.components.version>
     </properties>
 
     <!-- ======================================================================= -->
@@ -180,7 +180,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>3.0.0-M5</version>
                     <configuration>
                         <argLine>-Xmx1024m</argLine>
                         <useSystemClassLoader>false</useSystemClassLoader>
@@ -189,7 +189,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>3.0.0-M5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.sling</groupId>
@@ -317,7 +317,6 @@
                     <executions>
                         <execution>
                             <id>baseline</id>
-                            <phase>none</phase>
                             <goals>
                                 <goal>baseline</goal>
                             </goals>
@@ -414,6 +413,7 @@
                             <!-- .rej files from svn/patch -->
                             <exclude>**/*.rej</exclude>
                             <!-- Jenkins build pipeline configuration file -->
+                            <exclude>.circleci/*</exclude>
                             <exclude>Jenkinsfile</exclude>
                             <exclude>jenkinsfiles/**/*</exclude>
                             <!-- Ignore IDEA files -->
@@ -817,12 +817,12 @@
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.core</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.it.e2e-selenium-utils</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
             </dependency>
 
             <!--
@@ -937,13 +937,13 @@
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.testing.aem-mock-plugin</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.junit.core</artifactId>
-                <version>${core.components.version}</version>
+                <version>${core.wcm.components.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
