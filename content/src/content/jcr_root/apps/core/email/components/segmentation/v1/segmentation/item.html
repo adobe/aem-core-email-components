@@ -15,12 +15,12 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/-->
 <template data-sly-template.item="${@ item}">
     <tr data-sly-test="${item.prolog}">
-        <td class="no-background">${item.prolog @ context='html'}</td>
+        <td class="no-background">${item.prolog @ context='unsafe'}</td>
     </tr>
     <tr>
         <sly data-sly-resource="${item.name @ decorationTagName= 'td', cssClassName='no-background'}"></sly>
     </tr>
     <tr data-sly-test="${item.epilogue}">
-        <td class="no-background">${item.epilogue @ context='html'}</td>
+        <td class="no-background">${item.epilogue @ context='unsafe'}</td>
     </tr>
 </template>
