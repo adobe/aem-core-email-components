@@ -7,6 +7,7 @@
             "cq:template": "/conf/core-email-components-examples/settings/wcm/templates/email-template",
             "jcr:primaryType": "cq:PageContent",
             "jcr:title": "E-Mail Test Page",
+            "preheader": "Pre-Header Test",
             "root": {
                 "container": {
                     "col-0": {
