@@ -15,7 +15,37 @@
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 package com.adobe.cq.email.core.components.internal.models;
 
-public class EmailPageImpl {
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.jetbrains.annotations.Nullable;
+
+import com.adobe.cq.email.core.components.models.EmailPage;
+
+@Model(adaptables = SlingHttpServletRequest.class, adapters = {EmailPage.class}, resourceType = EmailPageImpl.RESOURCE_TYPE)
+public class EmailPageImpl implements EmailPage {
+
+    /**
+     * The resource type.
+     */
     public static final String RESOURCE_TYPE = "core/email/components/page/v1/page";
 
+    /**
+     * Property name of the pre header
+     */
+    protected static final String PN_PRE_HEADER = "preheader";
+
+    /**
+     * The page pre header if set, null if not.
+     */
+    @ValueMapValue(injectionStrategy = InjectionStrategy.OPTIONAL, name = PN_PRE_HEADER)
+    @Nullable
+    private String preHeader;
+
+    @Override
+    @Nullable
+    public String getPreHeader() {
+        return preHeader;
+    }
 }
