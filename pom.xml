@@ -23,13 +23,13 @@
     <parent>
         <groupId>com.adobe.cq</groupId>
         <artifactId>core.email.components.parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.2.0</version>
         <relativePath>parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>core.email.components.reactor</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.2.0</version>
 
     <name>Adobe Experience Manager Core Email Components Reactor</name>
 
@@ -41,7 +41,7 @@
         <developerConnection>scm:git:https://github.com/adobe/aem-core-email-components.git
         </developerConnection>
         <url>https://github.com/adobe/aem-core-email-components/</url>
-        <tag>HEAD</tag>
+        <tag>core.email.components.reactor-1.2.0</tag>
     </scm>
 
     <build>
