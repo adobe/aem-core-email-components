@@ -69,7 +69,7 @@ public class StylesInlinerServlet extends SlingSafeMethodsServlet {
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
         // prepare forward request and response
         String selectors = Arrays.stream(request.getRequestPathInfo().getSelectors())
-            .filter(selector -> !INLINE_STYLES_SELECTOR.equals(INLINE_STYLES_SELECTOR))
+            .filter(selector -> !INLINE_STYLES_SELECTOR.equals(selector))
             .collect(Collectors.joining("."));
         InlinerResponseWrapper responseWrapper = new InlinerResponseWrapper(resp);
         RequestDispatcherOptions options = new RequestDispatcherOptions();
