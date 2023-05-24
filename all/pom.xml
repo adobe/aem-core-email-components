@@ -63,11 +63,6 @@
                                     <artifactId>core.email.components.core</artifactId>
                                     <target>/apps/core/email/install</target>
                                 </embedded>
-                                <embedded>
-                                    <groupId>org.apache.sling</groupId>
-                                    <artifactId>org.apache.sling.models.impl</artifactId>
-                                    <target>/apps/core/email/install</target>
-                                </embedded>
                             </embeddeds>
                             <subPackages>
                                 <subPackage>
@@ -196,11 +191,6 @@
                                             <artifactId>core.email.components.core</artifactId>
                                             <target>/libs/core/wcm/install</target>
                                         </embedded>
-                                        <embedded>
-                                            <groupId>org.apache.sling</groupId>
-                                            <artifactId>org.apache.sling.models.impl</artifactId>
-                                            <target>/libs/core/wcm/install</target>
-                                        </embedded>
                                     </embeddeds>
                                     <subPackages>
                                         <subPackage>
@@ -263,11 +253,6 @@
             <version>${project.version}</version>
             <type>zip</type>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.models.impl</artifactId>
-            <version>1.4.12</version>
         </dependency>
     </dependencies>
 </project>
