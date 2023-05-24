@@ -5,6 +5,9 @@
         p {
             color: red
         }
+        p>:first-child:before {
+            content: '!';
+        }
         a {
             color: inherit;
             text-decoration: none;
@@ -61,6 +64,6 @@
 </head>
 <body>
 <a href="#">Hello</a>
-<p>World</p>
+<p><span>Hello</span></p>
 </body>
 </html>
