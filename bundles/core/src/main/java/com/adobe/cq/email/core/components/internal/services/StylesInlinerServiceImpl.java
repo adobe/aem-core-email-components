@@ -187,8 +187,13 @@ public class StylesInlinerServiceImpl implements StylesInlinerService {
         List<String> cssSelectors = styleToken.getJsoupSelectors();
         if (styleToken.isPseudoSelector()) {
             for (String cssSelector : cssSelectors) {
-                Elements selectedElements = doc.select(cssSelector);
-                if (!selectedElements.isEmpty() || styleToken.isForceUsage()) {
+                try {
+                    Elements selectedElements = doc.select(cssSelector);
+                    if (!selectedElements.isEmpty() || styleToken.isForceUsage()) {
+                        unInlinableStyleTokens.add(styleToken);
+                        return;
+                    }
+                } catch (Selector.SelectorParseException e) {
                     unInlinableStyleTokens.add(styleToken);
                     return;
                 }
