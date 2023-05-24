@@ -1,3 +1,4 @@
+p>:first-child:before { content: '!'; }
 a:hover { color: green; }
 .ExternalClass { width: 100%; }
 .ExternalClass > center > table { width: 640px; }
