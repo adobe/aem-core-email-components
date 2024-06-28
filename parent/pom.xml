@@ -19,7 +19,7 @@
     <groupId>com.adobe.cq</groupId>
     <artifactId>core.email.components.parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.3.0</version>
 
     <name>Adobe Experience Manager Core Email Components Parent</name>
     <description>A set of standardized Email components for AEM 6.3+ that can be used to speed up development of websites.</description>
@@ -28,7 +28,7 @@
         <connection>scm:git:https://github.com/adobe/aem-core-email-components.git</connection>
         <developerConnection>scm:git:git@github.com:adobe/aem-core-email-components.git</developerConnection>
         <url>https://github.com/adobe/aem-core-email-components</url>
-        <tag>HEAD</tag>
+        <tag>core.email.components.reactor-1.3.0</tag>
     </scm>
     <licenses>
         <license>
