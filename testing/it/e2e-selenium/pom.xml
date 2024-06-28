@@ -157,6 +157,7 @@
         <granite.it.publish.url>http://localhost:4503</granite.it.publish.url>
         <selenide.version>6.17.0</selenide.version>
         <selenium.version>4.11.0</selenium.version>
+        <webdrivermanager.version>5.4.1</webdrivermanager.version>
     </properties>
 
     <profiles>
@@ -294,6 +295,12 @@
             <artifactId>selenide</artifactId>
             <version>${selenide.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
