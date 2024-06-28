@@ -82,6 +82,7 @@
                         <Import-Package>
                             javax.annotation;version=0.0.0,
                             com.day.cq.dam.api;version="[1.24,2.0)",
+                            org.jspecify.annotations;version=!;resolution:=optional,
                             *
                         </Import-Package>
                         <Embed-Dependency>jsoup;inline=true</Embed-Dependency>
