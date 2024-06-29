@@ -21,7 +21,7 @@
     "devDependencies": {
         "aemfed": "^0.1.1",
         "eslint": "^4.19.1",
-        "npm-run-all": "^4.1.5",
+        "npm-run-all2": "^5.0.0",
         "stylelint": "^9.10.1",
         "stylelint-config-recommended": "^2.1.0",
         "stylelint-selector-bem-pattern": "^2.0.0",
