@@ -62,7 +62,7 @@ common:
 executors:
   java_11:
     docker:
-      - image: cimg/openjdk:11.0-browsers
+      - image: cimg/openjdk:11.0.22-browsers
   java_8:
     docker:
       - image: cimg/openjdk:8.0-browsers
