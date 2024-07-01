@@ -65,7 +65,7 @@ executors:
       - image: cimg/openjdk:11.0-browsers
   java_8:
     docker:
-      - image: cimg/openjdk:8.0-browsers
+      - image: cimg/openjdk:8.0.402-browsers
   test_executor_6514:
     docker:
       - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.6-openjdk11
